@@ -6,7 +6,7 @@ import Ossia 1.0 as Ossia
  * to provide the temperature in Bordeaux or another city
  * (read the doc at https://www.metaweather.com/api/)
  */
-QtObject
+Ossia.Http
 {
     function createTree() {
         return [
