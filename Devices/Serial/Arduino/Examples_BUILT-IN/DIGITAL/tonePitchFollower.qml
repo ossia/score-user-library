@@ -17,22 +17,18 @@ Ossia.Serial
     	function closeListening(address) {}
 
      	function onMessage(message) { // evaluated each time a message is received
-        var state = false; // make a boolean variable
-	
-	if (message == 0) { // if 0 is received, set the valriable to false
-	        state = false;
-	        } else {    // otherwise, set it to true;
-	        state = true;
-	        };
-
-     	return [{address: "/buttonState", value: state}]; // assign the value to namespace in the tree
+     	return [{address: "/sensorReading", value: message}]; // assign the value to namespace in the tree
 	}
 
     	function createTree() {
         return [{
-			name: "buttonState",
-             		type:  Ossia.Type.Bool,
-                    	access: Ossia.Access.Get
+			name: "sensorReading",
+             		type:  Ossia.Type.Int,
+		    	min: 0,
+                    	max: 1023,
+                    	access: Ossia.Access.Get,
+			bounding: Ossia.Bounding.Clip,
+                    	repetition_filter: Ossia.Repetitions.Filtered
                  }]; 
 	}
 }

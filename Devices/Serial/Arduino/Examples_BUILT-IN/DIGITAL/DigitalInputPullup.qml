@@ -17,20 +17,20 @@ Ossia.Serial
     	function closeListening(address) {}
 
      	function onMessage(message) { // evaluated each time a message is received
-        var state = false; // make a boolean variable
+        var sensor = false; // make a boolean variable
 	
 	if (message == 0) { // if 0 is received, set the valriable to false
-	        state = false;
+	        sensor = false;
 	        } else {    // otherwise, set it to true;
-	        state = true;
+	        sensor = true;
 	        };
 
-     	return [{address: "/buttonState", value: state}]; // assign the value to namespace in the tree
+     	return [{address: "/sensorVal", value: sensor}]; // assign the value to namespace in the tree
 	}
 
     	function createTree() {
         return [{
-			name: "buttonState",
+			name: "sensorVal",
              		type:  Ossia.Type.Bool,
                     	access: Ossia.Access.Get
                  }]; 
