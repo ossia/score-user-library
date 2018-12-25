@@ -25,7 +25,7 @@ Ossia.Serial
 	        state = true;
 	        };
 
-     	return [{address: "/buttonState", value: state}]; // assign the value to namespace in the tree
+     	return [{address: "/buttonState", value: state}]; // assign values to namespaces in the tree
 	}
 
     	function createTree() {

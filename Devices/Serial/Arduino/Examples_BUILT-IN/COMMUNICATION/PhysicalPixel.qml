@@ -16,19 +16,13 @@ Ossia.Serial
 	function openListening(address) {}
     	function closeListening(address) {}
 
-     	function onMessage(message) { // evaluated each time a message is received
-     	return [{address: "/voltage", value: message}]; // assign values to namespaces in the tree
-	}
-
     	function createTree() {
         return [{
-			name: "voltage",
-             		type:  Ossia.Type.Float,
-		    	min: 0.0,
-                    	max: 5.0,
-                    	access: Ossia.Access.Get,
-			bounding: Ossia.Bounding.Clip,
-                    	repetition_filter: Ossia.Repetitions.Filtered
+			name: "ASCII",
+             		type:  Ossia.Type.String,
+                    	access: Ossia.Access.Set,
+			request: "$val.asAscii", // convert values to ASCII characters
+			description: "H for HIGH (led ON), L for Low (led OFF)"  
                  }]; 
 	}
 }

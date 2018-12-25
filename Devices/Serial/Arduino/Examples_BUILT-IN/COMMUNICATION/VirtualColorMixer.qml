@@ -17,15 +17,37 @@ Ossia.Serial
     	function closeListening(address) {}
 
      	function onMessage(message) { // evaluated each time a message is received
-     	return [{address: "/sensorValue", value: message}]; // assign values to namespaces in the tree
+	var splitedMessage = message.split(','); // create an array from the received message   
+
+     	return [{address: "/Red", value: splitedMessage[0]}, // assign values to namespaces in the tree
+		{address: "/Green", value: splitedMessage[1]},
+		{address: "/Blue", value: splitedMessage[2]}]; 
 	}
 
     	function createTree() {
         return [{
-			name: "sensorValue",
+			name: "Red",
              		type:  Ossia.Type.Int,
 		    	min: 0,
-                    	max: 1023,
+                    	max: 255,
+                    	access: Ossia.Access.Get,
+			bounding: Ossia.Bounding.Clip,
+                    	repetition_filter: Ossia.Repetitions.Filtered
+                },
+		{
+			name: "Green",
+             		type:  Ossia.Type.Int,
+		    	min: 0,
+                    	max: 255,
+                    	access: Ossia.Access.Get,
+			bounding: Ossia.Bounding.Clip,
+                    	repetition_filter: Ossia.Repetitions.Filtered
+                },
+		{
+			name: "Blue",
+             		type:  Ossia.Type.Int,
+		    	min: 0,
+                    	max: 255,
                     	access: Ossia.Access.Get,
 			bounding: Ossia.Bounding.Clip,
                     	repetition_filter: Ossia.Repetitions.Filtered

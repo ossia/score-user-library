@@ -17,7 +17,7 @@ Ossia.Serial
     	function closeListening(address) {}
 
      	function onMessage(message) { // evaluated each time a message is received
-     	return [{address: "/sensorReading", value: message}]; // assign the value to namespace in the tree
+     	return [{address: "/sensorReading", value: message}]; // assign values to namespaces in the tree
 	}
 
     	function createTree() {

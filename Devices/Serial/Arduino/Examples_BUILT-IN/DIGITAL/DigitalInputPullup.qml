@@ -25,7 +25,7 @@ Ossia.Serial
 	        sensor = true;
 	        };
 
-     	return [{address: "/sensorVal", value: sensor}]; // assign the value to namespace in the tree
+     	return [{address: "/sensorVal", value: sensor}]; // assign values to namespaces in the tree
 	}
 
     	function createTree() {

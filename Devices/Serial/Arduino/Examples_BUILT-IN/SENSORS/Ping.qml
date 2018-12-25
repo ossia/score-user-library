@@ -17,18 +17,25 @@ Ossia.Serial
     	function closeListening(address) {}
 
      	function onMessage(message) { // evaluated each time a message is received
-     	return [{address: "/voltage", value: message}]; // assign values to namespaces in the tree
+	var splitedMessage = message.split("in, "); // create an array from the received message   
+	  
+
+     	return [{address: "/in", value: splitedMessage[0]}, // assign values to namespaces in the tree 
+		{address: "/cm", value: parseInt(splitedMessage[1])}]; // extract the integer value from the second part of the splited message 
 	}
 
     	function createTree() {
         return [{
-			name: "voltage",
-             		type:  Ossia.Type.Float,
-		    	min: 0.0,
-                    	max: 5.0,
+			name: "in",
+             		type:  Ossia.Type.Int,
                     	access: Ossia.Access.Get,
-			bounding: Ossia.Bounding.Clip,
                     	repetition_filter: Ossia.Repetitions.Filtered
-                 }]; 
+                },
+		{
+			name: "cm",
+             		type:  Ossia.Type.Int,
+                    	access: Ossia.Access.Get,
+                    	repetition_filter: Ossia.Repetitions.Filtered
+                }]; 
 	}
 }
