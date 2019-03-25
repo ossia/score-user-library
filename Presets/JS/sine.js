@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Score 1.0
 Item {
-  ValueInlet { id: in1 }
+  FloatSlider { id: in1; min: 20; max: 800; init: 440 }
   AudioOutlet { id: out1 }
 
   property int idx: 0;
@@ -12,7 +12,6 @@ Item {
     if(n > 0) {
       for(var s = 0; s < n; s++) {
         var sample = Math.sin(2 * Math.PI * (2 * freq) * (idx++) / 44100);
-        sample = sample > 0 ? 1 : -1;
         sample = freq > 0 ? sample : 0;
         arr[offset + s] = 0.3 * sample;
       }
