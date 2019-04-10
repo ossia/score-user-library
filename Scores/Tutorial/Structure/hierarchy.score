@@ -492,7 +492,7 @@
                                                                                                 ],
                                                                                                 "Duration": 1253.8775510204068,
                                                                                                 "EndOffset": 0,
-                                                                                                "File": "kit1/Sample 1.wav",
+                                                                                                "File": "../../../Medias/drums/kit1/Sample 1.wav",
                                                                                                 "Height": 300,
                                                                                                 "Metadata": {
                                                                                                     "Color": "Base1",
@@ -687,7 +687,7 @@
                                                                                                 ],
                                                                                                 "Duration": 1036.190476190477,
                                                                                                 "EndOffset": 0,
-                                                                                                "File": "kit1/Sample 2.wav",
+                                                                                                "File": "../../../Medias/drums/kit1/Sample 2.wav",
                                                                                                 "Height": 300,
                                                                                                 "Metadata": {
                                                                                                     "Color": "Base1",
@@ -1810,7 +1810,7 @@
                                                                                 ],
                                                                                 "Duration": 288.0725623582766,
                                                                                 "EndOffset": 0,
-                                                                                "File": "kit1/Closed Hat.wav",
+                                                                                "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                                                 "Height": 300,
                                                                                 "Metadata": {
                                                                                     "Color": "Base1",
@@ -2365,7 +2365,7 @@
                                                                                                 ],
                                                                                                 "Duration": 455.51020408163095,
                                                                                                 "EndOffset": 0,
-                                                                                                "File": "kit1/Kick.wav",
+                                                                                                "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                                                 "Height": 300,
                                                                                                 "Metadata": {
                                                                                                     "Color": "Base1",
@@ -2560,7 +2560,7 @@
                                                                                                 ],
                                                                                                 "Duration": 455.5102040816314,
                                                                                                 "EndOffset": 0,
-                                                                                                "File": "kit1/Kick.wav",
+                                                                                                "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                                                 "Height": 300,
                                                                                                 "Metadata": {
                                                                                                     "Color": "Base1",
@@ -4536,7 +4536,7 @@
                                                                     ],
                                                                     "Duration": 1036.1904761904761,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Sample 2.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Sample 2.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -4803,7 +4803,7 @@
                                                                     ],
                                                                     "Duration": 1253.8775510204086,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Sample 1.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Sample 1.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -4998,7 +4998,7 @@
                                                                     ],
                                                                     "Duration": 1362.7210884353717,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Open Hat 1.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Open Hat 1.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -5193,7 +5193,7 @@
                                                                     ],
                                                                     "Duration": 455.51020408163185,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Kick.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -5388,7 +5388,7 @@
                                                                     ],
                                                                     "Duration": 455.51020408163095,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Kick.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -5583,7 +5583,7 @@
                                                                     ],
                                                                     "Duration": 455.51020408163276,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Kick.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -5778,7 +5778,7 @@
                                                                     ],
                                                                     "Duration": 455.51020408163185,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Kick.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -5973,7 +5973,7 @@
                                                                     ],
                                                                     "Duration": 288.0725623582766,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Closed Hat.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -6168,7 +6168,7 @@
                                                                     ],
                                                                     "Duration": 563.0839002267585,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Mid Tom.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Mid Tom.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -6363,7 +6363,7 @@
                                                                     ],
                                                                     "Duration": 455.51020408163276,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Kick.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -6558,7 +6558,7 @@
                                                                     ],
                                                                     "Duration": 1253.8775510204068,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Sample 1.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Sample 1.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -6753,7 +6753,7 @@
                                                                     ],
                                                                     "Duration": 1253.8775510204114,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Sample 1.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Sample 1.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -6948,7 +6948,7 @@
                                                                     ],
                                                                     "Duration": 288.0725623582766,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Closed Hat.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -7143,7 +7143,7 @@
                                                                     ],
                                                                     "Duration": 288.0725623582766,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Closed Hat.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -7338,7 +7338,7 @@
                                                                     ],
                                                                     "Duration": 1362.7210884353738,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Open Hat 1.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Open Hat 1.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -7533,7 +7533,7 @@
                                                                     ],
                                                                     "Duration": 455.5102040816346,
                                                                     "EndOffset": 0,
-                                                                    "File": "kit1/Kick.wav",
+                                                                    "File": "../../../Medias/drums/kit1/Kick.wav",
                                                                     "Height": 300,
                                                                     "Metadata": {
                                                                         "Color": "Base1",
@@ -12418,7 +12418,7 @@
                                                         ],
                                                         "Duration": 455.5102040816346,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Kick.wav",
+                                                        "File": "../../../Medias/drums/kit1/Kick.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -12613,7 +12613,7 @@
                                                         ],
                                                         "Duration": 1362.7210884353735,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Open Hat 1.wav",
+                                                        "File": "../../../Medias/drums/kit1/Open Hat 1.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -12808,7 +12808,7 @@
                                                         ],
                                                         "Duration": 288.0725623582766,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Closed Hat.wav",
+                                                        "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -13003,7 +13003,7 @@
                                                         ],
                                                         "Duration": 288.0725623582766,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Closed Hat.wav",
+                                                        "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -13198,7 +13198,7 @@
                                                         ],
                                                         "Duration": 1253.8775510204114,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Sample 1.wav",
+                                                        "File": "../../../Medias/drums/kit1/Sample 1.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -13393,7 +13393,7 @@
                                                         ],
                                                         "Duration": 1253.8775510204068,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Sample 1.wav",
+                                                        "File": "../../../Medias/drums/kit1/Sample 1.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -13588,7 +13588,7 @@
                                                         ],
                                                         "Duration": 455.51020408163276,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Kick.wav",
+                                                        "File": "../../../Medias/drums/kit1/Kick.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -13783,7 +13783,7 @@
                                                         ],
                                                         "Duration": 563.0839002267576,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Mid Tom.wav",
+                                                        "File": "../../../Medias/drums/kit1/Mid Tom.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
@@ -13978,7 +13978,7 @@
                                                         ],
                                                         "Duration": 288.0725623582766,
                                                         "EndOffset": 0,
-                                                        "File": "kit1/Closed Hat.wav",
+                                                        "File": "../../../Medias/drums/kit1/Closed Hat.wav",
                                                         "Height": 300,
                                                         "Metadata": {
                                                             "Color": "Base1",
