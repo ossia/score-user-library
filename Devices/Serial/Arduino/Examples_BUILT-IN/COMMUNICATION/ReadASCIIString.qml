@@ -13,23 +13,25 @@ import Ossia 1.0 as Ossia
 
 Ossia.Serial
 {
-	function openListening(address) {}
-    	function closeListening(address) {}
+    function openListening(address) {}
+    function closeListening(address) {}
 
-     	function onMessage(message) { // evaluated each time a message is received
-     	return [{address: "/ASCII", value: message}]; // assign values to namespaces in the tree
-	}
+    function onMessage(message) { // evaluated each time a message is received
+        return [{address: "/ASCII", value: message}]; // assign values to namespaces in the tree
+    }
 
-    	function createTree() {
-        return [{
-			name: "RGB",
-             		type:  Ossia.Type.Vec4f,
-                    	access: Ossia.Access.Set
-		},		
-		{
-			name: "ASCII",
-             		type:  Ossia.Type.String,
-                    	access: Ossia.Access.Get
-                 }]; 
-	}
+    function createTree() {
+        return [
+        {
+            name: "RGB",
+            type:  Ossia.Type.Vec4f,
+            access: Ossia.Access.Set
+        },
+        {
+            name: "ASCII",
+            type:  Ossia.Type.String,
+            access: Ossia.Access.Get
+        }
+        ];
+    }
 }
