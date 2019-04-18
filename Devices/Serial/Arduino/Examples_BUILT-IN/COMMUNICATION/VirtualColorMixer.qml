@@ -27,12 +27,12 @@ Ossia.Serial
     	function createTree() {
         return [{
 			name: "Red",
-             		type:  Ossia.Type.Int,
-		    	min: 0,
-                    	max: 255,
-                    	access: Ossia.Access.Get,
+            type:  Ossia.Type.Int,
+            min: 0,
+            max: 255,
+            access: Ossia.Access.Get,
 			bounding: Ossia.Bounding.Clip,
-                    	repetition_filter: Ossia.Repetitions.Filtered
+            repetition_filter: Ossia.Repetitions.Filtered
                 },
 		{
 			name: "Green",

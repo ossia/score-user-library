@@ -13,22 +13,52 @@ import Ossia 1.0 as Ossia
 
 Ossia.Serial
 {
-	function openListening(address) {}
-    	function closeListening(address) {}
+    function openListening(address) {}
+    function closeListening(address) {}
 
-     	function onMessage(message) { // evaluated each time a message is received
-     	return [{address: "/average", value: message}]; // assign values to namespaces in the tree
-	}
+    property string buffer: "";
 
-    	function createTree() {
-        return [{
-			name: "average",
-             		type:  Ossia.Type.Int,
-		    	min: 0,
-                    	max: 1023,
-                    	access: Ossia.Access.Get,
-			bounding: Ossia.Bounding.Clip,
-                    	repetition_filter: Ossia.Repetitions.Filtered
-                 }]; 
-	}
+    function handleDelimiter(stream, delimiter, execute) {
+        var formated = ""; // a variable to store the message in the delimited format
+
+        buffer += stream; // store incomming characters as they arrive
+
+        for(var i = 0; i <= buffer.length; ++i) {
+            if(buffer[i] !== delimiter) {
+                if(buffer[i] !== undefined) {
+                    formated += buffer[i]; }
+                // add stored characters one by one to the formated variable if they are defined and different from the delimiter
+            } else {
+                execute(formated);
+                formated = "";
+                // if the current character in the buffer is the delimiter, pass "fomated" to the function before emptying the string
+            }
+        }
+
+        buffer = formated; // reset the buffer to contain the incomplete formated message if any
+        //to be complete with the next incomming characters in the stream
+    }
+
+    property int readings : 0;
+
+    function onMessage(message, raw) { // evaluated each time a message is received
+
+        handleDelimiter(raw, '\n', function(delimited) {
+                            readings = parseInt(delimited);
+        })
+
+        return [{address: "/average", value: readings}]; // assign values to namespaces in the tree
+    }
+
+        function createTree() {
+            return [{
+                        name: "average",
+                        type:  Ossia.Type.Int,
+                        min: 0,
+                        max: 1023,
+                        access: Ossia.Access.Get,
+                        bounding: Ossia.Bounding.Clip,
+                        repetition_filter: Ossia.Repetitions.Filtered
+                    }];
+        }
 }
