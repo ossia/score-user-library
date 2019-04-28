@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 104.0, 150.0, 592.0, 852.0 ],
+		"rect" : [ 1728.0, -117.0, 589.0, 882.0 ],
 		"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 		"editing_bgcolor" : [ 0.239216, 0.254902, 0.278431, 1.0 ],
 		"bglocked" : 0,
@@ -40,12 +40,39 @@
 		"subpatcher_template" : "noTB_dark",
 		"boxes" : [ 			{
 				"box" : 				{
+					"format" : 6,
+					"id" : "obj-11",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 40.0, 618.0, 50.0, 22.0 ],
+					"presentation_rect" : [ 39.0, 618.0, 0.0, 0.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-26",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 93.0, 622.0, 407.0, 22.0 ],
+					"style" : "",
+					"text" : "ossia.remote test/processes/Scenario.1/intervals/Interval.emit96/speed"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-23",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 49.0, 281.0, 346.0, 20.0 ],
-					"presentation_rect" : [ 90.0, 284.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : " all the main controls of score should be immediately accesible:",
 					"textcolor" : [ 0.862745, 0.870588, 0.878431, 1.0 ]
@@ -59,7 +86,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 49.0, 84.0, 433.0, 20.0 ],
-					"presentation_rect" : [ 94.0, 70.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "change the IP/port if necessary, and connect ossia.client to score",
 					"textcolor" : [ 0.862745, 0.870588, 0.878431, 1.0 ]
@@ -74,7 +100,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 49.0, 25.0, 433.0, 33.0 ],
-					"presentation_rect" : [ 85.0, 33.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "first create a Local Device in score \n(Add Device, then choose Local in the top menu)",
 					"textcolor" : [ 0.862745, 0.870588, 0.878431, 1.0 ]
@@ -129,7 +154,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 93.5, 397.0, 139.0, 22.0 ],
 					"style" : "",
-					"text" : "ossia.remote root/speed"
+					"text" : "ossia.remote test/speed"
 				}
 
 			}
@@ -140,9 +165,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 61.0, 649.0, 50.0, 22.0 ],
+					"patching_rect" : [ 61.0, 670.0, 50.0, 22.0 ],
 					"style" : "",
-					"text" : "toto"
+					"text" : "bidule"
 				}
 
 			}
@@ -169,7 +194,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 93.0, 528.0, 388.0, 22.0 ],
 					"style" : "",
-					"text" : "ossia.remote root/processes/Scenario.1/intervals/Interval.edge7/speed"
+					"text" : "ossia.remote test/processes/Scenario.1/intervals/Interval.fuji35/speed"
 				}
 
 			}
@@ -191,7 +216,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 62.0, 816.0, 100.0, 22.0 ],
+					"patching_rect" : [ 61.0, 815.0, 100.0, 22.0 ],
 					"style" : "",
 					"text" : "print interval"
 				}
@@ -206,7 +231,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 61.0, 784.5, 389.0, 22.0 ],
 					"style" : "",
-					"text" : "ossia.remote root/processes/Scenario.1/intervals/plea30ding89/name"
+					"text" : "ossia.remote test/processes/Scenario.1/intervals/Interval.fuji35/name"
 				}
 
 			}
@@ -282,9 +307,9 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 354.0, 348.5, 151.0, 22.0 ],
+					"patching_rect" : [ 354.0, 348.5, 165.0, 22.0 ],
 					"style" : "",
-					"text" : "ossia.remote root/playtime"
+					"text" : "ossia.remote test/percentage"
 				}
 
 			}
@@ -294,7 +319,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 61.0, 710.0, 34.0, 22.0 ],
+					"patching_rect" : [ 61.0, 722.0, 34.0, 22.0 ],
 					"style" : "",
 					"text" : "print"
 				}
@@ -307,9 +332,9 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 61.0, 677.5, 377.0, 22.0 ],
+					"patching_rect" : [ 61.0, 696.5, 390.0, 22.0 ],
 					"style" : "",
-					"text" : "ossia.remote root/processes/Scenario.1/intervals/master.fade.in/label"
+					"text" : "ossia.remote test/processes/Scenario.1/intervals/Interval.fuji35/label"
 				}
 
 			}
@@ -334,7 +359,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 78.0, 580.5, 403.0, 22.0 ],
 					"style" : "",
-					"text" : "ossia.remote root/processes/Scenario.1/syncs/Sync.huge4/trigger"
+					"text" : "ossia.remote test/processes/Scenario.1/syncs/Sync.bade20/trigger"
 				}
 
 			}
@@ -387,6 +412,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-26", 0 ],
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-15", 0 ],
 					"source" : [ "obj-14", 0 ]
 				}
@@ -424,6 +456,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
 					"source" : [ "obj-25", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-26", 0 ]
 				}
 
 			}
