@@ -2,7 +2,7 @@
     "Document": {
         "BaseScenario": {
             "Constraint": {
-                "Center": 8217.686691487435,
+                "Center": 8209.630135907546,
                 "Components": [
                 ],
                 "DefaultDuration": 15000,
@@ -76,12 +76,12 @@
                                 "Center": 0,
                                 "Components": [
                                 ],
-                                "DefaultDuration": 9705.882352941177,
-                                "EndState": 2,
+                                "DefaultDuration": 6064.481200591821,
+                                "EndState": 6,
                                 "FullViewRack": [
                                 ],
-                                "GuiDuration": 9929.117647058823,
-                                "HeightPercentage": 0.03933333333333333,
+                                "GuiDuration": 6670.929320651004,
+                                "HeightPercentage": 0.15066666666666667,
                                 "Inlet": {
                                     "Address": {
                                         "Accessors": [
@@ -101,17 +101,17 @@
                                     "id": 0,
                                     "uuid": "8884228a-d197-4b0a-b6ca-d1fb15291559"
                                 },
-                                "MaxDuration": 9705.882352941177,
-                                "MaxInf": true,
+                                "MaxDuration": 6064.481200591821,
+                                "MaxInf": false,
                                 "Metadata": {
                                     "Color": "Transparent1",
                                     "Comment": "",
-                                    "Label": "bidule",
-                                    "ScriptingName": "Interval.fuji35",
+                                    "Label": "",
+                                    "ScriptingName": "Interval.disk70",
                                     "Touched": true
                                 },
-                                "MinDuration": 9705.882352941177,
-                                "MinNull": true,
+                                "MinDuration": 6064.481200591821,
+                                "MinNull": false,
                                 "ObjectName": "Scenario::IntervalModel",
                                 "Outlet": {
                                     "Address": {
@@ -135,14 +135,14 @@
                                 },
                                 "Processes": [
                                 ],
-                                "Rigidity": false,
+                                "Rigidity": true,
                                 "SmallViewRack": [
                                 ],
                                 "SmallViewShown": false,
                                 "StartDate": 0,
-                                "StartState": 1,
+                                "StartState": 5,
                                 "Zoom": -1,
-                                "id": 1
+                                "id": 3
                             },
                             {
                                 "Center": 0,
@@ -215,6 +215,78 @@
                                 "StartState": 3,
                                 "Zoom": -1,
                                 "id": 2
+                            },
+                            {
+                                "Center": 0,
+                                "Components": [
+                                ],
+                                "DefaultDuration": 9705.882352941177,
+                                "EndState": 2,
+                                "FullViewRack": [
+                                ],
+                                "GuiDuration": 9929.117647058823,
+                                "HeightPercentage": 0.03933333333333333,
+                                "Inlet": {
+                                    "Address": {
+                                        "Accessors": [
+                                        ],
+                                        "Unit": "none",
+                                        "address": {
+                                            "Device": "",
+                                            "Path": ""
+                                        }
+                                    },
+                                    "Custom": "",
+                                    "Description": "",
+                                    "Exposed": "",
+                                    "Hidden": false,
+                                    "ObjectName": "Inlet",
+                                    "Type": 1,
+                                    "id": 0,
+                                    "uuid": "8884228a-d197-4b0a-b6ca-d1fb15291559"
+                                },
+                                "MaxDuration": 9705.882352941177,
+                                "MaxInf": true,
+                                "Metadata": {
+                                    "Color": "Transparent1",
+                                    "Comment": "",
+                                    "Label": "bidule",
+                                    "ScriptingName": "Interval.fuji35",
+                                    "Touched": true
+                                },
+                                "MinDuration": 9705.882352941177,
+                                "MinNull": true,
+                                "ObjectName": "Scenario::IntervalModel",
+                                "Outlet": {
+                                    "Address": {
+                                        "Accessors": [
+                                        ],
+                                        "Unit": "none",
+                                        "address": {
+                                            "Device": "",
+                                            "Path": ""
+                                        }
+                                    },
+                                    "Custom": "",
+                                    "Description": "",
+                                    "Exposed": "",
+                                    "Hidden": false,
+                                    "ObjectName": "Outlet",
+                                    "Propagate": true,
+                                    "Type": 1,
+                                    "id": 0,
+                                    "uuid": "34e2c5a7-18c4-4759-b6cc-46feaeee06e2"
+                                },
+                                "Processes": [
+                                ],
+                                "Rigidity": false,
+                                "SmallViewRack": [
+                                ],
+                                "SmallViewShown": false,
+                                "StartDate": 0,
+                                "StartState": 1,
+                                "Zoom": -1,
+                                "id": 1
                             }
                         ],
                         "Duration": 15000,
@@ -228,56 +300,25 @@
                                     "RootNode": {
                                     }
                                 },
-                                "Date": 9705.882352941177,
+                                "Date": 6064.481200591821,
                                 "Extent": [
-                                    0.03933333333333333,
-                                    0.11733333333333333
+                                    0.15066666666666667,
+                                    0.15066666666666667
                                 ],
                                 "Metadata": {
                                     "Color": "Emphasis4",
                                     "Comment": "",
                                     "Label": "",
-                                    "ScriptingName": "Event.flea42",
+                                    "ScriptingName": "Event.toss59",
                                     "Touched": true
                                 },
                                 "ObjectName": "Scenario::EventModel",
                                 "Offset": 0,
                                 "States": [
-                                    2,
-                                    3
+                                    6
                                 ],
-                                "TimeNode": 1,
-                                "id": 1
-                            },
-                            {
-                                "Components": [
-                                ],
-                                "Condition": {
-                                    "Children": [
-                                    ],
-                                    "RootNode": {
-                                    }
-                                },
-                                "Date": 0,
-                                "Extent": [
-                                    0.02,
-                                    0.03933333333333333
-                                ],
-                                "Metadata": {
-                                    "Color": "Emphasis4",
-                                    "Comment": "",
-                                    "Label": "",
-                                    "ScriptingName": "Event.start",
-                                    "Touched": true
-                                },
-                                "ObjectName": "Scenario::EventModel",
-                                "Offset": 0,
-                                "States": [
-                                    0,
-                                    1
-                                ],
-                                "TimeNode": 0,
-                                "id": 0
+                                "TimeNode": 3,
+                                "id": 3
                             },
                             {
                                 "Components": [
@@ -307,6 +348,67 @@
                                 ],
                                 "TimeNode": 2,
                                 "id": 2
+                            },
+                            {
+                                "Components": [
+                                ],
+                                "Condition": {
+                                    "Children": [
+                                    ],
+                                    "RootNode": {
+                                    }
+                                },
+                                "Date": 0,
+                                "Extent": [
+                                    0.02,
+                                    0.15066666666666667
+                                ],
+                                "Metadata": {
+                                    "Color": "Emphasis4",
+                                    "Comment": "",
+                                    "Label": "",
+                                    "ScriptingName": "Event.start",
+                                    "Touched": true
+                                },
+                                "ObjectName": "Scenario::EventModel",
+                                "Offset": 0,
+                                "States": [
+                                    0,
+                                    1,
+                                    5
+                                ],
+                                "TimeNode": 0,
+                                "id": 0
+                            },
+                            {
+                                "Components": [
+                                ],
+                                "Condition": {
+                                    "Children": [
+                                    ],
+                                    "RootNode": {
+                                    }
+                                },
+                                "Date": 9705.882352941177,
+                                "Extent": [
+                                    0.03933333333333333,
+                                    0.11733333333333333
+                                ],
+                                "Metadata": {
+                                    "Color": "Emphasis4",
+                                    "Comment": "",
+                                    "Label": "",
+                                    "ScriptingName": "Event.flea42",
+                                    "Touched": true
+                                },
+                                "ObjectName": "Scenario::EventModel",
+                                "Offset": 0,
+                                "States": [
+                                    2,
+                                    3
+                                ],
+                                "TimeNode": 1,
+                                "id": 1
                             }
                         ],
                         "Height": 1500,
@@ -364,8 +466,8 @@
                             {
                                 "Components": [
                                 ],
-                                "Event": 1,
-                                "HeightPercentage": 0.03933333333333333,
+                                "Event": 3,
+                                "HeightPercentage": 0.15066666666666667,
                                 "Messages": {
                                     "Accessors": [
                                     ],
@@ -387,21 +489,21 @@
                                     "Color": "Base1",
                                     "Comment": "",
                                     "Label": "",
-                                    "ScriptingName": "State.watt2",
+                                    "ScriptingName": "State.batt87",
                                     "Touched": true
                                 },
                                 "NextConstraint": null,
                                 "ObjectName": "Scenario::StateModel",
-                                "PreviousConstraint": 1,
+                                "PreviousConstraint": 3,
                                 "StateProcesses": [
                                 ],
-                                "id": 2
+                                "id": 6
                             },
                             {
                                 "Components": [
                                 ],
                                 "Event": 0,
-                                "HeightPercentage": 0.03933333333333333,
+                                "HeightPercentage": 0.15066666666666667,
                                 "Messages": {
                                     "Accessors": [
                                     ],
@@ -423,21 +525,21 @@
                                     "Color": "Base1",
                                     "Comment": "",
                                     "Label": "",
-                                    "ScriptingName": "State.mode8",
+                                    "ScriptingName": "State.city55",
                                     "Touched": true
                                 },
-                                "NextConstraint": 1,
+                                "NextConstraint": 3,
                                 "ObjectName": "Scenario::StateModel",
                                 "PreviousConstraint": null,
                                 "StateProcesses": [
                                 ],
-                                "id": 1
+                                "id": 5
                             },
                             {
                                 "Components": [
                                 ],
-                                "Event": 0,
-                                "HeightPercentage": 0.02,
+                                "Event": 2,
+                                "HeightPercentage": 0.11733333333333333,
                                 "Messages": {
                                     "Accessors": [
                                     ],
@@ -459,15 +561,15 @@
                                     "Color": "Base1",
                                     "Comment": "",
                                     "Label": "",
-                                    "ScriptingName": "State.start",
+                                    "ScriptingName": "State.vivo74",
                                     "Touched": true
                                 },
                                 "NextConstraint": null,
                                 "ObjectName": "Scenario::StateModel",
-                                "PreviousConstraint": null,
+                                "PreviousConstraint": 2,
                                 "StateProcesses": [
                                 ],
-                                "id": 0
+                                "id": 4
                             },
                             {
                                 "Components": [
@@ -508,8 +610,8 @@
                             {
                                 "Components": [
                                 ],
-                                "Event": 2,
-                                "HeightPercentage": 0.11733333333333333,
+                                "Event": 0,
+                                "HeightPercentage": 0.02,
                                 "Messages": {
                                     "Accessors": [
                                     ],
@@ -531,81 +633,106 @@
                                     "Color": "Base1",
                                     "Comment": "",
                                     "Label": "",
-                                    "ScriptingName": "State.vivo74",
+                                    "ScriptingName": "State.start",
                                     "Touched": true
                                 },
                                 "NextConstraint": null,
                                 "ObjectName": "Scenario::StateModel",
-                                "PreviousConstraint": 2,
+                                "PreviousConstraint": null,
                                 "StateProcesses": [
                                 ],
-                                "id": 4
+                                "id": 0
+                            },
+                            {
+                                "Components": [
+                                ],
+                                "Event": 0,
+                                "HeightPercentage": 0.03933333333333333,
+                                "Messages": {
+                                    "Accessors": [
+                                    ],
+                                    "Children": [
+                                    ],
+                                    "Following": [
+                                    ],
+                                    "Name": "",
+                                    "Previous": [
+                                    ],
+                                    "Priorities": [
+                                        1,
+                                        2,
+                                        0
+                                    ],
+                                    "Unit": "none"
+                                },
+                                "Metadata": {
+                                    "Color": "Base1",
+                                    "Comment": "",
+                                    "Label": "",
+                                    "ScriptingName": "State.mode8",
+                                    "Touched": true
+                                },
+                                "NextConstraint": 1,
+                                "ObjectName": "Scenario::StateModel",
+                                "PreviousConstraint": null,
+                                "StateProcesses": [
+                                ],
+                                "id": 1
+                            },
+                            {
+                                "Components": [
+                                ],
+                                "Event": 1,
+                                "HeightPercentage": 0.03933333333333333,
+                                "Messages": {
+                                    "Accessors": [
+                                    ],
+                                    "Children": [
+                                    ],
+                                    "Following": [
+                                    ],
+                                    "Name": "",
+                                    "Previous": [
+                                    ],
+                                    "Priorities": [
+                                        1,
+                                        2,
+                                        0
+                                    ],
+                                    "Unit": "none"
+                                },
+                                "Metadata": {
+                                    "Color": "Base1",
+                                    "Comment": "",
+                                    "Label": "",
+                                    "ScriptingName": "State.watt2",
+                                    "Touched": true
+                                },
+                                "NextConstraint": null,
+                                "ObjectName": "Scenario::StateModel",
+                                "PreviousConstraint": 1,
+                                "StateProcesses": [
+                                ],
+                                "id": 2
                             }
                         ],
                         "TimeNodes": [
                             {
                                 "Components": [
                                 ],
-                                "Date": 9705.882352941177,
+                                "Date": 6064.481200591821,
                                 "Events": [
-                                    1
+                                    3
                                 ],
                                 "Extent": [
-                                    0.03933333333333333,
-                                    0.11733333333333333
+                                    0.15066666666666667,
+                                    0.15066666666666667
                                 ],
                                 "Metadata": {
                                     "Color": "Gray",
                                     "Comment": "",
                                     "Label": "",
-                                    "ScriptingName": "Sync.bade20",
-                                    "Touched": true
-                                },
-                                "ObjectName": "Scenario::TimeSyncModel",
-                                "Trigger": {
-                                    "Active": true,
-                                    "Expression": {
-                                        "Children": [
-                                            {
-                                                "Children": [
-                                                ],
-                                                "Relation": {
-                                                    "LHS": {
-                                                        "Value": {
-                                                            "Bool": true
-                                                        }
-                                                    },
-                                                    "Op": 0,
-                                                    "RHS": {
-                                                        "Value": {
-                                                            "Bool": false
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ],
-                                        "RootNode": {
-                                        }
-                                    }
-                                },
-                                "id": 1
-                            },
-                            {
-                                "Components": [
-                                ],
-                                "Date": 0,
-                                "Events": [
-                                    0
-                                ],
-                                "Extent": [
-                                    0.02,
-                                    0.03933333333333333
-                                ],
-                                "Metadata": {
-                                    "Color": "Gray",
-                                    "Comment": "",
-                                    "Label": "",
-                                    "ScriptingName": "Sync.start",
+                                    "ScriptingName": "Sync.swum9",
                                     "Touched": true
                                 },
                                 "ObjectName": "Scenario::TimeSyncModel",
@@ -635,7 +762,7 @@
                                         }
                                     }
                                 },
-                                "id": 0
+                                "id": 3
                             },
                             {
                                 "Components": [
@@ -683,6 +810,100 @@
                                     }
                                 },
                                 "id": 2
+                            },
+                            {
+                                "Components": [
+                                ],
+                                "Date": 0,
+                                "Events": [
+                                    0
+                                ],
+                                "Extent": [
+                                    0.02,
+                                    0.15066666666666667
+                                ],
+                                "Metadata": {
+                                    "Color": "Gray",
+                                    "Comment": "",
+                                    "Label": "",
+                                    "ScriptingName": "Sync.start",
+                                    "Touched": true
+                                },
+                                "ObjectName": "Scenario::TimeSyncModel",
+                                "Trigger": {
+                                    "Active": false,
+                                    "Expression": {
+                                        "Children": [
+                                            {
+                                                "Children": [
+                                                ],
+                                                "Relation": {
+                                                    "LHS": {
+                                                        "Value": {
+                                                            "Bool": true
+                                                        }
+                                                    },
+                                                    "Op": 0,
+                                                    "RHS": {
+                                                        "Value": {
+                                                            "Bool": false
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "RootNode": {
+                                        }
+                                    }
+                                },
+                                "id": 0
+                            },
+                            {
+                                "Components": [
+                                ],
+                                "Date": 9705.882352941177,
+                                "Events": [
+                                    1
+                                ],
+                                "Extent": [
+                                    0.03933333333333333,
+                                    0.11733333333333333
+                                ],
+                                "Metadata": {
+                                    "Color": "Gray",
+                                    "Comment": "",
+                                    "Label": "",
+                                    "ScriptingName": "Sync.bade20",
+                                    "Touched": true
+                                },
+                                "ObjectName": "Scenario::TimeSyncModel",
+                                "Trigger": {
+                                    "Active": true,
+                                    "Expression": {
+                                        "Children": [
+                                            {
+                                                "Children": [
+                                                ],
+                                                "Relation": {
+                                                    "LHS": {
+                                                        "Value": {
+                                                            "Bool": true
+                                                        }
+                                                    },
+                                                    "Op": 0,
+                                                    "RHS": {
+                                                        "Value": {
+                                                            "Bool": false
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "RootNode": {
+                                        }
+                                    }
+                                },
+                                "id": 1
                             }
                         ],
                         "id": 1,
@@ -695,7 +916,7 @@
                 "SmallViewShown": false,
                 "StartDate": 0,
                 "StartState": 0,
-                "Zoom": 32.28953513354592,
+                "Zoom": 32.25787872655224,
                 "id": 0
             },
             "EndEvent": {
