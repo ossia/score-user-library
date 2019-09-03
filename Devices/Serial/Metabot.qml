@@ -17,7 +17,10 @@ Ossia.Serial
 
     function createTree() {
         return [ {
-                    name: "metabot",
+                    name: "messages",
+                    type: Ossia.Type.String,
+                    access: Ossia.Acces.Set,
+                    request: "dx $val", 
                     children: [
                         {
                             name: "start",
@@ -34,7 +37,7 @@ Ossia.Serial
                             type:  Ossia.Type.Impulse,
                             access: Ossia.Access.Set
                         },
-            {
+                        {
                             name: "toggleColorfront",
                             type:  Ossia.Type.Impulse,
                             access: Ossia.Access.Set
@@ -154,6 +157,6 @@ Ossia.Serial
                         }
                     ]
                 }
-                ];
+          ];
     }
 }

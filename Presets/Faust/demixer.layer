@@ -1,0 +1,544 @@
+{
+    "Cables": [
+    ],
+    "Document": 1173836437,
+    "Duration": 282631.83832441684,
+    "Path": {
+        "Identifiers": [
+            {
+                "ObjectId": 1,
+                "ObjectName": "Scenario::ScenarioDocumentModel"
+            },
+            {
+                "ObjectId": 0,
+                "ObjectName": "Scenario::BaseScenario"
+            },
+            {
+                "ObjectId": 0,
+                "ObjectName": "Scenario::IntervalModel"
+            },
+            {
+                "ObjectId": 1,
+                "ObjectName": "Scenario"
+            },
+            {
+                "ObjectId": 1,
+                "ObjectName": "Scenario::IntervalModel"
+            },
+            {
+                "ObjectId": 1,
+                "ObjectName": "Faust"
+            }
+        ]
+    },
+    "Process": {
+        "Components": [
+        ],
+        "Duration": 282631.83832441684,
+        "Height": 300,
+        "Inlets": [
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "audio",
+                        "Path": "in/main"
+                    }
+                },
+                "Custom": "",
+                "Description": "",
+                "Exposed": "",
+                "Hidden": false,
+                "ObjectName": "Inlet",
+                "Type": 1,
+                "id": 1,
+                "uuid": "8884228a-d197-4b0a-b6ca-d1fb15291559"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-1/slider"
+                    }
+                },
+                "Custom": "left_0",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 2,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-2/slider"
+                    }
+                },
+                "Custom": "wright_0",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 3,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-3/slider"
+                    }
+                },
+                "Custom": "left_1",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 4,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-4/slider"
+                    }
+                },
+                "Custom": "wright_1",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 5,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-5/slider"
+                    }
+                },
+                "Custom": "left_2",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 6,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-6/slider"
+                    }
+                },
+                "Custom": "wright_2",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 7,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-7/slider"
+                    }
+                },
+                "Custom": "left_3",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 8,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-8/slider"
+                    }
+                },
+                "Custom": "wright_3",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 9,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-9/slider"
+                    }
+                },
+                "Custom": "left_4",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 10,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-10/slider"
+                    }
+                },
+                "Custom": "wright_4",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 11,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-11/slider"
+                    }
+                },
+                "Custom": "left_5",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 12,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-12/slider"
+                    }
+                },
+                "Custom": "wright_5",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 13,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-13/slider"
+                    }
+                },
+                "Custom": "left_6",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 14,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-14/slider"
+                    }
+                },
+                "Custom": "wright_6",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 15,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "",
+                        "Path": ""
+                    }
+                },
+                "Custom": "master",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 16,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            },
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "digidesign_c24",
+                        "Path": "Channel-24/slider"
+                    }
+                },
+                "Custom": "sub",
+                "Description": "",
+                "Domain": {
+                    "Float": {
+                        "Max": 1,
+                        "Min": 0
+                    }
+                },
+                "Exposed": "",
+                "Hidden": true,
+                "ObjectName": "Inlet",
+                "Type": 0,
+                "Value": {
+                    "Float": 0.5
+                },
+                "id": 17,
+                "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925"
+            }
+        ],
+        "Metadata": {
+            "Color": "Transparent1",
+            "Comment": "",
+            "Label": "",
+            "ScriptingName": "",
+            "Touched": false
+        },
+        "ObjectName": "Faust",
+        "Outlets": [
+            {
+                "Address": {
+                    "Accessors": [
+                    ],
+                    "Unit": "none",
+                    "address": {
+                        "Device": "",
+                        "Path": ""
+                    }
+                },
+                "Custom": "",
+                "Description": "",
+                "Exposed": "",
+                "Hidden": false,
+                "ObjectName": "Outlet",
+                "Propagate": true,
+                "Type": 1,
+                "id": 1,
+                "uuid": "34e2c5a7-18c4-4759-b6cc-46feaeee06e2"
+            }
+        ],
+        "Text": "import(\"stdfaust.lib\");\n\nN = 7; // Numbre of speaker pairs\n\nmaster = hslider(\"master\", 0.5, 0, 1, 0.00001) : ba.lin2LogGain : si.smoo; // master volume slider;\nsub = hslider(\"sub\", 0.5, 0, 1, 0.00001) : ba.lin2LogGain : si.smoo; // subwofer volume slider;\n\nleft(i) = hslider(\"[(%i *2) +1]left_%i\", 0.5, 0, 1, 0.00001) : ba.lin2LogGain : si.smoo; // left volume slider;\nwright(i) = hslider(\"[(%i *2) +2]wright_%i\", 0.5, 0, 1, 0.00001) : ba.lin2LogGain : si.smoo; // wright volume slider;\n\ndemixer(n) = *(master), *(master) <: par( j, n, *(left(j)), *(wright(j)) ),\n                                                (+ : *(sub) *(0.2));\n\nprocess = demixer(N);",
+        "id": 1,
+        "uuid": "5354c61a-1649-4f59-b952-5c2f1b79c1bd"
+    },
+    "SlotIndex": 0,
+    "View": "Small"
+}
