@@ -1,10 +1,11 @@
-/* The folowing code creates a
-tree of parameters to control the Metabot v1. The bluetooth device needs to be connected to a serial port. It will then become selectable in the "Port" menu above upon starting score.
-On Linux, permission to acces this port requires the user to be added to the dialout group
-$ sudo usermod -a -G dialout "your-username"
-modemanager can also cause permission errors and might need to be uninstalled
-$ sudo apt remove modemmanager
-*/
+/* The folowing code creates a tree of parameters to control the Metabot. 
+ * The bluetooth device needs to be connected to a serial port. 
+ * It will then become selectable in the "Port" menu above upon starting score.
+ * On Linux, permission to acces this port requires the user to be added to the dialout group
+ * $ sudo usermod -a -G dialout "your-username"
+ * modemanager can also cause permission errors and might need to be uninstalled
+ * $ sudo apt remove modemmanager
+ */
 
 import QtQuick 2.0
 import Ossia 1.0 as Ossia
