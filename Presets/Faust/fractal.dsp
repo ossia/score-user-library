@@ -1,5 +1,5 @@
 declare name "fractal";
-decalre author "SCRIME";
+declare author "SCRIME";
 
 V = 5; // number of voisces
 

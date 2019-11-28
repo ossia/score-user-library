@@ -1,5 +1,5 @@
 declare name "midiDemixer";
-decalre author "SCRIME";
+declare author "SCRIME";
 
 import("stdfaust.lib");
 
