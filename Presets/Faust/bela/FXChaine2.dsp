@@ -22,7 +22,7 @@ import("stdfaust.lib");
 // ANALOG 6	: Reverberation Dry/Wet
 // ANALOG 7	: Reverberation Room size
 //
-// Available by OSC :  (see BELA console for precise adress)
+// Available by OSC : (see BELA console for precise adress)
 // Rate			: Chorus LFO modulation rate (Hz)
 // Deviation	: Chorus delay time deviation.
 //
@@ -60,7 +60,7 @@ depth = vslider("Depth [BELA: ANALOG_0]", 0.5, 0, 1, 0.001) : si.smooth(ba.tau2p
 
 depthT60 = 0.15661;
 delayPerVoice = 0.5*curdel/voices;
-sigma  = delayPerVoice * vslider("Deviation",0.5,0,1,0.001) : si.smooth(0.999);
+sigma = delayPerVoice * vslider("Deviation",0.5,0,1,0.001) : si.smooth(0.999);
 
 do2 = depth;   // use when depth=1 means "multivibrato" effect (no original => all are modulated)
 
@@ -109,8 +109,8 @@ delR	= delay;
 
 crossLF	= 1200;
 
-CrossFeedb	= 0.6;
-dwDel 		= vslider("dryWetDelay[BELA: ANALOG_4]", 0.5, 0, 1, 0.001);
+CrossFeedb = 0.6;
+dwDel = vslider("dryWetDelay[BELA: ANALOG_4]", 0.5, 0, 1, 0.001);
 
 routeur(a,b,c,d) = ((a*CrossFeedb):fi.lowpass(2,crossLF))+c,
 					((b*CrossFeedb):fi.lowpass(2,crossLF))+d;
@@ -119,7 +119,7 @@ xdelay = _,_ <: _,_,((de.sdelay(65536, 512,preDelL),_):
 		(routeur : de.sdelay(65536, 512,delL) ,de.sdelay(65536, 512,delR) ) ~ (_,_)) : dry_wetST(dwDel);
 
 // REVERB (from freeverb_demo) /////////////////////////////////////////////////////////////////////////////////////////////////////////
-reverb = _,_ <: (*(g)*fixedgain,*(g)*fixedgain :
+reverb = _,_ <: (*(g)*fixedgain, *(g)*fixedgain :
 	re.stereo_freeverb(combfeed, allpassfeed, damping, spatSpread)),
 	*(1-g), *(1-g) :> _,_
     with {
