@@ -10,10 +10,10 @@ void ofApp::setup(){
 
     ofSetCircleResolution(10);
 
-    videos.setup("movies");
+    videos.setup(); // default to the "data" directory inside "bin"
     parameters.add(videos.parameters);
 
-    cameras.setup(320, 240, 1);
+    cameras.setup(1); // default to exclude the device at index 1 and grab 320 by 240 videos
     parameters.add(cameras.parameters);
 
     oscQuery.setup(parameters);

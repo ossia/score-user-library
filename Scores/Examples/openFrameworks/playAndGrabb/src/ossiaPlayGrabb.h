@@ -10,7 +10,7 @@ namespace ossiaVids
 class player
 {
 public:
-    void setup(string directory);
+    void setup(string directory = ""); // default to the "data" directory inside "bin"
     void setAtributes(ofxOscQueryServer& device);
     void update();
     void draw();
@@ -25,10 +25,10 @@ private:
 class grabber
 {
 public:
-    // setup all available vidéo devices
-    void setup(unsigned int width, unsigned int height);
-    // setup that alows to exclude one vidéo device (ie. the laptop's cam) if needed
-    void setup(unsigned int width, unsigned int height, int exclude);
+    // setup all available video devices
+    void setup(unsigned int width = 320, unsigned int height = 240);
+    // setup that alows to exclude one video device (ie. the laptop's cam) if needed
+    void setup(int exclude, unsigned int width = 320, unsigned int height = 240);
     void setAtributes(ofxOscQueryServer& device);
     void update();
     void draw();

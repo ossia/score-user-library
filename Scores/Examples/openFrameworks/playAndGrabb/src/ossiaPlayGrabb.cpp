@@ -133,7 +133,7 @@ void ossiaVids::grabber::setup(unsigned int width, unsigned int height)
     }
 }
 
-void ossiaVids::grabber::setup(unsigned int width, unsigned int height, int exclude)
+void ossiaVids::grabber::setup(int exclude, unsigned int width, unsigned int height)
 {
     parameters.setName("Cameras");
 
