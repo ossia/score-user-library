@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "ofxOscQueryServer.h"
 #include "ossiaPlayGrabb.h"
-//#include "ossiaVid.h"
 
 class ofApp : public ofBaseApp{
 
@@ -18,8 +17,9 @@ public:
     void gotMessage(ofMessage msg);
 
     ofParameterGroup parameters;
-    ossiaVidsPlayer videos;
-    ossiaVidsGrabber cameras;
+    ossiaVids::player videos;
+    ossiaVids::grabber cameras;
     ofParameter<ofVec4f> backGround;
+
     ofxOscQueryServer oscQuery;
 };

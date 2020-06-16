@@ -19,17 +19,24 @@ protected:
     ofVec3f prevPlace;
     void checkResize();
 
+    ofParameter<ofVec4f> color;
+
     ofParameter<bool> drawVid;
     unsigned int vidWandH[2];
     float canvas[5];
 
     ofParameterGroup pixControl;
     ofParameter<bool> getPixels;
-    ofParameter<ofVec4f> averageColor;
     ofParameter<int> hPoints;
     ofParameter<int> vPoints;
     ofParameter<float> pixVal[MATRIX_SIZE * MATRIX_SIZE];
+    ofParameter<ofVec4f> averageColor;
+    ofParameter<ofVec3f> centroid;
     ofParameter<bool> drawCircles;
+    ofParameter<bool> drawCenter;
+    ofParameter<float> circleSize;
+    ofParameter<int> circleResolution;
+    ofParameter<ofVec4f> circleColor;
     ofParameterGroup pixMatrix;
 
     void setMatrix();
@@ -57,6 +64,9 @@ private:
 
     ofParameter<float> seek;
     void setFrame(float &toSeek);
+
+    ofParameter<float> volume;
+    void setVolume(float &toAmp);
 };
 
 class ossiaGrabber: public ossiaVid

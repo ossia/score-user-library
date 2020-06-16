@@ -4,9 +4,11 @@
 void ofApp::setup(){
 
     parameters.add(backGround.set("BackGround",
-                   ofVec4f(0, 0, 0, 255),
+                   ofVec4f(255, 0, 0, 0),
                    ofVec4f(0, 0, 0, 0),
                    ofVec4f(255, 255, 255, 255)));
+
+    ofSetCircleResolution(10);
 
     videos.setup("movies");
     parameters.add(videos.parameters);
@@ -15,6 +17,11 @@ void ofApp::setup(){
     parameters.add(cameras.parameters);
 
     oscQuery.setup(parameters);
+
+    oscQuery[backGround].setClipMode("both").setUnit("color.argb8");
+
+    videos.setAtributes(oscQuery);
+    cameras.setAtributes(oscQuery);
 }
 
 //--------------------------------------------------------------
@@ -27,10 +34,10 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    ofBackground(backGround->x,
-                 backGround->y,
+    ofBackground(backGround->y,
                  backGround->z,
-                 backGround->w);
+                 backGround->w,
+                 backGround->x);
 
     videos.draw();
     cameras.draw();
@@ -39,6 +46,8 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
 
+    videos.resize();
+    cameras.resize();
 }
 
 //--------------------------------------------------------------
@@ -53,6 +62,6 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 void ofApp::exit(){
 
-    //videos.close();
+    videos.close();
     cameras.close();
 }
