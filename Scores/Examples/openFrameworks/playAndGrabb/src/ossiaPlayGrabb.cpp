@@ -1,7 +1,10 @@
 #include "ossiaPlayGrabb.h"
 
+namespace ossiaVids
+{
+
 //--------------------------------------------------------------
-void ossiaVids::setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
+void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
     // draw_video
     device[params[0]].setCritical(true).setDescription("display the video");
@@ -14,7 +17,7 @@ void ossiaVids::setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& pa
         device[params[3]].setClipMode("both").setUnit("color.argb8");
 }
 
-void ossiaVids::setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
+void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
     // get
     device[params[0]].setCritical(true).setDescription("go through the video's pixel array to get ligthness value end average color");
@@ -39,7 +42,7 @@ void ossiaVids::setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& 
 }
 
 //--------------------------------------------------------------
-void ossiaVids::player::setup(string directory)
+void player::setup(string directory)
 {
     ofDirectory path(directory);
     path.allowExt("mov");
@@ -62,7 +65,7 @@ void ossiaVids::player::setup(string directory)
     }
 }
 
-void ossiaVids::player::setAtributes(ofxOscQueryServer& device)
+void player::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaPlayer& vid : vids)
     {
@@ -81,28 +84,28 @@ void ossiaVids::player::setAtributes(ofxOscQueryServer& device)
     }
 }
 
-void ossiaVids::player::update()
+void player::update()
 {
     for (ossiaPlayer& vid : vids) vid.update();
 }
 
-void ossiaVids::player::draw()
+void player::draw()
 {
     for (ossiaPlayer& vid : vids) vid.draw();
 }
 
-void ossiaVids::player::resize()
+void player::resize()
 {
     for (ossiaPlayer& vid : vids) vid.placeCanvas();
 }
 
-void ossiaVids::player::close()
+void player::close()
 {
     for (ossiaPlayer& vid : vids) vid.close();
 }
 
 //--------------------------------------------------------------
-void ossiaVids::grabber::setup(unsigned int width, unsigned int height)
+void grabber::setup(unsigned int width, unsigned int height)
 {
     parameters.setName("Cameras");
 
@@ -133,7 +136,7 @@ void ossiaVids::grabber::setup(unsigned int width, unsigned int height)
     }
 }
 
-void ossiaVids::grabber::setup(int exclude, unsigned int width, unsigned int height)
+void grabber::setup(int exclude, unsigned int width, unsigned int height)
 {
     parameters.setName("Cameras");
 
@@ -161,7 +164,7 @@ void ossiaVids::grabber::setup(int exclude, unsigned int width, unsigned int hei
     }
 }
 
-void ossiaVids::grabber::setAtributes(ofxOscQueryServer& device)
+void grabber::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaGrabber& vid : vids)
     {
@@ -173,22 +176,24 @@ void ossiaVids::grabber::setAtributes(ofxOscQueryServer& device)
     }
 }
 
-void ossiaVids::grabber::update()
+void grabber::update()
 {
     for (ossiaGrabber& vid : vids) vid.update();
 }
 
-void ossiaVids::grabber::draw()
+void grabber::draw()
 {
     for (ossiaGrabber& vid : vids) vid.draw();
 }
 
-void ossiaVids::grabber::resize()
+void grabber::resize()
 {
     for (ossiaGrabber& vid : vids) vid.placeCanvas();
 }
 
-void ossiaVids::grabber::close()
+void grabber::close()
 {
     for (ossiaGrabber& vid : vids) vid.close();
+}
+
 }
