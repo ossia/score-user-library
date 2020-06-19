@@ -19,26 +19,34 @@ void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // us
 
 void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
+    // look_up
+    device[params[0]].setCritical(true).setRangeValues(vector<int>{0, 1, 2, 3, 4})
+            .setDescription("light, dark, red, green, blue");
     // get
-    device[params[0]].setCritical(true).setDescription("go through the video's pixel array to get ligthness value end average color");
+    device[params[1]].setCritical(true).setDescription("go through the video's pixel array to get ligthness value end average color");
     // horizontal points
-    device[params[1]].setCritical(true).setClipMode("both").setDescription("number of points along the video's width");
+    device[params[2]].setCritical(true).setClipMode("both").setDescription("number of points along the video's width");
     // vertical points
-    device[params[2]].setCritical(true).setClipMode("both").setDescription("number of points along the video's height");
+    device[params[3]].setCritical(true).setClipMode("both").setDescription("number of points along the video's height");
+    // threshold
+    device[params[4]].setClipMode("both").setDescription("minimum value to register in the matrix, "
+                                                         "0 if under");
+    // matrix/columms_*/row_*
+    device[params[5]].setClipMode("both").setUnit("color.hsb.b").setDescription("brightnessa at a given point"); // not working
     // average_color
-    device[params[4]].setClipMode("both").setUnit("color.argb8").setDescription("get the video's average color");
+    device[params[6]].setClipMode("both").setUnit("color.argb8").setDescription("get the video's average color");
     // barycenter
-    device[params[5]].setClipMode("both").setUnit("position.opengl").setDescription("center of brightness");
+    device[params[7]].setUnit("position.opengl").setDescription("center of brightness");
     // draw_matrix
-    device[params[6]].setCritical(true).setDescription("draw cicles at each points of the matrix");
+    device[params[8]].setCritical(true).setDescription("draw cicles at each points of the matrix");
     // draw_barysenter
-    device[params[7]].setCritical(true).setDescription("draw a cicle at the brightness center");
+    device[params[9]].setCritical(true).setDescription("draw a cicle at the brightness center");
     // circle_size
-    device[params[8]].setClipMode("both").setDescription("size factor for each circles");
+    device[params[10]].setClipMode("both").setDescription("size factor for each circles");
     // circle_size
-    device[params[9]].setClipMode("both").setDescription("number of 'sides' per circle");
+    device[params[11]].setClipMode("both").setDescription("number of 'sides' per circle");
     // circle_color
-    device[params[10]].setClipMode("both").setUnit("color.argb8").setDescription("color of evry circle");
+    device[params[12]].setClipMode("both").setUnit("color.argb8").setDescription("color of evry circle");
 }
 
 //--------------------------------------------------------------

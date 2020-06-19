@@ -76,15 +76,20 @@ void ossiaVid::setMatrix()
     }
 
     pixControl.setName("pixels");
+    pixControl.add(lookUp.set("look_up", 0, 0, 4));
     pixControl.add(getPixels.set("get", false));
     pixControl.add(hPoints.set("horizontal_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
     pixControl.add(vPoints.set("vertical_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
+    pixControl.add(threshold.set("threshold", 128, 1, 255));
     pixControl.add(pixMatrix);
     pixControl.add(averageColor.set("average_color",
                                     ofVec4f(255, 0, 0, 0),
                                     ofVec4f(0, 0, 0, 0),
                                     ofVec4f(255, 255, 255, 255)));
-    pixControl.add(centroid.set("barycenter", ofVec3f(0, 0, 0)));
+    pixControl.add(centroid.set("barycenter",
+                                ofVec2f(0, 0),
+                                ofVec2f(-1, -1),
+                                ofVec2f(1, 1)));
     pixControl.add(drawCircles.set("draw_matrix", false));
     pixControl.add(drawCenter.set("draw_barycenter", false));
     pixControl.add(circleSize.set("circles_size", 0.1, 0, 1));
@@ -96,20 +101,20 @@ void ossiaVid::setMatrix()
     params.add(pixControl);
 }
 
-void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, ofParameterGroup& gr)
+void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv)
 {
     size_t vidWidth = px.getWidth();
     size_t vidHeight = px.getHeight();
-    size_t widthSpread = vidWidth / gr.getInt(1); // horizontal points
-    unsigned int verticalStep = MATRIX_SIZE - gr.getInt(2); // vertical points
-    size_t heightSpread = vidHeight / gr.getInt(2); // neumber of pixels between each points
+    size_t widthSpread = vidWidth / hPoints; // horizontal points
+    unsigned int verticalStep = MATRIX_SIZE - vPoints; // vertical points
+    size_t heightSpread = vidHeight / vPoints; // neumber of pixels between each points
     size_t widthMargin = widthSpread / 2; // minimum number of pixels from the left
     size_t heightMargin = heightSpread / 2; // minimum number of pixels from the top
     // number of skiped pixels before starting a new line
-    unsigned int widthRemainder = vidWidth - (vidWidth % gr.getInt(1)) + widthMargin;
-    unsigned int heightRemainder = vidHeight - (vidHeight % gr.getInt(2)) + heightMargin;
+    unsigned int widthRemainder = vidWidth - (vidWidth % hPoints) + widthMargin;
+    unsigned int heightRemainder = vidHeight - (vidHeight % vPoints) + heightMargin;
 
-    ofVec4f averageColor{0, 0, 0, 0};
+    ofVec4f midColor{0, 0, 0, 0};
     float lightSum{0};
     ofVec2f baryCenter{0, 0};
     unsigned int iter{0};
@@ -126,53 +131,82 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, ofParamete
         for (size_t j = heightMargin; j < heightRemainder; j+= heightSpread)
         {
             ofColor pxColor = px.getColor(i, j);
-            averageColor[0] += pxColor.a;
-            averageColor[1] += pxColor.r;
-            averageColor[2] += pxColor.g;
-            averageColor[3] += pxColor.b;
+            midColor[0] += pxColor.a;
+            midColor[1] += pxColor.r;
+            midColor[2] += pxColor.g;
+            midColor[3] += pxColor.b;
             iter++;
 
-            float lightness = pxColor.getLightness();
-            pv->set(lightness);
-            pv++;
+            float focus{0};
 
-            baryCenter += ofVec2f(i, j) * lightness;
-            lightSum += lightness;
-
-            if (gr.getBool(6)) // draw_matrix
+            switch (lookUp)
             {
-                checkResize();
-
-                ofDrawCircle(canvas[0] + i * size,
-                    canvas[1] + j * size,
-                    canvas[2],
-                    gr.getFloat(8) * lightness); // cicle size
+                case 0:
+                    focus = pxColor.getLightness();
+                    break;
+                case 1:
+                    focus = 255 - pxColor.getLightness();
+                    break;
+                case 2:
+                    focus = pxColor.r;
+                    break;
+                case 3:
+                    focus = pxColor.g;
+                    break;
+                case 4:
+                    focus = pxColor.b;
+                    break;
             }
+
+            if (focus >= threshold)
+            {
+                pv->set(focus);
+
+                if (drawCircles) // draw_matrix
+                {
+                    checkResize();
+
+                    ofDrawCircle(canvas[0] + i * size,
+                        canvas[1] + j * size,
+                        canvas[2],
+                        circleSize * focus); // cicle size
+                }
+
+                baryCenter += ofVec2f(i, j) * focus;
+                lightSum += focus;
+
+            } else {
+                pv->set(0.f);
+            }
+
+            pv++;
         }
         pv+= verticalStep;
     }
 
-    averageColor /= iter;
-    gr.getVec4f(4).set(averageColor); // average_color
+    midColor /= iter;
+    averageColor.set(midColor); // average_color
 
-    baryCenter /= lightSum;
-
-    if (gr.getBool(7)) // draw_barycenter
+    if (lightSum != 0)
     {
-        checkResize();
+        baryCenter /= lightSum;
+        if (drawCenter) // draw_barycenter
+        {
+            checkResize();
 
-        ofDrawCircle((canvas[0] + baryCenter[0]) * size,
-                (canvas[1] + baryCenter[1]) * size,
-                canvas[2],
-                gr.getFloat(8) * size * 255); // cicle size
+            ofDrawCircle((canvas[0] + baryCenter[0]) * size,
+                    (canvas[1] + baryCenter[1]) * size,
+                    canvas[2],
+                    circleSize * size * 255); // cicle size
+        }
+
+        baryCenter[0] /= vidWidth / 2;
+        baryCenter[0] -= 1;
+        baryCenter[1] /= vidHeight / 2;
+        baryCenter[1] -= 1;
+
+        centroid.set(ofVec3f(baryCenter[0], baryCenter[1], 0)); // centroid
     }
-
-    baryCenter[0] /= vidWidth / 2;
-    baryCenter[0] -= 1;
-    baryCenter[1] /= vidHeight / 2;
-    baryCenter[1] -= 1;
-
-    gr.getVec3f(5).set(ofVec3f(baryCenter[0], baryCenter[1], 0)); // average_color
 }
 
 //--------------------------------------------------------------
@@ -260,7 +294,7 @@ void ossiaPlayer::draw()
                    canvas[4]);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, pixControl);
+    if (getPixels) processPix(vid.getPixels(), pixVal);
 }
 
 void ossiaPlayer::close()
@@ -317,7 +351,7 @@ void ossiaGrabber::draw()
 
     if (getPixels)
     {
-        processPix(vid.getPixels(), pixVal, pixControl);
+        processPix(vid.getPixels(), pixVal);
     }
 }
 

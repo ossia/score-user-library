@@ -26,9 +26,11 @@ protected:
     float canvas[5];
 
     ofParameterGroup pixControl;
+    ofParameter<int> lookUp;
     ofParameter<bool> getPixels;
     ofParameter<int> hPoints;
     ofParameter<int> vPoints;
+    ofParameter<float> threshold;
     ofParameter<float> pixVal[MATRIX_SIZE * MATRIX_SIZE];
     ofParameter<ofVec4f> averageColor;
     ofParameter<ofVec3f> centroid;
@@ -40,7 +42,7 @@ protected:
     ofParameterGroup pixMatrix;
 
     void setMatrix();
-    void processPix(const ofPixels& px, ofParameter<float>* pv, ofParameterGroup& gr);
+    void processPix(const ofPixels& px, ofParameter<float>* pv);
 };
 
 class ossiaPlayer: public ossiaVid
