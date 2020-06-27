@@ -20,35 +20,11 @@ ossiaVid::ossiaVid()
                    ofVec4f(255, 255, 255, 255)));
 }
 
-void ossiaVid::placeCanvas()
-{
-    float width{vidWandH[0] * size};
-    float height{vidWandH[1] * size};
-
-    float wOfset{width / 2};
-    float hOfset{height / 2};
-
-    int ofWidth{ofGetWidth()};
-    int ofHeight{ofGetHeight()};
-
-    int ofHalfW{ofWidth / 2};
-    int ofHalfH{ofHeight / 2};
-
-    float xOfset{ofHalfW + (ofHalfW * placement->x)};
-    float yOfset{ofHalfH + (ofHalfH * placement->y)};
-
-    canvas[0] = (xOfset - wOfset);
-    canvas[1] = (yOfset - hOfset);
-    canvas[2] = placement->z;
-    canvas[3] = width;
-    canvas[4] = height;
-}
-
 void ossiaVid::checkResize()
 {
     if (prevSize != size || prevPlace != placement)
     {
-        placeCanvas();
+        canvas = ossiaComon::placeCanvas(vidWandH, size, placement);
         prevSize = size;
         prevPlace = placement;
     }
@@ -241,7 +217,7 @@ void ossiaPlayer::setup()
     vidWandH[0] = vid.getWidth(); // get the video's original size
     vidWandH[1] = vid.getHeight();
 
-    placeCanvas();
+    canvas = ossiaComon::placeCanvas(vidWandH, size, placement);
 }
 
 void ossiaPlayer::update()
@@ -287,11 +263,11 @@ void ossiaPlayer::draw()
     {
         checkResize();
 
-        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis to mange overlaping videos
-                   canvas[1],
-                   canvas[2],
-                   canvas[3],
-                   canvas[4]);
+        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
+                canvas[1],
+                canvas[2],
+                placement->z,
+                canvas[3]);
     }
 
     if (getPixels) processPix(vid.getPixels(), pixVal);
@@ -323,7 +299,7 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
 
     setMatrix();
 
-    placeCanvas();
+    canvas = ossiaComon::placeCanvas(vidWandH, size, placement);
 }
 
 void ossiaGrabber::update()
@@ -342,11 +318,11 @@ void ossiaGrabber::draw()
                    color->w,
                    color->x);
 
-        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis to mange overlaping videos
+        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
                    canvas[1],
                    canvas[2],
-                   canvas[3],
-                   canvas[4]);
+                   placement->z,
+                   canvas[3]);
     }
 
     if (getPixels)

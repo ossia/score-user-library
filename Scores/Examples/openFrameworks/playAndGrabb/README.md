@@ -15,10 +15,10 @@ To then open this exemple in qtcreator, click "new project" and choose the "Impo
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
-            "src/ossiaPlayGrabb.cpp",
-            "src/ossiaPlayGrabb.h",
-            "src/ossiaVid.cpp",
-            "src/ossiaVid.h"
+            "../ossiaUtils/ossiaUtils.cpp",
+            "../ossiaUtils/ossiaUtils.h",
+            "../ossiaUtils/ossiaVid.cpp",
+            "../ossiaUtils/ossiaVid.h"
         ]
 
         of.addons: [

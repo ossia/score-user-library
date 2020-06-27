@@ -1,7 +1,31 @@
-#include "ossiaPlayGrabb.h"
+#include "ossiaUtils.h"
 
-namespace ossiaVids
+namespace ossiaUtils
 {
+
+
+ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p)
+{
+    float width{wAndH[0] * s};
+    float height{wAndH[1] * s};
+
+    float wOfset{width / 2};
+    float hOfset{height / 2};
+
+    int ofWidth{ofGetWidth()};
+    int ofHeight{ofGetHeight()};
+
+    int ofHalfW{ofWidth / 2};
+    int ofHalfH{ofHeight / 2};
+
+    float xOfset{ofHalfW + (ofHalfW * p[0])};
+    float yOfset{ofHalfH + (ofHalfH * p[1])};
+
+    return ofVec4f{(xOfset - wOfset),
+                (yOfset - hOfset),
+                width,
+                height};
+}
 
 //--------------------------------------------------------------
 void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
@@ -29,8 +53,7 @@ void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // 
     // vertical points
     device[params[3]].setCritical(true).setClipMode("both").setDescription("number of points along the video's height");
     // threshold
-    device[params[4]].setClipMode("both").setDescription("minimum value to register in the matrix, "
-                                                         "0 if under");
+    device[params[4]].setClipMode("both").setDescription("minimum value to register in the matrix, 0 if under");
     // matrix/columms_*/row_*
     device[params[5]].setClipMode("both").setUnit("color.hsb.b").setDescription("brightnessa at a given point"); // not working
     // average_color
@@ -104,7 +127,10 @@ void player::draw()
 
 void player::resize()
 {
-    for (ossiaPlayer& vid : vids) vid.placeCanvas();
+    for (ossiaPlayer& vid : vids)
+    {
+        vid.canvas = placeCanvas(vid.vidWandH, vid.size, vid.placement);
+    }
 }
 
 void player::close()
@@ -196,7 +222,10 @@ void grabber::draw()
 
 void grabber::resize()
 {
-    for (ossiaGrabber& vid : vids) vid.placeCanvas();
+    for (ossiaGrabber& vid : vids)
+    {
+        vid.canvas = placeCanvas(vid.vidWandH, vid.size, vid.placement);
+    }
 }
 
 void grabber::close()

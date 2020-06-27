@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxOscQueryServer.h"
-#include "ossiaPlayGrabb.h"
+#include "../../ossiaUtils/ossiaUtils.h" // // includes "ofxOscQueryServer.h", "ossiaVid.h"
 
 class ofApp : public ofBaseApp{
 
@@ -17,8 +16,8 @@ public:
     void gotMessage(ofMessage msg);
 
     ofParameterGroup parameters;
-    ossiaVids::player videos;
-    ossiaVids::grabber cameras;
+    ossiaUtils::player videos;
+    ossiaUtils::grabber cameras;
     ofParameter<ofVec4f> backGround;
 
     ofxOscQueryServer oscQuery;

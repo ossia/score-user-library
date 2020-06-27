@@ -2,6 +2,7 @@
 #define OSSIAVID_H
 
 #include "ofMain.h"
+#include "ossiaComon.h"
 
 #define MATRIX_SIZE 32
 
@@ -10,20 +11,21 @@ class ossiaVid
 public:
     ossiaVid();
     ofParameterGroup params;
-    void placeCanvas();
+
+    ofParameter<ofVec3f> placement;
+    ofParameter<float> size;
+    unsigned int vidWandH[2];
+
+    ofVec4f canvas;
 
 protected:
-    ofParameter<float> size;
     float prevSize;
-    ofParameter<ofVec3f> placement;
     ofVec3f prevPlace;
     void checkResize();
 
     ofParameter<ofVec4f> color;
 
     ofParameter<bool> drawVid;
-    unsigned int vidWandH[2];
-    float canvas[5];
 
     ofParameterGroup pixControl;
     ofParameter<int> lookUp;
