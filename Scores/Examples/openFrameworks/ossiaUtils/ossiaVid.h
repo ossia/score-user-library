@@ -2,31 +2,43 @@
 #define OSSIAVID_H
 
 #include "ofMain.h"
-#include "ossiaComon.h"
+
+#ifdef ofxKinect
+#include "ofxKinect.h"
+#include "ofxOpenCv"
+#endif
 
 #define MATRIX_SIZE 32
 
+//--------------------------------------------------------------
+ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p);
+
+//--------------------------------------------------------------
 class ossiaVid
 {
 public:
     ossiaVid();
     ofParameterGroup params;
 
-    ofParameter<ofVec3f> placement;
-    ofParameter<float> size;
-    unsigned int vidWandH[2];
-
-    ofVec4f canvas;
+    void checkResize();
 
 protected:
     float prevSize;
     ofVec3f prevPlace;
-    void checkResize();
+    ofParameter<ofVec3f> placement;
+    ofParameter<float> size;
+    unsigned int vidWandH[2];
+    ofVec4f canvas;
 
     ofParameter<ofVec4f> color;
 
     ofParameter<bool> drawVid;
+};
 
+//--------------------------------------------------------------
+class ossiaPix
+{
+protected:
     ofParameterGroup pixControl;
     ofParameter<int> lookUp;
     ofParameter<bool> getPixels;
@@ -43,11 +55,29 @@ protected:
     ofParameter<ofVec4f> circleColor;
     ofParameterGroup pixMatrix;
 
-    void setMatrix();
-    void processPix(const ofPixels& px, ofParameter<float>* pv);
+    void setMatrix(ofParameterGroup& params);
+    void processPix(const ofPixels& px, ofParameter<float>* pv, const ofVec4f& canvas, const float& z, const float& size);
 };
 
-class ossiaPlayer: public ossiaVid
+//--------------------------------------------------------------
+class ossiaGrabber: public ossiaVid, protected ossiaPix
+{
+public:
+    ossiaGrabber(ofVideoDevice dev);
+    void setup(unsigned int width, unsigned int height);
+    void update();
+    void draw();
+    void close();
+    ofVideoGrabber vid;
+
+private:
+    ofVideoDevice device;
+
+    ofParameter<bool> freeze;
+};
+
+//--------------------------------------------------------------
+class ossiaPlayer: public ossiaVid, protected ossiaPix
 {
 public:
     ossiaPlayer(string path);
@@ -73,20 +103,23 @@ private:
     void setVolume(float &toAmp);
 };
 
-class ossiaGrabber: public ossiaVid
+//--------------------------------------------------------------
+#ifdef ofxKinect
+class ossiaKinect
 {
 public:
-    ossiaGrabber(ofVideoDevice dev);
-    void setup(unsigned int width, unsigned int height);
+    ossiaKinect(int device);
+    void setup();
     void update();
     void draw();
     void close();
-    ofVideoGrabber vid;
+    ofxKinect vid;
 
 private:
-    ofVideoDevice device;
+    int device;
 
     ofParameter<bool> freeze;
 };
+#endif
 
 #endif // OSSIAVID_H
