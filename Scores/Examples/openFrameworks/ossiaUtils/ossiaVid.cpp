@@ -215,18 +215,18 @@ void ossiaCv::allocateCvImg(const unsigned int* wAndH)
     grayMax.allocate(wAndH[0], wAndH[1]);
 }
 
-void ossiaCv::cvUpdate()
-{
-    grayMin = grayImage;
-    grayMax = grayImage;
-    grayMin.threshold(minThreshold, true);
-    grayMax.threshold(maxThreshold);
-    cvAnd(grayMin.getCvImage(), grayMax.getCvImage(), grayImage.getCvImage(), NULL);
+//void ossiaCv::cvUpdate()
+//{
+//    grayMin = grayImage;
+//    grayMax = grayImage;
+//    grayMin.threshold(minThreshold, true);
+//    grayMax.threshold(maxThreshold);
+//    cvAnd(grayMin.getCvImage(), grayMax.getCvImage(), grayImage.getCvImage(), NULL);
 
-    grayImage.flagImageChanged();
+//    grayImage.flagImageChanged();
 
-    contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
-}
+//    contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
+//}
 #endif
 
 //--------------------------------------------------------------
