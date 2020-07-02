@@ -16,8 +16,8 @@ public:
     void gotMessage(ofMessage msg);
 
     ofParameterGroup parameters;
-    ossiaUtils::player videos;
-    ossiaUtils::grabber cameras;
+    ossiaUtils::players videos;
+    ossiaUtils::grabbers cameras;
     ofParameter<ofVec4f> backGround;
 
     ofxOscQueryServer oscQuery;

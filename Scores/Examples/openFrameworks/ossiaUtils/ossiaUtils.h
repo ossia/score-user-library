@@ -27,7 +27,7 @@ public:
     ofParameterGroup parameters;
 
 private:
-    vector<ossiaPlayer> vids;
+    vector<ossiaPlayer*> vids;
 };
 
 //--------------------------------------------------------------
@@ -50,7 +50,7 @@ public:
     ofParameterGroup parameters;
 
 private:
-    vector<ossiaGrabber> vids;
+    vector<ossiaGrabber*> vids;
 };
 
 //--------------------------------------------------------------
@@ -73,7 +73,7 @@ public:
     ofParameterGroup parameters;
 
 private:
-    vector<ossiaKinect> vids;
+    vector<ossiaKinect*> vids;
 };
 #endif
 

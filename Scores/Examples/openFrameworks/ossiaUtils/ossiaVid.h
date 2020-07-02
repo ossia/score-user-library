@@ -147,7 +147,7 @@ public:
     void update();
     void draw();
     void close();
-    ofxKinect* vid;
+    ofxKinect vid;
 
 private:    
     int device;

@@ -394,18 +394,16 @@ ossiaKinect::ossiaKinect(int dev)
 
 void ossiaKinect::setup(bool infrared)
 {
-    vid = new ofxKinect;
-
     // enable depth->video image calibration
-    vid->setRegistration(true);
+    vid.setRegistration(true);
 
-    vid->init(infrared);
-    vid->open(device);
+    vid.init(infrared);
+    vid.open(device);
 
     params.setName(to_string(device));    // set parameters
 
-    vidWandH[0] = vid->getWidth();
-    vidWandH[1] = vid->getHeight();
+    vidWandH[0] = vid.getWidth();
+    vidWandH[1] = vid.getHeight();
 
 #ifdef CV
     allocateCvImg(vidWandH);
@@ -418,17 +416,17 @@ void ossiaKinect::setup(bool infrared)
     canvas = placeCanvas(vidWandH, size, placement);
 
     // print the intrinsic IR sensor values
-    if(vid->isConnected()) {
-        cout << "kinect " << device <<" sensor-emitter dist: " << vid->getSensorEmitterDistance() << "cm\n"
-        << "kinect " << device <<" sensor-camera dist:  " << vid->getSensorCameraDistance() << "cm\n"
-        << "kinect " << device <<" zero plane pixel size: " << vid->getZeroPlanePixelSize() << "mm\n"
-        << "kinect " << device <<" zero plane dist: " << vid->getZeroPlaneDistance() << "mm\n";
+    if(vid.isConnected()) {
+        cout << "kinect " << device <<" sensor-emitter dist: " << vid.getSensorEmitterDistance() << "cm\n"
+        << "kinect " << device <<" sensor-camera dist:  " << vid.getSensorCameraDistance() << "cm\n"
+        << "kinect " << device <<" zero plane pixel size: " << vid.getZeroPlanePixelSize() << "mm\n"
+        << "kinect " << device <<" zero plane dist: " << vid.getZeroPlaneDistance() << "mm\n";
     }
 }
 
 void ossiaKinect::update()
 {
-    if (!freeze) vid->update();
+    if (!freeze) vid.update();
 }
 
 void ossiaKinect::draw()
@@ -442,19 +440,18 @@ void ossiaKinect::draw()
                    color->w,
                    color->x);
 
-        vid->getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
+        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
                 canvas[1],
                 placement->z,
                 canvas[2],
                 canvas[3]);
     }
 
-    if (getPixels) processPix(vid->getPixels(), pixVal, canvas, placement->z, size);
+    if (getPixels) processPix(vid.getPixels(), pixVal, canvas, placement->z, size);
 }
 
 void ossiaKinect::close()
 {
-    vid->close();
-    delete vid;
+    vid.close();
 }
 #endif

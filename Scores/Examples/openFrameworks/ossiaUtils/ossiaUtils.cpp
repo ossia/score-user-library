@@ -18,56 +18,59 @@ void players::setup(string directory)
 
     for (const ofFile& mov : path)
     {
-        ossiaPlayer vid(mov.getAbsolutePath());
-        vids.push_back(vid);
+        vids.push_back(new ossiaPlayer(mov.getAbsolutePath()));
     }
 
-    for (ossiaPlayer& p: vids)
+    for (ossiaPlayer* p: vids)
     {
-        p.setup();
-        parameters.add(p.params);
+        p->setup();
+        parameters.add(p->params);
     }
 }
 
 #ifdef OSCQUERY
 void players::setAtributes(ofxOscQueryServer& device)
 {
-    for (ossiaPlayer& vid : vids)
+    for (ossiaPlayer* vid : vids)
     {
-        setBaseAtributes(device, vid.params); // get the matrix parameter group
+        setBaseAtributes(device, vid->params); // get the matrix parameter group
         // play
-        device[vid.params[4]].setCritical(true).setDescription("play or pause the video");
+        device[vid->params[4]].setCritical(true).setDescription("play or pause the video");
         // loop
-        device[vid.params[5]].setCritical(true).setDescription("repeat the video indefinatly");
+        device[vid->params[5]].setCritical(true).setDescription("repeat the video indefinatly");
         // seek
-        device[vid.params[6]].setClipMode("both").setDescription("jump to a specific position in the video");
+        device[vid->params[6]].setClipMode("both").setDescription("jump to a specific position in the video");
         // volume
-        device[vid.params[7]].setClipMode("both").setUnit("gain.linear")
+        device[vid->params[7]].setClipMode("both").setUnit("gain.linear")
                 .setDescription("set the volume of the video, if it contains audio");
 
-        setMatrixAtributes(device, vid.params.getGroup(8)); // get the matrix parameter group
+        setMatrixAtributes(device, vid->params.getGroup(8)); // get the matrix parameter group
     }
 }
 #endif
 
 void players::update()
 {
-    for (ossiaPlayer& vid : vids) vid.update();
+    for (ossiaPlayer* vid : vids) vid->update();
 }
 
 void players::draw()
 {
-    for (ossiaPlayer& vid : vids) vid.draw();
+    for (ossiaPlayer* vid : vids) vid->draw();
 }
 
 void players::resize()
 {
-    for (ossiaPlayer& vid : vids) vid.checkResize();
+    for (ossiaPlayer* vid : vids) vid->checkResize();
 }
 
 void players::close()
 {
-    for (ossiaPlayer& vid : vids) vid.close();
+    for (ossiaPlayer* vid : vids)
+    {
+        vid->close();
+        delete vid;
+    }
 }
 
 //--------------------------------------------------------------
@@ -86,8 +89,7 @@ void grabbers::setup(unsigned int width, unsigned int height)
             //log the device
             ofLogNotice() << dev.id << ": " << dev.deviceName;
 
-            ossiaGrabber vid(dev);
-            vids.push_back(vid);
+            vids.push_back(new ossiaGrabber(dev));
         } else
         {
             //log the device and note it as unavailable
@@ -95,10 +97,10 @@ void grabbers::setup(unsigned int width, unsigned int height)
         }
     }
 
-    for (ossiaGrabber& g: vids)
+    for (ossiaGrabber* g: vids)
     {
-        g.setup(width, height);
-        parameters.add(g.params);
+        g->setup(width, height);
+        parameters.add(g->params);
     }
 }
 
@@ -114,8 +116,7 @@ void grabbers::setup(int exclude, unsigned int width, unsigned int height)
     {
         if (dev.bAvailable && dev.id != exclude)
         {
-            ossiaGrabber vid(dev);
-            vids.push_back(vid);
+            vids.push_back(new ossiaGrabber(dev));
         } else
         {
             //log the device and note it as unavailable
@@ -123,45 +124,49 @@ void grabbers::setup(int exclude, unsigned int width, unsigned int height)
         }
     }
 
-    for (ossiaGrabber& g: vids)
+    for (ossiaGrabber* g: vids)
     {
-        g.setup(width, height);
-        parameters.add(g.params);
+        g->setup(width, height);
+        parameters.add(g->params);
     }
 }
 
 #ifdef OSCQUERY
 void grabbers::setAtributes(ofxOscQueryServer& device)
 {
-    for (ossiaGrabber& vid : vids)
+    for (ossiaGrabber* vid : vids)
     {
-        setBaseAtributes(device, vid.params); // get the matrix parameter group
+        setBaseAtributes(device, vid->params); // get the matrix parameter group
         // play
-        device[vid.params[4]].setCritical(true).setDescription("play or pause the video");
+        device[vid->params[4]].setCritical(true).setDescription("play or pause the video");
 
-        setMatrixAtributes(device, vid.params.getGroup(5)); // get the matrix parameter group
+        setMatrixAtributes(device, vid->params.getGroup(5)); // get the matrix parameter group
     }
 }
 #endif
 
 void grabbers::update()
 {
-    for (ossiaGrabber& vid : vids) vid.update();
+    for (ossiaGrabber* vid : vids) vid->update();
 }
 
 void grabbers::draw()
 {
-    for (ossiaGrabber& vid : vids) vid.draw();
+    for (ossiaGrabber* vid : vids) vid->draw();
 }
 
 void grabbers::resize()
 {
-    for (ossiaGrabber& vid : vids) vid.checkResize();
+    for (ossiaGrabber* vid : vids) vid->checkResize();
 }
 
 void grabbers::close()
 {
-    for (ossiaGrabber& vid : vids) vid.close();
+    for (ossiaGrabber* vid : vids)
+    {
+        vid->close();
+        delete vid;
+    }
 }
 
 //--------------------------------------------------------------
@@ -171,19 +176,18 @@ void kinects::setup(bool infrared)
     parameters.setName("Kinects");
 
     //get back a list of devices.
-    static ofxKinect kin;
+    ofxKinect kin;
     int devices = kin.numAvailableDevices();
 
     for (int i = 0; i < devices; i++)
     {
-        ossiaKinect kinect(i);
-        vids.push_back(kinect);
+        vids.push_back(new ossiaKinect(i));
     }
 
-    for (ossiaKinect& g: vids)
+    for (ossiaKinect* g: vids)
     {
-        g.setup(infrared);
-        parameters.add(g.params);
+        g->setup(infrared);
+        parameters.add(g->params);
     }
 }
 
@@ -192,52 +196,55 @@ void kinects::setup(vector<bool> infrared)
     parameters.setName("Kinects");
 
     //get back a list of devices.
-    static ofxKinect kin;
+    ofxKinect kin;
     unsigned int devices = kin.numAvailableDevices();
 
     if (devices != infrared.size()) cerr << "infrared vector must contain as many booleans as conected kinects\n";
 
     for (unsigned int i = 0; i < devices; i++)
     {
-        ossiaKinect kinect(i);
-        vids.push_back(kinect);
-        vids[i].setup(infrared[i]);
-        parameters.add(vids[i].params);
+        vids.push_back(new ossiaKinect(i));
+        vids[i]->setup(infrared[i]);
+        parameters.add(vids[i]->params);
     }
 }
 
 #ifdef OSCQUERY
 void kinects::setAtributes(ofxOscQueryServer& device)
 {
-    for (ossiaKinect& vid : vids)
+    for (ossiaKinect* vid : vids)
     {
-        setBaseAtributes(device, vid.params); // get the matrix parameter group
+        setBaseAtributes(device, vid->params); // get the matrix parameter group
         // play
-        device[vid.params[4]].setCritical(true).setDescription("play or pause the video");
+        device[vid->params[4]].setCritical(true).setDescription("play or pause the video");
 
-        setMatrixAtributes(device, vid.params.getGroup(5)); // get the matrix parameter group
+        setMatrixAtributes(device, vid->params.getGroup(5)); // get the matrix parameter group
     }
 }
 #endif
 
 void kinects::update()
 {
-    for (ossiaKinect& vid : vids) vid.update();
+    for (ossiaKinect* vid : vids) vid->update();
 }
 
 void kinects::draw()
 {
-    for (ossiaKinect& vid : vids) vid.draw();
+    for (ossiaKinect* vid : vids) vid->draw();
 }
 
 void kinects::resize()
 {
-    for (ossiaKinect& vid : vids) vid.checkResize();
+    for (ossiaKinect* vid : vids) vid->checkResize();
 }
 
 void kinects::close()
 {
-    for (ossiaKinect& vid : vids) vid.close();
+    for (ossiaKinect* vid : vids)
+    {
+        vid->close();
+        delete vid;
+    }
 }
 #endif
 
