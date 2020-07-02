@@ -3,12 +3,15 @@
 
 #include "ofMain.h"
 
-#ifdef ofxKinect
+#define MATRIX_SIZE 32
+
+#ifdef KINECT
 #include "ofxKinect.h"
-#include "ofxOpenCv"
 #endif
 
-#define MATRIX_SIZE 32
+#ifdef CV
+#include "ofxOpenCv.h"
+#endif
 
 //--------------------------------------------------------------
 ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p);
@@ -33,12 +36,7 @@ protected:
     ofParameter<ofVec4f> color;
 
     ofParameter<bool> drawVid;
-};
 
-//--------------------------------------------------------------
-class ossiaPix
-{
-protected:
     ofParameterGroup pixControl;
     ofParameter<int> lookUp;
     ofParameter<bool> getPixels;
@@ -60,24 +58,37 @@ protected:
 };
 
 //--------------------------------------------------------------
-class ossiaGrabber: public ossiaVid, protected ossiaPix
+#ifdef CV
+class ossiaCv
 {
-public:
-    ossiaGrabber(ofVideoDevice dev);
-    void setup(unsigned int width, unsigned int height);
-    void update();
-    void draw();
-    void close();
-    ofVideoGrabber vid;
+protected:
+    ofParameterGroup cvControl;
 
-private:
-    ofVideoDevice device;
+    ofxCvColorImage colorImg;
 
-    ofParameter<bool> freeze;
+    ofxCvGrayscaleImage grayImage; // grayscale depth image
+    ofxCvGrayscaleImage grayMin; // the near thresholded image
+    ofxCvGrayscaleImage grayMax; // the far thresholded image
+
+    void allocateCvImg(const unsigned int* wAndH);
+    void cvUpdate();
+
+    ofxCvContourFinder contourFinder;
+
+    int minThreshold;
+    int maxThreshold;
+
+    // blob size
+    int minArea;
+    int maxArea;
 };
+#endif
 
 //--------------------------------------------------------------
-class ossiaPlayer: public ossiaVid, protected ossiaPix
+class ossiaPlayer: public ossiaVid
+        #ifdef CV
+        , protected ossiaCv
+        #endif
 {
 public:
     ossiaPlayer(string path);
@@ -104,18 +115,41 @@ private:
 };
 
 //--------------------------------------------------------------
-#ifdef ofxKinect
-class ossiaKinect
+class ossiaGrabber: public ossiaVid
+        #ifdef CV
+        , protected ossiaCv
+        #endif
 {
 public:
-    ossiaKinect(int device);
-    void setup();
+    ossiaGrabber(ofVideoDevice dev);
+    void setup(unsigned int width, unsigned int height);
     void update();
     void draw();
     void close();
-    ofxKinect vid;
+    ofVideoGrabber vid;
 
 private:
+    ofVideoDevice device;
+
+    ofParameter<bool> freeze;
+};
+
+//--------------------------------------------------------------
+#ifdef KINECT
+class ossiaKinect: public ossiaVid
+        #ifdef CV
+        , protected ossiaCv
+        #endif
+{
+public:
+    ossiaKinect(int dev);
+    void setup(bool infrared);
+    void update();
+    void draw();
+    void close();
+    ofxKinect* vid;
+
+private:    
     int device;
 
     ofParameter<bool> freeze;

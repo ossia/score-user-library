@@ -3,7 +3,7 @@
 
 #include "ossiaVid.h"
 
-#ifdef ofxOscQuery
+#ifdef OSCQUERY
 #include "ofxOscQueryServer.h"
 #endif
 
@@ -11,12 +11,12 @@ namespace ossiaUtils
 {
 
 //--------------------------------------------------------------
-class player
+class players
 {
 public:
     void setup(string directory = ""); // default to the "data" directory inside "bin"
 
-#ifdef ofxOscQuery
+#ifdef OSCQUERY
     void setAtributes(ofxOscQueryServer& device);
 #endif
 
@@ -31,7 +31,7 @@ private:
 };
 
 //--------------------------------------------------------------
-class grabber
+class grabbers
 {
 public:
     // setup all available video devices
@@ -39,7 +39,7 @@ public:
     // setup that alows to exclude one video device (ie. the laptop's cam) if needed
     void setup(int exclude, unsigned int width = 320, unsigned int height = 240);
 
-#ifdef ofxOscQuery
+#ifdef OSCQUERY
     void setAtributes(ofxOscQueryServer& device);
 #endif
 
@@ -54,16 +54,16 @@ private:
 };
 
 //--------------------------------------------------------------
-#ifdef ofxKinect
-class kinect
+#ifdef KINECT
+class kinects
 {
 public:
-    // setup all available video devices
-    void setup();
-    // setup that alows to exclude one video device (ie. the laptop's cam) if needed
-    void setup(int exclude, unsigned int width = 320, unsigned int height = 240);
+    // setup all available kinects
+    void setup(bool infrared = false);
+    // setup all available kinects
+    void setup(vector<bool> infrared);
 
-#ifdef ofxOscQuery
+#ifdef OSCQUERY
     void setAtributes(ofxOscQueryServer& device);
 #endif
     void update();
@@ -77,7 +77,7 @@ private:
 };
 #endif
 
-#ifdef ofxOscQuery
+#ifdef OSCQUERY
 void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params);
 void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params);
 #endif

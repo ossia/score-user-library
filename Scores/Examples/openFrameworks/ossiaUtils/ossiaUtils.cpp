@@ -4,7 +4,7 @@ namespace ossiaUtils
 {
 
 //--------------------------------------------------------------
-void player::setup(string directory)
+void players::setup(string directory)
 {
     ofDirectory path(directory);
     path.allowExt("mov");
@@ -29,8 +29,8 @@ void player::setup(string directory)
     }
 }
 
-#ifdef ofxOscQuery
-void player::setAtributes(ofxOscQueryServer& device)
+#ifdef OSCQUERY
+void players::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaPlayer& vid : vids)
     {
@@ -50,28 +50,28 @@ void player::setAtributes(ofxOscQueryServer& device)
 }
 #endif
 
-void player::update()
+void players::update()
 {
     for (ossiaPlayer& vid : vids) vid.update();
 }
 
-void player::draw()
+void players::draw()
 {
     for (ossiaPlayer& vid : vids) vid.draw();
 }
 
-void player::resize()
+void players::resize()
 {
     for (ossiaPlayer& vid : vids) vid.checkResize();
 }
 
-void player::close()
+void players::close()
 {
     for (ossiaPlayer& vid : vids) vid.close();
 }
 
 //--------------------------------------------------------------
-void grabber::setup(unsigned int width, unsigned int height)
+void grabbers::setup(unsigned int width, unsigned int height)
 {
     parameters.setName("Cameras");
 
@@ -102,7 +102,7 @@ void grabber::setup(unsigned int width, unsigned int height)
     }
 }
 
-void grabber::setup(int exclude, unsigned int width, unsigned int height)
+void grabbers::setup(int exclude, unsigned int width, unsigned int height)
 {
     parameters.setName("Cameras");
 
@@ -119,7 +119,7 @@ void grabber::setup(int exclude, unsigned int width, unsigned int height)
         } else
         {
             //log the device and note it as unavailable
-            ofLogNotice() << dev.id << ": " << dev.deviceName << " - unavailable ";
+            cout << dev.id << ": " << dev.deviceName << " - unavailable \n";
         }
     }
 
@@ -130,8 +130,8 @@ void grabber::setup(int exclude, unsigned int width, unsigned int height)
     }
 }
 
-#ifdef ofxOscQuery
-void grabber::setAtributes(ofxOscQueryServer& device)
+#ifdef OSCQUERY
+void grabbers::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaGrabber& vid : vids)
     {
@@ -144,36 +144,37 @@ void grabber::setAtributes(ofxOscQueryServer& device)
 }
 #endif
 
-void grabber::update()
+void grabbers::update()
 {
     for (ossiaGrabber& vid : vids) vid.update();
 }
 
-void grabber::draw()
+void grabbers::draw()
 {
     for (ossiaGrabber& vid : vids) vid.draw();
 }
 
-void grabber::resize()
+void grabbers::resize()
 {
     for (ossiaGrabber& vid : vids) vid.checkResize();
 }
 
-void grabber::close()
+void grabbers::close()
 {
     for (ossiaGrabber& vid : vids) vid.close();
 }
 
 //--------------------------------------------------------------
-#ifdef ofxKinect
-void kinect::setup()
+#ifdef KINECT
+void kinects::setup(bool infrared)
 {
     parameters.setName("Kinects");
 
     //get back a list of devices.
-    ofxKinect kin;
+    static ofxKinect kin;
+    int devices = kin.numAvailableDevices();
 
-    for (int i = 0; i <= kin.numAvailableDevices(); i++)
+    for (int i = 0; i < devices; i++)
     {
         ossiaKinect kinect(i);
         vids.push_back(kinect);
@@ -181,14 +182,34 @@ void kinect::setup()
 
     for (ossiaKinect& g: vids)
     {
-        g.setup();
+        g.setup(infrared);
         parameters.add(g.params);
     }
 }
 
-void kinect::setAtributes(ofxOscQueryServer& device)
+void kinects::setup(vector<bool> infrared)
 {
-    for (ossiaGrabber& vid : vids)
+    parameters.setName("Kinects");
+
+    //get back a list of devices.
+    static ofxKinect kin;
+    unsigned int devices = kin.numAvailableDevices();
+
+    if (devices != infrared.size()) cerr << "infrared vector must contain as many booleans as conected kinects\n";
+
+    for (unsigned int i = 0; i < devices; i++)
+    {
+        ossiaKinect kinect(i);
+        vids.push_back(kinect);
+        vids[i].setup(infrared[i]);
+        parameters.add(vids[i].params);
+    }
+}
+
+#ifdef OSCQUERY
+void kinects::setAtributes(ofxOscQueryServer& device)
+{
+    for (ossiaKinect& vid : vids)
     {
         setBaseAtributes(device, vid.params); // get the matrix parameter group
         // play
@@ -197,28 +218,26 @@ void kinect::setAtributes(ofxOscQueryServer& device)
         setMatrixAtributes(device, vid.params.getGroup(5)); // get the matrix parameter group
     }
 }
+#endif
 
-void kinect::update()
+void kinects::update()
 {
-    for (ossiaGrabber& vid : vids) vid.update();
+    for (ossiaKinect& vid : vids) vid.update();
 }
 
-void kinect::draw()
+void kinects::draw()
 {
-    for (ossiaGrabber& vid : vids) vid.draw();
+    for (ossiaKinect& vid : vids) vid.draw();
 }
 
-void kinect::resize()
+void kinects::resize()
 {
-    for (ossiaGrabber& vid : vids)
-    {
-        vid.canvas = placeCanvas(vid.vidWandH, vid.size, vid.placement);
-    }
+    for (ossiaKinect& vid : vids) vid.checkResize();
 }
 
-void kinect::close()
+void kinects::close()
 {
-    for (ossiaGrabber& vid : vids) vid.close();
+    for (ossiaKinect& vid : vids) vid.close();
 }
 #endif
 
@@ -247,7 +266,7 @@ ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p)
 }
 
 //--------------------------------------------------------------
-#ifdef ofxOscQuery
+#ifdef OSCQUERY
 void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
     // draw_video

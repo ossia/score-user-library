@@ -19,7 +19,9 @@ To then open this exemple in qtcreator, click "new project" and choose the "Impo
         ]
 
         of.addons: [
-            "ofxOscQuery"
+            "ofxOscQuery",
+            "ofxKinect",
+            "ofxOpenCv"
         ]
 
         cpp.defines: of.addons

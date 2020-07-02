@@ -54,7 +54,7 @@ void ossiaVid::checkResize()
     }
 }
 
-void ossiaPix::setMatrix(ofParameterGroup& params)
+void ossiaVid::setMatrix(ofParameterGroup& params)
 {
     pixMatrix.setName("matrix");
 
@@ -101,7 +101,7 @@ void ossiaPix::setMatrix(ofParameterGroup& params)
     params.add(pixControl);
 }
 
-void ossiaPix::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVec4f& canvas, const float& z, const float& size)
+void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVec4f& canvas, const float& z, const float& size)
 {
     size_t vidWidth = px.getWidth();
     size_t vidHeight = px.getHeight();
@@ -206,8 +206,32 @@ void ossiaPix::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVe
 }
 
 //--------------------------------------------------------------
-ossiaPlayer::ossiaPlayer(string folder)
-    :path{folder}
+#ifdef CV
+void ossiaCv::allocateCvImg(const unsigned int* wAndH)
+{
+    colorImg.allocate(wAndH[0], wAndH[1]);
+    grayImage.allocate(wAndH[0], wAndH[1]);
+    grayMin.allocate(wAndH[0], wAndH[1]);
+    grayMax.allocate(wAndH[0], wAndH[1]);
+}
+
+void ossiaCv::cvUpdate()
+{
+    grayMin = grayImage;
+    grayMax = grayImage;
+    grayMin.threshold(minThreshold, true);
+    grayMax.threshold(maxThreshold);
+    cvAnd(grayMin.getCvImage(), grayMax.getCvImage(), grayImage.getCvImage(), NULL);
+
+    grayImage.flagImageChanged();
+
+    contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
+}
+#endif
+
+//--------------------------------------------------------------
+ossiaPlayer::ossiaPlayer(string file)
+    :path{file}
 {
 }
 
@@ -236,6 +260,10 @@ void ossiaPlayer::setup()
 
     vidWandH[0] = vid.getWidth(); // get the video's original size
     vidWandH[1] = vid.getHeight();
+
+#ifdef CV
+    allocateCvImg(vidWandH);
+#endif
 
     canvas = placeCanvas(vidWandH, size, placement);
 }
@@ -315,6 +343,10 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
     vidWandH[0] = vid.getWidth();
     vidWandH[1] = vid.getHeight();
 
+#ifdef CV
+    allocateCvImg(vidWandH);
+#endif
+
     params.add(freeze.set("freeze", false));
 
     setMatrix(params);
@@ -354,46 +386,49 @@ void ossiaGrabber::close()
 }
 
 //--------------------------------------------------------------
-#ifdef ofxKinect
-ossiaKinect::ossiaKinect(int device)
-    :device{device}
+#ifdef KINECT
+ossiaKinect::ossiaKinect(int dev)
+    :device{dev}
 {
 }
 
-void ossiaKinect::setup()
+void ossiaKinect::setup(bool infrared)
 {
-    vid.open(device);
+    vid = new ofxKinect;
 
     // enable depth->video image calibration
-    kin.setRegistration(true);
+    vid->setRegistration(true);
 
-    kin.init(true, true);
-    //kinect.init(true); // shows infrared instead of RGB video image
-    //kinect.init(false, false); // disable video image (faster fps)
+    vid->init(infrared);
+    vid->open(device);
 
-    params.setName(device.deviceName);    // set parameters
+    params.setName(to_string(device));    // set parameters
 
-    vidWandH[0] = vid.getWidth();
-    vidWandH[1] = vid.getHeight();
+    vidWandH[0] = vid->getWidth();
+    vidWandH[1] = vid->getHeight();
+
+#ifdef CV
+    allocateCvImg(vidWandH);
+#endif
 
     params.add(freeze.set("freeze", false));
 
-    setMatrix();
+    setMatrix(params);
 
-    canvas = ossiaComon::placeCanvas(vidWandH, size, placement);
+    canvas = placeCanvas(vidWandH, size, placement);
 
     // print the intrinsic IR sensor values
-    if(vid.isConnected()) {
-        ofLogNotice() << "sensor-emitter dist: " << vid.getSensorEmitterDistance() << "cm";
-        ofLogNotice() << "sensor-camera dist:  " << vid.getSensorCameraDistance() << "cm";
-        ofLogNotice() << "zero plane pixel size: " << vid.getZeroPlanePixelSize() << "mm";
-        ofLogNotice() << "zero plane dist: " << vid.getZeroPlaneDistance() << "mm";
+    if(vid->isConnected()) {
+        cout << "kinect " << device <<" sensor-emitter dist: " << vid->getSensorEmitterDistance() << "cm\n"
+        << "kinect " << device <<" sensor-camera dist:  " << vid->getSensorCameraDistance() << "cm\n"
+        << "kinect " << device <<" zero plane pixel size: " << vid->getZeroPlanePixelSize() << "mm\n"
+        << "kinect " << device <<" zero plane dist: " << vid->getZeroPlaneDistance() << "mm\n";
     }
 }
 
 void ossiaKinect::update()
 {
-    if (!freeze) vid.update();
+    if (!freeze) vid->update();
 }
 
 void ossiaKinect::draw()
@@ -407,18 +442,19 @@ void ossiaKinect::draw()
                    color->w,
                    color->x);
 
-        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
+        vid->getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
                 canvas[1],
                 placement->z,
                 canvas[2],
                 canvas[3]);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canvas, placement->z, size);
+    if (getPixels) processPix(vid->getPixels(), pixVal, canvas, placement->z, size);
 }
 
 void ossiaKinect::close()
 {
-    vid.close();
+    vid->close();
+    delete vid;
 }
 #endif
