@@ -35,9 +35,9 @@ class grabbers
 {
 public:
     // setup all available video devices
-    void setup(unsigned int width = 320, unsigned int height = 240);
+    void setup(unsigned int width = 640, unsigned int height = 480);
     // setup that alows to exclude one video device (ie. the laptop's cam) if needed
-    void setup(int exclude, unsigned int width = 320, unsigned int height = 240);
+    void setup(int exclude, unsigned int width = 640, unsigned int height = 480);
 
 #ifdef OSCQUERY
     void setAtributes(ofxOscQueryServer& device);

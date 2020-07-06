@@ -14,9 +14,6 @@
 #endif
 
 //--------------------------------------------------------------
-ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p);
-
-//--------------------------------------------------------------
 class ossiaVid
 {
 public:
@@ -25,21 +22,28 @@ public:
 
     void checkResize();
 
+    struct canvas
+    {
+    void corner2center(const unsigned int* wAndH, const float& reSize, const ofVec3f& center);
+    float x, y, z;
+    unsigned int h, w;
+    };
+
 protected:
     float prevSize;
     ofVec3f prevPlace;
     ofParameter<ofVec3f> placement;
     ofParameter<float> size;
     unsigned int vidWandH[2];
-    ofVec4f canvas;
+    canvas canv;
 
     ofParameter<ofVec4f> color;
 
     ofParameter<bool> drawVid;
 
     ofParameterGroup pixControl;
-    ofParameter<int> lookUp;
     ofParameter<bool> getPixels;
+    ofParameter<bool> invert;
     ofParameter<int> hPoints;
     ofParameter<int> vPoints;
     ofParameter<float> threshold;
@@ -54,7 +58,7 @@ protected:
     ofParameterGroup pixMatrix;
 
     void setMatrix(ofParameterGroup& params);
-    void processPix(const ofPixels& px, ofParameter<float>* pv, const ofVec4f& canvas, const float& z, const float& size);
+    void processPix(const ofPixels& px, ofParameter<float>* pv, const canvas& cnv);
 };
 
 //--------------------------------------------------------------
@@ -63,6 +67,16 @@ class ossiaCv
 {
 protected:
     ofParameterGroup cvControl;
+    ofParameter<bool> getCvImage;
+
+    ofParameter<int> minThreshold;
+    ofParameter<int> maxThreshold;
+
+    // blob size
+    ofParameter<int> minArea;
+    ofParameter<int> maxArea;
+
+    ofParameter<bool> drawCvImage;
 
     ofxCvColorImage colorImg;
 
@@ -70,17 +84,12 @@ protected:
     ofxCvGrayscaleImage grayMin; // the near thresholded image
     ofxCvGrayscaleImage grayMax; // the far thresholded image
 
-    void allocateCvImg(const unsigned int* wAndH);
-    void cvUpdate();
+    void cvSetup(const unsigned int* wAndH, ofParameterGroup& group);
+    void cvUpdate(ofPixels& pixels);
+    void cvdraw(const ossiaVid::canvas& cnv);
 
     ofxCvContourFinder contourFinder;
-
-    int minThreshold;
-    int maxThreshold;
-
-    // blob size
-    int minArea;
-    int maxArea;
+    ofParameter<bool> drawContours;
 };
 #endif
 

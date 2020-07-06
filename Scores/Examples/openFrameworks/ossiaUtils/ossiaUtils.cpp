@@ -45,6 +45,10 @@ void players::setAtributes(ofxOscQueryServer& device)
                 .setDescription("set the volume of the video, if it contains audio");
 
         setMatrixAtributes(device, vid->params.getGroup(8)); // get the matrix parameter group
+
+#ifdef CV
+
+#endif
     }
 }
 #endif
@@ -289,11 +293,10 @@ void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // us
 
 void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
-    // look_up
-    device[params[0]].setCritical(true).setRangeValues(vector<int>{0, 1, 2, 3, 4})
-            .setDescription("light, dark, red, green, blue");
     // get
-    device[params[1]].setCritical(true).setDescription("go through the video's pixel array to get ligthness value end average color");
+    device[params[0]].setCritical(true).setDescription("go through the video's pixel array to get ligthness value end average color");
+    // invert
+    device[params[1]].setCritical(true).setDescription("invert ligt and dark matrix values");
     // horizontal points
     device[params[2]].setCritical(true).setClipMode("both").setDescription("number of points along the video's width");
     // vertical points

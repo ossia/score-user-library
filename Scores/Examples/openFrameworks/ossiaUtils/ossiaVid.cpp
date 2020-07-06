@@ -1,10 +1,10 @@
 #include "ossiaVid.h"
 
 //--------------------------------------------------------------
-ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p)
+void ossiaVid::canvas::corner2center(const unsigned int* wAndH, const float& reSize, const ofVec3f& center)
 {
-    float width{wAndH[0] * s};
-    float height{wAndH[1] * s};
+    float width{wAndH[0] * reSize};
+    float height{wAndH[1] * reSize};
 
     float wOfset{width / 2};
     float hOfset{height / 2};
@@ -15,13 +15,14 @@ ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p)
     int ofHalfW{ofWidth / 2};
     int ofHalfH{ofHeight / 2};
 
-    float xOfset{ofHalfW + (ofHalfW * p[0])};
-    float yOfset{ofHalfH + (ofHalfH * p[1])};
+    float xOfset{ofHalfW + (ofHalfW * center[0])};
+    float yOfset{ofHalfH + (ofHalfH * center[1])};
 
-    return ofVec4f{(xOfset - wOfset),
-                (yOfset - hOfset),
-                width,
-                height};
+    x = xOfset - wOfset;
+    y = yOfset - hOfset;
+    z = center.z;
+    w = width;
+    h = height;
 }
 
 //--------------------------------------------------------------
@@ -48,7 +49,7 @@ void ossiaVid::checkResize()
 {
     if (prevSize != size || prevPlace != placement)
     {
-        canvas = placeCanvas(vidWandH, size, placement);
+        canv.corner2center(vidWandH, size, placement);
         prevSize = size;
         prevPlace = placement;
     }
@@ -76,8 +77,8 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
     }
 
     pixControl.setName("pixels");
-    pixControl.add(lookUp.set("look_up", 0, 0, 4));
     pixControl.add(getPixels.set("get", false));
+    pixControl.add(invert.set("invert", false));
     pixControl.add(hPoints.set("horizontal_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
     pixControl.add(vPoints.set("vertical_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
     pixControl.add(threshold.set("threshold", 128, 1, 255));
@@ -101,7 +102,7 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
     params.add(pixControl);
 }
 
-void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVec4f& canvas, const float& z, const float& size)
+void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canvas &cnv)
 {
     size_t vidWidth = px.getWidth();
     size_t vidHeight = px.getHeight();
@@ -139,24 +140,8 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVe
 
             float focus{0};
 
-            switch (lookUp)
-            {
-            case 0:
-                focus = pxColor.getLightness();
-                break;
-            case 1:
-                focus = 255 - pxColor.getLightness();
-                break;
-            case 2:
-                focus = pxColor.r;
-                break;
-            case 3:
-                focus = pxColor.g;
-                break;
-            case 4:
-                focus = pxColor.b;
-                break;
-            }
+            if (invert) focus = 255 - pxColor.getLightness();
+            else focus = pxColor.getLightness();
 
             if (focus >= threshold)
             {
@@ -164,9 +149,9 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVe
 
                 if (drawCircles) // draw_matrix
                 {
-                    ofDrawCircle(canvas[0] + i * size,
-                            canvas[1] + j * size,
-                            z,
+                    ofDrawCircle(cnv.x + i * size,
+                            cnv.y + j * size,
+                            cnv.z,
                             circleSize * focus); // cicle size
                 }
 
@@ -190,9 +175,9 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVe
         baryCenter /= lightSum;
         if (drawCenter) // draw_barycenter
         {
-            ofDrawCircle((canvas[0] + baryCenter[0]) * size,
-                    (canvas[1] + baryCenter[1]) * size,
-                    z,
+            ofDrawCircle((cnv.x + baryCenter[0]) * size,
+                    (cnv.y + baryCenter[1]) * size,
+                    cnv.z,
                     circleSize * size * 255); // cicle size
         }
 
@@ -207,26 +192,57 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const ofVe
 
 //--------------------------------------------------------------
 #ifdef CV
-void ossiaCv::allocateCvImg(const unsigned int* wAndH)
+void ossiaCv::cvSetup(const unsigned int* wAndH, ofParameterGroup& group)
 {
+    cvControl.setName("cv");
+    cvControl.add(getCvImage.set("get", false));
+    cvControl.add(minThreshold.set("minThreshold", 255));
+    cvControl.add( maxThreshold.set("maxThreshold", 70));
+    cvControl.add(drawCvImage.set("draw_grayscale", false));
+    cvControl.add(drawContours.set("draw_contours", false));
+
+    group.add(cvControl);
+
     colorImg.allocate(wAndH[0], wAndH[1]);
     grayImage.allocate(wAndH[0], wAndH[1]);
     grayMin.allocate(wAndH[0], wAndH[1]);
     grayMax.allocate(wAndH[0], wAndH[1]);
 }
 
-//void ossiaCv::cvUpdate()
-//{
-//    grayMin = grayImage;
-//    grayMax = grayImage;
-//    grayMin.threshold(minThreshold, true);
-//    grayMax.threshold(maxThreshold);
-//    cvAnd(grayMin.getCvImage(), grayMax.getCvImage(), grayImage.getCvImage(), NULL);
+void ossiaCv::cvUpdate(ofPixels& pixels)
+{
+    if (getCvImage)
+    {
+        colorImg.setFromPixels(pixels);
+        grayImage = colorImg;
 
-//    grayImage.flagImageChanged();
+        grayMin = grayImage;
+        grayMax = grayImage;
+        grayMin.threshold(minThreshold, true);
+        grayMax.threshold(maxThreshold);
+        cvAnd(grayMin.getCvImage(), grayMax.getCvImage(), grayImage.getCvImage(), NULL);
 
-//    contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
-//}
+        grayImage.flagImageChanged();
+
+        contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
+    }
+}
+
+void ossiaCv::cvdraw(const ossiaVid::canvas& cnv)
+{
+    if (drawCvImage)
+        grayImage.draw(cnv.x,
+                       cnv.y,
+                       cnv.w,
+                       cnv.h);
+
+    if (drawContours)
+    contourFinder.draw(cnv.x,
+                       cnv.y,
+                       cnv.w,
+                       cnv.h);
+}
+
 #endif
 
 //--------------------------------------------------------------
@@ -262,10 +278,10 @@ void ossiaPlayer::setup()
     vidWandH[1] = vid.getHeight();
 
 #ifdef CV
-    allocateCvImg(vidWandH);
+    cvSetup(vidWandH, params);
 #endif
 
-    canvas = placeCanvas(vidWandH, size, placement);
+    canv.corner2center(vidWandH, size, placement);
 }
 
 void ossiaPlayer::update()
@@ -311,14 +327,14 @@ void ossiaPlayer::draw()
                    color->w,
                    color->x);
 
-        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
-                canvas[1],
-                placement->z,
-                canvas[2],
-                canvas[3]);
+        vid.getTexture().draw(canv.x, // getTexture allows the use of the Z axis
+                canv.y,
+                canv.z,
+                canv.w,
+                canv.h);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canvas, placement->z, size);
+    if (getPixels) processPix(vid.getPixels(), pixVal, canv);
 }
 
 void ossiaPlayer::close()
@@ -343,24 +359,32 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
     vidWandH[0] = vid.getWidth();
     vidWandH[1] = vid.getHeight();
 
-#ifdef CV
-    allocateCvImg(vidWandH);
-#endif
-
     params.add(freeze.set("freeze", false));
 
     setMatrix(params);
 
-    canvas = placeCanvas(vidWandH, size, placement);
+#ifdef CV
+    cvSetup(vidWandH, params);
+#endif
+
+    canv.corner2center(vidWandH, size, placement);
 }
 
 void ossiaGrabber::update()
 {
     if (!freeze) vid.update();
+
+#ifdef CV
+    if (vid.isFrameNew())cvUpdate(vid.getPixels());
+#endif
 }
 
 void ossiaGrabber::draw()
 {
+#ifdef CV
+    cvdraw(canv);
+#endif
+
     if (drawVid || getPixels) checkResize();
 
     if (drawVid)
@@ -370,14 +394,14 @@ void ossiaGrabber::draw()
                    color->w,
                    color->x);
 
-        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
-                canvas[1],
-                placement->z,
-                canvas[2],
-                canvas[3]);
+        vid.getTexture().draw(canv.x, // getTexture allows the use of the Z axis
+                canv.y,
+                canv.z,
+                canv.w,
+                canv.h);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canvas, placement->z, size);
+    if (getPixels) processPix(vid.getPixels(), pixVal, canv);
 }
 
 void ossiaGrabber::close()
@@ -405,15 +429,15 @@ void ossiaKinect::setup(bool infrared)
     vidWandH[0] = vid.getWidth();
     vidWandH[1] = vid.getHeight();
 
-#ifdef CV
-    allocateCvImg(vidWandH);
-#endif
-
     params.add(freeze.set("freeze", false));
 
     setMatrix(params);
 
-    canvas = placeCanvas(vidWandH, size, placement);
+#ifdef CV
+    cvSetup(vidWandH, params);
+#endif
+
+    canv.corner2center(vidWandH, size, placement);
 
     // print the intrinsic IR sensor values
     if(vid.isConnected()) {
@@ -427,10 +451,19 @@ void ossiaKinect::setup(bool infrared)
 void ossiaKinect::update()
 {
     if (!freeze) vid.update();
+
+#ifdef CV
+    if(vid.isFrameNew()) cvUpdate(vid.getDepthPixels());
+#endif
+
 }
 
 void ossiaKinect::draw()
 {
+#ifdef CV
+    cvdraw(canvas, placement->z);
+#endif
+
     if (drawVid || getPixels) checkResize();
 
     if (drawVid)
@@ -440,11 +473,11 @@ void ossiaKinect::draw()
                    color->w,
                    color->x);
 
-        vid.getTexture().draw(canvas[0], // getTexture allows the use of the Z axis
-                canvas[1],
-                placement->z,
-                canvas[2],
-                canvas[3]);
+        vid.getTexture().draw(canv.x, // getTexture allows the use of the Z axis
+                canv.y,
+                canv.z,
+                canv.w,
+                canv.h);
     }
 
     if (getPixels) processPix(vid.getPixels(), pixVal, canvas, placement->z, size);
