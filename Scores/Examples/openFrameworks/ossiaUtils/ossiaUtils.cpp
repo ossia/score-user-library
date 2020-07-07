@@ -33,22 +33,24 @@ void players::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaPlayer* vid : vids)
     {
+        int index{4};
+
         setBaseAtributes(device, vid->params); // get the matrix parameter group
         // play
-        device[vid->params[4]].setCritical(true).setDescription("play or pause the video");
+        device[vid->params[index]].setCritical(true).setDescription("play or pause the video");
         // loop
-        device[vid->params[5]].setCritical(true).setDescription("repeat the video indefinatly");
+        device[vid->params[++index]].setCritical(true).setDescription("repeat the video indefinatly");
         // seek
-        device[vid->params[6]].setClipMode("both").setDescription("jump to a specific position in the video");
+        device[vid->params[++index]].setClipMode("both").setDescription("jump to a specific position in the video");
         // volume
-        device[vid->params[7]].setClipMode("both").setUnit("gain.linear")
+        device[vid->params[++index]].setClipMode("both").setUnit("gain.linear")
                 .setDescription("set the volume of the video, if it contains audio");
 
-        setMatrixAtributes(device, vid->params.getGroup(8)); // get the matrix parameter group
-
 #ifdef CV
-
+        setCvAtributes(device, vid->params.getGroup(++index));
 #endif
+
+        setMatrixAtributes(device, vid->params.getGroup(++index)); // get the matrix parameter group
     }
 }
 #endif
@@ -140,11 +142,17 @@ void grabbers::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaGrabber* vid : vids)
     {
-        setBaseAtributes(device, vid->params); // get the matrix parameter group
-        // play
-        device[vid->params[4]].setCritical(true).setDescription("play or pause the video");
+        int index{4};
 
-        setMatrixAtributes(device, vid->params.getGroup(5)); // get the matrix parameter group
+        setBaseAtributes(device, vid->params);
+        // play
+        device[vid->params[index]].setCritical(true).setDescription("play or pause the video");
+
+#ifdef CV
+        setCvAtributes(device, vid->params.getGroup(++index));
+#endif
+
+        setMatrixAtributes(device, vid->params.getGroup(++index)); // get the matrix parameter group
     }
 }
 #endif
@@ -218,11 +226,17 @@ void kinects::setAtributes(ofxOscQueryServer& device)
 {
     for (ossiaKinect* vid : vids)
     {
+        int index{4};
+
         setBaseAtributes(device, vid->params); // get the matrix parameter group
         // play
-        device[vid->params[4]].setCritical(true).setDescription("play or pause the video");
+        device[vid->params[index]].setCritical(true).setDescription("play or pause the video");
 
-        setMatrixAtributes(device, vid->params.getGroup(5)); // get the matrix parameter group
+#ifdef CV
+        setCvAtributes(device, vid->params.getGroup(++index));
+#endif
+
+        setMatrixAtributes(device, vid->params.getGroup(++index)); // get the matrix parameter group
     }
 }
 #endif
@@ -253,73 +267,117 @@ void kinects::close()
 #endif
 
 //--------------------------------------------------------------
-ofVec4f placeCanvas(const unsigned int* wAndH, const float& s, const ofVec3f& p)
-{
-    float width{wAndH[0] * s};
-    float height{wAndH[1] * s};
-
-    float wOfset{width / 2};
-    float hOfset{height / 2};
-
-    int ofWidth{ofGetWidth()};
-    int ofHeight{ofGetHeight()};
-
-    int ofHalfW{ofWidth / 2};
-    int ofHalfH{ofHeight / 2};
-
-    float xOfset{ofHalfW + (ofHalfW * p[0])};
-    float yOfset{ofHalfH + (ofHalfH * p[1])};
-
-    return ofVec4f{(xOfset - wOfset),
-                (yOfset - hOfset),
-                width,
-                height};
-}
-
-//--------------------------------------------------------------
 #ifdef OSCQUERY
 void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
+    int index{0};
+
     // draw_video
-    device[params[0]].setCritical(true).setDescription("display the video");
+    device[params[index]].setCritical(true).setDescription("display the video");
     // size
-    device[params[1]].setDescription("set the display scale factor, 1 is the original size");
+    device[params[++index]].setDescription("set the display scale factor, 1 is the original size");
     // placement
-    device[params[2]].setUnit("position.opengl")
+    device[params[++index]].setUnit("position.opengl")
             .setDescription("the placement of the video, [0, 0, 0] is centered");
     // draw_color
-        device[params[3]].setClipMode("both").setUnit("color.argb8");
+        device[params[++index]].setClipMode("both").setUnit("color.argb8");
 }
+
+#ifdef CV
+void setCvAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
+{
+    int index{0};
+
+    // threshold
+    device[params[index]].setClipMode("both")
+            .setDescription("minimum grayscale value");
+    // hold Background
+    device[params[++index]].setCritical(true)
+            .setDescription("snapshot and remove curent background");
+    // draw greyscale
+    device[params[++index]].setCritical(true)
+            .setClipMode("both").setDescription("draw cv image");
+
+    setBlobsAtributes(device, params.getGroup(++index)); // get the matrix parameter group
+}
+
+void setBlobsAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
+{
+    int index{0};
+
+    // min area
+    device[params[index]].setClipMode("both")
+            .setDescription("minimum blob size");
+    // max area
+    device[params[++index]].setClipMode("both")
+            .setDescription("maximum blob size");
+    // draw contours
+    device[params[++index]].setCritical(true)
+            .setClipMode("both").setDescription("draw contours");
+
+    index++;
+
+    for (int i = 0; i < 10; i++)
+    {
+        device[params[index + (i * 2)]].setClipMode("both").setUnit("position.opengl");
+        device[params[index + (i * 2) + 1]].setClipMode("both");
+    }
+}
+#endif
 
 void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // using neamsapce ossiaVids still leav this function ambiguous
 {
+    int index{0};
+
     // get
-    device[params[0]].setCritical(true).setDescription("go through the video's pixel array to get ligthness value end average color");
+    device[params[index]].setCritical(true)
+            .setDescription("go through the video's pixel array to get ligthness value end average color");
     // invert
-    device[params[1]].setCritical(true).setDescription("invert ligt and dark matrix values");
+    device[params[++index]].setCritical(true)
+            .setDescription("invert ligt and dark matrix values");
     // horizontal points
-    device[params[2]].setCritical(true).setClipMode("both").setDescription("number of points along the video's width");
+    device[params[++index]].setCritical(true)
+            .setClipMode("both").setDescription("number of points along the video's width");
     // vertical points
-    device[params[3]].setCritical(true).setClipMode("both").setDescription("number of points along the video's height");
+    device[params[++index]].setCritical(true)
+            .setClipMode("both").setDescription("number of points along the video's height");
+
+#ifndef CV
     // threshold
-    device[params[4]].setClipMode("both").setDescription("minimum value to register in the matrix, 0 if under");
+    device[params[++index]].setClipMode("both")
+            .setDescription("minimum value to register in the matrix, 0 if under");
+#endif
+
     // matrix/columms_*/row_*
-    device[params[5]].setClipMode("both").setUnit("color.hsb.b").setDescription("brightnessa at a given point"); // not working
+    device[params[++index]].setClipMode("both").setUnit("color.hsb.b")
+            .setDescription("brightnessa at a given point"); // not working
     // average_color
-    device[params[6]].setClipMode("both").setUnit("color.argb8").setDescription("get the video's average color");
+    device[params[++index]].setClipMode("both").setUnit("color.argb8")
+            .setDescription("get the video's average color");
+
+#ifndef CV
     // barycenter
-    device[params[7]].setUnit("position.opengl").setDescription("center of brightness");
+    device[params[++index]].setUnit("position.opengl")
+            .setDescription("center of brightness");
+#endif
+
     // draw_matrix
-    device[params[8]].setCritical(true).setDescription("draw cicles at each points of the matrix");
+    device[params[++index]].setCritical(true)
+            .setDescription("draw cicles at each points of the matrix");
     // draw_barysenter
-    device[params[9]].setCritical(true).setDescription("draw a cicle at the brightness center");
+    device[params[++index]].setCritical(true)
+            .setDescription("draw a cicle at the brightness center");
     // circle_size
-    device[params[10]].setClipMode("both").setDescription("size factor for each circles");
+    device[params[++index]].setClipMode("both")
+            .setDescription("size factor for each circles");
     // circle_size
-    device[params[11]].setClipMode("both").setDescription("number of 'sides' per circle");
+    device[params[++index]].setClipMode("both")
+            .setDescription("number of 'sides' per circle");
     // circle_color
-    device[params[12]].setClipMode("both").setUnit("color.argb8").setDescription("color of evry circle");
+    device[params[++index]].setClipMode("both").setUnit("color.argb8")
+            .setDescription("color of evry circle");
 }
+
 #endif
 
 }

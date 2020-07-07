@@ -8,15 +8,13 @@ void ofApp::setup(){
                    ofVec4f(0, 0, 0, 0),
                    ofVec4f(255, 255, 255, 255)));
 
-    ofSetCircleResolution(10);
-
     videos.setup(); // default to the "data" directory inside "bin"
     parameters.add(videos.parameters);
 
     cameras.setup(1); // default to exclude the device at index 1 and grab 320 by 240 videos
     parameters.add(cameras.parameters);
 
-    oscQuery.setup(parameters);
+    oscQuery.setup(parameters, 1234, 5678, "playAndGrabb");
 
     oscQuery[backGround].setClipMode("both").setUnit("color.argb8");
 
@@ -51,15 +49,6 @@ void ofApp::windowResized(int w, int h){
 }
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){
-
-}
-
 void ofApp::exit(){
 
     videos.close();

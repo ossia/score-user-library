@@ -67,22 +67,24 @@ class ossiaCv
 {
 protected:
     ofParameterGroup cvControl;
-    ofParameter<bool> getCvImage;
 
-    ofParameter<int> minThreshold;
     ofParameter<int> maxThreshold;
 
-    // blob size
-    ofParameter<int> minArea;
-    ofParameter<int> maxArea;
+    ofxCvColorImage colorImg;
+    ofxCvGrayscaleImage grayImage; // grayscale depth image
+
+    ofxCvGrayscaleImage grayBg;
+    ofParameter<bool> holdBackGround;
+    void setBackGround(bool& hold);
 
     ofParameter<bool> drawCvImage;
 
-    ofxCvColorImage colorImg;
-
-    ofxCvGrayscaleImage grayImage; // grayscale depth image
-    ofxCvGrayscaleImage grayMin; // the near thresholded image
-    ofxCvGrayscaleImage grayMax; // the far thresholded image
+    ofParameterGroup blobs;
+    ofParameter<int> minArea;
+    ofParameter<int> maxArea;
+    // blob position and size
+    ofParameter<ofVec3f> position[10];
+    ofParameter<int> area[10];
 
     void cvSetup(const unsigned int* wAndH, ofParameterGroup& group);
     void cvUpdate(ofPixels& pixels);

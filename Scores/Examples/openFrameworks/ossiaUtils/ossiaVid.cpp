@@ -81,16 +81,24 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
     pixControl.add(invert.set("invert", false));
     pixControl.add(hPoints.set("horizontal_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
     pixControl.add(vPoints.set("vertical_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
-    pixControl.add(threshold.set("threshold", 128, 1, 255));
+
+#ifndef CV
+    pixControl.add(threshold.set("threshold", 64, 1, 255));
+#endif
+
     pixControl.add(pixMatrix);
     pixControl.add(averageColor.set("average_color",
                                     ofVec4f(255, 0, 0, 0),
                                     ofVec4f(0, 0, 0, 0),
                                     ofVec4f(255, 255, 255, 255)));
+
+#ifndef CV
     pixControl.add(centroid.set("barycenter",
                                 ofVec2f(0, 0),
                                 ofVec2f(-1, -1),
                                 ofVec2f(1, 1)));
+#endif
+
     pixControl.add(drawCircles.set("draw_matrix", false));
     pixControl.add(drawCenter.set("draw_barycenter", false));
     pixControl.add(circleSize.set("circles_size", 0.1, 0, 1));
@@ -195,37 +203,50 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canv
 void ossiaCv::cvSetup(const unsigned int* wAndH, ofParameterGroup& group)
 {
     cvControl.setName("cv");
-    cvControl.add(getCvImage.set("get", false));
-    cvControl.add(minThreshold.set("minThreshold", 255));
-    cvControl.add( maxThreshold.set("maxThreshold", 70));
+    cvControl.add(maxThreshold.set("threshold", 64));
+    cvControl.add(holdBackGround.set("hold_background", false));
+    holdBackGround.addListener(this, &ossiaCv::setBackGround);
     cvControl.add(drawCvImage.set("draw_grayscale", false));
-    cvControl.add(drawContours.set("draw_contours", false));
+
+    // blobs
+    blobs.setName("blobs");
+    blobs.add(minArea.set("min_area", 20));
+    blobs.add(maxArea.set("max_area", (wAndH[0] * wAndH[1]) / 3));
+    blobs.add(drawContours.set("draw_contours", false));
+    for (int i = 0; i < 10; i++)
+    {
+        blobs.add(position[i].set("position_"  + to_string(i+1),
+                                  ofVec3f(0, 0, 0),
+                                  ofVec3f(-1, -1, -1),
+                                  ofVec3f(1, 1, 1)));
+        blobs.add(area[i].set("size_" + to_string(i+1), 0));
+    }
+
+
+    cvControl.add(blobs);
 
     group.add(cvControl);
 
     colorImg.allocate(wAndH[0], wAndH[1]);
     grayImage.allocate(wAndH[0], wAndH[1]);
-    grayMin.allocate(wAndH[0], wAndH[1]);
-    grayMax.allocate(wAndH[0], wAndH[1]);
 }
 
 void ossiaCv::cvUpdate(ofPixels& pixels)
 {
-    if (getCvImage)
-    {
-        colorImg.setFromPixels(pixels);
-        grayImage = colorImg;
+    colorImg.setFromPixels(pixels);
+    grayImage = colorImg;
 
-        grayMin = grayImage;
-        grayMax = grayImage;
-        grayMin.threshold(minThreshold, true);
-        grayMax.threshold(maxThreshold);
-        cvAnd(grayMin.getCvImage(), grayMax.getCvImage(), grayImage.getCvImage(), NULL);
+    // take the abs value of the difference between background and incoming and then threshold:
+    if (holdBackGround) grayImage.absDiff(grayBg, grayImage);
+    grayImage.threshold(maxThreshold);
 
-        grayImage.flagImageChanged();
+    contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
+}
 
-        contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
-    }
+void ossiaCv::setBackGround(bool& hold)
+{
+    if (hold) grayBg = grayImage;
+    else grayBg.clear();
 }
 
 void ossiaCv::cvdraw(const ossiaVid::canvas& cnv)
@@ -242,7 +263,6 @@ void ossiaCv::cvdraw(const ossiaVid::canvas& cnv)
                        cnv.w,
                        cnv.h);
 }
-
 #endif
 
 //--------------------------------------------------------------
@@ -272,14 +292,14 @@ void ossiaPlayer::setup()
     params.add(volume.set("volume", 1., 0., 1.));
     volume.addListener(this, &ossiaPlayer::setVolume);
 
-    setMatrix(params);
-
     vidWandH[0] = vid.getWidth(); // get the video's original size
     vidWandH[1] = vid.getHeight();
 
 #ifdef CV
     cvSetup(vidWandH, params);
 #endif
+
+    setMatrix(params);
 
     canv.corner2center(vidWandH, size, placement);
 }
@@ -361,11 +381,11 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
 
     params.add(freeze.set("freeze", false));
 
-    setMatrix(params);
-
 #ifdef CV
     cvSetup(vidWandH, params);
 #endif
+
+    setMatrix(params);
 
     canv.corner2center(vidWandH, size, placement);
 }
@@ -431,11 +451,11 @@ void ossiaKinect::setup(bool infrared)
 
     params.add(freeze.set("freeze", false));
 
-    setMatrix(params);
-
 #ifdef CV
     cvSetup(vidWandH, params);
 #endif
+
+    setMatrix(params);
 
     canv.corner2center(vidWandH, size, placement);
 
@@ -461,7 +481,7 @@ void ossiaKinect::update()
 void ossiaKinect::draw()
 {
 #ifdef CV
-    cvdraw(canvas, placement->z);
+    cvdraw(canv);
 #endif
 
     if (drawVid || getPixels) checkResize();
@@ -480,7 +500,7 @@ void ossiaKinect::draw()
                 canv.h);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canvas, placement->z, size);
+    if (getPixels) processPix(vid.getPixels(), pixVal, canv);
 }
 
 void ossiaKinect::close()

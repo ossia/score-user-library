@@ -79,6 +79,10 @@ private:
 
 #ifdef OSCQUERY
 void setBaseAtributes(ofxOscQueryServer& device, ofParameterGroup& params);
+#ifdef CV
+void setCvAtributes(ofxOscQueryServer& device, ofParameterGroup& params);
+void setBlobsAtributes(ofxOscQueryServer& device, ofParameterGroup& params);
+#endif
 void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params);
 #endif
 
