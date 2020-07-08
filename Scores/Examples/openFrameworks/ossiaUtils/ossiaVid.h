@@ -59,6 +59,7 @@ protected:
 
     void setMatrix(ofParameterGroup& params);
     void processPix(const ofPixels& px, ofParameter<float>* pv, const canvas& cnv);
+    void drawPix(ofParameter<float>* pv, const canvas& cnv);
 };
 
 //--------------------------------------------------------------

@@ -112,16 +112,14 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
 
 void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canvas &cnv)
 {
-    size_t vidWidth = px.getWidth();
-    size_t vidHeight = px.getHeight();
-    size_t widthSpread = vidWidth / hPoints; // horizontal points
+    size_t widthSpread = vidWandH[0] / hPoints; // horizontal points
     unsigned int verticalStep = MATRIX_SIZE - vPoints; // vertical points
-    size_t heightSpread = vidHeight / vPoints; // neumber of pixels between each points
+    size_t heightSpread = vidWandH[1] / vPoints; // neumber of pixels between each points
     size_t widthMargin = widthSpread / 2; // minimum number of pixels from the left
     size_t heightMargin = heightSpread / 2; // minimum number of pixels from the top
     // number of skiped pixels before starting a new line
-    unsigned int widthRemainder = vidWidth - (vidWidth % hPoints) + widthMargin;
-    unsigned int heightRemainder = vidHeight - (vidHeight % vPoints) + heightMargin;
+    unsigned int widthRemainder = vidWandH[0] - (vidWandH[0] % hPoints) + widthMargin;
+    unsigned int heightRemainder = vidWandH[1] - (vidWandH[1] % vPoints) + heightMargin;
 
     ofVec4f midColor{0, 0, 0, 0};
     float lightSum{0};
@@ -189,13 +187,18 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canv
                     circleSize * size * 255); // cicle size
         }
 
-        baryCenter[0] /= vidWidth / 2;
+        baryCenter[0] /= vidWandH[0] / 2;
         baryCenter[0] -= 1;
-        baryCenter[1] /= vidHeight / 2;
+        baryCenter[1] /= vidWandH[1] / 2;
         baryCenter[1] -= 1;
 
         centroid.set(ofVec3f(baryCenter[0], baryCenter[1], 0)); // centroid
     }
+}
+
+void ossiaVid::drawPix(ofParameter<float>* pv, const canvas& cnv)
+{
+
 }
 
 //--------------------------------------------------------------
