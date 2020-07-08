@@ -41,6 +41,15 @@ protected:
 
     ofParameter<bool> drawVid;
 
+    // Pixel process;
+    size_t widthSpread;
+    unsigned int verticalStep;
+    size_t heightSpread;
+    size_t widthMargin;
+    size_t heightMargin;
+    unsigned int widthRemainder;
+    unsigned int heightRemainder;
+
     ofParameterGroup pixControl;
     ofParameter<bool> getPixels;
     ofParameter<bool> invert;
@@ -58,8 +67,8 @@ protected:
     ofParameterGroup pixMatrix;
 
     void setMatrix(ofParameterGroup& params);
-    void processPix(const ofPixels& px, ofParameter<float>* pv, const canvas& cnv);
-    void drawPix(ofParameter<float>* pv, const canvas& cnv);
+    void processPix(const ofPixels& px, ofParameter<float>* pv);
+    void drawPix(ofParameter<float>* pv);
 };
 
 //--------------------------------------------------------------

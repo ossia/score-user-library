@@ -108,30 +108,32 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
                                    ofVec4f(0, 0, 0, 0),
                                    ofVec4f(255, 255, 255, 255)));
     params.add(pixControl);
+
+    widthSpread = vidWandH[0] / hPoints; // horizontal points
+    verticalStep = MATRIX_SIZE - vPoints; // vertical points
+    heightSpread = vidWandH[1] / vPoints; // neumber of pixels between each points
+    widthMargin = widthSpread / 2; // minimum number of pixels from the left
+    heightMargin = heightSpread / 2; // minimum number of pixels from the top
+    // number of skiped pixels before starting a new line
+    widthRemainder = vidWandH[0] - (vidWandH[0] % hPoints) + widthMargin;
+    heightRemainder = vidWandH[1] - (vidWandH[1] % vPoints) + heightMargin;
 }
 
-void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canvas &cnv)
+void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv)
 {
-    size_t widthSpread = vidWandH[0] / hPoints; // horizontal points
-    unsigned int verticalStep = MATRIX_SIZE - vPoints; // vertical points
-    size_t heightSpread = vidWandH[1] / vPoints; // neumber of pixels between each points
-    size_t widthMargin = widthSpread / 2; // minimum number of pixels from the left
-    size_t heightMargin = heightSpread / 2; // minimum number of pixels from the top
+    widthSpread = vidWandH[0] / hPoints; // horizontal points
+    verticalStep = MATRIX_SIZE - vPoints; // vertical points
+    heightSpread = vidWandH[1] / vPoints; // neumber of pixels between each points
+    widthMargin = widthSpread / 2; // minimum number of pixels from the left
+    heightMargin = heightSpread / 2; // minimum number of pixels from the top
     // number of skiped pixels before starting a new line
-    unsigned int widthRemainder = vidWandH[0] - (vidWandH[0] % hPoints) + widthMargin;
-    unsigned int heightRemainder = vidWandH[1] - (vidWandH[1] % vPoints) + heightMargin;
+    widthRemainder = vidWandH[0] - (vidWandH[0] % hPoints) + widthMargin;
+    heightRemainder = vidWandH[1] - (vidWandH[1] % vPoints) + heightMargin;
 
     ofVec4f midColor{0, 0, 0, 0};
     float lightSum{0};
     ofVec2f baryCenter{0, 0};
     unsigned int iter{0};
-
-    ofSetCircleResolution(circleResolution);
-
-    ofSetColor(circleColor->y,
-               circleColor->z,
-               circleColor->w,
-               circleColor->x);
 
     for (size_t i = widthMargin; i < widthRemainder; i+= widthSpread)
     {
@@ -153,14 +155,6 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canv
             {
                 pv->set(focus);
 
-                if (drawCircles) // draw_matrix
-                {
-                    ofDrawCircle(cnv.x + i * size,
-                            cnv.y + j * size,
-                            cnv.z,
-                            circleSize * focus); // cicle size
-                }
-
                 baryCenter += ofVec2f(i, j) * focus;
                 lightSum += focus;
 
@@ -179,13 +173,6 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canv
     if (lightSum != 0)
     {
         baryCenter /= lightSum;
-        if (drawCenter) // draw_barycenter
-        {
-            ofDrawCircle((cnv.x + baryCenter[0]) * size,
-                    (cnv.y + baryCenter[1]) * size,
-                    cnv.z,
-                    circleSize * size * 255); // cicle size
-        }
 
         baryCenter[0] /= vidWandH[0] / 2;
         baryCenter[0] -= 1;
@@ -196,9 +183,23 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv, const canv
     }
 }
 
-void ossiaVid::drawPix(ofParameter<float>* pv, const canvas& cnv)
+void ossiaVid::drawPix(ofParameter<float>* pv)
 {
-
+    for (size_t i = widthMargin; i < widthRemainder; i+= widthSpread)
+    {
+        for (size_t j = heightMargin; j < heightRemainder; j+= heightSpread)
+        {
+            if (drawCircles && (*pv >= threshold)) // draw_matrix
+            {
+                ofDrawCircle(canv.x + i * size,
+                             canv.y + j * size,
+                             canv.z,
+                             circleSize * *pv); // cicle size
+            }
+            pv++;
+        }
+        pv+= verticalStep;
+    }
 }
 
 //--------------------------------------------------------------
@@ -310,6 +311,7 @@ void ossiaPlayer::setup()
 void ossiaPlayer::update()
 {
     vid.update();
+    if (getPixels) processPix(vid.getPixels(), pixVal);
 }
 
 void ossiaPlayer::setPlay(bool &toPlay)
@@ -357,7 +359,22 @@ void ossiaPlayer::draw()
                 canv.h);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canv);
+    ofSetCircleResolution(circleResolution);
+
+    ofSetColor(circleColor->y,
+               circleColor->z,
+               circleColor->w,
+               circleColor->x);
+
+    if (drawCircles) drawPix(pixVal);
+
+    if (drawCenter) // draw_barycenter
+    {
+        ofDrawCircle((canv.x + centroid->x) * size,
+                     (canv.y + centroid->y) * size,
+                     canv.z,
+                     circleSize * size * 255); // cicle size
+    }
 }
 
 void ossiaPlayer::close()
@@ -396,6 +413,7 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
 void ossiaGrabber::update()
 {
     if (!freeze) vid.update();
+    if (getPixels) processPix(vid.getPixels(), pixVal);
 
 #ifdef CV
     if (vid.isFrameNew())cvUpdate(vid.getPixels());
@@ -424,7 +442,22 @@ void ossiaGrabber::draw()
                 canv.h);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canv);
+    ofSetCircleResolution(circleResolution);
+
+    ofSetColor(circleColor->y,
+               circleColor->z,
+               circleColor->w,
+               circleColor->x);
+
+    if (drawCircles) drawPix(pixVal);
+
+    if (drawCenter) // draw_barycenter
+    {
+        ofDrawCircle((canv.x + centroid->x) * size,
+                     (canv.y + centroid->y) * size,
+                     canv.z,
+                     circleSize * size * 255); // cicle size
+    };
 }
 
 void ossiaGrabber::close()
@@ -474,6 +507,7 @@ void ossiaKinect::setup(bool infrared)
 void ossiaKinect::update()
 {
     if (!freeze) vid.update();
+    if (getPixels) processPix(vid.getPixels(), pixVal);
 
 #ifdef CV
     if(vid.isFrameNew()) cvUpdate(vid.getDepthPixels());
@@ -503,7 +537,22 @@ void ossiaKinect::draw()
                 canv.h);
     }
 
-    if (getPixels) processPix(vid.getPixels(), pixVal, canv);
+    ofSetCircleResolution(circleResolution);
+
+    ofSetColor(circleColor->y,
+               circleColor->z,
+               circleColor->w,
+               circleColor->x);
+
+    if (drawCircles) drawPix(pixVal);
+
+    if (drawCenter) // draw_barycenter
+    {
+        ofDrawCircle((canv.x + centroid->x) * size,
+                     (canv.y + centroid->y) * size,
+                     canv.z,
+                     circleSize * size * 255); // cicle size
+    };
 }
 
 void ossiaKinect::close()
