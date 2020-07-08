@@ -342,11 +342,9 @@ void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // 
     device[params[++index]].setCritical(true)
             .setClipMode("both").setDescription("number of points along the video's height");
 
-#ifndef CV
     // threshold
     device[params[++index]].setClipMode("both")
             .setDescription("minimum value to register in the matrix, 0 if under");
-#endif
 
     // matrix/columms_*/row_*
     device[params[++index]].setClipMode("both").setUnit("color.hsb.b")
@@ -355,11 +353,9 @@ void setMatrixAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // 
     device[params[++index]].setClipMode("both").setUnit("color.argb8")
             .setDescription("get the video's average color");
 
-#ifndef CV
     // barycenter
     device[params[++index]].setUnit("position.opengl")
             .setDescription("center of brightness");
-#endif
 
     // draw_matrix
     device[params[++index]].setCritical(true)

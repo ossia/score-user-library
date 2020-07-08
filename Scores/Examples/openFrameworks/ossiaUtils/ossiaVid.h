@@ -49,6 +49,8 @@ protected:
     size_t heightMargin;
     unsigned int widthRemainder;
     unsigned int heightRemainder;
+    unsigned int halfWandH[2];
+    unsigned int bary[2]{0, 0};
 
     ofParameterGroup pixControl;
     ofParameter<bool> getPixels;

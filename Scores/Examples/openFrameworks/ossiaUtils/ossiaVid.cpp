@@ -9,11 +9,8 @@ void ossiaVid::canvas::corner2center(const unsigned int* wAndH, const float& reS
     float wOfset{width / 2};
     float hOfset{height / 2};
 
-    int ofWidth{ofGetWidth()};
-    int ofHeight{ofGetHeight()};
-
-    int ofHalfW{ofWidth / 2};
-    int ofHalfH{ofHeight / 2};
+    int ofHalfW{ofGetWidth() / 2};
+    int ofHalfH{ofGetHeight() / 2};
 
     float xOfset{ofHalfW + (ofHalfW * center[0])};
     float yOfset{ofHalfH + (ofHalfH * center[1])};
@@ -81,10 +78,7 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
     pixControl.add(invert.set("invert", false));
     pixControl.add(hPoints.set("horizontal_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
     pixControl.add(vPoints.set("vertical_points", MATRIX_SIZE / 2, 1, MATRIX_SIZE));
-
-#ifndef CV
     pixControl.add(threshold.set("threshold", 64, 1, 255));
-#endif
 
     pixControl.add(pixMatrix);
     pixControl.add(averageColor.set("average_color",
@@ -92,12 +86,10 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
                                     ofVec4f(0, 0, 0, 0),
                                     ofVec4f(255, 255, 255, 255)));
 
-#ifndef CV
     pixControl.add(centroid.set("barycenter",
                                 ofVec2f(0, 0),
                                 ofVec2f(-1, -1),
                                 ofVec2f(1, 1)));
-#endif
 
     pixControl.add(drawCircles.set("draw_matrix", false));
     pixControl.add(drawCenter.set("draw_barycenter", false));
@@ -117,6 +109,8 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
     // number of skiped pixels before starting a new line
     widthRemainder = vidWandH[0] - (vidWandH[0] % hPoints) + widthMargin;
     heightRemainder = vidWandH[1] - (vidWandH[1] % vPoints) + heightMargin;
+    halfWandH[0] = vidWandH[0] / 2;
+    halfWandH[1] = vidWandH[1] / 2;
 }
 
 void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv)
@@ -173,13 +167,16 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv)
     if (lightSum != 0)
     {
         baryCenter /= lightSum;
-
-        baryCenter[0] /= vidWandH[0] / 2;
+        // to be drawn
+        bary[0] = baryCenter[0];
+        bary[1] = baryCenter[1];
+        // to send as values
+        baryCenter[0] /= halfWandH[0];
         baryCenter[0] -= 1;
-        baryCenter[1] /= vidWandH[1] / 2;
+        baryCenter[1] /= halfWandH[1];
         baryCenter[1] -= 1;
 
-        centroid.set(ofVec3f(baryCenter[0], baryCenter[1], 0)); // centroid
+        centroid.set(ofVec3f(baryCenter[0], baryCenter[1], lightSum / iter)); // centroid
     }
 }
 
@@ -225,7 +222,6 @@ void ossiaCv::cvSetup(const unsigned int* wAndH, ofParameterGroup& group)
                                   ofVec3f(1, 1, 1)));
         blobs.add(area[i].set("size_" + to_string(i+1), 0));
     }
-
 
     cvControl.add(blobs);
 
@@ -370,10 +366,10 @@ void ossiaPlayer::draw()
 
     if (drawCenter) // draw_barycenter
     {
-        ofDrawCircle((canv.x + centroid->x) * size,
-                     (canv.y + centroid->y) * size,
+        ofDrawCircle((canv.x + bary[0]) * size,
+                     (canv.y + bary[1]) * size,
                      canv.z,
-                     circleSize * size * 255); // cicle size
+                     circleSize * size * centroid->z); // cicle size
     }
 }
 
@@ -453,11 +449,11 @@ void ossiaGrabber::draw()
 
     if (drawCenter) // draw_barycenter
     {
-        ofDrawCircle((canv.x + centroid->x) * size,
-                     (canv.y + centroid->y) * size,
+        ofDrawCircle((canv.x + bary[0]) * size,
+                     (canv.y + bary[1]) * size,
                      canv.z,
-                     circleSize * size * 255); // cicle size
-    };
+                     circleSize * size * centroid->z); // cicle size
+    }
 }
 
 void ossiaGrabber::close()
@@ -548,11 +544,11 @@ void ossiaKinect::draw()
 
     if (drawCenter) // draw_barycenter
     {
-        ofDrawCircle((canv.x + centroid->x) * size,
-                     (canv.y + centroid->y) * size,
+        ofDrawCircle((canv.x + bary[0]) * size,
+                     (canv.y + bary[1]) * size,
                      canv.z,
-                     circleSize * size * 255); // cicle size
-    };
+                     circleSize * size * centroid->z); // cicle size
+    }
 }
 
 void ossiaKinect::close()
