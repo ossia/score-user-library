@@ -305,6 +305,9 @@ void setBlobsAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // u
 {
     int index{0};
 
+    // get contours
+    device[params[++index]].setCritical(true)
+            .setClipMode("both").setDescription("draw contours");
     // min area
     device[params[index]].setClipMode("both")
             .setDescription("minimum blob size");
@@ -320,7 +323,7 @@ void setBlobsAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // u
     for (int i = 0; i < 10; i++)
     {
         device[params[index + (i * 2)]].setClipMode("both").setUnit("position.opengl");
-        device[params[index + (i * 2) + 1]].setClipMode("both");
+        device[params[index + (i * 2) + 1]];
     }
 }
 #endif

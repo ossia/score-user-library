@@ -35,6 +35,11 @@ protected:
     ofParameter<ofVec3f> placement;
     ofParameter<float> size;
     unsigned int vidWandH[2];
+
+#ifdef CV // only needed for cvUpdate
+    unsigned int vidArea;
+#endif
+
     canvas canv;
 
     ofParameter<ofVec4f> color;
@@ -91,19 +96,20 @@ protected:
 
     ofParameter<bool> drawCvImage;
 
+    ofxCvContourFinder contourFinder;
+
     ofParameterGroup blobs;
+    ofParameter<bool> getContours;
     ofParameter<int> minArea;
     ofParameter<int> maxArea;
+    ofParameter<bool> drawContours;
     // blob position and size
     ofParameter<ofVec3f> position[10];
-    ofParameter<int> area[10];
+    ofParameter<float> area[10];
 
     void cvSetup(const unsigned int* wAndH, ofParameterGroup& group);
-    void cvUpdate(ofPixels& pixels);
+    void cvUpdate(ofPixels& pixels, const unsigned int* wAndH, const unsigned int& wArea);
     void cvdraw(const ossiaVid::canvas& cnv);
-
-    ofxCvContourFinder contourFinder;
-    ofParameter<bool> drawContours;
 };
 #endif
 
