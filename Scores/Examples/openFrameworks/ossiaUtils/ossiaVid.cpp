@@ -113,7 +113,11 @@ void ossiaVid::setMatrix(ofParameterGroup& params)
     halfWandH[1] = vidWandH[1] / 2;
 }
 
-void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv)
+void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv
+                          #ifdef CV
+                          , const ofPixels& cvPx
+                          #endif
+                              )
 {
     widthSpread = vidWandH[0] / hPoints; // horizontal points
     verticalStep = MATRIX_SIZE - vPoints; // vertical points
@@ -142,6 +146,9 @@ void ossiaVid::processPix(const ofPixels& px, ofParameter<float> *pv)
 
             float focus{0};
 
+#ifdef CV
+            pxColor = cvPx.getColor(i, j);
+#endif
             if (invert) focus = 255 - pxColor.getLightness();
             else focus = pxColor.getLightness();
 
@@ -216,7 +223,7 @@ void ossiaCv::cvSetup(const unsigned int* wAndH, ofParameterGroup& group)
     blobs.add(maxArea.set("max_area", (wAndH[0] * wAndH[1]) / 3));
     blobs.add(drawContours.set("draw_contours", false));
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         blobs.add(position[i].set("position_"  + to_string(i+1),
                                   ofVec3f(0, 0, 0),
@@ -235,8 +242,12 @@ void ossiaCv::cvSetup(const unsigned int* wAndH, ofParameterGroup& group)
 
 void ossiaCv::cvUpdate(ofPixels& pixels, const unsigned int* wAndH, const unsigned int& wArea)
 {
+#ifdef KINECT
+    grayImage.setFromPixels(pixels);
+#else
     colorImg.setFromPixels(pixels);
     grayImage = colorImg;
+#endif
 
     // take the abs value of the difference between background and incoming and then threshold:
     if (holdBackGround) grayImage.absDiff(grayBg, grayImage);
@@ -244,7 +255,7 @@ void ossiaCv::cvUpdate(ofPixels& pixels, const unsigned int* wAndH, const unsign
 
     if (getContours)
     {
-        contourFinder.findContours(grayImage, minArea, maxArea, 10, false);
+        contourFinder.findContours(grayImage, minArea, maxArea, 5, false);
 
         int i{0};
 
@@ -310,9 +321,8 @@ void ossiaPlayer::setup()
     vidWandH[0] = vid.getWidth(); // get the video's original size
     vidWandH[1] = vid.getHeight();
 
-    vidArea = vidWandH[0] * vidWandH[1];
-
 #ifdef CV
+    vidArea = vidWandH[0] * vidWandH[1];
     cvSetup(vidWandH, params);
 #endif
 
@@ -324,7 +334,11 @@ void ossiaPlayer::setup()
 void ossiaPlayer::update()
 {
     if (play) vid.update();
-    if (getPixels) processPix(vid.getPixels(), pixVal);
+    if (getPixels) processPix(vid.getPixels(), pixVal
+                          #ifdef CV
+                          , grayImage.getPixels()
+                          #endif
+                              );
 
 #ifdef CV
     if (vid.isFrameNew()) cvUpdate(vid.getPixels(), halfWandH, vidArea);
@@ -412,17 +426,13 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
     vid.initGrabber(width, height);
 
     params.setName(device.deviceName);    // set parameters
+    params.add(freeze.set("freeze", false));
 
     vidWandH[0] = vid.getWidth();
     vidWandH[1] = vid.getHeight();
 
 #ifdef CV // only needed for cvUpdate
     vidArea = vidWandH[0] * vidWandH[1];
-#endif
-
-    params.add(freeze.set("freeze", false));
-
-#ifdef CV
     cvSetup(vidWandH, params);
 #endif
 
@@ -434,7 +444,11 @@ void ossiaGrabber::setup(unsigned int width, unsigned int height)
 void ossiaGrabber::update()
 {
     if (!freeze) vid.update();
-    if (getPixels) processPix(vid.getPixels(), pixVal);
+    if (getPixels) processPix(vid.getPixels(), pixVal
+                          #ifdef CV
+                          , grayImage.getPixels()
+                          #endif
+                              );
 
 #ifdef CV
     if (vid.isFrameNew()) cvUpdate(vid.getPixels(), halfWandH, vidArea);
@@ -502,17 +516,13 @@ void ossiaKinect::setup(bool infrared)
     vid.open(device);
 
     params.setName(to_string(device));    // set parameters
+    params.add(freeze.set("freeze", false));
 
     vidWandH[0] = vid.getWidth();
     vidWandH[1] = vid.getHeight();
 
 #ifdef CV // only needed for cvUpdate
     vidArea = vidWandH[0] * vidWandH[1];
-#endif
-
-    params.add(freeze.set("freeze", false));
-
-#ifdef CV
     cvSetup(vidWandH, params);
 #endif
 
@@ -532,10 +542,14 @@ void ossiaKinect::setup(bool infrared)
 void ossiaKinect::update()
 {
     if (!freeze) vid.update();
-    if (getPixels) processPix(vid.getPixels(), pixVal);
+    if (getPixels) processPix(vid.getPixels(), pixVal
+                          #ifdef CV
+                          , grayImage.getPixels()
+                          #endif
+                              );
 
 #ifdef CV
-    if (vid.isFrameNew()) cvUpdate(vid.getPixels(), halfWandH, vidArea);
+    if (vid.isFrameNew()) cvUpdate(vid.getDepthPixels(), halfWandH, vidArea);
 #endif
 
 }

@@ -1,11 +1,11 @@
-# playAndGrabb oscquery exemple
+# Kinect oscquery exemple
 
 ### Setup and Run 
 
 The [ofxOscQuery](https://github.com/bltzr/ofxOscQuery) addon is required to run this exemple.
 To use with qbs inside qtcreator, first run the ```install_template.sh``` script inside the openFrameworks repository (```./openFrameworks/scripts/qtcreator/install_template.sh```).
 
-To then open this exemple in qtcreator, click "new project" and choose the "Import an existing Application" template for openFrameworks. In the generated "playAndGrabb.qbs" file, a few likes are likly to be missing statrting at line 11. The missing file paths and addon has to be manually added as shown below :
+To then open this exemple in qtcreator, click "new project" and choose the "Import an existing Application" template for openFrameworks. In the generated "kinect.qbs" file, a few likes are likly to be missing statrting at line 11. The missing file paths and addon has to be manually added as shown below :
 
 ```
         files: [
@@ -24,7 +24,7 @@ To then open this exemple in qtcreator, click "new project" and choose the "Impo
             "ofxOpenCv"
         ]
 
-        cpp.defines: of.addons
+        cpp.defines: ["OSCQUERY", "KINECT", "CV"]
 ```
 
 The program should then be able to be compiled

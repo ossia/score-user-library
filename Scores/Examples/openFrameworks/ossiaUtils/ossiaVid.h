@@ -74,7 +74,11 @@ protected:
     ofParameterGroup pixMatrix;
 
     void setMatrix(ofParameterGroup& params);
-    void processPix(const ofPixels& px, ofParameter<float>* pv);
+    void processPix(const ofPixels& px, ofParameter<float>* pv
+                #ifdef CV
+                , const ofPixels& cvPx
+                #endif
+                    );
     void drawPix(ofParameter<float>* pv);
 };
 
@@ -104,8 +108,8 @@ protected:
     ofParameter<int> maxArea;
     ofParameter<bool> drawContours;
     // blob position and size
-    ofParameter<ofVec3f> position[10];
-    ofParameter<float> area[10];
+    ofParameter<ofVec3f> position[5];
+    ofParameter<float> area[5];
 
     void cvSetup(const unsigned int* wAndH, ofParameterGroup& group);
     void cvUpdate(ofPixels& pixels, const unsigned int* wAndH, const unsigned int& wArea);

@@ -320,7 +320,7 @@ void setBlobsAtributes(ofxOscQueryServer& device, ofParameterGroup& params) // u
 
     index++;
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         device[params[index + (i * 2)]].setClipMode("both").setUnit("position.opengl");
         device[params[index + (i * 2) + 1]];

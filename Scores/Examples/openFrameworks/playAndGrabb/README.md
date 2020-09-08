@@ -22,7 +22,7 @@ To then open this exemple in qtcreator, click "new project" and choose the "Impo
             "ofxOscQuery"
         ]
 
-        cpp.defines: of.addons
+        cpp.defines: ["OSCQUERY"]
 ```
 
 The program should then be able to be compiled
