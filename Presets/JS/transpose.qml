@@ -1,12 +1,12 @@
-import QtQuick 2.0
 import Score 1.0
-Item {
-  // Les E/S de la boite
+
+Script {
+  // Inputs & outputs
   IntSlider  { id: transpose; min: -127; max: 127; init: 0 }
   MidiInlet  { id: midiIn }
   MidiOutlet { id: midiOut }
 
-  // Fonctions utilitaires
+  // Utility JS functions
   function clamp(value, min, max)
   { return Math.min(Math.max(value, min), max); }
 
@@ -51,11 +51,11 @@ Item {
   function setVelocity(note_message, vel)
   { note_message[2] = clamp(vel, 0, 127); }
 
-  // On sauve les messages d'entrée pour pouvoir envoyer les bons note off.
+  // Save the input messages to be able to send note-offs later
   property var currentMessages: [];
 
-  // Cette fonction est appelée à chaque tick.
-  function onTick(oldtime, time, position, offset)
+  // This is called on every tick.
+  tick: function(token, state)
   {
     var messages = midiIn.messages();
     for(var i = 0; i < messages.length; ++i)
