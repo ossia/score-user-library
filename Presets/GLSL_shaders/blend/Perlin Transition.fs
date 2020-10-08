@@ -60,12 +60,6 @@ vec4 getToColor(vec2 inUV)	{
 // Author: Rich Harris
 // License: MIT
 
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-
-
 // http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0/
 float random(vec2 co)
 {

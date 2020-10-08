@@ -6,7 +6,7 @@ Script {
   AudioOutlet { id: out1 }
   
   // Index to keep track of the phase
-  property int idx: 0;
+  property real phase: 0;
 
   tick: function(token, state) {
     var arr = [ ];
@@ -26,7 +26,8 @@ Script {
 
       // Fill our array
       for(var s = 0; s < n; s++) {
-        var sample = Math.sin(phi * (idx++));
+        phase += phi;
+        var sample = Math.sin(phase);
         sample = freq > 0 ? sample : 0;
         arr[i0 + s] = 0.3 * sample;
       }

@@ -60,12 +60,6 @@
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0
 ////////////////////////////////////////////////////////////////////
 
-
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-
 //------------------------------------------------------------------
 // simplex noise function
 // by : Ian McEwan, Ashima Arts
