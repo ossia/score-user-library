@@ -12,7 +12,7 @@ Script {
     var arr = [ ];
 
     // How many samples we must write
-    var n = token.physical_write_duration(state.model_to_samples);
+    var n = token.physical_write_duration(state.model_to_physical);
     
     if(n > 0) {
       // Computer the sin() coefficient
@@ -22,7 +22,7 @@ Script {
       var phi = 2 * Math.PI * freq / state.sample_rate;
 
       // Where we must start to write samples
-      var i0 = token.physical_start(state.model_to_samples);
+      var i0 = token.physical_start(state.model_to_physical);
 
       // Fill our array
       for(var s = 0; s < n; s++) {
