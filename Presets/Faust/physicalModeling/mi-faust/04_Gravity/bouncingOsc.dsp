@@ -13,7 +13,6 @@ Note: Beware, if using 32 bit precision gravity forces can become so small they 
 */
 
 import("stdfaust.lib");
-import("mi.lib");
 
 
 OutGain = 700;
@@ -22,10 +21,10 @@ grav = 0.002;
 K = 0.04;
 
 model = (
-	osc(1., K, 0.0003, 0, 0., 0.),
-	mass(1, grav/ ma.SR, 3., 3.):
+	mi.oscil(1., K, 0.0003, 0, 0., 0.),
+	mi.mass(1, grav/ ma.SR, 0.5, 0.5):
 	RoutingMassToLink :
-	collision(0.1, 0.02, 0, 0., 3.),
+	mi.collision(0.1, 0.02, 0, 0., 0.5),
 	par(i, nbOut, _):
 	RoutingLinkToMass
 )~par(i, nbMass, _):
@@ -52,7 +51,7 @@ process = model:*(OutGain);
 @o osc 1. K 0.0003 0. 0.
 
 # Hammer mass falling down with gravity
-@p mass 1 grav 3. 0.
+@p mass 1 grav 0.5 0.
 
 @c contact @o @p 0.1 0.02
 

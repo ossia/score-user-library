@@ -1,5 +1,13 @@
-# [Faust](http://faust.grame.fr/) Examples
+# Faust Examples
 
-This folder is a copy of the Example Folder from the [Faust repository](https://github.com/grame-cncm/faust/tree/master-dev/examples), and the modules from [Faust Playground](https://github.com/grame-cncm/faustplayground/tree/master/faust-modules)
+This folder contains a series of example Faust codes organized in different sections. 
 
-We would like to thank The Faust Team at [GRAME](http://www.grame.fr/) and the Faust Community for their excellent work and support!
+## Compiling the Examples
+
+You can use any of the `faust2...` script installed on your system (go in `/tools/faust2appls` to get an exhaustive list) to compile the Faust codes available in this folder. For example, if you're a Mac user and you want to turn `filtering/vcfWahLab.dsp` into a standalone CoreAudio application with a Qt interface, just run:
+
+```
+faust2caqt filtering/vcfWahLab.dsp
+``` 
+
+Alternatively, you can use FaustLive, it's all pretty open ;)...
