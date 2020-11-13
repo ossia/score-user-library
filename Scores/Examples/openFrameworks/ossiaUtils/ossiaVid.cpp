@@ -1,5 +1,41 @@
 #include "ossiaVid.h"
 
+//-------------------------------------------------------------
+#ifdef CV
+
+namespace outline
+{
+
+struct Dir *alloc_dir()
+{
+    return((struct Dir *) malloc(sizeof(struct Dir)));
+}
+
+void init_dir(struct Dir *me, struct Dir *next, struct Dir *previous, int x, int y)
+{
+    me->next = next;
+    me->previous = previous;
+    me->x = x;
+    me->y = y;
+}
+
+void init_first()
+{
+    S = alloc_dir();
+    E = alloc_dir();
+    N = alloc_dir();
+    W = alloc_dir();
+
+    init_dir(S, W, E, 0, 1);
+    init_dir(E, S, N, 1, 0);
+    init_dir(N, E, W, 0, -1);
+    init_dir(W, N, S, -1, 0);
+}
+
+};
+
+#endif
+
 //--------------------------------------------------------------
 void ossiaVid::canvas::corner2center(const unsigned int* wAndH, const float& reSize, const ofVec3f& center)
 {
@@ -225,7 +261,7 @@ void ossiaCv::cvSetup(const unsigned int* wAndH, ofParameterGroup& group)
 
     for (int i = 0; i < 5; i++)
     {
-        blobs.add(position[i].set("position_"  + to_string(i+1),
+        blobs.add(position[i].set("position_" + to_string(i+1),
                                   ofVec3f(0, 0, 0),
                                   ofVec3f(-1, -1, -1),
                                   ofVec3f(1, 1, 1)));
@@ -261,10 +297,12 @@ void ossiaCv::cvUpdate(ofPixels& pixels, const unsigned int* wAndH, const unsign
 
         for (const ofxCvBlob& b : contourFinder.blobs)
         {
-            position[i++].set(ofVec3f{(b.centroid.x / wAndH[0]) - 1,
+            position[i].set(ofVec3f{(b.centroid.x / wAndH[0]) - 1,
                                       (b.centroid.y / wAndH[1]) - 1,
                                   b.centroid.z});
-            area[i++].set(b.area / wArea);
+            area[i].set(b.area / wArea);
+
+            i++;
         }
     }
 }
@@ -517,6 +555,8 @@ void ossiaKinect::setup(bool infrared)
 
     params.setName(to_string(device));    // set parameters
     params.add(freeze.set("freeze", false));
+    params.add(angle.set("angle", 0, -30, 30));
+    angle.addListener(this, &ossiaKinect::tilt);
 
     vidWandH[0] = vid.getWidth();
     vidWandH[1] = vid.getHeight();
@@ -537,6 +577,11 @@ void ossiaKinect::setup(bool infrared)
         << "kinect " << device <<" zero plane pixel size: " << vid.getZeroPlanePixelSize() << "mm\n"
         << "kinect " << device <<" zero plane dist: " << vid.getZeroPlaneDistance() << "mm\n";
     }
+}
+
+void ossiaKinect::tilt(float &angle)
+{
+    vid.setCameraTiltAngle(angle);
 }
 
 void ossiaKinect::update()

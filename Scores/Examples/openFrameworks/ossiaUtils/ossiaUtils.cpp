@@ -231,6 +231,7 @@ void kinects::setAtributes(ofxOscQueryServer& device)
         setBaseAtributes(device, vid->params); // get the matrix parameter group
         // play
         device[vid->params[index]].setCritical(true).setDescription("play or pause the video");
+        device[vid->params[++index]].setDescription("camera angle").setClipMode("both").setUnit("angle.degrees");
 
 #ifdef CV
         setCvAtributes(device, vid->params.getGroup(++index));
