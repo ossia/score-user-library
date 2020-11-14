@@ -1,41 +1,5 @@
 #include "ossiaVid.h"
 
-//-------------------------------------------------------------
-#ifdef CV
-
-namespace outline
-{
-
-struct Dir *alloc_dir()
-{
-    return((struct Dir *) malloc(sizeof(struct Dir)));
-}
-
-void init_dir(struct Dir *me, struct Dir *next, struct Dir *previous, int x, int y)
-{
-    me->next = next;
-    me->previous = previous;
-    me->x = x;
-    me->y = y;
-}
-
-void init_first()
-{
-    S = alloc_dir();
-    E = alloc_dir();
-    N = alloc_dir();
-    W = alloc_dir();
-
-    init_dir(S, W, E, 0, 1);
-    init_dir(E, S, N, 1, 0);
-    init_dir(N, E, W, 0, -1);
-    init_dir(W, N, S, -1, 0);
-}
-
-};
-
-#endif
-
 //--------------------------------------------------------------
 void ossiaVid::canvas::corner2center(const unsigned int* wAndH, const float& reSize, const ofVec3f& center)
 {

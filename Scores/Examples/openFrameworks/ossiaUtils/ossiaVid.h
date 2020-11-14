@@ -11,26 +11,6 @@
 
 #ifdef CV
 #include "ofxOpenCv.h"
-//--------------------------------------------------------------
-
-namespace outline
-{
-
-struct Dir {
-    struct Dir *next;
-    struct Dir *previous;
-    int x;
-    int y;
-};
-
-extern struct Dir *S;
-extern struct Dir *E;
-extern struct Dir *N;
-extern struct Dir *W;
-extern void init_first();
-
-}
-
 #endif
 
 //--------------------------------------------------------------
