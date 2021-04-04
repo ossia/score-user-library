@@ -1,0 +1,1344 @@
+{
+    "Device": {
+        "Name": "OSCdevice",
+        "Protocol": "9a42de4b-f6eb-4bca-9564-01b975f601b9",
+        "OutputPort": 9997,
+        "InputPort": 9996,
+        "Host": "127.0.0.1"
+    },
+    "Children": [
+        {
+            "Address": {
+                "ClipMode": "Free",
+                "Unit": "none",
+                "RepetitionFilter": false,
+                "Value": {},
+                "Domain": {},
+                "Extended": {},
+                "Name": "circ"
+            },
+            "Children": [
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Clip",
+                        "Unit": "none",
+                        "RepetitionFilter": true,
+                        "Value": {
+                            "Float": 0.0
+                        },
+                        "Domain": {
+                            "Float": {
+                                "Min": 0.0,
+                                "Max": 255.0
+                            }
+                        },
+                        "Extended": {
+                            "priority": 1.0
+                        },
+                        "Name": "instance"
+                    },
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Clip",
+                "Unit": "none",
+                "RepetitionFilter": true,
+                "Value": {
+                    "Int": 0
+                },
+                "Domain": {
+                    "Int": {
+                        "Min": 0,
+                        "Max": 255
+                    }
+                },
+                "Extended": {
+                    "priority": 1.0
+                },
+                "Name": "grandmaster"
+            },
+            "Children": []
+        },
+        {
+            "Address": {
+                "ClipMode": "Free",
+                "Unit": "none",
+                "RepetitionFilter": false,
+                "Value": {},
+                "Domain": {},
+                "Extended": {},
+                "Name": "seq"
+            },
+            "Children": [
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Clip",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Float": 0.0
+                        },
+                        "Domain": {
+                            "Float": {
+                                "Min": 0.0,
+                                "Max": 1000.0
+                            }
+                        },
+                        "Extended": {
+                            "priority": 1.0
+                        },
+                        "Name": "go"
+                    },
+                    "Children": []
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Clip",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Float": 0.0
+                        },
+                        "Domain": {
+                            "Float": {
+                                "Min": 0.0,
+                                "Max": 255.0
+                            }
+                        },
+                        "Extended": {
+                            "priority": 1.0
+                        },
+                        "Name": "fadeX1"
+                    },
+                    "Children": []
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Clip",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Float": 0.0
+                        },
+                        "Domain": {
+                            "Float": {
+                                "Min": 0.0,
+                                "Max": 255.0
+                            }
+                        },
+                        "Extended": {
+                            "priority": 1.0
+                        },
+                        "Name": "fadeX2"
+                    },
+                    "Children": []
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Clip",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Float": 0.0
+                        },
+                        "Domain": {
+                            "Float": {
+                                "Min": 0.0,
+                                "Max": 255.0
+                            }
+                        },
+                        "Extended": {
+                            "priority": 1.0
+                        },
+                        "Name": "X1"
+                    },
+                    "Children": []
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Clip",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Float": 0.0
+                        },
+                        "Domain": {
+                            "Float": {
+                                "Min": 0.0,
+                                "Max": 255.0
+                            }
+                        },
+                        "Extended": {
+                            "priority": 1.0
+                        },
+                        "Name": "X2"
+                    },
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "Address": {
+                "ClipMode": "Free",
+                "Unit": "none",
+                "RepetitionFilter": false,
+                "Value": {},
+                "Domain": {},
+                "Extended": {},
+                "Name": "sub"
+            },
+            "Children": [
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "1"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "2"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "3"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "4"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "5"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "6"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "7"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "8"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "9"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "10"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "11"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "12"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "13"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "14"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "15"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "16"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "17"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "18"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "19"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                },
+                {
+                    "Address": {
+                        "ClipMode": "Free",
+                        "Unit": "none",
+                        "RepetitionFilter": false,
+                        "Value": {},
+                        "Domain": {},
+                        "Extended": {},
+                        "Name": "20"
+                    },
+                    "Children": [
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": false,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "level"
+                            },
+                            "Children": []
+                        },
+                        {
+                            "Address": {
+                                "ioType": "<->",
+                                "ClipMode": "Clip",
+                                "Unit": "none",
+                                "RepetitionFilter": true,
+                                "Value": {
+                                    "Float": 0.0
+                                },
+                                "Domain": {
+                                    "Float": {
+                                        "Min": 0.0,
+                                        "Max": 255.0
+                                    }
+                                },
+                                "Extended": {
+                                    "priority": 1.0
+                                },
+                                "Name": "flash"
+                            },
+                            "Children": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
