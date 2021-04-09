@@ -1,0 +1,303 @@
+{
+    "Device": {
+        "Name": "obs",
+        "Protocol": "9a42de4b-f6eb-4bca-9564-01b975f601b9",
+        "OutputPort": 3333,
+        "InputPort": 53000,
+        "Host": "127.0.0.1"
+    },
+    "Children": [
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "String": ""
+                },
+                "Domain": {},
+                "Name": "scene"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Impulse": null
+                },
+                "Domain": {},
+                "Name": "go"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Impulse": null
+                },
+                "Domain": {},
+                "Name": "back"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {},
+                "Domain": {},
+                "Name": "transOverrideType"
+            },
+            "Children": [
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Watercolor"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Liquify"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Cut"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Move"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Fade"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Movefade"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Cloud"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Move3"
+                    }
+                },
+                {
+                    "Address": {
+                        "ioType": "<->",
+                        "ClipMode": "Free",
+                        "RepetitionFilter": false,
+                        "Value": {
+                            "Impulse": null
+                        },
+                        "Domain": {},
+                        "Name": "Glitch"
+                    }
+                }
+            ]
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Impulse": null
+                },
+                "Domain": {},
+                "Name": "fitToScreen"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {},
+                "Domain": {},
+                "Name": "move"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Float": 0.0
+                },
+                "Domain": {
+                    "Float": {
+                        "Min": 0.0,
+                        "Max": 30000.0
+                    }
+                },
+                "Name": "transOverrideDuration"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Float": 0.0
+                },
+                "Domain": {
+                    "Float": {
+                        "Min": -1.0,
+                        "Max": 1.0
+                    }
+                },
+                "Name": "movex"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Impulse": null
+                },
+                "Domain": {},
+                "Name": "duplicateCurrentScene"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Float": 0.0
+                },
+                "Domain": {
+                    "Float": {
+                        "Min": 0.0,
+                        "Max": 3.0
+                    }
+                },
+                "Name": "size"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Float": 0.0
+                },
+                "Domain": {
+                    "Float": {
+                        "Min": -1.0,
+                        "Max": 1.0
+                    }
+                },
+                "Name": "movey"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Float": 0.0
+                },
+                "Domain": {
+                    "Float": {
+                        "Min": 0.0,
+                        "Max": 10.0
+                    }
+                },
+                "Name": "align"
+            }
+        },
+        {
+            "Address": {
+                "ioType": "<->",
+                "ClipMode": "Free",
+                "RepetitionFilter": false,
+                "Value": {
+                    "Float": 0.0
+                },
+                "Domain": {
+                    "Float": {
+                        "Min": -1080.0,
+                        "Max": 1080.0
+                    }
+                },
+                "Name": "spin"
+            }
+        }
+    ]
+}
