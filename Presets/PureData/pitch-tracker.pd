@@ -1,0 +1,6 @@
+#N canvas 1075 384 450 300 12;
+#X obj 85 78 adc~;
+#X obj 86 143 s \$0-pitch;
+#X obj 86 109 sigmund~ pitch;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
