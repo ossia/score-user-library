@@ -74,31 +74,22 @@
 }
 */
 
-
-float round (float x)	{
-	if (fract(x) < 0.5)
-		return floor(x);
-	else
-		return ceil(x);	
-}
-
-
 void main()	{
 	vec4		inputPixelColor = vec4(0.0);
-	
+
 	if (PASSINDEX == 0)	{
 		if ((FRAMEINDEX==0)||(resetPosition))
 			inputPixelColor = vec4(0.5,0.5,0.0,1.0);
 		else
 			inputPixelColor = IMG_THIS_PIXEL(currentPosition);
-		
+
 		vec2		pos = inputPixelColor.rg;
 		vec2		outputSize = IMG_SIZE(lastState);
 		vec2		penSizeInPixels = vec2(penSize * min(outputSize.x,outputSize.y));
 		penSizeInPixels.x = (penSizeInPixels.x < 1.0) ? (1.0) : (penSizeInPixels.x);
 		penSizeInPixels.y = (penSizeInPixels.y < 1.0) ? (1.0) : (penSizeInPixels.y);
 		vec2		normalizedPenSize = penSizeInPixels / outputSize;
-		
+
 		if ((moveUp)&&(pos.y<1.0-normalizedPenSize.y))	{
 			pos.y = pos.y + normalizedPenSize.y;
 		}
@@ -125,14 +116,13 @@ void main()	{
 			vec2		penSizeInPixels = vec2(penSize * min(RENDERSIZE.x,RENDERSIZE.y));
 			penSizeInPixels.x = (penSizeInPixels.x < 1.0) ? (1.0) : (penSizeInPixels.x);
 			penSizeInPixels.y = (penSizeInPixels.y < 1.0) ? (1.0) : (penSizeInPixels.y);
-			//pos.x = round(pos.x);
-			//pos.y = round(pos.y);
+
 			if (((gl_FragCoord.x) >= pos.x)&&((gl_FragCoord.y) >= pos.y)&&((gl_FragCoord.x) < pos.x + penSizeInPixels.x)&&((gl_FragCoord.y) < pos.y + penSizeInPixels.y))
 				inputPixelColor = penColor;
 			else
 				inputPixelColor = IMG_THIS_PIXEL(lastState);
 		}
 	}
-	
+
 	gl_FragColor = inputPixelColor;
 }
