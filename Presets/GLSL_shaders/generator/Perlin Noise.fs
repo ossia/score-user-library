@@ -83,5 +83,5 @@ float fbm(vec2 x) {
 void main()
 {
     vec2 uv = isf_FragNormCoord.xy;
-    gl_FragColor = vec4(fbm(uv * scale));
+    gl_FragColor = vec4(vec3(fbm(uv * scale)), 1.0);
 }
