@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Vertical scroll","Preset":[[0,{"String":"return [0, t / 1e6] "}],[1,{"Float":0.6244166493415833}],[2,{"Float":0.7077500224113464}],[3,{"Float":0.5}]]}

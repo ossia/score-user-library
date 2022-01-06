@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Crude Lowpass","Preset":[[1,{"String":"out[0] := clamp(-1,  ((1-2*a) * x[0]+2*a*px[0]), 1);\nout[1] := clamp(-1,  ((1-2*a) * x[1]+2*a*px[1]), 1);"}],[2,{"Float":0.25}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

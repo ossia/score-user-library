@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Tan Disto","Preset":[[1,{"String":"\nout[0] := clamp(-1,  tan(x[0]*a), 1);\nout[1] := clamp(-1,  tan(x[1]*a), 1);"}],[2,{"Float":1.0}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

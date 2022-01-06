@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"eae294b3-afeb-4fba-bbe4-337998d3748a","Effect":""},"Name":"Square","Preset":[[0,{"String":"\nvar phi := 2 * pi * (20 + a * 500) / fs;\n\nm1[0] += phi;\n\nvar f := cos(m1[0]) > 0 ? b : -b;\nout[0] := f;\nout[1] := f;"}],[1,{"Float":0.4622563123703003}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

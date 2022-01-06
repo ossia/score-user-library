@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"eae294b3-afeb-4fba-bbe4-337998d3748a","Effect":""},"Name":"Sine","Preset":[[0,{"String":"var phi := 2 * pi * (20 + a * 500) / fs;\nm1[0] += phi;\n\nout[0] := b * cos(m1[0]);\nout[1] := b * cos(m1[0]);\n"}],[1,{"Float":0.5}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}
