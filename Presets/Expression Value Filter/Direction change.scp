@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Direction change","Preset":[[1,{"String":"if(abs(x - px) < 0.1, 0,  if(px< x, 1, -1))"}],[2,{"Float":0.5}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}
