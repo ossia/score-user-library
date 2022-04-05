@@ -542,14 +542,14 @@ vec3 blendMode( int mode, vec3 base, vec3 blend, float opacity ){
 
 void main()	{
 	gl_FragColor.rgb = 
-	 blendMode(mode1, alpha1 * IMG_THIS_NORM_PIXEL(t1).rgb * IMG_THIS_NORM_PIXEL(t1).a,
+	  blendMode(mode1, alpha1 * IMG_THIS_NORM_PIXEL(t1).rgb * IMG_THIS_NORM_PIXEL(t1).a,
     blendMode(mode2, alpha2 * IMG_THIS_NORM_PIXEL(t2).rgb * IMG_THIS_NORM_PIXEL(t2).a,
-	 blendMode(mode3, alpha3 * IMG_THIS_NORM_PIXEL(t3).rgb * IMG_THIS_NORM_PIXEL(t3).a,
-	 blendMode(mode4, alpha4 * IMG_THIS_NORM_PIXEL(t4).rgb * IMG_THIS_NORM_PIXEL(t4).a,
-	 blendMode(mode5, alpha5 * IMG_THIS_NORM_PIXEL(t5).rgb * IMG_THIS_NORM_PIXEL(t5).a,
-	 blendMode(mode6, alpha6 * IMG_THIS_NORM_PIXEL(t6).rgb * IMG_THIS_NORM_PIXEL(t6).a,
-	 blendMode(mode7, alpha7 * IMG_THIS_NORM_PIXEL(t7).rgb * IMG_THIS_NORM_PIXEL(t7).a,
-	                  alpha8 * IMG_THIS_NORM_PIXEL(t8).rgb * IMG_THIS_NORM_PIXEL(t8).a)))))));
+	  blendMode(mode3, alpha3 * IMG_THIS_NORM_PIXEL(t3).rgb * IMG_THIS_NORM_PIXEL(t3).a,
+	  blendMode(mode4, alpha4 * IMG_THIS_NORM_PIXEL(t4).rgb * IMG_THIS_NORM_PIXEL(t4).a,
+	  blendMode(mode5, alpha5 * IMG_THIS_NORM_PIXEL(t5).rgb * IMG_THIS_NORM_PIXEL(t5).a,
+	  blendMode(mode6, alpha6 * IMG_THIS_NORM_PIXEL(t6).rgb * IMG_THIS_NORM_PIXEL(t6).a,
+	  blendMode(mode7, alpha7 * IMG_THIS_NORM_PIXEL(t7).rgb * IMG_THIS_NORM_PIXEL(t7).a,
+	                   alpha8 * IMG_THIS_NORM_PIXEL(t8).rgb * IMG_THIS_NORM_PIXEL(t8).a)))))));
 
 	gl_FragColor.a = 1.0; 
 }
