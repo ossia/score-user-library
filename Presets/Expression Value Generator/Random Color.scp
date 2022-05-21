@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Random Color","Preset":[[0,{"String":"return [\n  random(0, a), \n  random(0, b),\n  random(0, c), \n  1\n]"}],[1,{"Float":1.0}],[2,{"Float":1.0}],[3,{"Float":0.6666666865348816}]]}

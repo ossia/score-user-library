@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Color Noise","Preset":[[0,{"String":"var time := pos  * a * 10;\nvar red := noise(time, b * 10, c); \nvar green := noise(time + 1000, b * 10, c); \nvar blue := noise(time + 100000, b * 10 , c); \nreturn [red, green, blue, 1]"}],[1,{"Float":0.4223368465900421}],[2,{"Float":0.0}],[3,{"Float":1.0}]]}

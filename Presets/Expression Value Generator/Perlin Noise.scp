@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Perlin Noise","Preset":[[0,{"String":"noise(pos * a * 10, b * 10, c)  * 100"}],[1,{"Float":1.0}],[2,{"Float":0.05298539251089096}],[3,{"Float":0.0}]]}
