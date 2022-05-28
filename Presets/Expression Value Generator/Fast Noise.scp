@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Fast Noise","Preset":[[0,{"String":"5 * (noise(pos * 100, 4, c) - 0.5) "}],[1,{"Float":0.5}],[2,{"Float":0.5}],[3,{"Float":0.4998441338539123}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Dice","Preset":[[0,{"String":"round(random(1, 6))"}],[1,{"Float":0.5}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

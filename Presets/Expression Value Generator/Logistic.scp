@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Logistic","Preset":[[0,{"String":"if(m1 == 0) {\n  m2 := 0.8;\n  m1 := 1;\n}\n\nvar r := 4 * a;\nm2 := r * m2 * (1 - m2);\nm2;"}],[1,{"Float":0.9166666865348816}],[2,{"Float":0.38333332538604736}],[3,{"Float":0.5}]]}
