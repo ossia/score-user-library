@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Increment-on-press","Preset":[[1,{"String":"m1 := m1 + if(x == 1 and x != px, 1, 0)"}],[2,{"Float":0.5}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}
