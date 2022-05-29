@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Hold A","Preset":[[1,{"String":"m1 := if(a >= 1.0, x, m1)\n\n"}],[2,{"Float":0.20000000298023224}],[3,{"Float":0.0}],[4,{"Float":0.0}]]}
