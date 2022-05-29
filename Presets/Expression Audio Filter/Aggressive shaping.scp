@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Aggressive shaping","Preset":[[1,{"String":"out := sin ((c +100 a) (x ^ (b x)))"}],[2,{"Float":0.7016666531562805}],[3,{"Float":1.0}],[4,{"Float":0.2516666650772095}]]}

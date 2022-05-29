@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Discretize","Preset":[[1,{"String":"out := (round(x 50 a) / (50 a))"}],[2,{"Float":0.5016666650772095}],[3,{"Float":0.0}],[4,{"Float":0.0}]]}

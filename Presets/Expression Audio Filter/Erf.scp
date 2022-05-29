@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Erf","Preset":[[1,{"String":"out := erf(x *(1 + 100 a)) / (1 + 100 a)"}],[2,{"Float":0.16833333671092987}],[3,{"Float":0.0}],[4,{"Float":0.0}]]}
