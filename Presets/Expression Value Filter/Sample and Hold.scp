@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Sample and Hold","Preset":[[1,{"String":"var cur := mod(t/fs, a + b * 10 + c * 100);\nm3 := if(m1 > cur, x, m3);\nm1 := cur;\nm3\n\n"}],[2,{"Float":0.20000000298023224}],[3,{"Float":0.0}],[4,{"Float":0.0}]]}
