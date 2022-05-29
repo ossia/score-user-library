@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Weierstrass","Preset":[[0,{"String":"var n:= 10;\nvar accum := 0;\nvar bb := round(b * 2 + c * 20 + 1);\nfor (var i := 0; i < n; i += 1)  {\n  accum += (a ^ n) cos(t pi bb^n);\n};\naccum"}],[1,{"Float":0.656416654586792}],[2,{"Float":0.5064166784286499}],[3,{"Float":0.4230833351612091}]]}

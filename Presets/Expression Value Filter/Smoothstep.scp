@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Smoothstep","Preset":[[1,{"String":"var l := a; var r := b;\nvar v := (clamp(x, l, r) - l) / (r - l);\nv * v * (3 - 2 * v)"}],[2,{"Float":0.0}],[3,{"Float":1.0}],[4,{"Float":0.5}]]}
