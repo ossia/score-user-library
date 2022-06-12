@@ -9,27 +9,27 @@ Script {
   property real phase: 0;
 
   tick: function(token, state) {
-    var arr = [ ];
+    // Create an array to store our samples
+    let arr = new Array(state.buffer_size);
+    for (let i = 0; i < state.buffer_size; ++i)
+      arr[i] = 0;
 
-    // How many samples we must write
-    var n = token.physical_write_duration(state.model_to_physical);
+    // How many samples we must write in this array
+    // (the process could run for e.g. only frame 17 through 24 in a 128-frame buffer)
+    const tm = state.timings(token);
     
-    if(n > 0) {
+    if(tm.length > 0) {
       // Computer the sin() coefficient
-      var freq = in1.value;
+      const freq = in1.value;
 
       // Notice how we get sample_rate from state.
-      var phi = 2 * Math.PI * freq / state.sample_rate;
-
-      // Where we must start to write samples
-      var i0 = token.physical_start(state.model_to_physical);
+      const phi = 2 * Math.PI * freq / state.sample_rate;
 
       // Fill our array
-      for(var s = 0; s < n; s++) {
+      for(var s = 0; s < tm.length; s++) {
+        const sample = freq > 0 ? Math.sin(phase) : 0;
+        arr[tm.start_sample + s] = 0.3 * sample;
         phase += phi;
-        var sample = Math.sin(phase);
-        sample = freq > 0 ? sample : 0;
-        arr[i0 + s] = 0.3 * sample;
       }
     }
 
