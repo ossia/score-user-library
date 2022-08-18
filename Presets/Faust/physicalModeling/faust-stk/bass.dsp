@@ -64,8 +64,8 @@ reflexionFilter = poleZero(b0,b1,a1)
 	   with{
 		//filter coefficients are stored in a C++ function
 		loopFilterb0 = ffunction(float getValueBassLoopFilterb0(float), <bass.h>,"");
-		loopFilterb1 = ffunction(float getValueBassLoopFilterb1(float), <bass.h>,"");
-		loopFiltera1 = ffunction(float getValueBassLoopFiltera1(float), <bass.h>,"");
+		loopFilterb1 = ffunction(float getValueBassLoopFilterb1bass(float), <bass.h>,"");
+		loopFiltera1 = ffunction(float getValueBassLoopFiltera1bass(float), <bass.h>,"");
 		freqToNoteNumber = (log - log(440))/log(2)*12 + 69 + 0.5 : int;
 		freqn = freq : freqToNoteNumber;
 		b0 = loopFilterb0(freqn);

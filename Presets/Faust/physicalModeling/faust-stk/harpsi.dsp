@@ -45,7 +45,7 @@ freqn = freq : freqToNoteNumber;
 //string excitation
 soundBoard = dryTapAmp*no.noise
 	with{
-		dryTapAmpT60 = ffunction(float getValueDryTapAmpT60(float), <harpsichord.h>,"");
+		dryTapAmpT60 = ffunction(float getValueDryTapAmpT60harpsichord(float), <harpsichord.h>,"");
 		noteCutOffTime = freqn : dryTapAmpT60*gain;
 		dryTapAmp = asympT60(0.15,0,noteCutOffTime,gate);
 	};	
@@ -54,11 +54,11 @@ soundBoard = dryTapAmp*no.noise
 loopFilter = fi.TF2(b0,b1,b2,a1,a2)
 	   with{
 		//functions are imported from the C++ file
-		loopFilterb0 = ffunction(float getValueLoopFilterb0(float), <harpsichord.h>,"");
-		loopFilterb1 = ffunction(float getValueLoopFilterb1(float), <harpsichord.h>,"");
-		loopFilterb2 = ffunction(float getValueLoopFilterb2(float), <harpsichord.h>,"");
-		loopFiltera1 = ffunction(float getValueLoopFiltera1(float), <harpsichord.h>,"");
-		loopFiltera2 = ffunction(float getValueLoopFiltera2(float), <harpsichord.h>,"");
+		loopFilterb0 = ffunction(float getValueLoopFilterb0harpsichord(float), <harpsichord.h>,"");
+		loopFilterb1 = ffunction(float getValueLoopFilterb1harpsichord(float), <harpsichord.h>,"");
+		loopFilterb2 = ffunction(float getValueLoopFilterb2harpsichord(float), <harpsichord.h>,"");
+		loopFiltera1 = ffunction(float getValueLoopFiltera1harpsichord(float), <harpsichord.h>,"");
+		loopFiltera2 = ffunction(float getValueLoopFiltera2harpsichord(float), <harpsichord.h>,"");
 		//coefficients are extracted from the functions
 		b0 = loopFilterb0(freqn);
 		b1 = loopFilterb1(freqn);
@@ -79,7 +79,7 @@ stereo = stereoizer(delayLength);
 //envelope for string loop resonance time
 stringLoopGainT = gate*0.9996 + (gate<1)*releaseLoopGain(freqn)*0.9 : si.smoo
 		with{
-			releaseLoopGain = ffunction(float getValueReleaseLoopGain(float), <harpsichord.h>,"");
+			releaseLoopGain = ffunction(float getValueReleaseLoopGainharpsichord(float), <harpsichord.h>,"");
 		};
 
 //one string

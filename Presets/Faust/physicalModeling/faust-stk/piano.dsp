@@ -59,7 +59,7 @@ asympT60pedal(value,T60) = (*(factor) + constant)~_
 soundBoard = dryTapAmp*no.noise + pedalEnv*no.noise : *(0.5)
 	with{
 		//the values of the envelope cut-off time are stored in an external C++ function 
-		dryTapAmpT60 = ffunction(float getValueDryTapAmpT60(float), <piano.h>,"");
+		dryTapAmpT60 = ffunction(float getValueDryTapAmpT60piano(float), <piano.h>,"");
 		sustainPedalLevel = ffunction(float getValueSustainPedalLevel(float), <piano.h>,"");
 
 		pedalEnvCutOffTime = 1.4;
@@ -99,7 +99,7 @@ hammer = seq(i,4,calcHammer);
 //==================== DC BLOCKERS ================
 
 //the values for the dcblockers a1 are stored in an external C++ file
-DCBa1 = ffunction(float getValueDCBa1(float), <piano.h>,"");
+DCBa1 = ffunction(float getValueDCBa1piano(float), <piano.h>,"");
 dCBa1Value = freqn : DCBa1;
 dCBb0Value = 1 - dCBa1Value;
 
@@ -226,7 +226,7 @@ delayG(frequency,stiffnessCoefficient) = de.fdelay(4096,delayLength)
 		
 coupledStrings = (parallelStrings <: (_,(_+_ <: _,_),_ : _,_,(_ : couplingFilter),_ : adder))~(_,_) : !,!,_
 	with{
-		releaseLoopGain = ffunction(float getValueReleaseLoopGain(float), <piano.h>,"");
+		releaseLoopGain = ffunction(float getValueReleaseLoopGainpiano(float), <piano.h>,"");
 		hz = ffunction(float getValueDetuningHz(float), <piano.h>,"");
 		coupledStringLoopGain = gate*0.9996 + ((gate-1)*-1)*releaseLoopGain(freqn)*0.9 : si.smoo;
 		couplingFilter = poleZero(b0Coupling,b1Coupling,a1Coupling);
