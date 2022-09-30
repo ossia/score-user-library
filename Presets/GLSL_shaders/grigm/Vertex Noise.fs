@@ -45,7 +45,7 @@ out vec4 out_color;
 
 void main()
 {
-    out_color = MM_SHADER_THIS_NORM_PIXEL();
+    out_color = IMG_THIS_NORM_PIXEL(inputImage);
     out_color.a += ignoreAlpha;
     out_color *= modulationColor;
 

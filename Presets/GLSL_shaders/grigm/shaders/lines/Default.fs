@@ -63,7 +63,7 @@ void main()
 
     vec4 texColor;
     if (mmTexturedLine) {
-        texColor = MM_SHADER_THIS_NORM_PIXEL();
+        texColor = IMG_THIS_NORM_PIXEL(inputImage);
         texColor.a += ignoreAlpha;
 	} else {
 		texColor = vec4(1.,1.,1.,1.);

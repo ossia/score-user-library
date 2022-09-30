@@ -25,7 +25,7 @@
             "DEFAULT": 0.5,
             "MAX": 1,
             "MIN": 0,
-            "NAME": "length",
+            "NAME": "leakLength",
             "TYPE": "float"
         },
         {
@@ -61,7 +61,7 @@ void main (void)
 	//point = clamp(point, 0.0, 1.0);
 
 	// this adjusts the length of the leak
-	float leakIntensity = pow(point.y, 1.0 + ((1.0 - length) * 19.0));
+	float leakIntensity = pow(point.y, 1.0 + ((1.0 - leakLength) * 19.0));
 
 	// this adjusts the gamma/brightness of the overall effect.
 	leakIntensity =  pow(leakIntensity, 1.0 / amount);

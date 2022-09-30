@@ -93,7 +93,7 @@
          // Texture mode enabled
     	if (texturedEnabled)
     	{
-            vec4 media_color = MM_SHADER_THIS_NORM_PIXEL();
+            vec4 media_color = IMG_THIS_NORM_PIXEL(inputImage);
             media_color.a += ignoreAlpha;
             media_color *= textureColor;
             object_color = media_color.a * vec4(media_color.rgb,1) + (1. - media_color.a) * object_color;
