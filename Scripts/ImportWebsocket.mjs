@@ -11,8 +11,8 @@ function importWsDevice()
   const res = Score.prompt({
     title: "Input JSON",
     widgets: [ 
-      { name:"Name", type: "lineedit" },
-      { name:"Host", type: "lineedit" },
+      { name:"Name", type: "lineedit", init: "Device" },
+      { name:"Host", type: "lineedit", init: "ws://127.0.0.1:8080" },
       { name:"JSON", type: "textfield" },
     ]
   });
