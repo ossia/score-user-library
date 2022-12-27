@@ -36,7 +36,7 @@ float noise( in vec2 x )
                mix( hash1(n+ 57.0), hash1(n+ 58.0),f.x),f.y);
 }
 
-vec3 texture( in vec2 p )
+vec3 compute_texture( in vec2 p )
 {
 	vec2 q = p;
 	p = p*vec2(6.0,128.0);
@@ -54,7 +54,7 @@ vec3 texture( in vec2 p )
 
 }
 #else
-vec3 texture( in vec2 p )
+vec3 compute_texture( in vec2 p )
 {
 	return vec3(1.0,1.0,1.0);
 
@@ -134,7 +134,7 @@ void main( void )
 	col *= 0.4 + 0.6*smoothstep( 0.1,0.25,abs(hash1(c.y+0.413)-0.5) );
 
     // texture	
-	col *= 1.7*pow(texture( uv ), vec3(0.4) );
+	col *= 1.7*pow(compute_texture( uv ), vec3(0.4) );
 	
     // lighting
 	col *= clamp( 0.65 + c.z*0.35, 0.0, 1.0 );
