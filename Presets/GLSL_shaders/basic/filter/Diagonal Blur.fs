@@ -58,6 +58,7 @@ void main() {
 	vec2 vector = vec2(cos(pi * angle),sin(pi * angle));
 	
 	vec4 returnMe;
+
 	
 	if (width > 0.0)	{
 		p1 = loc - width * RENDERSIZE * vector;
@@ -68,6 +69,7 @@ void main() {
 		float count = clamp(width * max(RENDERSIZE.x,RENDERSIZE.y) / float(quality), 5.0, 125.0);
 		//float count = 10.0;
 		vec2 diff = p2 - p1;
+		returnMe = vec4(0.0);
 		for (float i = 0.0; i < 125.0; ++i)	{
 			if (i > float(count))
 				break;

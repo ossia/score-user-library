@@ -67,6 +67,7 @@ void main() {
 		float i;
 		float count = clamp(width * max(RENDERSIZE.x,RENDERSIZE.y) / float(quality), 5.0, 75.0);
 		vec2 diff = p2 - p1;
+		returnMe = vec4(0.0);
 		for (float i = 0.0; i < 75.0; ++i)	{
 			if (i > float(count))
 				break;
