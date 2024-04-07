@@ -109,11 +109,11 @@ void main() {
   
   vec2 pos = isf_FragNormCoord;
   vec4 old = IMG_NORM_PIXEL(one, pos);
-  vec4 new = IMG_NORM_PIXEL(inputImage, pos);
+  vec4 new_ = IMG_NORM_PIXEL(inputImage, pos);
   vec4 U = vec4(0.0);
   
   U =IMG_NORM_PIXEL(one, isf_FragNormCoord+vec2(offset*0.01))*mix_var + IMG_NORM_PIXEL(one, isf_FragNormCoord-vec2(offset*0.01))*mix_var;
 
 
-  gl_FragColor =(new)+(U-old/2.0);
+  gl_FragColor =(new_)+(U-old/2.0);
 }
