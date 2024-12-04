@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Epicycloid 2","Preset":[[0,{"String":"var a := 100.1 / (1+i);\nvar b := 10.9 / (1+i);\nvar p := 0.000000001 t + (1+i);\nvar vx := (a+b) cos(p) - b cos((1+a/b)p);\nvar vy := (a+b) sin(p) - b sin((1+a/b)p);\nreturn [vx, vy]"}],[1,{"Int":278}]]}

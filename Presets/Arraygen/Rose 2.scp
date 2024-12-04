@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Rose 2","Preset":[[0,{"String":"var k := 2 / 1;\nvar p := 0.00000001 t + i;\nreturn [\n  cos(k p) cos(p),\n  sin(k p) sin(p)\n]"}],[1,{"Int":12}]]}

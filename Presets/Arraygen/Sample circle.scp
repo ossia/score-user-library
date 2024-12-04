@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Sample circle","Preset":[[0,{"String":"var r := random(0, 1);\nvar p := random(0, 2 * pi);\nreturn [r cos(p), r sin(p)]"}],[1,{"Int":32}]]}

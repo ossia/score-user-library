@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Hypo 1","Preset":[[0,{"String":"var a := 0.5 * (i/(n-1));\nvar b := -0.5  * (i/(n-1));\nvar p := 0.000000001 t + (1+i);\nvar vx := (a - b) cos(p) + b cos (p (a-b) / b);\nvar vy := (a - b) sin(p) + b sin(p (a-b) / b);\nreturn [vx, vy]"}],[1,{"Int":278}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Chill boi","Preset":[[1,{"String":"x * noise(0.000000001t + 100i * 0.001sqrt(1+abs(x)), 1, 0.1)"}]]}
