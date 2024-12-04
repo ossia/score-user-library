@@ -26,13 +26,6 @@ vec3 toHex(vec2 coords)
 	return vec3(q,r,-q-r);
 }
 
-float round(float a)
-{
-	float t = floor(a);
-	if(fract(a)>0.5) t=ceil(a);
-	return t;
-}
-
 
 
 vec3 cube_round(vec3 cube)

@@ -42,14 +42,6 @@
 
 float time;
 
-float round(float n) {
-    return floor(n + .5);
-}
-
-vec2 round(vec2 n) {
-    return floor(n + .5);
-}
-
 // --------------------------------------------------------
 // HG_SDF
 // https://www.shadertoy.com/view/Xs3GRB

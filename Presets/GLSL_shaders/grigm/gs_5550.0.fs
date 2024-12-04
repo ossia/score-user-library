@@ -19,23 +19,6 @@ precision mediump float;
 #define PI 3.14159
 
 
-float round(float v)
-{
-	if(v - floor(v) >= 0.5) return floor(v)+1.0;
-	else return floor(v);
-
-}
-
-vec2 round(vec2 v)
-{
-	vec2 ret = vec2(0.0);
-	if(v.x - floor(v.x) >= 0.5) ret.x = floor(v.x)+1.0;
-	else ret.x = floor(v.x);
-	if(v.y - floor(v.y) >= 0.5) ret.y = floor(v.y)+1.0;
-	else ret.y = floor(v.y);
-	return ret;
-}
-
 float triwave(float x)
 {
 	return 1.0-4.0*abs(0.5-fract(0.5*x + 0.25));
