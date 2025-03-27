@@ -44,7 +44,7 @@ float BinarySerpentsmap( vec3 p ){
     return length(p.xy)-.1;
 }
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
-{
+{ fragColor = vec4(0., 0., 0., 1.);
    vec2 uv = iZoom * fragCoord.xy/RENDERSIZE.xy * 2.0 - 0.5;
   	 vec3 camPos = vec3(cos(TIME*0.3), sin(TIME*0.3), 1.5);
     vec3 camTarget = vec3(0.0, 0.0, 0.0);

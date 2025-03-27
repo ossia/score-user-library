@@ -215,8 +215,8 @@ float marker_tag(vec2 P, float size)
     return max(r1,.75*r2);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     const float linewidth = 1.5;
     const float antialias = 1.0;
 

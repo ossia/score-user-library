@@ -137,7 +137,8 @@ vec3 render(vec2 crd,float t, float tc){
     return c;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     float tc=20.*iMouse.x/iResolution.x+1.;
     float t=iTime*(2.*iMouse.y/iResolution.x+1.);
     vec3 c = vec3(0.);

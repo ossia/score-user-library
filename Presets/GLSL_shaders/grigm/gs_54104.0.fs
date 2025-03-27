@@ -53,8 +53,8 @@ mat2 rot(float a)
     mat2 mat = mat2(cs, si, -si, cs);
     return mat;
 }
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 st = fragCoord.xy / iResolution.xy;
 
 	float u_time = iTime;//because I was using a glsl editor that names TIME "u_time

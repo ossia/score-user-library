@@ -354,7 +354,8 @@ vec3 getBackground( in vec2 fragCoord ) {
    	return vec3(0.05, value*0.1+0.05, 0.05);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy / iResolution.xy*2.0-1.0;
     uv.x *= iResolution.x/iResolution.y;
     uv *= 1.0;

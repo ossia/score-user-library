@@ -90,7 +90,8 @@
 
 float rn(float x) { return  fract(sin(x*43349.4437)* 5142.29); }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	float ts = TIME * rate;   // TIME scaled	
 	vec3 COLOR_MASKS[16];  // blob colors
 	COLOR_MASKS[0] = vec3(0.30, 0.00, 0.90 );

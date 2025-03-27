@@ -68,7 +68,7 @@ precision mediump float;
 #define COL2 vec3(255, 255, 255) / 255.0 
  
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
- { 
+{ fragColor = vec4(0., 0., 0., 1.); 
     vec2 uv = ((fragCoord.xy - iResolution.xy * 0.5) / iResolution.x)-mouse;
     float hsm = 1.5 / iResolution.y * size * 0.5; // Half-Smooth factor
         

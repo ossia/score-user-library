@@ -27,8 +27,8 @@ precision mediump float;
 #define iResolution RENDERSIZE
 
 // --------[ Original ShaderToy begins here ]---------- //
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	float t=iTime*.1;
 	vec2 uv = gl_FragCoord.xy / iResolution.xy-.5;
 	vec2 ouv=uv;

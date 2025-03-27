@@ -153,8 +153,8 @@ float twoPi = 6.28318531;
 
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy / iResolution.xy;
     vec2 p = 1.0 - 2.0 * uv; // Coordinate system is centered on screen, Cartesian style. Up/Right is positive, Down/Left is negative. Origin = p
     p.x *= iResolution.x / iResolution.y; // Aspect correction

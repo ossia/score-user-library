@@ -62,8 +62,8 @@ void mainImage(out vec4 o, vec2 U)
 #define Z(x,y)  vec2( x,1 ) / ( 4.+y )           // perspective transform
 #define P(A,B)  L(A,B)  L(A*I,B*I)  L(A,A*I)     // draw 1 top segment + 1 bottom + 1 vertical
 
-void mainImage( out vec4 o, in vec2 u )
-{
+void mainImage(out vec4 o, in vec2 u)
+{ o = vec4(0., 0., 0., 1.);
     o-=o;
     u = 2.*u/iResolution.y - vec2(1.8,1); 
     

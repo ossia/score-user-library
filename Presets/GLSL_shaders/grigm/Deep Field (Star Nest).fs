@@ -160,8 +160,8 @@ vec2 iMouse = vec2(mX*RENDERSIZE.x, mY*RENDERSIZE.y);
 //#define saturation 0.850
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	//get coords and direction
 	vec2 uv=fragCoord.xy/iResolution.xy-.5;
 	uv.y*=iResolution.y/iResolution.x;

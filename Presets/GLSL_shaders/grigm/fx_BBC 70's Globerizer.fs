@@ -42,8 +42,8 @@ vec3 iResolution = vec3(RENDERSIZE, 1.);
 float iGlobalTime = TIME;
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{   
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);   
     vec2 uv = (2. * fragCoord.xy - iResolution.xy ) / iResolution.xy.y / RADIUS;
     vec3 norm = vec3( uv, sqrt( BBC2 - dot(uv,uv) ));
     float s = 1.0-fract (atan( norm.z, norm.x ) / 6.283185307179586);

@@ -93,8 +93,8 @@ const mat3 M = mat3(0.28862355854826727, 0.6997227302779844, 0.6535170557707412,
 
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     // uv are screen coordinates, uniformly scaled to go from 0..1 vertically
 	vec2 uv = fragCoord.xy / iResolution.yy;
     

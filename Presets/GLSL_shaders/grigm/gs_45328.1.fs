@@ -70,8 +70,8 @@ const float speed = 8.0;
 vec2 getPosition( float TIME, vec4 id ) { return vec2(       0.9*sin((speed*(0.75+0.5*id.z))*TIME+20.0*id.x),        0.75*cos(speed*(0.75+0.5*id.w)*TIME+20.0*id.y) ); }
 vec2 getVelocity( float TIME, vec4 id ) { return vec2( speed*0.9*cos((speed*(0.75+0.5*id.z))*TIME+20.0*id.x), -speed*0.75*sin(speed*(0.75+0.5*id.w)*TIME+20.0*id.y) ); }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 p = (2.0*fragCoord.xy-iResolution.xy) / iResolution.y;
 	
 	vec3 col = vec3(0.0) + 0.00*p.y;

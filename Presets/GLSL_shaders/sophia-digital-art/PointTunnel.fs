@@ -63,8 +63,8 @@ vec2 TunnelPath(float x)
     return offs;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 res = iResolution.xy / iResolution.y;
 	vec2 uv = fragCoord.xy / iResolution.y;
     

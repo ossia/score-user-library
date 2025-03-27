@@ -38,8 +38,8 @@ float grid(vec2 p) {
 }
 
 #define samp 3.
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
   vec2 p = fragCoord.xy / 50. + vec2(-ttime, ttime);
   vec2 q = (fragCoord.xy - (iResolution.xy / 2.)) / iResolution.x / 1.5 ;
   vec4 c = vec4(grid(p));

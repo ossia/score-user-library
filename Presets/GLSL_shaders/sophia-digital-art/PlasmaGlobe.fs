@@ -194,7 +194,7 @@ vec2 iSphere2(in vec3 ro, in vec3 rd)
 }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
-{	
+{ fragColor = vec4(0., 0., 0., 1.);	
 	vec2 uv = iZoom * (fragCoord.xy/RENDERSIZE.xy-0.5);
 	uv.x *= float(RENDERSIZE.x )/ float(RENDERSIZE.y);
 	uv.x -= 0.0;

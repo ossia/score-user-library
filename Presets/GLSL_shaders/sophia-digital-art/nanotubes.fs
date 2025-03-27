@@ -36,7 +36,8 @@ vec2 map( vec3 p ) {
 	return (cd < rd) ?  vec2( cd, cr ) : vec2( rd, rr ); // min
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 pos = (fragCoord.xy*2.0 - RENDERSIZE.xy) / RENDERSIZE.y;
     vec3 camPos = vec3(cos(TIME*0.3), sin(TIME*0.3), 3.5);
     vec3 camTarget = vec3(0.0, 0.0, .0);

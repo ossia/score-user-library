@@ -114,8 +114,8 @@ vec3 hsv2rgb(vec3 c) {
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 vec3 normal(vec3 p,float epsilon){vec2 e=vec2(epsilon,0.);return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));}
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     // let's render!
     vec2 uv=(fragCoord/RENDERSIZE.xy-.5)*2.;
 	uv.x=uv.x*RENDERSIZE.x/RENDERSIZE.y;   

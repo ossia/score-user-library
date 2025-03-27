@@ -164,7 +164,8 @@ mat2 rotate(float a) {
   return mat2(cos(a), -sin(a), sin(a), cos(a));
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
   vec2 uv = (2. * fragCoord - iResolution.xy) / iResolution.y;
   uv *= zoom;
   uv /= dot(uv, uv);

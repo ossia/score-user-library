@@ -135,8 +135,8 @@ vec3 lookAt (vec3 from, vec3 target, vec2 uv) {
     return normalize(forward * .5 + uv.x * right + uv.y * up);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = fragCoord/iResolution.xy;
     
     uv = (uv-.5) / 2.;

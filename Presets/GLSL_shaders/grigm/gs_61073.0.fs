@@ -45,8 +45,8 @@ precision mediump float;
 
 float phi = (sqrt(5.) + 1.) / 2.;
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = fragCoord / iResolution.y;
 
     // Jittered TIME value for cheap motionblur

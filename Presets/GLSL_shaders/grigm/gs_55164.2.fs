@@ -53,8 +53,8 @@ mat2 rot (float a){
     return mat2(ca,-sa,sa,ca);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = (fragCoord - .5*iResolution.xy)/iResolution.y;
 
     uv *= vec2(1.3333, 1.);  // /(.75,1.)

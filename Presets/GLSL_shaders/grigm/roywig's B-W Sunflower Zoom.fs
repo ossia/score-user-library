@@ -62,8 +62,8 @@
 vec3 iResolution = vec3(RENDERSIZE, 1.);
 float iGlobalTime = TIME;
 
-void mainImage( out vec4 fragColor, in vec2 z )
-{
+void mainImage(out vec4 fragColor, in vec2 z)
+{ fragColor = vec4(0., 0., 0., 1.);
     z = z/iResolution.xy-.5;
     z.x *= iResolution.x/iResolution.y;
     z = vec2(log(length(z)),atan(z.y,z.x)); //complex logarithm

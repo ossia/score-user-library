@@ -117,7 +117,8 @@ vec4 drawScene(vec2 uv) {
 }
 
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     if( t < 1000.0 )
     {
 	t += 1000.0;

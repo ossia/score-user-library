@@ -115,8 +115,8 @@ mat4 CamControl( vec3 eye, float pitch)
     return viewMatrix;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy/iResolution.xy;
     vec2 p = 2.*uv-1.;
 	p.x *= iResolution.x/iResolution.y;

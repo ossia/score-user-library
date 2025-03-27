@@ -10,7 +10,8 @@
 
 #define iResolution RENDERSIZE
 
-void mainImage( out vec4 f, in vec2 w ) {
+void mainImage(out vec4 f, in vec2 w)
+{ f = vec4(0., 0., 0., 1.);
 	
 	vec2  r = iResolution.xy, p = w - r*.5;
 	float d = length(p) / r.y, c=1., x = pow(d, .1), y = atan(p.x, p.y) / 6.28;

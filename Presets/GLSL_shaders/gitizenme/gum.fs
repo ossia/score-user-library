@@ -271,8 +271,8 @@ vec3 object_material(vec3 p, vec3 d)
 #define offset1 4.7
 #define offset2 4.6
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy / iResolution.xy - 0.5;
 	uv.x *= iResolution.x/iResolution.y; //fix aspect ratio
 	vec3 mouse = vec3(iMouse.xy/iResolution.xy - 0.5,iMouse.z-.5);

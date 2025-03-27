@@ -164,7 +164,8 @@ vec2 fbm22(vec2 p) {
     return f / 1.9375;
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	
 	float screenWidth = iResolution.x / iResolution.y;
     vec2 uv = fragCoord.xy / iResolution.y;

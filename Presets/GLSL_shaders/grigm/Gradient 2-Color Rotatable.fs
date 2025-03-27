@@ -48,8 +48,8 @@
 vec3 iResolution = vec3(RENDERSIZE, 1.);
 float iGlobalTime = TIME;
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{   
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);   
     float Angle = Angle * 360.;
     
     vec2 uv = fragCoord.xy / iResolution.xy;

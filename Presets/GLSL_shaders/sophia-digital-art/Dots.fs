@@ -33,7 +33,8 @@ float ring(vec2 uv, float n, float s, float f) {
 }
 
 
-void mainImage(out vec4 O, in vec2 I) {
+void mainImage(out vec4 O, in vec2 I)
+{ O = vec4(0., 0., 0., 1.);
 
 	vec2 uv = (2. * I - R) / R.y;
     vec3 col = vec3(0.);

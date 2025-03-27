@@ -9,8 +9,8 @@
 }*/
 
 #define iResolution RENDERSIZE
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	float time = TIME * 0.25;
     vec2 uv = (2. * fragCoord.xy - iResolution.xy) / iResolution.y;
     uv *= vec2(0.35, 1.);

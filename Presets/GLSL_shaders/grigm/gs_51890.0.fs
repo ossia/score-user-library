@@ -210,7 +210,8 @@ float Digit(float num,vec2 p)
 	return 0.0;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 p = (fragCoord.xy * 2.0 - iResolution.xy) / min(iResolution.x, iResolution.y);
     
     mat3 camRotY = matRotateY(-(iTime*30.0)*degToRad)*matRotateX(40.*degToRad);

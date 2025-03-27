@@ -76,7 +76,7 @@ void get_tile_colour(in vec2 tile_id, out vec3 tile_hsv)
 #define ADD_GLOW(tile) get_tile_colour(tile_id + tile, tile_hsv); add(fragColor, vec4(hsv2rgb(tile_hsv), pow(1.0 - sdBox(tile - tile_coord, vec2(tile_radius)), glow_attenuation) * glow_level * tile_hsv.z));
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
-{
+{ fragColor = vec4(0., 0., 0., 1.);
     // normalise the coordinates
     vec2 R = iResolution.xy, U = ((2. * fragCoord.xy) - R) / min(R.x, R.y) * zoom, FU = fract(U);
 

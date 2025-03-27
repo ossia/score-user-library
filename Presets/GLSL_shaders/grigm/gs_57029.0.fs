@@ -113,8 +113,8 @@ vec3 camera (vec3 eye) {
     return eye;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = 2.*(fragCoord-0.5*iResolution.xy)/iResolution.y;
     vec3 eye = camera(vec3(0,0,3.5));
     vec3 ray = look(eye, vec3(0), uv, 2.);

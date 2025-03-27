@@ -60,8 +60,8 @@ void formula(vec2 z, float c) {
 }
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 pos = fragCoord.xy / iResolution.xy - .5;
 	pos.x*=iResolution.x/iResolution.y;
 	vec2 uv=pos;

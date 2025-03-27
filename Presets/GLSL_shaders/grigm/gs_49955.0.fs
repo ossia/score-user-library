@@ -88,8 +88,8 @@ float Tile(vec2 uv, vec2 uvi, float eps, float t, float zoom)
 }
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     // Normalized coordinates:
     float eps = 1.0/iResolution.y;
     vec2  uv  = eps*(fragCoord - 0.5*iResolution.xy);

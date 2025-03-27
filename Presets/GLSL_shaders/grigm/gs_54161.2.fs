@@ -99,8 +99,8 @@ float shadow(vec3 ro, vec3 rd)
     return clamp(res+0.05,0.,1.);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{ 
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.); 
     //camera
     float height = -0.4;
     float rot=iTime*0.1;

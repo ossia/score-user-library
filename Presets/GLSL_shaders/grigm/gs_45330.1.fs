@@ -198,8 +198,8 @@ float hash( vec2 v ) {
     //return texture(iChannel0, v, 0.0).r;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = vec2(iResolution.x/iResolution.y, 1.0) * (-1.0 + 2.0*fragCoord.xy / iResolution.xy);
 	vec4 color;
 	

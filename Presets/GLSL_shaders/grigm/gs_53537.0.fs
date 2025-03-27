@@ -51,8 +51,8 @@ float map(vec2 c) {
     //return (sin(c.x-iTime)+sin(c.y+iTime))*0.5-1.0;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = (fragCoord*2.0-iResolution.xy)/iResolution.y;
 

@@ -81,7 +81,8 @@ float rayMarcher(vec3 ro, vec3 rd){
     return tot;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ){    
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);    
     
     vec2 uv = (fragCoord-0.5*iResolution.xy)/iResolution.x;
 	

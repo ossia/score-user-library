@@ -35,8 +35,8 @@ float circle(vec2 uv) {
     return sqrt(dot(uv, uv));
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	// ** UV
     vec2 uv = ((fragCoord-.5*iResolution.xy)/iResolution.y); // Normalized pixel coordinates (from 0 to 1)
     uv = uv * rot(iTime*0.1); // Normalized rotating uv

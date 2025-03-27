@@ -107,8 +107,8 @@ vec3 softLight(vec3 canvas, vec2 uv, vec2 center, float r, vec3 color) {
     return(canvas + d*color);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
 	
 	if (VERTICAL) {uv.y=uv.x;}

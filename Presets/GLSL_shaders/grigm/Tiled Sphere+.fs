@@ -86,8 +86,8 @@ vec3 iResolution = vec3(RENDERSIZE, 1.);
 
 float fcircle(vec2 p) { return 1. - dot(p-=.5,p); }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	fragCoord = ((fragCoord - vec2(iResolution.x / 2., iResolution.y / 2.)) / iResolution.y);
     
     float outerCircle = OUTER_RADIUS * sin(TIME) + ((SPHERE_RADIUS+.01) * fcircle((fragCoord + vec2(-XSHIFT, -YSHIFT)) * (10.0-ZOOM)));

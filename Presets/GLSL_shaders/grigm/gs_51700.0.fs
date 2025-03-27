@@ -115,8 +115,8 @@ vec3 raymarch( in vec3 ro, vec3 rd, vec2 tminmax )
 }
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	float TIME = iTime;
     vec2 q = fragCoord.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0 * q;

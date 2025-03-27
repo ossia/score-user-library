@@ -141,7 +141,8 @@ vec3 eye(vec2 fst, vec2 cst, vec2 mouse){
     return finCol;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 st = (fragCoord.xy)/ iResolution.xy;
     vec2 mouse = (iMouse.xy)/ iResolution.xy;
     

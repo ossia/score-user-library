@@ -85,7 +85,8 @@ float fbm(vec2 n) {
 
 // -----------------------------------------------
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     fragCoord.x *= 1.5-0.5*pow(fragCoord.y/RENDERSIZE.y-.25, 2.);
 	fragCoord.y += -240.*(TIME);
 	

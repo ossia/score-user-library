@@ -207,8 +207,8 @@ vec3 trace( vec3 E, vec3 I, vec3 C, float px, float iid )
   return C;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 q = fragCoord.xy / iResolution.xy;
     vec2 p = (2.0*fragCoord.xy-iResolution.xy)/iResolution.y;
     vec2 m = step(0.0001,iMouse.z) * iMouse.xy/iResolution.xy;

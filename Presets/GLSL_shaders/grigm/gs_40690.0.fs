@@ -41,8 +41,8 @@ vec4 insidebox(vec3 pos, vec3 dir) {
     return vec4(len,lens);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = (fragCoord.xy * 2.0 - iResolution.xy) / iResolution.y;
     
     vec3 pointlight = vec3(4.0,0.0,-10.0);

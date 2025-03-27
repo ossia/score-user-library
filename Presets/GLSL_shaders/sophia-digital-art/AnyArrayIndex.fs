@@ -59,7 +59,7 @@ vec3 AAIGetSMColor(float c, float s)
 
 // https://www.shadertoy.com/view/ldj3Rd
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
-{
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = iZoom *  fragCoord.xy/RENDERSIZE.xy;
    vec3 col=vec3(0.);
    // define the colors  

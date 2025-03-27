@@ -81,7 +81,8 @@ float sprite(vec2 spr, vec2 size, vec2 uv) {
 	return bounds ? extract_bit(spr.x, bit - 21.0) + extract_bit(spr.y, bit) : 0.0;
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = (fragCoord.xy - RENDERSIZE.xy*0.5) / RENDERSIZE.x;
 	//uv.y *= RENDERSIZE.x/RENDERSIZE.y;
 

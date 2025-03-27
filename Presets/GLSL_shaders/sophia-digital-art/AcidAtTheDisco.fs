@@ -16,7 +16,7 @@
 }*/
 	// https://www.shadertoy.com/view/4sfXRB
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
-{
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
 	float time = TIME;
 	float depth = sin(uv.y*2.0+sin(time)*1.5+1.0+sin(uv.x*3.0+time*1.2))*cos(uv.y*2.0+time)+sin((uv.x*3.0+time));

@@ -136,8 +136,8 @@ void trace(vec3 ro, vec3 rd, inout vec3 color)
 //    color = vec3(1.0);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 p = (fragCoord * 2.0 - iResolution.xy) / iResolution.y;
     vec3 color = vec3(0.0);
 

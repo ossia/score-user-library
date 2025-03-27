@@ -90,8 +90,8 @@ mat3 setCamera( in vec3 ro, in vec3 ta, in float cr )
     return mat3( cu, cv, cw );
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = fragCoord/iResolution.xy;
     uv = uv * 2.0 - 1.0;
     uv.x *= iResolution.x / iResolution.y;

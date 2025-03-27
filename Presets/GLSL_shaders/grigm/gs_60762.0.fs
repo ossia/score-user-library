@@ -439,8 +439,8 @@ mat3 setCamera( in vec3 ro, in vec3 ta, float cr )
 }
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 p = (-iResolution.xy + 2.0*fragCoord.xy)/ iResolution.y;
     vec2 m = iMouse.xy;///iResolution.xy;
     

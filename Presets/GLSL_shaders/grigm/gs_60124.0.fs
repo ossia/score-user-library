@@ -48,8 +48,8 @@ float vDrop(vec2 uv,float t)
     return yv*(d2*d2);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 p = (fragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
     float d = length(p)+0.1;
 	p = vec2(atan(p.x, p.y) / PI, 2.5 / d);

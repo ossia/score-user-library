@@ -60,8 +60,8 @@ vec4 circle(vec2 gv, vec2 id, float t) {
     return vec4(m,m,m,size);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
     vec3 col = vec3(0.);
     

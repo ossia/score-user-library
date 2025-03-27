@@ -49,8 +49,8 @@ bool belongs(float TIME, vec2 uv, float near, float far) {
     }
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 UV = fragCoord/iResolution.yy;
     UV.x -= (iResolution.x / iResolution.y - 1.0) / 2.0;
     float TIME = iTime;

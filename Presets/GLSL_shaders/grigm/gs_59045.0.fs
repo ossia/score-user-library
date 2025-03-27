@@ -69,7 +69,8 @@ vec4 over( in vec4 a, in vec4 b ) {
     return mix(a, b, 1.-a.w);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = (fragCoord-iResolution.xy*0.5)/iResolution.y*2.;
     
 	float len = length(uv);

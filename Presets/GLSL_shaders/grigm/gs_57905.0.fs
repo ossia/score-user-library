@@ -114,7 +114,8 @@ vec4 ghost(vec2 uv, float TIME) {
     return vec4(vec3(norm(mask)) * col, .5);
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = (fragCoord - .5 * iResolution.xy) / iResolution.y;
 
     fragColor = ghost(uv, iTime) +

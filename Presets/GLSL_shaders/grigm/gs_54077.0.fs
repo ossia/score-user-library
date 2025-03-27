@@ -168,8 +168,8 @@ vec3 acesFilm(const vec3 x) {
     return clamp((x * (a * x + b)) / (x * (c * x + d ) + e), 0.0, 1.0);
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 p = (fragCoord.xy * 2.0 - iResolution.xy) / min(iResolution.x, iResolution.y);
     
     float t = iTime * 0.1;

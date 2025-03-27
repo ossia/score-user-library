@@ -80,7 +80,8 @@ float de( in vec3 p, in vec3 dir, in float r, out vec3 color ) {
     return d;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = (fragCoord.xy - iResolution.xy * 0.5) / iResolution.y;
 	vec3 from = vec3(iTime, iTime, 1.2);
 	vec3 dir = normalize(vec3(uv, -1.0/tan(FOV*0.5)));

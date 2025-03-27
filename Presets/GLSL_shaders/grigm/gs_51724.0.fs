@@ -115,8 +115,8 @@ vec3 rayDirection(float fov, vec2 size, vec2 fragCoord) {
     return normalize(vec3(xy, -z));
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = fragCoord/iResolution.y;
     

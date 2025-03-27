@@ -137,7 +137,7 @@ vec2 f(in vec2 z) {
     return cMul(cMul(a, b), c);
 }
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
-{
+{ fragColor = vec4(0., 0., 0., 1.);
     float SCALE = 8.0;
     
     // Normalized pixel coordinates (from 0 to 1)

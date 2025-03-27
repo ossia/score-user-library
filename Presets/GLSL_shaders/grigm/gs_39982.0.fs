@@ -85,8 +85,8 @@ vec2 rotation(vec2 p, float angle)
 
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec3 eye = vec3(0, 0, -1.5);
 	vec3 front = vec3(0.,0.,1.);//vec3(0, 0, 1.);//iGlobalTime+2.);   
     

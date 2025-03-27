@@ -135,8 +135,8 @@ vec2 march(vec3 ro, vec3 rd, inout float t,inout bool hit, inout vec3 p){
 
 #define pal(a,b,c,d,e) (a + b*sin(c*d + e))
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 uv = (fragCoord - 0.5*iResolution.xy)/iResolution.y;
 
     vec3 col = vec3(0);

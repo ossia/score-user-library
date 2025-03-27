@@ -165,8 +165,8 @@ mat3 camera(vec3 ro, vec3 ta, float cr )
     return mat3( cu, cv, cw );
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     vec2 p = (fragCoord.xy * 2.0 - iResolution.xy) / min(iResolution.x, iResolution.y);
     jitter = hash(p.x + p.y * 57.0 + iTime);
     vec3 ro = vec3(cos(iTime * .333) * 8.0, -5.5, sin(iTime * .333) * 8.0);

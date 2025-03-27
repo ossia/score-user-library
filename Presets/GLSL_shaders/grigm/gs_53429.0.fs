@@ -152,7 +152,8 @@ vec3 gain(vec3 v, float k)
 	return vec3(gain(v.x, k), gain(v.y, k), gain(v.z, k));
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vcut = floor(density*0.25)*2.+0.9;
 	lpscale = floor(density)/M_PI;
 	vec2 myfragCoord = fragCoord.xy;

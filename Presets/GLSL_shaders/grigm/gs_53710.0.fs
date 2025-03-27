@@ -138,8 +138,8 @@ mat3 rotationXY( vec2 angle ) {
 }
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     
     vec2 p = (-iResolution.xy + 2.0*fragCoord.xy)/iResolution.y;
 

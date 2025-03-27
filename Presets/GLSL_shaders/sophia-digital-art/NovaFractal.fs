@@ -30,7 +30,8 @@
 }
 */
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 p = fragCoord.xy / RENDERSIZE.xy * 2.0 - 1.0;
 	p.x *= RENDERSIZE.x / RENDERSIZE.y;
 	vec2 c = p;

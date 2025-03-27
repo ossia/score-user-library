@@ -584,8 +584,8 @@ vec4 pixel(vec2 p)
 	return color;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 uv = fragCoord.xy / iResolution.xy;
 	uv = uv * 2.0 - vec2(1.0,1.0);
 	fragColor = pixel(uv);

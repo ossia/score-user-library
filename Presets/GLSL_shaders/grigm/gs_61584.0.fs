@@ -102,8 +102,8 @@ vec4 calculateNormals(vec2 uv, float s)
 	return normalize(vec4(X,Y,Z,c));
 }
 
-// void mainImage( out vec4 fragColor, in vec2 fragCoord )
-void main( void ) {
+// void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 
 	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
     

@@ -42,8 +42,8 @@ vec3 pal( in float q, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
     return a + b*cos( 6.28318*(c*q+d) );
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec2 p = fragCoord.xy / r.xy;
     
 	// animate

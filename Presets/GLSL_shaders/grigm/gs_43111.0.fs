@@ -21,8 +21,8 @@ precision mediump float;
 
 // Spiral Hypnosis
 	
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
   vec2 uv = (2.*fragCoord - RENDERSIZE.xy ) / RENDERSIZE.x;
   float t = TIME * 4.0;
     uv = abs(mod(uv*1.0,1.0)) - 0.5;

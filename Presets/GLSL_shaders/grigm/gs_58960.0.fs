@@ -183,8 +183,8 @@ vec3 rayMarch(vec3 rayOrigin, vec3 rayDirection, out vec3 color)
     return rayOrigin;
 }
  
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec3 cameraCenter = vec3(0.0, 0.0, -TIME * 10.0);
     cameraCenter -= spaceBounding(cameraCenter);
     vec3 cameraAngle = vec3(0.0, 0.0, 0.0);

@@ -139,7 +139,8 @@ vec4 bccNoiseDerivatives_PlaneFirst(vec3 X) {
 //////////////////////////////// End noise code ////////////////////////////////
 
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
     
     // Normalized pixel coordinates (from 0 to 1 on largest axis)
     vec2 uv = fragCoord / max(iResolution.x, iResolution.y) * 8.0;

@@ -142,8 +142,8 @@ float AO(vec3 p, vec3 n)
 //-----------------------------------------------------------------------------
 // Main Loop
 //-----------------------------------------------------------------------------
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{ fragColor = vec4(0., 0., 0., 1.);
 	vec4 color = vec4(0.0);
 	float bass = 1.0;//texture( iChannel0, vec2(20./256.,0.25) ).x*.75+texture( iChannel0, vec2(50./256.,0.25) ).x*.25;
 	vec2 v = -1.0 + 2.0 * fragCoord.xy / iResolution.xy;
