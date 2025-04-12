@@ -90,7 +90,7 @@ void main() {
 
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     uv = vec2(0.5) - uv;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
     

@@ -119,7 +119,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 p = (gl_FragCoord.xy*2. - RENDERSIZE.xy) / min(RENDERSIZE.x, RENDERSIZE.y);
     vec4 color = vec4(0.);
     vec3 ro = 5.*vec3(cos((TIME*rot_speed)*1.1), 0., sin((TIME*rot_speed)*1.1));

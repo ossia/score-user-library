@@ -90,7 +90,7 @@ void main() {
 	//if ((length(m)==0.) || 
 	
 	m = vec2(offset_x,offset_y);
-	vec2 uv = 2.*(gl_FragCoord.xy / RENDERSIZE.y - vec2(.8,.5));
+	vec2 uv = 2.*(isf_FragNormCoord *.y - vec2(.8,.5));
 	vec3 v = hashRGB(uv);
 	
 	for(float i=0.; i<150.; i++)

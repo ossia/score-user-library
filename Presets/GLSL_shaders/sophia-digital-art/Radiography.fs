@@ -113,7 +113,7 @@ float de(vec3 p) {
 
 void main(void)
 {  
-    vec2 uv = -1. + 2. *iZoom * gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = -1. + 2. *iZoom * isf_FragNormCoord;
  
     vec3 ro = vec3(0, -TIME * 6., -0);
     vec3 rd = normalize(vec3(uv, .4 - length(uv))); // fisheye learnt from xt95 & lamogui

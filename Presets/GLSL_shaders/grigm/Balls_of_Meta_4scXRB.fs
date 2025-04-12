@@ -29,7 +29,7 @@ float smin(float a, float b, float k) {
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     vec3 fColor = vec3(0.0);
    
     uv = 2.0 * uv - 1.0; // moves uv to [-1,1]

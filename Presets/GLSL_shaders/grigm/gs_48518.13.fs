@@ -96,7 +96,7 @@ void main()
 	
     // ----------------------- CAMERA
    
-    vec2 st = 2.0 * gl_FragCoord.xy / RENDERSIZE.xy - 1.0;
+    vec2 st = 2.0 * isf_FragNormCoord - 1.0;
 	
     // black bars cant live without 
     // 0.89 PAL/NTSC im a kid of the 90ties

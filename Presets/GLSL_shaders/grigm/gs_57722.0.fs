@@ -26,7 +26,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ) - 0.2;
+	vec2 p = ( isf_FragNormCoord ) - 0.2;
 	
 	float sx = (amp)*0.8 * sin( 10.0 * (freq) * (p.x-phase) - 5. * (speed)*TIME);
 	

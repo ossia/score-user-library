@@ -82,7 +82,7 @@ vec4 solu(in vec2 fragCoord, in vec2 uv) {
 // <--- Click to refresh
 void main() {
 	if (PASSINDEX == 0)	{
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    if(FRAMEINDEX <= 1 || iMouse.z > 0.) {
 	        bool alive = fract(sin(gl_FragCoord.x) * cos(gl_FragCoord.y) * 43758.5453123) < .22;
 	        gl_FragColor = vec4(0., 0., 0., float(alive));
@@ -91,7 +91,7 @@ void main() {
 	    }
 	}
 	else if (PASSINDEX == 1)	{
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    gl_FragColor = vec4(IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).xyz, 1.);
 	}
 

@@ -159,7 +159,7 @@ void main( void ) {
  
     float aspectRatio = RENDERSIZE.x / RENDERSIZE.y;
     
-    vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+    vec2 uv = ( isf_FragNormCoord );
     
     vec2 signedUV = uv * 2.0 - 1.0;
     signedUV.x *= aspectRatio;

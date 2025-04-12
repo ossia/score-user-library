@@ -29,7 +29,7 @@ void main() {
 	if (PASSINDEX == 0)	{
        
 
-	    vec2 ouv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 ouv = isf_FragNormCoord;
 	    
 	    vec2 uv = ouv - vec2(.5);    
 	    
@@ -49,7 +49,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
 	    gl_FragColor = IMG_NORM_PIXEL(BufferA,mod(uv,1.0));
 	}

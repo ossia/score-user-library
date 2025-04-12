@@ -385,7 +385,7 @@ vec3 normal(in vec3 pos, vec2 uv, vec3 t)
 }
 
 void main() {
-	vec2 q = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 q = isf_FragNormCoord;
     vec2 uv = (q - .5) * RENDERSIZE.xx / RENDERSIZE.yx;
 	vec3 ro = vec3(0, 0, 3.5);
 	vec3 rd = normalize(vec3(uv, -1));

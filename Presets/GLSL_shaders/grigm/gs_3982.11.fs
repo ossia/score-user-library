@@ -57,7 +57,7 @@ vec4 rainbow(vec2 pos)
 
 void main()
 {
-	vec2 position=2.0*(gl_FragCoord.xy/RENDERSIZE.xy)-1.0;
+	vec2 position=2.0*(isf_FragNormCoord)-1.0;
 
 	const float p1=1.0;
 	const float p2=1.0;

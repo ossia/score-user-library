@@ -160,7 +160,7 @@ void main() {
 
 
 
-	vec2 screenPos = (gl_FragCoord.xy / RENDERSIZE.xy) * 2.0 - 1.0;
+	vec2 screenPos = (isf_FragNormCoord) * 2.0 - 1.0;
 	vec3 cameraPos = vec3(cameraPosX, 0.0, cameraPosZ);
 	
 	vec3 cameraDir = vec3(0.0, 0.0, cameraDirZ);

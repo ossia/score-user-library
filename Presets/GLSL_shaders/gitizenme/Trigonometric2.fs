@@ -129,7 +129,7 @@ vec2 iterate( in vec2 p, in vec4 t ) {
 
 void main() 
 {
-	vec2 q = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 q = isf_FragNormCoord;
 	vec2 p = offset1 + offset2*q;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
     p *= offset3;	

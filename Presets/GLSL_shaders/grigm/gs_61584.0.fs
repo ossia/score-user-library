@@ -105,7 +105,7 @@ vec4 calculateNormals(vec2 uv, float s)
 // void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     vec2 uv2 = uv;
     uv2.x *= RENDERSIZE.x/RENDERSIZE.y;

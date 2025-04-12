@@ -74,7 +74,7 @@ float	hash(vec2 uv);
 void main( void ) 
 {
 	//formatting
-	vec2 uv 			= gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv 			= isf_FragNormCoord;
 	vec2 p				= uv;
 	
 	#ifdef POLAR

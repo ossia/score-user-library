@@ -30,7 +30,7 @@
 
 void main() {
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     float o = IMG_NORM_PIXEL(iChannel1,mod(uv * 0.25 + vec2(0.0, TIME * 0.025),1.0)).r;
     float d = (IMG_NORM_PIXEL(iChannel0,mod(uv * 0.25 - vec2(0.0, TIME * 0.02 + o * 0.02),1.0)).r * 2.0 - 1.0);

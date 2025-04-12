@@ -148,7 +148,7 @@ float cross(in vec2 _st, float _size){
 void main(){
 	
 	//crosses
-	vec2 st = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 st = isf_FragNormCoord;
 	st -= vec2(pos);
 	st.x *= RENDERSIZE.x/RENDERSIZE.y;
 	st = rotate2d(rotate*-TWO_PI) * st;
@@ -159,7 +159,7 @@ void main(){
  	vec3 color = vec3( clamp(cross(fract(st),scale),0.0,1.0) );
  	
  	//square grids
- 	st = gl_FragCoord.xy / RENDERSIZE.xy;
+ 	st = isf_FragNormCoord;
  	st -= vec2(pos);
 	st.x *= RENDERSIZE.x/RENDERSIZE.y;
 	st = rotate2d(gridRotate*-TWO_PI/2.0) * st;

@@ -43,7 +43,7 @@ float getSpring(float b, vec2 pos, float power){
 }
 
 void main(){
-  vec2 pos = gl_FragCoord.xy / RENDERSIZE;
+  vec2 pos = isf_FragNormCoord;
   vec2 pixel = 1. / RENDERSIZE;
   float aspect = RENDERSIZE.x / RENDERSIZE.y;
 

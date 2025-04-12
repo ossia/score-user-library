@@ -60,7 +60,7 @@ precision mediump float;
 void main( void ) {
 	float N = size;
 	float invN = 1./N;
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) + mod(TIME,invN) / 3.0;
+	vec2 position = ( isf_FragNormCoord ) + mod(TIME,invN) / 3.0;
 	vec2 cell = vec2(ivec2(invN*gl_FragCoord.xy));
 	vec2 center = N*vec2(cell)+vec2(0.5*N,0.5*N);
 	float d = distance(gl_FragCoord.xy, center);

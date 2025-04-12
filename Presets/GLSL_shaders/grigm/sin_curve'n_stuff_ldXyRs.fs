@@ -67,7 +67,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy; // uv.y 1 on top of screen pixel coordiant
+	vec2 uv = isf_FragNormCoord; // uv.y 1 on top of screen pixel coordiant
     float t = TIME;
     uv -= .5;
     uv.x *= RENDERSIZE.x/RENDERSIZE.y;

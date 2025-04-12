@@ -20,7 +20,7 @@ void main() {
 
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     // Time varying pixel color
     float x = floor(uv.x * 10.0) * 0.1;
     float y = floor((uv.x * (17.3 / 2.0) + uv.y * 5.0)) * 0.1;

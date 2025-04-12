@@ -256,7 +256,7 @@ void main() {
 	// vec3 colF = (col1) * (2. * GLOW);
     vec3 col = colF;
 
-	vec2 vUV = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 vUV = isf_FragNormCoord;
 	vUV *=  1.0 - vUV.yx;
 	float vig = vUV.x * vUV.y * 100.0; // multiply with sth for intensity
 	vig = pow(vig, 0.35); // change pow for modifying the extend of the  vignette

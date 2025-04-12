@@ -24,7 +24,7 @@ const float fRadius = 0.2;
 
 void main(void)
 {
-	vec2 uv = -1.0 + 2.0*gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = -1.0 + 2.0*isf_FragNormCoord;
 	uv.x *=  RENDERSIZE.x / RENDERSIZE.y;
 	
 	vec3 color = vec3(0.0);

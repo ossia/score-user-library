@@ -66,7 +66,7 @@ float noise(vec2 p) {
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	
 	float x = noise(vec2(position.x*grid_mod_x,int(grid_x)));
 	float z = noise(vec2(position.y*grid_mod_y,grid_y));

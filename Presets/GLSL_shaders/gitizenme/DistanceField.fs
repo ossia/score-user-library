@@ -38,7 +38,7 @@
 
 
 void main() {
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
     float pct = 0.0;
 
     // a. The DISTANCE from the pixel to the center

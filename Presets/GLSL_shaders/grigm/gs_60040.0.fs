@@ -40,7 +40,7 @@ void bar(float pos, float r, float g, float b)
 }
 void main( void )
 {
-	position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	position = ( isf_FragNormCoord );
 	position = position * vec2(4.0) - vec2(2.0,2.0); 	
 	float t = TIME;
 	position.y =position.x*cos(t)+position.y*sin(t);

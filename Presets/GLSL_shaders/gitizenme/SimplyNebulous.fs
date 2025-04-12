@@ -131,7 +131,7 @@ float field(in vec3 p) {
 
 void main() {
 	float TT = TIME * rate;
-	vec2 uv = 2.0 * gl_FragCoord.xy / RENDERSIZE.xy - 1.0;
+	vec2 uv = 2.0 * isf_FragNormCoord - 1.0;
 	vec2 uvs = uv * RENDERSIZE.xy / max(RENDERSIZE.x, RENDERSIZE.y) ;
 	vec3 p = vec3(uvs / zoom ,morph) + vec3(1.0, -1.3, -0.5);
 	p.xz *= rmat(rot);

@@ -76,7 +76,7 @@ vec4 render(float t) {
 	}
 
 	vec3 nrm = normal(pos, t);
-	return vec4(vec3(stripes(gl_FragCoord.xy / RENDERSIZE.y * 20. - nrm.xy, 1.25-1./what))/(what*3.)*(1.+nrm.y*.5), 1.);
+	return vec4(vec3(stripes(isf_FragNormCoord *.y * 20. - nrm.xy, 1.25-1./what))/(what*3.)*(1.+nrm.y*.5), 1.);
 }
 
 float rand(vec2 co){

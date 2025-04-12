@@ -17,7 +17,7 @@
 
         void main( void )
         {
-            vec2 v_texCoord = gl_FragCoord.xy / RENDERSIZE;
+            vec2 v_texCoord = isf_FragNormCoord;
 
             vec2 p =  v_texCoord * 8.0 - vec2(20.0);
             vec2 i = p;

@@ -53,7 +53,7 @@ vec2 field(in vec2 p)
 
 void main(void)
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy-0.5;
+	vec2 uv = isf_FragNormCoord-0.5;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y*0.9;
 	uv *= 4.;
 	

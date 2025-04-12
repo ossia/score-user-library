@@ -185,7 +185,7 @@ vec4 texCube( sampler2D sam, in vec3 p, in vec3 n, in float k )
 void main()
 {
     vec2 p = (-RENDERSIZE.xy+2.0*gl_FragCoord.xy)/RENDERSIZE.y;
-	vec2 q = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 q = isf_FragNormCoord;
 
     vec2 m = vec2(0.5);
 	if( iMouse.x>0.0 ) m = iMouse.xy/RENDERSIZE.xy;

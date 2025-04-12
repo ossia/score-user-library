@@ -61,7 +61,7 @@ void main() {
 
 
 
-    vec2 p = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 p = isf_FragNormCoord;
     float aspectRatio = RENDERSIZE.x / RENDERSIZE.y;
     p.x *= aspectRatio;
     vec2 center = vec2(0.5 * aspectRatio, 0.5);

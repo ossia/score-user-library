@@ -33,7 +33,7 @@ float fOpUnionRound(float a, float b, float r)
 
 void main()
 {
-    vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+    vec2 p = ( isf_FragNormCoord ) * 2.0 - 1.0;
     p.x *= RENDERSIZE.x / RENDERSIZE.y;
 
     vec3 color = vec3( 0.2 );    

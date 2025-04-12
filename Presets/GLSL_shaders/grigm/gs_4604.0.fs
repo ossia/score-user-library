@@ -49,7 +49,7 @@ float snoise(vec2 v) {
 
 void main( void ) {
 
-	vec2 position = abs(( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0);
+	vec2 position = abs(( isf_FragNormCoord ) * 2.0 - 1.0);
 	float t = TIME * 0.1;
         vec2 m = log(position) + vec2(t, t);
 	float size = 4.0;

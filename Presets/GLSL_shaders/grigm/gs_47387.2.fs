@@ -55,7 +55,7 @@ vec3 hsv2rgb(vec3 c)
 
 void main( void ) {
 
-	vec2 pos = (( gl_FragCoord.xy / RENDERSIZE.xy ) - vec2(0.5,0.5)) * 4.0;
+	vec2 pos = (( isf_FragNormCoord ) - vec2(0.5,0.5)) * 4.0;
 	pos.x = pos.x*(RENDERSIZE.x / RENDERSIZE.y);
 	float line = 0.0;
 	vec3 Color = vec3(0.0);

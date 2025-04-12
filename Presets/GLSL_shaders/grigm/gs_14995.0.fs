@@ -45,7 +45,7 @@ float noise(vec2 pos)
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy * 2.0 ) - 1.0;
+	vec2 position = ( isf_FragNormCoord * 2.0 ) - 1.0;
 	position.x *= RENDERSIZE.x / RENDERSIZE.y;
 	float omega = TIME*2.-(sin(TIME)/1.5);
 	float divisor = 1.-.5*cos(omega);

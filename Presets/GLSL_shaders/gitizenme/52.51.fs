@@ -387,7 +387,7 @@ void main() {
    
   
     // Subtle vignette.
-    vec2 uvV = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uvV = isf_FragNormCoord;
     col = mix(col * vec3(.25, .5, 1) / 8., col, pow(16. * uvV.x * uvV.y * (1. - uvV.x) * (1. - uvV.y), Vignette));
     
 	gl_FragColor = vec4(sqrt(max(col, 0.)), 1);

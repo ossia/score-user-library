@@ -91,9 +91,9 @@ vec4 s(vec2 px,float z)
 
 void main(void)
 {
-    //vec2 p = -1.0 + 2.0 * gl_FragCoord.xy / RENDERSIZE.xy;
+    //vec2 p = -1.0 + 2.0 * isf_FragNormCoord;
     
-    vec2 p = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy )-1.0;
+    vec2 p = 2.0*( isf_FragNormCoord )-1.0;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y; 
 
 

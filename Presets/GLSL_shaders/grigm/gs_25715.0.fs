@@ -62,7 +62,7 @@ vec3 hsv2rgb(vec3 c) {
 void main( void ) {
 
 	vec2 position = vv_FragNormCoord * SCALE;
-	vec2 realPos = ( gl_FragCoord.xy / RENDERSIZE.xy) - 0.5;
+	vec2 realPos = ( isf_FragNormCoord) - 0.5;
 	
 	vec2 mousePos = (mouse) - 0.5;
 	vec3 light = vec3((mousePos - realPos), 0.5);

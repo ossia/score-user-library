@@ -56,7 +56,7 @@ vec4 DrawExplosion(vec2 uv, vec4 explosionColour, float frame, float size, float
 
 void main(void)
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	
 	uv = 1.0 - (2.0 * uv);
 	

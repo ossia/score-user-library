@@ -25,7 +25,7 @@ float check(vec2 p, float size) {
 
 void main( void ) {
 
-	vec2 p = ((gl_FragCoord.xy / RENDERSIZE) - 0.5) * 2.0;
+	vec2 p = ((isf_FragNormCoord *) - 0.5) * 2.0;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;	
 
 	//inertia towards the edges

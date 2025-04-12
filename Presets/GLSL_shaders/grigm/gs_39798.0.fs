@@ -45,7 +45,7 @@ vec2 CausticDistortDomainFn(vec2 pos)
 
 void main( void ) 
 {
-	vec2 pos = gl_FragCoord.xy/RENDERSIZE;
+	vec2 pos = isf_FragNormCoord;
 	pos-=.5;
 	vec2  CausticDistortedDomain = CausticDistortDomainFn(pos);
 	float CausticShape = clamp(7.-length(CausticDistortedDomain.x*20.),0.,1.);

@@ -42,7 +42,7 @@ precision mediump float;
 
 void main(void) {
 	vec2 aspect = RENDERSIZE.xy / min(RENDERSIZE.x, RENDERSIZE.y);
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) * aspect;
+	vec2 position = ( isf_FragNormCoord ) * aspect;
 	vec4 color = IMG_NORM_PIXEL(backbuffer,mod(fract(vec2(1,3)/RENDERSIZE+(position) / aspect),1.0));
 	if(color.a > S(1)){
 		color.r -=  1./256.;

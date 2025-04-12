@@ -47,7 +47,7 @@ precision mediump float;
 #endif
 
 void main() {
-    vec2 st = gl_FragCoord.xy/RENDERSIZE;
+    vec2 st = isf_FragNormCoord;
     float y;
     if(right > left){
 		y = step(st.x,right) * step(left, st.x);

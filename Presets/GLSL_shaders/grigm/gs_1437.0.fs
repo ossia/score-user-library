@@ -73,7 +73,7 @@ void main( void ) {
 	vec3 dif = vec3(0.15,0.0,0.0);
 	vec3 scoll = vec3(0.0,1.0,1.0);
 	vec3 scolr = vec3(1.0,0.0,0.0);
-	vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy);
+	vec2 uv = (isf_FragNormCoord);
 	vec3 ro = vec3(0.0,0.0,TIME*2.0);
 	vec3 dir = normalize( vec3( -1.0 + 2.0*vec2(uv.x - .2, uv.y)* vec2(RENDERSIZE.x/RENDERSIZE.y, 1.0), -1.33 ) );
 

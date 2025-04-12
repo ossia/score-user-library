@@ -134,7 +134,7 @@ void main()
 		       setRotation( 0.6-6.0*mo.y, 0.0,  0.6 ) * 
 		       setRotation( 0.0, 20.0+0.05*TIME - 6.3*mo.x, 0.0 );
 	
-    vec2 px = -1.0 + 2.0*gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 px = -1.0 + 2.0*isf_FragNormCoord;
     px.x *= RENDERSIZE.x/RENDERSIZE.y;
 
 

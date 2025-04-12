@@ -98,7 +98,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	
 	// aspect-ratio correction
 	vec2 aspect = vec2(1.,RENDERSIZE.y/RENDERSIZE.x);

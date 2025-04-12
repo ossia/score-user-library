@@ -101,7 +101,7 @@ void main() {
 
 	vec4 fragCoordPos = gl_FragCoord;
 	
-	vec2 b = gl_FragCoord.xy / RENDERSIZE.x;
+	vec2 b = isf_FragNormCoord *.x;
     fragCoordPos.xy /= RENDERSIZE.xy;
     float aspect = RENDERSIZE.x / RENDERSIZE.y;
     

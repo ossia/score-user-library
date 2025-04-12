@@ -51,7 +51,7 @@ float ring(vec2 screenpos, vec2 mousepos, vec2 ringcenter) {
 }
 
 void main( void ) {
-	vec2 screenpos = ( gl_FragCoord.xy / RENDERSIZE.xy ) - 0.5;
+	vec2 screenpos = ( isf_FragNormCoord ) - 0.5;
 	screenpos.y *= RENDERSIZE.y/RENDERSIZE.x;
 	vec2 mousepos = mouse - 0.5;
 	mousepos.y *= RENDERSIZE.y/RENDERSIZE.x;

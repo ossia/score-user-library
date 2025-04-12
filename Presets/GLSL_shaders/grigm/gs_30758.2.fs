@@ -113,7 +113,7 @@ precision mediump float;
 #define clamps(x) clamp(x,0.,1.)
 void main( void ) {
 
-	vec2 p = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy ) -1.0; 
+	vec2 p = 2.0*( isf_FragNormCoord ) -1.0; 
 	p.x *= RENDERSIZE.x/RENDERSIZE.y; 
 	
 	if(COS_DEFORM){

@@ -121,7 +121,7 @@ float easeInOutQuad(float t) {
 }
 
 void main() {
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 
     float t1 = fract(g_time * .25);// sliding

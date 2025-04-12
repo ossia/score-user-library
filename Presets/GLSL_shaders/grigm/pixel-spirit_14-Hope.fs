@@ -62,7 +62,7 @@ float map(float n, float i1, float i2, float o1, float o2){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	
 	float t = fract(TIME*pulse);
 	

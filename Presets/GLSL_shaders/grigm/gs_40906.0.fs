@@ -33,7 +33,7 @@ float dia(in vec2 p) {
 
 
 void main( void ) {
-	vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy) - .5;
+	vec2 p = (isf_FragNormCoord) - .5;
 	p.x *= RENDERSIZE.x / RENDERSIZE.y;
 			
 	float s = sin(TIME * 10.) * cos(TIME * 180. + 32.);

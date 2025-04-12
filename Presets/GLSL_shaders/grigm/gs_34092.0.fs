@@ -84,7 +84,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 pos = (gl_FragCoord.xy / RENDERSIZE - .5) * vec2(2, rowC);
+	vec2 pos = (isf_FragNormCoord - .5) * vec2(2, rowC);
 	
 	float row = pos.y;
 	

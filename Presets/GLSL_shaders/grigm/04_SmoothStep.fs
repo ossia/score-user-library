@@ -68,7 +68,7 @@ float plot(vec2 st, float pct){
 
 void main() {
     
-    vec2 st = gl_FragCoord.xy/RENDERSIZE;
+    vec2 st = isf_FragNormCoord;
 
     // Smooth interpolation between 0.1 and 0.9
     float y = smoothstep(left,0.0+peak,st.x) - smoothstep(1.0-peak,right,st.x);

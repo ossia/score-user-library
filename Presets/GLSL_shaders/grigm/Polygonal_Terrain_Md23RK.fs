@@ -79,7 +79,7 @@ void main() {
 
 
 	time=TIME*speed;
-	vec2 uv=(gl_FragCoord.xy / RENDERSIZE.xy)*2.0-vec2(1.0);
+	vec2 uv=(isf_FragNormCoord)*2.0-vec2(1.0);
 	uv.x*=RENDERSIZE.x/RENDERSIZE.y;
 	
 	float sc=(time+sin(time*0.2)*4.0)*0.8;

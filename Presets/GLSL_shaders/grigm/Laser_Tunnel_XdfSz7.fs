@@ -36,7 +36,7 @@ float get_beam(vec2 pol, float prec) {
 }
 void main() {
 
-	vec2 uv = (gl_FragCoord.xy / RENDERSIZE.xy) * 2. - 1.;
+	vec2 uv = (isf_FragNormCoord) * 2. - 1.;
 	vec2 pol = get_polar(uv);
 	float prec = IMG_SIZE(iChannel1).x;
 	float beam = get_beam(pol, prec);

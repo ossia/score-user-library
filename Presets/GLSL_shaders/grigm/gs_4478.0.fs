@@ -40,7 +40,7 @@ float wave(vec2 uv, float speed)
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	float rotate = sin(TIME) * 0.00;
 	mat2 rot = mat2(
 		vec2(cos(rotate), -sin(rotate)),

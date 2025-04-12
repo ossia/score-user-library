@@ -66,7 +66,7 @@ vec3 tex(vec2 pos) {
 void main(void) {
     // some modifications for the coordinate transformation, seemless wrapped texture -- novalis
     const float PI = 3.14159265358979;
-    vec2 p = (gl_FragCoord.xy / RENDERSIZE - vec2(.5)) * vec2(RENDERSIZE.x/RENDERSIZE.y, 1.);
+    vec2 p = (isf_FragNormCoord - vec2(.5)) * vec2(RENDERSIZE.x/RENDERSIZE.y, 1.);
 
     float r = length(p);
     float a = atan(p.y, p.x);

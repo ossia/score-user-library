@@ -27,7 +27,7 @@ void main()
 	float repeat = 8.0;			// How many times it should be repeated.
     
     // UV in 0..1 space and also inverted UV (1..0).
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 uv_inverted = 1.0 - uv;
     
     // Calculate the offset_multiplier using the current uv.

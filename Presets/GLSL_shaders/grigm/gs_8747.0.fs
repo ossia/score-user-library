@@ -241,7 +241,7 @@ vec3 trace(vec3 ro, vec3 rd, out vec3 intersection, out vec3 normal, out float d
 
 
 void main(void) {
-	vec2 q = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 q = isf_FragNormCoord;
 	vec2 p = -1.0+2.0*q;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 	

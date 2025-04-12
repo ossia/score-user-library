@@ -451,7 +451,7 @@ void main() {
     tot = clamp(tot,0.0,1.0);
     tot = tot*tot*(3.0-2.0*tot);
     // vignetting        
-    vec2 q = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 q = isf_FragNormCoord;
     tot *= 0.5 + 0.5*pow(16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y),0.25);
 
     gl_FragColor = vec4( tot, 1.0 );

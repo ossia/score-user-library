@@ -151,7 +151,7 @@ float snoise(vec2 v2, float sizemod){
 void main(void)
 {
 
-	vec2 position = ((gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0) - 1.0;
+	vec2 position = ((isf_FragNormCoord ) * 2.0) - 1.0;
 
 	position.y *= RENDERSIZE.y/RENDERSIZE.x;
 

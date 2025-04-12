@@ -127,7 +127,7 @@ vec3 scene( in vec2 p) {
 }
 
 void main(){
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     vec2 p = -1.0 + 2.0 * uv;
     	 p.x *= xRatio;

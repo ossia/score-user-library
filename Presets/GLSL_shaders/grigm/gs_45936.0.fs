@@ -75,7 +75,7 @@ float fbm( in vec2 p )
 void main()
 {
 	float t = -TIME*.33; 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy-0.5;
+	vec2 uv = isf_FragNormCoord-0.5;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	uv*= curvature* SIZE;
 	

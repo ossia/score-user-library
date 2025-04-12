@@ -304,7 +304,7 @@ float rand(vec2 co){
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0;
+	vec2 position = ( isf_FragNormCoord ) * 2.0;
 
 	float v0 = float(int(mod_1));
 	float v1 = 40.0 * snoise(vec3(floor(position.x * v0)/v0, floor(position.y * v0)/v0,(TIME*0.8)*speed_pix));

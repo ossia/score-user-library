@@ -27,7 +27,7 @@ float numy = 10.0;
 float numx = 25.0;
 float speed = 0.5;
 void main() {
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE;
+    vec2 uv = isf_FragNormCoord;
     vec2 st = uv;
     vec2 i;
     

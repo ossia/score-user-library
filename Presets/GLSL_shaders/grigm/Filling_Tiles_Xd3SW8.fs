@@ -135,7 +135,7 @@ void main() {
     }
     //color += vec3(mst.y, 0., mst.x);
     
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	gl_FragColor = vec4(color,1.0);
 }
 

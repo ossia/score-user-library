@@ -68,7 +68,7 @@ float ring (vec2 p, float offset) {
 void main(){
     
     /// resolution indepentant coords with 0,0 in the center
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy - vec2(0.5);
+	vec2 uv = isf_FragNormCoord - vec2(0.5);
     float aspect = RENDERSIZE.x / RENDERSIZE.y; // aspect ratio
 	uv.y = uv.y / aspect; // same scale for x and y axis -- aspect ratio correction
     

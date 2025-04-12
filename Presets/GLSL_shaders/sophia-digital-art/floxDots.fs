@@ -22,7 +22,7 @@ const float divs = 12.0;
 void main(void)
 {
     vec2 div = vec2( divs*scale, divs*RENDERSIZE.y/RENDERSIZE.x );
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     uv -= 0.5;                                  // center on screen
     float b = 4.0*divs/RENDERSIZE.x;           // blur over 2.4 pixels
     vec2 xy = div*uv;

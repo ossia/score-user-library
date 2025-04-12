@@ -44,7 +44,7 @@ float blob(vec3 o, vec2 p)
 
 void main()
 {
-   vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy - 0.5) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0) * 1.0;
+   vec2 p = (isf_FragNormCoord - 0.5) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0) * 1.0;
 	
    cam_pos = vec3(cos(TIME * 0.1) * 5.0, -1.0,  -7.0 + 1.0 + sin(TIME * 0.07));
 

@@ -36,7 +36,7 @@ void main( void ) {
 	const float cols = 16.;
 	const float rows = 9.;
 	
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 	
 	vec2 pos = position * vec2(cols, rows);
 	vec2 cell = vec2(1) + pos - fract(pos);

@@ -27,7 +27,7 @@ float hash(float v)
 }
 void main( void ) 
 {
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	float ym = 1.0-abs(1.0-(position.y*2.0));
 	ym *= 1.9;
 	

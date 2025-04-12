@@ -51,7 +51,7 @@
 #define speed_modifier 1.5
 
 void main(void) {
-	vec2 p = -1.0 +  iZoom * 2.0 * gl_FragCoord.xy / RENDERSIZE.xy; 
+	vec2 p = -1.0 +  iZoom * 2.0 * isf_FragNormCoord; 
 	p.x -= 0.0;
 	p.y -= 0.0;
 

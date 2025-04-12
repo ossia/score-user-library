@@ -71,7 +71,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 tc = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 tc = isf_FragNormCoord;
 	    
 	    vec2 res = RENDERSIZE.xy;
 	    float time = TIME*50.0;
@@ -127,7 +127,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    vec2 tc = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 tc = isf_FragNormCoord;
 	    
 	    vec4 tex = IMG_NORM_PIXEL(BufferA,mod(tc,1.0));
 	    vec4 past = IMG_NORM_PIXEL(BufferB,mod(tc,1.0));
@@ -147,7 +147,7 @@ void main() {
 	}
 	else if (PASSINDEX == 2)	{
 	    
-	    vec2 tc = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 tc = isf_FragNormCoord;
 		vec2 res = RENDERSIZE.xy;
 	    float time = TIME*20.0;
 	    
@@ -186,7 +186,7 @@ void main() {
 	    }
 	}
 	else if (PASSINDEX == 3)	{
-	    gl_FragColor = IMG_NORM_PIXEL(BufferC,mod(gl_FragCoord.xy / RENDERSIZE.xy,1.0));
+	    gl_FragColor = IMG_NORM_PIXEL(BufferC,mod(isf_FragNormCoord,1.0));
 	}
 
 }

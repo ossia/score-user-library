@@ -108,7 +108,7 @@ void main() {
 
     t = ((TIME/2.)*speed)-offset;
  	
-    vec2 uv =(gl_FragCoord.xy / RENDERSIZE.xy);
+    vec2 uv =(isf_FragNormCoord);
 	vec3 col;
     
     //if (ATTRAC) {

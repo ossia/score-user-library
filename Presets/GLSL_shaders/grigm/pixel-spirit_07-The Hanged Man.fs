@@ -38,7 +38,7 @@ float stroke(float x, float s, float w){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	float sdf = 0.5 + (st.x-st.y)*0.5;
 	float sdf_inv = (st.x+st.y)*0.5;
 	

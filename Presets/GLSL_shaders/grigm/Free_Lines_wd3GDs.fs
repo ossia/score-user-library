@@ -88,7 +88,7 @@ vec3 track(vec2 inPos, vec2 coord)
 void main() {
 	if (PASSINDEX == 0)	{
 	
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    float f = RENDERSIZE.x / RENDERSIZE.y;
 	    vec2 coord = uv * 2.0 - vec2(1.0);
 	    coord.x *= f;
@@ -107,7 +107,7 @@ void main() {
 
 
 	    // Normalized pixel coordinates (from 0 to 1)
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
 	    // Time varying pixel color
 	    vec3 col =IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).xyz;

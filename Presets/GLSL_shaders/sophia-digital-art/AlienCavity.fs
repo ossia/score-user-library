@@ -132,7 +132,7 @@ vec3 camera(vec3 ro, vec2 uv, vec3 ta) {
 }
 void main(void)
 {  		
-	vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy -.5)*iZoom;
+	vec2 uv = (isf_FragNormCoord -.5)*iZoom;
     
     float dt = TIME * 0.1;
 	vec3 ro = vec3(0, 0, -4. + dt);

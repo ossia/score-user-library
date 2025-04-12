@@ -137,7 +137,7 @@ Polygon4 pol2 = Polygon4(vec3(1.0, 0.0, 1.0), vec2(0.95, 0.25+0.35),  vec2(0.85,
 
 
 void main( void ) {
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	position.y = 0.5 + ((position.y - 0.5) * (RENDERSIZE.y/RENDERSIZE.x));
 
 	vec3 col = getColor(f1, position);

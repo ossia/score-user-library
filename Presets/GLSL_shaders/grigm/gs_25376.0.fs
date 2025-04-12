@@ -28,12 +28,12 @@ vec3 circle(vec2 uv, vec3 pos, vec3 color, vec3 prevcolors) {
 
 void main( void ) {
 
-	vec2 uv = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy )-1.0;
+	vec2 uv = 2.0*( isf_FragNormCoord )-1.0;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y; 
 
 
-	//vec2 oruv = ( gl_FragCoord.xy / RENDERSIZE.xy );
-	//vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	//vec2 oruv = ( isf_FragNormCoord );
+	//vec2 uv = ( isf_FragNormCoord );
 	//uv -= 0.5;
 	//uv *= vec2(2.,1.);
 	uv += 0.5;

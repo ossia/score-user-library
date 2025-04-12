@@ -38,7 +38,7 @@ void main() {
 
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     float disp = 0.01 + 0.005 * sin((atan((uv.y-0.5)/(uv.x-0.5))+TIME*0.1) * 20.);
     //float step_size = 0.01;
     vec2 d_out = (uv-0.5)/max(length(uv-0.5), smoothstep(-0.2, 0.2, sin(TIME))*0.6+0.7);

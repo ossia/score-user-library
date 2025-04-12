@@ -29,7 +29,7 @@ const int Ny = 6;
 
 void main( void ) {
 
-	vec2 pos =  gl_FragCoord.xy / RENDERSIZE.x - vec2(0.5, 0.5*RENDERSIZE.y/RENDERSIZE.x);
+	vec2 pos =  isf_FragNormCoord *.x - vec2(0.5, 0.5*RENDERSIZE.y/RENDERSIZE.x);
 	pos*=RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec3 rgb = vec3(0.0);

@@ -28,7 +28,7 @@ void main() {
 
 
     // Output to screen
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     
     //Pretty colors from default shader
     vec3 col = 0.5 + 0.5*cos(TIME+uv.xyx+vec3(0,2,4));

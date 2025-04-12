@@ -54,7 +54,7 @@ void main() {
 
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy*2.0 - vec2(1.0,1.0);
+    vec2 uv = isf_FragNormCoord*2.0 - vec2(1.0,1.0);
     vec2 mouse = iMouse.xy/RENDERSIZE.xy*2.0 - vec2(1.0,1.0);
     
     float m = dot(uv, mouse) *4.0;

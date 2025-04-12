@@ -439,7 +439,7 @@ void main() {
  
     
     // Subtle vignette.
-    uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    uv = isf_FragNormCoord;
     //col *= pow(16.*uv.x*uv.y*(1. - uv.x)*(1. - uv.y) , .25)*.35 + .65;
     // Colored varation.
     col = mix(pow(min(vec3(1.5, 1, 1).zyx*col, 1.), vec3(1, 3, 16)), col, 

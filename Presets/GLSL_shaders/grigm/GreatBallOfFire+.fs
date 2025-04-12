@@ -253,7 +253,7 @@ bool IntersectSphere(vec3 ro, vec3 rd, vec3 pos, float radius, out vec3 intersec
 
 void main(void)
 {
-	vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy) * 2.0 - 1.0;
+	vec2 p = (isf_FragNormCoord) * 2.0 - 1.0;
 	p += offset;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 

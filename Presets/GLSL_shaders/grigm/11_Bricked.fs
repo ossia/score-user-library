@@ -130,7 +130,7 @@ float box(vec2 _st, vec2 _size){
 }
 
 void main(void){
-    vec2 st = gl_FragCoord.xy/RENDERSIZE;
+    vec2 st = isf_FragNormCoord;
     vec3 color = vec3(0.0);
     
  	st *= rotate2D(st,PI*warp);

@@ -131,7 +131,7 @@ Ray createRay(vec3 center, vec3 lookAt, vec3 up, vec2 uv, float fov, float aspec
 void main()
 {
     time = TIME;
-    vec2 p = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 p = isf_FragNormCoord;
 	vec3 cameraPos = vec3(7.*sin(time/3.),7.*cos(time/3.),-4.*sin(time/8.));
 	vec3 lookAt = vec3(0.);
 	vec3 up = vec3(0.,0.,1.);

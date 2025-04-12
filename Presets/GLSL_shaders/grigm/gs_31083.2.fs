@@ -62,7 +62,7 @@ precision mediump float;
 
 
 void main( void ) {
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 uv = ( isf_FragNormCoord );
 	
 	// distortion
 	uv += (uv - 0.5) * (1.0 + 0.25 * sin(((TIME*speed)-ofset))) * pow(1.0 - length(uv - 0.5), 1.0 + amp * sin(((TIME*speed)-ofset) * 10.0));

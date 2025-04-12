@@ -131,7 +131,7 @@ float scene(vec3 p)
 
 void main(void)
 {  
-vec2 uv = iZoom * gl_FragCoord.xy / RENDERSIZE.xy - .5;
+vec2 uv = iZoom * isf_FragNormCoord - .5;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 
     uv *= 1.+length(uv)*.5;

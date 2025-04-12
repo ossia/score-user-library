@@ -45,7 +45,7 @@
 */
 
 void main(void) {
-  vec2 uv = 2 * (gl_FragCoord.xy / RENDERSIZE.xy - vec2(0.5));
+  vec2 uv = 2 * (isf_FragNormCoord - vec2(0.5));
   float radius = length(uv);
   float angle = atan(uv.y, uv.x);
   float col = .0;

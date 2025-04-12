@@ -65,7 +65,7 @@ float heartSDF(vec2 st, float rate){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 
 	color+=fill(heartSDF(st,beat),.5 );
 	color -= stroke(polySDF(st,3),.15,.05);

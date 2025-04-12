@@ -143,7 +143,7 @@ vec3 calculateLighting(vec3 pointOnSurface, vec3 surfaceNormal, vec3 lightPositi
 void main( void )
 {
 
-    vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+    vec2 uv = ( isf_FragNormCoord ) * 2.0 - 1.0;
 
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 

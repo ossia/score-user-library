@@ -38,7 +38,7 @@
 
 
 void main() {
-  vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+  vec2 st = isf_FragNormCoord;
   st.x *= RENDERSIZE.x/RENDERSIZE.y;
   vec3 color = vec3(0.0);
   float d = 0.0;

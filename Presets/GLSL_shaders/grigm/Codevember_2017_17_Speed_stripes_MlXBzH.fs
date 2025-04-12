@@ -47,7 +47,7 @@ void main() {
 
 	float rowHeight = 1.0 / float(numRows);
 	float colWidth = 1.0 / float(numCols);
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     int row = int(uv.y / rowHeight);
     
     float speed = float(row) / float(numRows);

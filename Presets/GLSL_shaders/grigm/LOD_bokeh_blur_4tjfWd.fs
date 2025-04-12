@@ -131,7 +131,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	   
 	    //Sample texture and convert to linear sRGB color space
 	    gl_FragColor =  vec4(pow(IMG_NORM_PIXEL(iChannel0,mod(uv,1.0)).rgb, vec3(1.0 / SRGB_GAMMA)), 1.0);
@@ -191,7 +191,7 @@ void main() {
 
 
 	    //get uv with correct aspect ratio
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.x + vec2(0.0,0.15); 
+	    vec2 uv = isf_FragNormCoord *.x + vec2(0.0,0.15); 
 	    
 	    //calculate the blur radius we want
 		float blurRadius = 1.6 - 1.6*cos(mod(TIME*.10 +.25, 3.0) * 6.283); 

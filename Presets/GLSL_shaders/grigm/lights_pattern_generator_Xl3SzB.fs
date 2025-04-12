@@ -25,7 +25,7 @@ vec3 pal(float t, vec3 a, vec3 b, vec3 c, vec3 d )
 }
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv = uv*2.-1.;
     uv.x*=RENDERSIZE.x/RENDERSIZE.y;
     

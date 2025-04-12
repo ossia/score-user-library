@@ -59,7 +59,7 @@
 
 
 void main(){
-  vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+  vec2 st = isf_FragNormCoord;
   st.x *= RENDERSIZE.x/RENDERSIZE.y;
   
   //not sure how to go about centering this to match the point2D XY, (Y is not perfectly centered)

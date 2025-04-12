@@ -70,7 +70,7 @@ float Cell(vec2 coord) {
 
 void main(void) {
 
-    vec2 p = gl_FragCoord.xy / RENDERSIZE - mouse;
+    vec2 p = isf_FragNormCoord - mouse;
 	p.x*=RENDERSIZE.x/RENDERSIZE.y; 
 
     float a = fract(atan(p.x, p.y) / Tau);

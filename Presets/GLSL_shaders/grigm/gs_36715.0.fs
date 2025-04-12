@@ -103,7 +103,7 @@ mat3 		rmat(in vec3 r);
 
 void main( void ) 
 {
-	vec2 uv		= gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv		= isf_FragNormCoord;
 
 	ray r		= view(uv);
 	

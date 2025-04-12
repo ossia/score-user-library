@@ -44,7 +44,7 @@ void main() {
 
   
 
-    	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    	vec2 uv = isf_FragNormCoord;
     float n= (noise(uv));
    float fm = sin(TIME*.5)*.5;
    float fm2 = sin(TIME*.03)*fm*n;

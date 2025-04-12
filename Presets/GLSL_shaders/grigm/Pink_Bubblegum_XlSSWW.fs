@@ -126,7 +126,7 @@ float snoise(vec3 v)
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     float t= TIME * 0.3;
     
     vec3 col = vec3(1,uv); //pink->orange

@@ -113,7 +113,7 @@ mat2 rotate2d(float _angle){
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	uv -= vec2(pos);
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	uv = rotate2d(rotate*-TWO_PI) * uv;

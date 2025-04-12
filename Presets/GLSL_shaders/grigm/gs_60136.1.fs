@@ -32,7 +32,7 @@ precision mediump float;
 
 /*void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) + mouse / 4.0;
+	vec2 position = ( isf_FragNormCoord ) + mouse / 4.0;
 
 	float color = 0.0;
 	color += sin( position.x * cos( TIME / 15.0 ) * 80.0 ) + cos( position.y * cos( TIME / 15.0 ) * 10.0 );

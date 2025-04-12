@@ -284,7 +284,7 @@ vec4 imageFunction(vec2 pos)
 // RENDER
 void main(void)
 {
-	vec2 uv = iZoom * gl_FragCoord.xy / RENDERSIZE.xy; 
+	vec2 uv = iZoom * isf_FragNormCoord; 
 	uv.x -= 0.0;
 	uv.y -= 0.0;
 

@@ -133,7 +133,7 @@ void main( void ) {
 	else if (rxz <= 15.)	{	RZ += 61.; 	}
 	else if (rxz <= 16.)	{	RZ += 67.; 	}
 	
-	vec2 pos = ( gl_FragCoord.xy / RENDERSIZE.xy * zoom )+center;
+	vec2 pos = ( isf_FragNormCoord * zoom )+center;
 	float col = noise(pos.xyx + (TIME*rate),RY,RZ);
 	vec4 c = pattern(distort(pos+col));
 	  c.xy = distort(c.xy);

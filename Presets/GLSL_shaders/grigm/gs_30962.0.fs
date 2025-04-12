@@ -144,7 +144,7 @@ void main( void ) {
 	Intersection isect;
 	isect.TIME = 100000.0;
 	
-	vec2 tx = ( gl_FragCoord.xy / RENDERSIZE.xy )*2.0-vec2(1.0);
+	vec2 tx = ( isf_FragNormCoord )*2.0-vec2(1.0);
 	vec2 noise = 0.01*vec2(sin(tx.x*20.0+TIME*15.0), sin(tx.y*6.0+TIME*10.0));
 	
 	float asp = RENDERSIZE.y / RENDERSIZE.x;

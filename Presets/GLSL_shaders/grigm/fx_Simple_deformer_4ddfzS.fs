@@ -22,7 +22,7 @@ void main() {
 
 	
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	float def = (sin((uv.x + 0.5*TIME) * 10.0)*0.01)-
                   (sin((uv.y + 0.5*TIME) * 10.00)*0.01);
 	//gl_FragColor = IMG_NORM_PIXEL(inputImage,mod(uv + def,1.0));

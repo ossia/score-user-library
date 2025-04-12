@@ -84,7 +84,7 @@ vec2 center(vec2 st)
     float t = fract(TIME/seconds);
 
     // space
-    vec2 st = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     // st = center( st );
 
     // vars

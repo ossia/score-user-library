@@ -87,7 +87,7 @@ vec3 color(vec2 x) {
 
 void main( void ) {
 
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy * 2. - 1.;
+	vec2 position = isf_FragNormCoord * 2. - 1.;
 	//position /= 10.0;
 
 	vec3 v = color(position);

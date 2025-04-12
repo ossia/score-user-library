@@ -209,7 +209,7 @@ void main(  )
 	camUp = normalize(camUp-dot(camDir,camUp)*camDir); // orthogonalize
 	vec3 camRight = normalize(cross(camDir,camUp));
 	
-	vec2 coord =-1.0+2.0*gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 coord =-1.0+2.0*isf_FragNormCoord;
 	coord.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	// Get direction for this pixel

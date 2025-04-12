@@ -46,7 +46,7 @@ float wave2(vec2 pos,int i,float ls)
 void main()
 {
 	//vec2 pos=gl_FragCoord.xy/scale-size*2.0;
-	vec2 pos = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+	vec2 pos = ( isf_FragNormCoord ) * 2.0 - 1.0;
 	pos.x *= RENDERSIZE.x / RENDERSIZE.y;
 	
 	pos *= scale;

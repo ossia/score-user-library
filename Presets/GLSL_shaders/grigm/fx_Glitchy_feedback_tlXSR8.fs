@@ -80,7 +80,7 @@ void main() {
 	    	amt =  sign(TIME*sin_speed) * amt_p;
 		}
 		
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    
 	    vec3 c = IMG_NORM_PIXEL(inputImage,mod(uv,1.0)).rgb;
 	    
@@ -97,7 +97,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    vec3 c = IMG_NORM_PIXEL(BufferA,mod(gl_FragCoord.xy / RENDERSIZE.xy,1.0)).rgb;
+	    vec3 c = IMG_NORM_PIXEL(BufferA,mod(isf_FragNormCoord,1.0)).rgb;
 	  
 	    gl_FragColor = vec4(c,1.);
 	}

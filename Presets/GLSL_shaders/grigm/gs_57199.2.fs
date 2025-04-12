@@ -43,7 +43,7 @@ vec2 truchetPattern(in vec2 _st, in float _index){
 
 void main( void ) {
 
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     st *= 20.0;
     // st = (st-vec2(5.0))*(abs(sin(TIME*0.2))*5.);
     // st.x += TIME*3.0;

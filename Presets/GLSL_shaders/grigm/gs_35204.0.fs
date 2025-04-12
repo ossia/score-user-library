@@ -18,7 +18,7 @@ precision mediump float;
 
 void main( void ) 
 {
-	vec2 pos = ( gl_FragCoord.xy / RENDERSIZE.xy ) - vec2(0.5,0.5);	
+	vec2 pos = ( isf_FragNormCoord ) - vec2(0.5,0.5);	
 	//vec2 pos = vv_FragNormCoord;
         float horizon = cos(TIME/ 3.)/3.0; 
         float fov = 0.5; 

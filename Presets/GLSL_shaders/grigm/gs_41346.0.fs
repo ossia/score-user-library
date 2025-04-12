@@ -21,7 +21,7 @@ precision mediump float;
 
 void main( void ) {
 	
-	vec2 sP = (gl_FragCoord.xy / RENDERSIZE.xy) - .5;
+	vec2 sP = (isf_FragNormCoord) - .5;
 	
 		
 	float sPdp = dot(sP,sP);

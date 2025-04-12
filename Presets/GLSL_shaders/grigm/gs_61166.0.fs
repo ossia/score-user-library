@@ -26,7 +26,7 @@ float ball(vec2 p, float fx, float fy, float ax, float ay)
 
 void main(void)
 {
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+	vec2 p = ( isf_FragNormCoord ) * 2.0 - 1.0;
 	p.x *= RENDERSIZE.x / RENDERSIZE.y;
 	
 	float col = 0.0 ,col2 = 0.0;

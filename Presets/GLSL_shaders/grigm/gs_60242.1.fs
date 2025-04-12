@@ -301,7 +301,7 @@ void main()
     sunDirection = normalize(vec3(-(mouse.x-0.5)*2., -1, (mouse.y-0.5)*2.));
 	
     // General parameter setup
-	vec2 vPos = 2.0*gl_FragCoord.xy/RENDERSIZE.xy - 1.0; 					// map vPos to -1..1
+	vec2 vPos = 2.0*isf_FragNormCoord - 1.0; 					// map vPos to -1..1
 	float t = TIME*0.0;									// TIME value, used to animate stuff
 	float screenAspectRatio = RENDERSIZE.x/RENDERSIZE.y;					// the aspect ratio of the screen (e.g. 16:9)
 	vec3 finalColor = vec3(0.1);								// The background color, dark gray in this case
@@ -321,7 +321,7 @@ void main()
 	cam.rayDir = normalize(screenHit-cam.position);						// The direction of the current camera ray
 
 	
-	vec2 q = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 q = isf_FragNormCoord;
 	vec2 p = -1.0 + 2.0*q;
 	p.x *= RENDERSIZE.x/ RENDERSIZE.y;
 	vec2 mo = -1.0 + 2.0 / RENDERSIZE.xy;
@@ -340,7 +340,7 @@ void main()
     vec3 viewDir = cam.rayDir;//normalize(wPos - cameraPos);
 	
 	//Sun rays
-	vec2 po = ( (gl_FragCoord.xy / RENDERSIZE.xy) * 2.0 - 1.0 ) - sunPos.xz;
+	vec2 po = ( (isf_FragNormCoord) * 2.0 - 1.0 ) - sunPos.xz;
 	vec3 sunRay = SunRay(po, RENDERSIZE);
 	
 	

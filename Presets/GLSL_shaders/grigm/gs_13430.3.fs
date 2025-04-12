@@ -90,7 +90,7 @@ float dither(vec2 uv)
 }
 
 void main(void) {
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy);
+	vec2 uv = ( isf_FragNormCoord);
 	vec2 c = uv;
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
 	uv -= 0.5;

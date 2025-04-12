@@ -97,7 +97,7 @@ float getShape(vec2 st, int i) {
 
 
 void main() {
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
 	
     float t0 = mod(TIME * 2.0, 8.0);
     float t1 = mod(TIME * 2.0 + 1.0, 8.0);

@@ -67,7 +67,7 @@ float circlePlot(vec2 p, float radius) {
 }
 
 void main(){
-    vec2 st = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     float t = mod(TIME, 4.0), v;
 
     vec3 color = NAVY;

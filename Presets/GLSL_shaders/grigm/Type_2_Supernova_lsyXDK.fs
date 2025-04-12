@@ -168,7 +168,7 @@ void main()
     //key += 0.7*texture2D(iChannel1, vec2(KEY_2,0.25)).x;
     //key += 0.7*texture2D(iChannel1, vec2(KEY_3,0.25)).x;
 
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     
 	// ro: ray origin
 	// rd: direction of the ray

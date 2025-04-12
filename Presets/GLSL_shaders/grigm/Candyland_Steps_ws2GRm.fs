@@ -286,7 +286,7 @@ void main() {
 
     
     // Normalises the fragCoord
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 p = uv - 0.5;
     p.x *= RENDERSIZE.x/RENDERSIZE.y;
     

@@ -37,7 +37,7 @@ void main() {
 
 
 		float t=TIME*.2;
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 p = (uv-.5);
 	    p.x*=RENDERSIZE.x/RENDERSIZE.y;
 		p+=vec2(sin(t),cos(t));
@@ -52,7 +52,7 @@ void main() {
 
 
 	   
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
 	    vec3 col = IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).rgb;
 	        

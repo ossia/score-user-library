@@ -79,7 +79,7 @@ float map(float n, float i1, float i2, float o1, float o2){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 
 	color += fill(flowerSDF(st,int(count)), 0.25);
 	color -= step(.95, starSDF(rotate(st, PI/count), int(count), 0.1));

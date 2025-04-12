@@ -70,7 +70,7 @@ float voronoi(vec2 p) {
 void main( void ) {
 
 	
-	vec2 position = ((gl_FragCoord.xy / RENDERSIZE) - 0.5) * zoom_out;
+	vec2 position = ((isf_FragNormCoord *) - 0.5) * zoom_out;
 	
 	position.x *= RENDERSIZE.x/RENDERSIZE.y;	
 	

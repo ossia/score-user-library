@@ -315,7 +315,7 @@ void main() {
 
 
 
-    vec2 pixel = (gl_FragCoord.xy / RENDERSIZE.xy)*2.0-1.0;
+    vec2 pixel = (isf_FragNormCoord)*2.0-1.0;
     // compute ray origin and direction
     float asp = RENDERSIZE.x / RENDERSIZE.y;
     vec3 rd = normalize(vec3(asp*pixel.x, pixel.y, -2.0));

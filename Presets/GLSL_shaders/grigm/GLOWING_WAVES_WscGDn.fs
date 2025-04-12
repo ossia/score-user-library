@@ -32,7 +32,7 @@ float getWaveGlow(vec2 pos, float radius, float intensity, float speed,
 void main() {
 
     
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     float widthHeightRatio = RENDERSIZE.x/RENDERSIZE.y;
     vec2 centre = vec2(0.5, 0.5);
     vec2 pos = centre - uv;

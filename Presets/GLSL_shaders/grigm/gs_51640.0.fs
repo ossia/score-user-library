@@ -202,7 +202,7 @@ vec3 camera(
   in vec3 up,
   in float fov)
 {
-	vec2 pos = -1.0 + 2.0*( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 pos = -1.0 + 2.0*( isf_FragNormCoord );
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
 	vec3 ray = normalize(lookat - eye);
 	// view plane spanning vectors
@@ -224,7 +224,7 @@ vec3 camera_fish(
   in vec3 up,
   in float fov)
 {
-	vec2 pos = -1.0 + 2.0*( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 pos = -1.0 + 2.0*( isf_FragNormCoord );
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
 	
 	vec3 ray = normalize(lookat - eye);	

@@ -68,7 +68,7 @@ float f( vec2 p )
 void main()
 {
 	float r = RENDERSIZE.x / RENDERSIZE.y;
-	vec2 t, q, p = ( gl_FragCoord.xy / RENDERSIZE ) - .5, m = mouse - .5;
+	vec2 t, q, p = ( isf_FragNormCoord *) - .5, m = mouse - .5;
 	vec3 c;
 	p.x *= r,
 	m.x *= r;

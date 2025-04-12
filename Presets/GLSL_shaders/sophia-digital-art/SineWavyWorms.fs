@@ -71,7 +71,7 @@ float worm(vec2 fragCoord, vec2 scroll, float tiltFactor){
 
 void main(void)
 {
-	//vec2 uv = iZoom * (gl_FragCoord.xy / RENDERSIZE.xy);
+	//vec2 uv = iZoom * (isf_FragNormCoord);
 	//vec2 uv = (2.0*iZoom * gl_TexCoord[0].st) - 1.0;
 	// global scroll movement speed
     vec2 scroll = vec2(2.0, -0.1) * TIME; //*6.0;

@@ -31,7 +31,7 @@
 
 void main()
 {
-	vec2 unipos = (gl_FragCoord.xy / RENDERSIZE);
+	vec2 unipos = (isf_FragNormCoord *);
     vec2 U = unipos*2.0-1.0;
     U.x *= RENDERSIZE.x / RENDERSIZE.y;
     

@@ -34,7 +34,7 @@ return sq;
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	
 	vec4 backColor   = vec4(0.0,0.0,0.0,1.0);
 	float sq,sq1,sq2,sq3,sq4,sq5,sq6,sq7,sq8;

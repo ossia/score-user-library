@@ -331,7 +331,7 @@ vec4 derivative(in vec3 position, in float epsilon)
 void main( void ) 
 {
 	vec2 aspect			= RENDERSIZE.xy/min(RENDERSIZE.x, RENDERSIZE.y);
-	vec2 uv 			= gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv 			= isf_FragNormCoord;
 	
 	bool left_display_panels	= uv.x < LEFT_DISPLAY_WIDTH; 
 	bool mouse_on_left		= mouse.x < LEFT_DISPLAY_WIDTH;

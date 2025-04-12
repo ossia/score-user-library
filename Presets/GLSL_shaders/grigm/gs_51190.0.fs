@@ -51,7 +51,7 @@ float createFractal(vec2 p){
 
 void main( void ) {
 
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy * zoom_out;
+	vec2 position = isf_FragNormCoord * zoom_out;
 
 	vec3 color = vec3(0.0);
 	color += createFractal(position);

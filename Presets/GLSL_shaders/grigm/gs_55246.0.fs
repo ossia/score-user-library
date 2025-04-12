@@ -33,7 +33,7 @@ float getValue(vec2 p, float x2, float y2, float cmin, float cmax)
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - vec2(1.0,RENDERSIZE.y/RENDERSIZE.x);
+	vec2 position = ( isf_FragNormCoord ) * 2.0 - vec2(1.0,RENDERSIZE.y/RENDERSIZE.x);
   	position = position * 5.0 ;
 
   	float a = 0.0;

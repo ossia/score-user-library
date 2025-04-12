@@ -52,7 +52,7 @@ float Wave00100100(float x, float s) {
 // https://www.shadertoy.com/view/lsS3DK
 void main(void)
 {
-	vec2 uv = iZoom * gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = iZoom * isf_FragNormCoord;
 	uv.x -= 0.0;
 	uv.y -= 0.0;
 	uv.x -= 0.5;

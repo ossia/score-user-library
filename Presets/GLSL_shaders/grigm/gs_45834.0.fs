@@ -22,7 +22,7 @@ precision mediump float;
 	void main()
 	{
 		
-		vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy)-.5;
+		vec2 uv = (isf_FragNormCoord)-.5;
 	
 		float TIME = -TIME * .1 + ((.25+.05*sin(TIME*.1))/(length(uv.xy)+.07))* 2.2;
 		float si = sin(TIME);

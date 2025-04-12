@@ -60,7 +60,7 @@ void main() {
     xpos = iZoom * gl_FragCoord.x / RENDERSIZE.x;
     ypos = iZoom * gl_FragCoord.y / RENDERSIZE.y;
     //xpos -= 0.0;
-    //ypos -= 0.0;gl_FragCoord.xy / RENDERSIZE.xy
+    //ypos -= 0.0;isf_FragNormCoord
     x = xpos;
     for (float i = 0.0; i < LINES; i += 1.0) {
         for(float j = 0.0; j < 2.0; j += 1.0){

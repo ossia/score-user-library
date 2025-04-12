@@ -118,8 +118,8 @@ void main() {
 
 	float time = TIME * 0.1;
     
-    vec2 vNormalizedUv = gl_FragCoord.xy / RENDERSIZE.xy;
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y;
+    vec2 vNormalizedUv = isf_FragNormCoord;
+	vec2 uv = isf_FragNormCoord *.y;
 	
 	vec3 col  = vec3(0.0, 0.0, 0.0);
 	

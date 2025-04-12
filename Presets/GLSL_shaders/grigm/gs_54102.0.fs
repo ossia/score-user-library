@@ -32,7 +32,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 p = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy )-1.0;
+	vec2 p = 2.0*( isf_FragNormCoord )-1.0;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 	vec3 col = vec3(0);
 	

@@ -133,7 +133,7 @@ void main() {
 	    vec3 cameraTarget = vec3(sin(TIME),cos(TIME),4.0);
 	    cameraOrigin += vec3(sin(TIME*0.7)*1.5,0.0,0.0);
 	        
-		vec2 screenPos = (gl_FragCoord.xy/RENDERSIZE.xy)*2.0-1.0;
+		vec2 screenPos = (isf_FragNormCoord)*2.0-1.0;
 		screenPos.x *= RENDERSIZE.x/RENDERSIZE.y;
 	    
 		mat3 cam = setCamera(cameraOrigin, cameraTarget, TIME*0.5);
@@ -149,7 +149,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy - vec2(0.5);
+	    vec2 uv = isf_FragNormCoord - vec2(0.5);
 		
 	    vec4 col = vec4(0.0);
 	    for(int i = 0; i < 4; i++)
@@ -165,7 +165,7 @@ void main() {
 	else if (PASSINDEX == 2)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy - vec2(0.5);
+	    vec2 uv = isf_FragNormCoord - vec2(0.5);
 		
 	    vec4 col = vec4(0.0);
 	    for(int i = 0; i < 4; i++)
@@ -176,14 +176,14 @@ void main() {
 	    
 	    col /= 4.0;
 	    
-	    vec4 oldFrame = IMG_NORM_PIXEL(BufferC,mod(gl_FragCoord.xy/RENDERSIZE.xy,1.0));
+	    vec4 oldFrame = IMG_NORM_PIXEL(BufferC,mod(isf_FragNormCoord,1.0));
 	    
 	    gl_FragColor = mix(col, oldFrame, 0.75);
 	}
 	else if (PASSINDEX == 3)	{
    
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 		vec4 col = IMG_NORM_PIXEL(BufferC,mod(uv,1.0));
 	    
 	    gl_FragColor = col;

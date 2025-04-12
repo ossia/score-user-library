@@ -171,7 +171,7 @@ float lines(in vec2 pos, float b){
 
 
 void main() {
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     st -= vec2(origin);
     st.y *= RENDERSIZE.y/RENDERSIZE.x;
 

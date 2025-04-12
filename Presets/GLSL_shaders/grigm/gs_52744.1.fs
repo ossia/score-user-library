@@ -30,7 +30,7 @@ float circ(vec2 p) {
 }
 
 void main( void ) {
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE - .5;
+    vec2 uv = isf_FragNormCoord - .5;
     vec2 p = vec2(uv.x,uv.y);
     p.x *= RENDERSIZE.x/RENDERSIZE.y;
     p*=4.;

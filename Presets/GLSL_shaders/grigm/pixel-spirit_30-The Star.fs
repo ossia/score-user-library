@@ -102,7 +102,7 @@ float t = TIME;
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;	
+	vec2 st = isf_FragNormCoord;	
 	vec2 rotst = st;
 	rotst = rotate(rotst,radians(spin));
 	color += stroke(raysSDF(rotst,int(count)),0.5,0.15);

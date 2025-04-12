@@ -26,7 +26,7 @@ float pulse(float a, float b, float t, float x) {
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 p = ( isf_FragNormCoord );
 	p = 2.0 * p - 1.0;
 	p.x *= RENDERSIZE.x / RENDERSIZE.y;
 

@@ -46,7 +46,7 @@ void main() {
 
 
 	const mat3 p = mat3(13.323122,23.5112,21.71123,21.1212,28.7312,11.9312,21.8112,14.7212,61.3934);
-	vec2 uv = iMouse.xy/RENDERSIZE.xy + vec2(1.,RENDERSIZE.y/RENDERSIZE.x)*gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = iMouse.xy/RENDERSIZE.xy + vec2(1.,RENDERSIZE.y/RENDERSIZE.x)*isf_FragNormCoord;
 	vec3 acc = vec3(0.0);
 	float dof = 5.*sin(TIME*.1);
 	for (int i=0;i<LAYERS;i++) {

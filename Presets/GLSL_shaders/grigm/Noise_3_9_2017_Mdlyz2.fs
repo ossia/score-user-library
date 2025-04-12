@@ -138,7 +138,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     float ratio = RENDERSIZE.x/RENDERSIZE.y;
     uv.x *= ratio;
     

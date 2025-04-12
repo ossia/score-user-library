@@ -79,7 +79,7 @@ vec2 rotate2D(vec2 _st, float _angle){
 
 void main() {
 
-		vec2 st = gl_FragCoord.xy / RENDERSIZE;
+		vec2 st = isf_FragNormCoord;
 		st -= vec2(pos);
 		st.x *= RENDERSIZE.x/RENDERSIZE.y; // 1:1 ratio
 		

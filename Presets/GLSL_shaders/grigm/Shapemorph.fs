@@ -36,7 +36,7 @@
 
 void main() {
 	
-	vec2 position = -1.0 + 2.0 * gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = -1.0 + 2.0 * isf_FragNormCoord;
 	float _time = speed * TIME;
 	
 	vec2 i = position * scale;

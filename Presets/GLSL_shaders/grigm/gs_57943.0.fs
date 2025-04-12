@@ -48,7 +48,7 @@ float getColor(vec2 cdn, float t) {
 
 
 vec3 main_() {
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	position.y = mouse.y - position.y;
 	position.x = mouse.x / position.x;
 

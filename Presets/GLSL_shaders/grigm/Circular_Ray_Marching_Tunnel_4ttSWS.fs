@@ -28,7 +28,7 @@ bool isInCircle(vec2 center, float radius, vec2 point)
 
 void main()
 {
-	vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy) * 2. - 1.;
+	vec2 uv = (isf_FragNormCoord) * 2. - 1.;
     uv.x*=RENDERSIZE.x/RENDERSIZE.y;
     vec3 color = vec3(0.0);
     vec2 ray;

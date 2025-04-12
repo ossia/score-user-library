@@ -36,7 +36,7 @@ precision highp float;
 
 
 void main( void ) {
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	vec2 pixel = 1./RENDERSIZE;
 	vec4 me = IMG_NORM_PIXEL(backbuffer,mod(position,1.0));
 

@@ -233,7 +233,7 @@ vec4 galaxy(vec2 uv)
 }
 void main(void)
 {  		
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy * iZoom;
+    vec2 uv = isf_FragNormCoord * iZoom;
     
 	//vec4 the_sample = texture2D(iChannel1, uv);
     vec4 the_sample = IMG_NORM_PIXEL(inputImage, uv);

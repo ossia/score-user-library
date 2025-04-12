@@ -26,7 +26,7 @@ void main( void ) {
 	
 	
 	float dist = fract(TIME * speed);
-	vec2 normalizedCoord = (gl_FragCoord.xy / RENDERSIZE.yy) - vec2(0.5);
+	vec2 normalizedCoord = (isf_FragNormCoord *.yy) - vec2(0.5);
 	float coordMag = length(normalizedCoord);
 	float level = step(distance(dist, coordMag),size);
 	vec3 value = mix(color1, color2, level);

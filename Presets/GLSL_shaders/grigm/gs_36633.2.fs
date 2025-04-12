@@ -47,7 +47,7 @@ float pli(float x, vec2 v[4], int k) {
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 
 	float color = 1.0;
 

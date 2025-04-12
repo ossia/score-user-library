@@ -50,7 +50,7 @@ vec3 bridge(vec3 c, float d, float s, float w){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	st = rotate(st, radians(spin2));
 	float r1 = rectSDF(st, vec2(1.0));
 	float r2 = rectSDF(rotate(st, radians(spin)), vec2(1.0));

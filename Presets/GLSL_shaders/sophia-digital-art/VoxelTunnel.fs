@@ -92,7 +92,7 @@ float de(vec3 p) {
 
 void main(void)
 {
-    vec2 uv = iZoom * gl_FragCoord.xy / RENDERSIZE.xy; 
+    vec2 uv = iZoom * isf_FragNormCoord; 
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 
     float dt = TIME * 6.;

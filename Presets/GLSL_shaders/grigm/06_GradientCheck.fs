@@ -160,7 +160,7 @@ precision mediump float;
 
 
 void main(){
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
     float pct = 0.0;
     
    

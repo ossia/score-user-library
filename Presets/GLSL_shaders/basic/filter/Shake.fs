@@ -38,7 +38,7 @@ float rand(vec2 co) {
 
 void main(void) {
 	float offset = 0.1 * magnitude;
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	float rotation = intensity * 2.0 * pi * rand(vec2(magnitude, TIME));
 	float yOffset = offset * sin(TIME * 1.0 * cos(TIME * intensity) + rotation) * rand(vec2(magnitude, TIME));
 	float xOffset = offset * cos(TIME * 1.0 * cos(TIME * intensity) + rotation) * rand(vec2(1.0-magnitude, TIME));;

@@ -107,7 +107,7 @@ float wave(float x, int i){
 
 void main(void)
 {
-    vec2 uv = (gl_FragCoord.xy / RENDERSIZE - vec2(0.5)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0) * 2.0;
+    vec2 uv = (isf_FragNormCoord - vec2(0.5)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0) * 2.0;
     uv.y *= 8.;
     uv.x *= 1.5;
 

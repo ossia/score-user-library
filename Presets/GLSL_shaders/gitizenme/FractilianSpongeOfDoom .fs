@@ -154,7 +154,7 @@ mat2 rot (float s) { return mat2(sin(s),cos(s),-cos(s),sin(s)); }
 
 void main() 
 {
-    vec2 v = (gl_FragCoord.xy/RENDERSIZE.xy*2.0-1.0)*scale;
+    vec2 v = (isf_FragNormCoord*2.0-1.0)*scale;
 	v.x *= RENDERSIZE.x/RENDERSIZE.y;
     T = rate*TIME*10.0;
     m = rot(Xr*T);

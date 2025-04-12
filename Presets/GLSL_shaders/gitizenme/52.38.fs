@@ -441,7 +441,7 @@ void main() {
     tot /= float(AA*AA);
 #endif
     // vignetting
-    vec2 q = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 q = isf_FragNormCoord;
     tot *= 0.7 + 0.3 * pow(16.0 * q.x * q.y * (1.0 - q.x) * (1.0 - q.y), 0.2);
     
     // cheap dithering

@@ -30,7 +30,7 @@ precision mediump float;
 
 
 void main( void ) {
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ) + mouse.xy;
+	vec2 p = ( isf_FragNormCoord ) + mouse.xy;
 	p = 2.0 * p - 1.0; // 0~2를 -1~1로 바꿔주는 역할
 	p.x *= RENDERSIZE.x /RENDERSIZE.y; //화면비에 맞게 px.를 변형
 //	p = mod(p, 0.5) / 0.5 - 0.25; //mod는 나머지연산

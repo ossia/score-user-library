@@ -144,7 +144,7 @@ void main() {
 
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
 	float f = sin(TIME) * 0.5 +0.5;
     vec3 curl = curlNoise(vec3(uv,1.) *5. + TIME) / 1.;
     // curl = curl * curl;

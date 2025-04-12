@@ -116,7 +116,7 @@ vec3 getpat(in vec3 p)
 
 void main( void ) {
 
-	vec2 p = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy )-1.0;
+	vec2 p = 2.0*( isf_FragNormCoord )-1.0;
 	vec3 col = vec3(p.y*0.25)*vec3(0.75,0.85,1.0);
 	
 	p.x *= RENDERSIZE.x/RENDERSIZE.y; 

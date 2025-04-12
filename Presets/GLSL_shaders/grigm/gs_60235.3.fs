@@ -31,7 +31,7 @@ precision highp float;
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) -.5+ mouse ;
+	vec2 position = ( isf_FragNormCoord ) -.5+ mouse ;
 	position.y *= dot(position,position);
 	
 	float color1 = 0.0;

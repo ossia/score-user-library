@@ -128,7 +128,7 @@
 
 
 void main() {
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     float L = floor(loops);	
 	float T = TIME*rate + YY.x;
 	vec2 z = -1.5 + 4.0*uv;

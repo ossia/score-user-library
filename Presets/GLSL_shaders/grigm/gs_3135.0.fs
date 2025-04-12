@@ -21,7 +21,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 position = (( gl_FragCoord.xy / RENDERSIZE.xy ) - .5) * sqrt(vec2(RENDERSIZE.x/RENDERSIZE.y,RENDERSIZE.y/RENDERSIZE.x)) + .5;
+	vec2 position = (( isf_FragNormCoord ) - .5) * sqrt(vec2(RENDERSIZE.x/RENDERSIZE.y,RENDERSIZE.y/RENDERSIZE.x)) + .5;
 	
 	vec3 ssum = vec3(0.), csum = vec3(0.), rsum = vec3(0.);
 	float particle = 0.;

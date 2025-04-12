@@ -65,7 +65,7 @@ void main()
 	
 	for(int i=0;i<4;i++) {
 		vec2 uv;
-		vec2 p=gl_FragCoord.xy/RENDERSIZE;
+		vec2 p=isf_FragNormCoord;
 		uv=p;
 		p-=0.5;
 		p.x*=RENDERSIZE.x/RENDERSIZE.y;

@@ -56,7 +56,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ) - 0.5;
+	vec2 p = ( isf_FragNormCoord ) - 0.5;
 	
 	vec4 color;
 	

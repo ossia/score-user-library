@@ -44,7 +44,7 @@ void main() {
 		color = 1.0 - distance(gl_FragCoord.xy, center) / (0.5 * size);
 		color = color * t / (abs(gl_FragCoord.y - center.y)) * t / (abs(gl_FragCoord.x - center.x));
 	}
-	else if (rand(gl_FragCoord.xy / RENDERSIZE.xy) > 0.996)
+	else if (rand(isf_FragNormCoord) > 0.996)
 	{
 		float r = rand(gl_FragCoord.xy);
 		color = r * (0.25 * sin(TIME * (r * 5.0) + 720.0 * r) + 0.75);

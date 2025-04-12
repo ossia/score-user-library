@@ -24,7 +24,7 @@ precision mediump float;
 void main( void )
 {
 
-	vec2 uv =  8.*( gl_FragCoord.xy / RENDERSIZE.xy )-4.0  ;
+	vec2 uv =  8.*( isf_FragNormCoord )-4.0  ;
 	
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 		

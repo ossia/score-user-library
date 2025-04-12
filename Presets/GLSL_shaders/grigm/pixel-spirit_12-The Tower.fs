@@ -46,7 +46,7 @@ float flip(float v, float pct){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	float rect = rectSDF(st, vec2(0.5,1.0));
 	float diag = (st.x + st.y) * 0.5;
 	

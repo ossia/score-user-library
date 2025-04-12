@@ -71,6 +71,6 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    gl_FragColor = IMG_NORM_PIXEL(BufferA,mod(gl_FragCoord.xy/RENDERSIZE.xy,1.0));
+	    gl_FragColor = IMG_NORM_PIXEL(BufferA,mod(isf_FragNormCoord,1.0));
 	}
 }

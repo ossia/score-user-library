@@ -105,7 +105,7 @@ void main( void ) {
     vec3 pos = eye;
     float shade = 0.;
     #ifdef DITHER
-	vec2 dpos = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 dpos = ( isf_FragNormCoord );
 	vec2 seed = dpos + fract(TIME);
 	#endif 
     for (float i = 0.; i < STEPS; ++i) {

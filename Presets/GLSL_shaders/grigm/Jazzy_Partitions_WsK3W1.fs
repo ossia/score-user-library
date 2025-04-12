@@ -36,7 +36,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy-.5;
+    vec2 uv = isf_FragNormCoord-.5;
     vec2 R = RENDERSIZE.xy;
     uv.x *= R.x / R.y;
     uv *= 2.;
@@ -84,7 +84,7 @@ void main() {
         uv *= 1.05;
     }
     
-    vec2 N = gl_FragCoord.xy / RENDERSIZE.xy-.5;
+    vec2 N = isf_FragNormCoord-.5;
     gl_FragColor = clamp(gl_FragColor,0.,1.);
     gl_FragColor = pow(gl_FragColor,gl_FragColor-gl_FragColor+.8);
     gl_FragColor.a = 1.;

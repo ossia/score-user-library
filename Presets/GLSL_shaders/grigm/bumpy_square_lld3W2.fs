@@ -29,7 +29,7 @@ float square(vec2 where, vec2 pos, float size) {
 void main()
 {
     float ratio = RENDERSIZE.x / RENDERSIZE.y;
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy * vec2(ratio, 1.0);
+    vec2 uv = isf_FragNormCoord * vec2(ratio, 1.0);
     float size = 0.25;
     float xbounce = 4.5;
     float ybounce = 3.0;

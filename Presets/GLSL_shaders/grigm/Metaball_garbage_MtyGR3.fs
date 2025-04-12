@@ -39,7 +39,7 @@ float metaball(in vec3 ball, in vec2 testPoint){
 void main()
 {
     
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xx;
+	vec2 uv = isf_FragNormCoord *.xx;
     // Set up positive metaballs
     vec3 points[posnum];
     vec3 colours[posnum];

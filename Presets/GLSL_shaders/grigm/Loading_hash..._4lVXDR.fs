@@ -253,7 +253,7 @@ vec3 Uncharted2ToneMapping(vec3 color)
 
 void main()
 {
-	vec2 uv = 2. * gl_FragCoord.xy / RENDERSIZE.xy - 1.;
+	vec2 uv = 2. * isf_FragNormCoord - 1.;
 
     float o1 = 0.25;
     float o2 = 0.75;

@@ -50,7 +50,7 @@ vec3 gilmoreCol(float x){
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     //stripes
     float x = uv.x;

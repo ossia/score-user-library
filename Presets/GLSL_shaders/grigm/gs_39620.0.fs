@@ -44,7 +44,7 @@ vec3 get_normal(vec3 p)
 }
 void main()
 {
-	vec2 p = 2.0 * (gl_FragCoord.xy / RENDERSIZE) - 1.0; 
+	vec2 p = 2.0 * (isf_FragNormCoord *) - 1.0; 
 	p.x *= RENDERSIZE.x/RENDERSIZE.y; 
 	vec3 color = vec3(0); 
 

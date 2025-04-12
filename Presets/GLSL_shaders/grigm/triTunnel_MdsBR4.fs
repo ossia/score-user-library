@@ -103,7 +103,7 @@ void main() {
 
 
 	
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    
 	    vec4 col;
 	    vec2 delta = vec2(uv - 0.5)* 0.5 * sin(TIME);

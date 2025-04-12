@@ -67,7 +67,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     
     vec3 c = vec3(0.0);
     float alpha = 1.0;

@@ -119,7 +119,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 p = (gl_FragCoord.xy*2. - RENDERSIZE.xy) / min(RENDERSIZE.x, RENDERSIZE.y);
 	float time = TIME*0.1;
     // camera

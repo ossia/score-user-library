@@ -65,7 +65,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 		const int mSize = 11;
 		const int kSize = (mSize-1)/2;
 		float kernel[mSize];
@@ -99,7 +99,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 uvoffset = IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).xy; 
 	    uvoffset = normalize(uvoffset) * sin(TIME*16.);
 	
@@ -110,7 +110,7 @@ void main() {
 	else if (PASSINDEX == 2)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    gl_FragColor = IMG_NORM_PIXEL(BufferB,mod(uv,1.0));
 	}
 }

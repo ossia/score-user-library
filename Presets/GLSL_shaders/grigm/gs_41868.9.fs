@@ -57,5 +57,5 @@ void main( void ) {
 	float gi = 1.0-smoothstep(gradius,gradius+50.0,length(dist));
 	i=(i+gi);
 	vec4 f = vec4(i*(gl_FragCoord.x/RENDERSIZE.x),i*(gl_FragCoord.y/RENDERSIZE.y),i,1.0);
-	gl_FragColor = max(f,IMG_NORM_PIXEL(backbuffer,mod(gl_FragCoord.xy/RENDERSIZE.xy,1.0),0.1))-.002;
+	gl_FragColor = max(f,IMG_NORM_PIXEL(backbuffer,mod(isf_FragNormCoord,1.0),0.1))-.002;
 }

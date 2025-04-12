@@ -43,7 +43,7 @@ void main() {
 
 
 
-    uv = gl_FragCoord.xy / RENDERSIZE.x;
+    uv = isf_FragNormCoord *.x;
     vec3 col = vec3(0.63, .85, .95);
     for (float i = 1.; i <= _NUMSHEETS; i++){
         for (float j = 1.; j <= _NUMFLAKES; j++){

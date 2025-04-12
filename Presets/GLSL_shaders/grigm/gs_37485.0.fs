@@ -35,7 +35,7 @@ float rand(vec2 co){
 void main( void ) {
 	
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.x ) - vec2(0.5,0.5);
+	vec2 position = ( isf_FragNormCoord *.x ) - vec2(0.5,0.5);
 
 	position -= vec2(0.5, 0.3);
 	//position *= 0.5;

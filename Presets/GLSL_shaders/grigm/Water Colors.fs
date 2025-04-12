@@ -39,7 +39,7 @@
 
 
 void main() {
-	vec2 blend_uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 blend_uv = isf_FragNormCoord;
 	vec2 uv = vec2(blend_uv.x, blend_uv.y);
 	vec4 inPix = IMG_NORM_PIXEL(inputImage, uv);
 	vec3 intensity = (1.0 - inPix.rgb);

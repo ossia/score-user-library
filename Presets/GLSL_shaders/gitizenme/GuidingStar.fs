@@ -50,7 +50,7 @@ float RED = (sin (TIME+1.0)) ;
 float GREEN = (cos (TIME-1.0)) ;
 
 void main(){
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     vec3 color = vec3(0.0);
 
     vec2 pos = vec2(Shift)-st ;

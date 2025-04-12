@@ -108,7 +108,7 @@ void main() {
     p = vec2(gl_FragCoord.x, gl_FragCoord.y + mix(0.0, RENDERSIZE.y, phase)) / RENDERSIZE.xy;
     c = IMG_NORM_PIXEL(from, p);
   } else {
-    p = gl_FragCoord.xy / RENDERSIZE.xy;
+    p = isf_FragNormCoord;
     c = texture2D(to, p);
   }
 

@@ -31,7 +31,7 @@ vec2 rand22 (vec2 n) {
 
 void main( void ) {
 
-	vec2 position = vv_FragNormCoord;//gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = vv_FragNormCoord;//isf_FragNormCoord;
 	
 	vec2 sPos = vec2(0.0, 0.100);
 	vec3 color = vec3(0.10);

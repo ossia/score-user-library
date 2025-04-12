@@ -25,7 +25,7 @@ vec3 hsl2rgb(vec3 hsl);
 float snoise(vec4 v);
 
 void main( void ) {
-	vec2 pos = gl_FragCoord.xy / RENDERSIZE.xy * 3.0;
+	vec2 pos = isf_FragNormCoord * 3.0;
 	float t = TIME / 16.0;
 
 	float regionValues[REGION_NUM];

@@ -80,7 +80,7 @@ void main() {
 
 
 
-	vec2 p = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 p = isf_FragNormCoord;
 	p = p;
     
     vec2 p2 = p * 1.0;

@@ -17,7 +17,7 @@
 void main(){
   vec3 color = vec3(0.0, 0.9, 0.3);
 
-  vec2 p = gl_FragCoord.xy / RENDERSIZE.x;
+  vec2 p = isf_FragNormCoord *.x;
 
   float a = 0.5;
   float b = (sin(p.y * 5.0 + TIME * 5.55) + sin(p.y * 9.0 + TIME * 12.0) + sin(p.y * 5.0 + TIME * 27.0))/6.0;

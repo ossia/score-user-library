@@ -147,7 +147,7 @@ vec4 vmarch(in vec3 ro, in vec3 rd)
 
 void main(void)
 {
-	vec2 p = gl_FragCoord.xy/RENDERSIZE.xy*2. - 1.;
+	vec2 p = isf_FragNormCoord*2. - 1.;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y*0.95;
 	mo = 2.0*iMouse.xy/RENDERSIZE.xy;
     mo = (mo==vec2(.0))?mo=vec2(0.5,2.):mo;

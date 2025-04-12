@@ -39,7 +39,7 @@ void main (void)
 {
 	vec2 offset = vec2(TIME * 8.25,0);
 	
-	vec2 p = 2.0 * (gl_FragCoord.xy / RENDERSIZE) - 1.0;
+	vec2 p = 2.0 * (isf_FragNormCoord *) - 1.0;
 	p.x *= RENDERSIZE.x / RENDERSIZE.y;
 	
 	p *= 350.0;

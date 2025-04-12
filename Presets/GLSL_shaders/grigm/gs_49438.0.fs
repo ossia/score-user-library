@@ -95,7 +95,7 @@ void main() {
 		vec3 c;
 	float l, z = t;
 	for(int i=0; i < 3; i++) {
-		vec2 uv, p = gl_FragCoord.xy/RENDERSIZE;
+		vec2 uv, p = isf_FragNormCoord;
 		uv = p;
 		p.x -= (0.5+center_pos_x);
 		p.y -= (0.5+center_pos_y);

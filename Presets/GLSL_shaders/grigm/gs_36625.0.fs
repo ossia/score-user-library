@@ -36,7 +36,7 @@ vec3 star(vec2 uv,float scale,float seed){
 }
 
 void main(void){
-	vec4 b=IMG_NORM_PIXEL(backbuffer,mod(gl_FragCoord.xy/RENDERSIZE.xy,1.0));
+	vec4 b=IMG_NORM_PIXEL(backbuffer,mod(isf_FragNormCoord,1.0));
 	vec2 uv=(gl_FragCoord.xy*2.-RENDERSIZE.xy)/min(RENDERSIZE.x,RENDERSIZE.y); 
 	vec3 c=vec3(0);
 	for(float i=0.;i<20.;i+=2.)c+=star(uv,mod(20.+i-TIME*1.,20.),i*5.1);

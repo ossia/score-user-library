@@ -173,7 +173,7 @@ float stars(vec2 uv, float t) {
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     float t = TIME*.05;
      
     vec2 bgUV = uv*vec2(RENDERSIZE.x/RENDERSIZE.y, 1.);

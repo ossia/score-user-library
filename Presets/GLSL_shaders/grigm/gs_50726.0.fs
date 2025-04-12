@@ -153,7 +153,7 @@ void ddigit(int n)
 void main( void ) 
 {
 	vec2 aspect = RENDERSIZE.xy / RENDERSIZE.y;
-	uv = ( gl_FragCoord.xy / RENDERSIZE.y ) - aspect / 2.0;
+	uv = ( isf_FragNormCoord *.y ) - aspect / 2.0;
 	uv *= 30.0;
 	if (REPEAT_SIGN)
 	  uv = -14.0 + mod(1.8*(uv-1.0),ch_space*vec2(16.,6.5));     //  set zoom size

@@ -198,7 +198,7 @@ void main()
 {
     // basic raymarching template from @nicoptere: https://www.shadertoy.com/view/ldtGD4
     // 1 : get fragment's coordinates
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv -= 0.5;									// Move to center
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;		// Correct for aspect ratio
     

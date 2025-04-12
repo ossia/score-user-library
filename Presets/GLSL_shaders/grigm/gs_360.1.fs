@@ -49,7 +49,7 @@ float snakeShape(vec2 p, float t)
 
 void main( void ) {
 
-	vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy - vec2(0.5)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0);
+	vec2 p = (isf_FragNormCoord - vec2(0.5)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0);
 
 	gl_FragColor.a = 1.0;
 	gl_FragColor.rgb = 	snakeShape(p, TIME + 000.0) * vec3(0.8, 0.4, 0.8) +

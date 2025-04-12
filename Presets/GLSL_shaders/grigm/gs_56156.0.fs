@@ -53,7 +53,7 @@ vec3 draw (vec3 p,float t){
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy )*2.-1.;
+	vec2 p = ( isf_FragNormCoord )*2.-1.;
 	p.y *= RENDERSIZE.y/RENDERSIZE.x;
 	vec3 tm = -TIME*vec3(1.,0.,1.)+vec3(0.23,0.,0);
 	vec3 ro = vec3(0.3,0.02,0.3)+tm;

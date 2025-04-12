@@ -32,7 +32,7 @@ float bgauss(float s, float d, float r)
 }
 void main()
 {
-	vec2 uv = (gl_FragCoord.xy / RENDERSIZE.xy-0.5);
+	vec2 uv = (isf_FragNormCoord-0.5);
 	uv.y*=0.66;
 	vec2 point = vec2(-0.13,-0.03);
 	float s=0.03;

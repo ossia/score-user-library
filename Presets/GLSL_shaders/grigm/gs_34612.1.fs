@@ -223,7 +223,7 @@ void main( void )
     const vec3 CloudTopColor = vec3(1.0);
    
     #ifdef DITHERING
-    vec2 posd = ( gl_FragCoord.xy / RENDERSIZE.xy );
+    vec2 posd = ( isf_FragNormCoord );
     vec2 seed = posd + fract(TIME);
     t = (1. + 0.2*rand(seed*vec2(100.)));
     #endif 

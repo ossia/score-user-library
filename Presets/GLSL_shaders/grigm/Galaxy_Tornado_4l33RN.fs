@@ -258,7 +258,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    float scale = E;
 	    uv = uv*scale-scale/2.0;
 	    
@@ -324,7 +324,7 @@ void main() {
 	    float a = simplex3d(vec3(uv0, time));
 	    vec2 d = vec2(cos(a), sin(a))/MAX_DIM;
 	    
-	    vec4 back = IMG_NORM_PIXEL(BufferB,mod(gl_FragCoord.xy/RENDERSIZE.xy+d,1.0));
+	    vec4 back = IMG_NORM_PIXEL(BufferB,mod(isf_FragNormCoord+d,1.0));
 	    float skew = (120.0+64.0)/255.0;
 	    if(color.a <= skew)
 	        gl_FragColor = clamp((back*(1.0-color.a)/skew+color*color.a/skew), 0.0, 1.0);
@@ -334,13 +334,13 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-		vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+		vec2 uv = isf_FragNormCoord;
 		gl_FragColor = clamp(IMG_NORM_PIXEL(BufferA,mod(uv,1.0))-1.0/60.0, 0.0, 1.0);
 	}
 	else if (PASSINDEX == 2)	{
 
 
-		vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+		vec2 uv = isf_FragNormCoord;
 		gl_FragColor = IMG_NORM_PIXEL(BufferA,mod(uv,1.0));
 	}
 }

@@ -43,7 +43,7 @@ void main() {
 
 const float n = 10.;
 float a = 0.14;
-vec2 p = gl_FragCoord.xy / RENDERSIZE.x; 
+vec2 p = isf_FragNormCoord *.x; 
 float t = fract(TIME/2.);
 float pi = 3.14159265;
 float p2 = pi*2.;

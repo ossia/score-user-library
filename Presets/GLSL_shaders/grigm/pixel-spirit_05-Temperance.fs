@@ -36,7 +36,7 @@ float stroke(float x, float s, float w){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	float offset = cos(st.y * PI + (TIME*rate)) * expand;
 	
 	color += stroke(st.x,.28+offset,.1);

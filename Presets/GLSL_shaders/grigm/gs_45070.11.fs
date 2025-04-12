@@ -85,7 +85,7 @@ float sin01(in float t){
 
 void main( void ) {
 	
-	vec2 point = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 point = isf_FragNormCoord;
 	//vec2 mouse = (mouse.xy - 0.5) * 0.1; mouse is kind of ugly?
 	vec2 center = vec2(0.5 - (sin(TIME * 0.5) * 0.05), 0.5 - (sin(TIME * 0.25) * 0.1));
 

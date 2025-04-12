@@ -193,7 +193,7 @@ return vec4((1. / (1. + exp(-bufA[0]))).xyz, 1.0);}
 void main() {
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 mouseNorm = (iMouse.xy / RENDERSIZE.xy) - vec2(0.5, 0.5);
         uv.x *= RENDERSIZE.x / RENDERSIZE.y;
         uv.x -= ((RENDERSIZE.x / RENDERSIZE.y) - 1.) /2.;

@@ -144,7 +144,7 @@ vec2 rand_loc(float i,  float t)
 
 void main( void )
 {
-	vec2 position = ((gl_FragCoord.xy / RENDERSIZE.xy) * 2.0) - 1.0;
+	vec2 position = ((isf_FragNormCoord) * 2.0) - 1.0;
 	position.y *= RENDERSIZE.y/RENDERSIZE.x;
 
 	float n = 7.0;

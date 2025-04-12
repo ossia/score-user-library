@@ -143,7 +143,7 @@ float thing(vec2 pos)
 
 void main(void) 
 {
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE );
+	vec2 position = ( isf_FragNormCoord *);
 	vec2 world = position * 10.0;
 	world.x *= RENDERSIZE.x / RENDERSIZE.y;
 	float dist = 1./thing(world);

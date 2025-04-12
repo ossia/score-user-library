@@ -183,7 +183,7 @@ void main() {
 	    //const float amp = 1.0; // self-amplification
 	    //const float sq2 = 0.7; // diagonal weight
 	
-	    vec2 vUv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 vUv = isf_FragNormCoord;
 	    vec2 texel = texel_size / RENDERSIZE.xy;
 	    
 	    // 3x3 neighborhood coordinates
@@ -238,7 +238,7 @@ void main() {
 	    
 	    // initialize with noise
 	    if(FRAMEINDEX<10 || reset) {
-	        gl_FragColor = -0.5 + IMG_NORM_PIXEL(iChannel1,mod(gl_FragCoord.xy / RENDERSIZE.xy,1.0));
+	        gl_FragColor = -0.5 + IMG_NORM_PIXEL(iChannel1,mod(isf_FragNormCoord,1.0));
 	    } else {
 	        gl_FragColor = clamp(vec4(a,b,div,1), -1., 1.);
 	    }
@@ -249,7 +249,7 @@ void main() {
 
 
 	    vec2 texel = 1. / RENDERSIZE.xy;
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec3 components = IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).xyz;
 	    vec3 norm = normalize(components);
 	    gl_FragColor = vec4(0.5 + norm.z);

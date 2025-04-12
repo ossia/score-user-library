@@ -149,7 +149,7 @@ float aoc(vec3 origin, vec3 ray)
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv = uv * 2.0 - 1.0;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
     

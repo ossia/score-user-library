@@ -189,7 +189,7 @@ void main( void ) {
 	EPSILON_NRM = 0.1 / RENDERSIZE.x;
 	SEA_TIME = TIME * SEA_SPEED;
 	
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv = uv * 2.0 - 1.0;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;    
     float TIME = TIME * 0.3 + mouse.x*0.01;

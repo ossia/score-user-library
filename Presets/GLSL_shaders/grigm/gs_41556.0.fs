@@ -424,7 +424,7 @@ void main( void ) {
 	
 	float t = (TIME*speed)+TL;
     vec3 col = vec3(0.);
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy; // 0 <> 1
+    vec2 uv = isf_FragNormCoord; // 0 <> 1
     
     uv -= .5;
     uv.x *= RENDERSIZE.x/RENDERSIZE.y;

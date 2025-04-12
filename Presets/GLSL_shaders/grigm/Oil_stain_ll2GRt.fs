@@ -86,7 +86,7 @@ float fbmLow(vec2 uv){
 
 void main() {
 
-	vec2 uv = 1.0-2.0*(gl_FragCoord.xy / RENDERSIZE.xy);
+	vec2 uv = 1.0-2.0*(isf_FragNormCoord);
     uv.y /= RENDERSIZE.x/RENDERSIZE.y;
     float t = TIME*0.6;
     

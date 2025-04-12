@@ -66,7 +66,7 @@ float fBM2(float size, int octaves, float persistence, float scale, vec2 coord) 
 void main() {
 
     // normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     
     if (pixelsize > 1.0) {
    		uv = (pixelsize * floor(RENDERSIZE.xy * uv / pixelsize)) / RENDERSIZE.xy;

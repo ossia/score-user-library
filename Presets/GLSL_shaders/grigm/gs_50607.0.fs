@@ -34,7 +34,7 @@ void main( void ) {
 
 	vec3 color = vec3(0.15, 0.5, 1.0);
 	color = color == vec3(0.0)? vec3(0.5, 0.5, 1.0) : color;
-	vec2 pos = vv_FragNormCoord;//(gl_FragCoord.xy / RENDERSIZE.xy);
+	vec2 pos = vv_FragNormCoord;//(isf_FragNormCoord);
 	//pos.y += - 0.5 - position;
 	
 	// +pk

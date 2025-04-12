@@ -58,7 +58,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     float min_d2 = 100.0;
     float cell_id = -1.0;

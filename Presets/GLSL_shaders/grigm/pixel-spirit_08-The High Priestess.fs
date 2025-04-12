@@ -45,7 +45,7 @@ float map(float n, float i1, float i2, float o1, float o2){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	vec2 pos = vec2(map(cos(TIME),.0,1.0,0.5,orbit),map(sin(TIME),.0,1.0,0.5,orbit));
 	
 	color += stroke(circleSDF(pos,st), 0.5, .05);

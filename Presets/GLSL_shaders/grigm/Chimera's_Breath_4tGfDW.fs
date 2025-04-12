@@ -221,7 +221,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
 	    vec4 lastMouse = texelFetch(BufferC, ivec2(0,0), 0);
@@ -241,7 +241,7 @@ void main() {
 	else if (PASSINDEX == 2)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
 	    vec4 lastMouse = texelFetch(BufferA, ivec2(0,0), 0);
@@ -261,7 +261,7 @@ void main() {
 	else if (PASSINDEX == 3)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
 	    vec4 lastMouse = texelFetch(BufferB, ivec2(0,0), 0);
@@ -281,7 +281,7 @@ void main() {
 	else if (PASSINDEX == 4)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 mo = iMouse.xy / RENDERSIZE.xy;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
@@ -320,7 +320,7 @@ void main() {
 	else if (PASSINDEX == 5)	{
 
 
-	    vec4 col = textureLod(BufferD, gl_FragCoord.xy/RENDERSIZE.xy, 0.);
+	    vec4 col = textureLod(BufferD, isf_FragNormCoord, 0.);
 	    if (gl_FragCoord.y < 1. || gl_FragCoord.y >= (RENDERSIZE.y-1.))
 	        col = vec4(0);
 	    gl_FragColor = col;

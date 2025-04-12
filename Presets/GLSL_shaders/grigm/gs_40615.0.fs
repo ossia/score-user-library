@@ -42,7 +42,7 @@ vec3 rainbow(float hue){
 void main( void )
 {
 	vec2 uv = 2.*gl_FragCoord.xy/RENDERSIZE.y-vec2(RENDERSIZE.x/RENDERSIZE.y,1);
-	vec2 pos = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 pos = isf_FragNormCoord;
     	float s = 2.;
 	float h = 1.0;
     	for(int i = 0; i<5*8; i++) {

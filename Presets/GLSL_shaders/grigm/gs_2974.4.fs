@@ -101,7 +101,7 @@ vec2 hitTest(in vec3 p){
 //Scene End
 
 void main(void){
-  vec2 vPos=-1.0+2.0*gl_FragCoord.xy/RENDERSIZE.xy;
+  vec2 vPos=-1.0+2.0*isf_FragNormCoord;
  
   //Camera animation
   vec3 vuv=vec3(0,1,0);//Change camere up vector here

@@ -55,7 +55,7 @@ void main( void )
 {
 
 	float radius = 0.25;
-	vec2 p =  gl_FragCoord.xy/RENDERSIZE - vec2(0.50, .50);
+	vec2 p =  isf_FragNormCoord - vec2(0.50, .50);
 	p.y /= RENDERSIZE.x / RENDERSIZE.y;
  
 	float d = hix(p, vec2(radius));

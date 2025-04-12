@@ -125,7 +125,7 @@ float box(vec2 a, vec2 b){ vec2 o = step(b,a); return o.x*o.y; }
 
 void main(void){
 	float T = TIME*rate;
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 g = floor(grid.xy);
     float C = g.x*g.y ;                                                                                                                                          
     float I = 1.0 + floor(uv.x * g.x) + g.y * floor(uv.y * g.y) + g.x;

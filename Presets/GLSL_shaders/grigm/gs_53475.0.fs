@@ -172,7 +172,7 @@ vec3 ToneMapFilmicALU(vec3 _color)
 void main( void )
 {  
 
-    	vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    	vec2 uv = isf_FragNormCoord;
     
 	// ro: ray origin
 	// rd: direction of the ray

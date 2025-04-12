@@ -190,7 +190,7 @@ vec4 raymarch(vec3 org, vec3 dir)
 
 void main() {
 
-	vec2 v = -1.0 + 2.0 * gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 v = -1.0 + 2.0 * isf_FragNormCoord;
 	v.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec3 org = vec3(0., -2., 4.);

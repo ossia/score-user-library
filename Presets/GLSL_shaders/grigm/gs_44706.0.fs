@@ -52,7 +52,7 @@ const float dimy = 9.0;
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	ivec2 tile = ivec2(int(position.x * dimx), int(position.y * dimy));
 	vec2 subpos = vec2(dimx * position.x - float(tile.x), dimy * position.y - float(tile.y));
 

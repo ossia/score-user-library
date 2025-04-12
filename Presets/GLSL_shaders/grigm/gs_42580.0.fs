@@ -36,7 +36,7 @@ float noise( in vec2 p ) {
 
 void main( void ) {
 
-	vec2 position = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy )-1.0;
+	vec2 position = 2.0*( isf_FragNormCoord )-1.0;
 	vec3 colore = vec3(1.0,1.0,1.0);
 	float rg=0.2;
 	float f=0.0;

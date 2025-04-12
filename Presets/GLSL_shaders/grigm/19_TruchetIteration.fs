@@ -167,7 +167,7 @@ vec3 invertColor(vec3 color) {
 
 void main() {
 
-		vec2 st = gl_FragCoord.xy/RENDERSIZE;
+		vec2 st = isf_FragNormCoord;
 		st -= vec2(pos);						
 		st.x *= RENDERSIZE.x/RENDERSIZE.y;	
 		

@@ -42,7 +42,7 @@ void main( void ) {
 	
 	vec2 aspect = vec2(RENDERSIZE.x/RENDERSIZE.y,1.);
 
-	vec2 uv = 0.5 + ( gl_FragCoord.xy / RENDERSIZE.xy -0.5 )*aspect;
+	vec2 uv = 0.5 + ( isf_FragNormCoord -0.5 )*aspect;
 	
 	vec2 mouse = 0.5 + (mouse-0.5)*aspect;
 

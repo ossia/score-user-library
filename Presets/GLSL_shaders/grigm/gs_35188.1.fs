@@ -84,7 +84,7 @@ mat3 make_x_rot(float angle) {
 }
 
 void main( void ) {
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) - vec2(0.5, 0.5);
+	vec2 position = ( isf_FragNormCoord ) - vec2(0.5, 0.5);
 	position.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec3 origin = vec3(0.0, 0.0, -2.0);

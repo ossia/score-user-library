@@ -83,8 +83,8 @@ void main(void)
 	//vec4 mousePos = (iMouse / RENDERSIZE.xyxy) * 2.0 - 1.0;
 	vec4 mousePos = vec4(0.0, 0.0, 1.0, 1.0);
 
-	//vec2 screenPos = (gl_FragCoord.xy / RENDERSIZE.xy) * 2.0 - 1.0;
-	vec2 uv = 2.0 * gl_FragCoord.xy / RENDERSIZE.xy - 1.0; 
+	//vec2 screenPos = (isf_FragNormCoord) * 2.0 - 1.0;
+	vec2 uv = 2.0 * isf_FragNormCoord - 1.0; 
 	uv.x -= 0.0;
 	uv.y -= 0.0;
 

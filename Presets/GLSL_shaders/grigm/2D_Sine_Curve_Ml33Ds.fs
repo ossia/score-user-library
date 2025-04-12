@@ -17,7 +17,7 @@
 
 
 void main(){
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     
     float speed = 5.0;
     float multiplier = sin(uv.x * pow(uv.y, speed));

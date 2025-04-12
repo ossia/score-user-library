@@ -59,7 +59,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     ivec2 gridCoord = ivec2(uv * vec2(resolution));
     
     int frame = int(TIME*speed);

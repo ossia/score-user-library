@@ -187,7 +187,7 @@ vec2 iSphere2(in vec3 ro, in vec3 rd)
 
 void main(  )
 {	
-	vec2 p = gl_FragCoord.xy/RENDERSIZE.xy-0.5;
+	vec2 p = isf_FragNormCoord-0.5;
 	p.x*=RENDERSIZE.x/RENDERSIZE.y;
 	vec2 um = iMouse.xy / RENDERSIZE.xy-.5;
     

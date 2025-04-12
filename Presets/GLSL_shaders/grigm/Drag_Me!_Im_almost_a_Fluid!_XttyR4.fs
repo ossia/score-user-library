@@ -320,7 +320,7 @@ void main() {
 
 	    //
 	 /*   
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
     vec2 coords = (uv-iMouse);						//Remap uv to cartesian coordinates. -1 to 1
     coords.x *= RENDERSIZE.x / RENDERSIZE.y;			//Account for aspect ratio
@@ -342,7 +342,7 @@ void main() {
     */
     
     	
-    vec4 p = IMG_NORM_PIXEL(BufferB,mod(gl_FragCoord.xy/RENDERSIZE.xy,10.0));
+    vec4 p = IMG_NORM_PIXEL(BufferB,mod(isf_FragNormCoord,10.0));
 	    if (isDrag)  {
 	        if (p.z>0.){
 	        	gl_FragColor =  vec4(iMouse.xy,p.xy);
@@ -469,7 +469,7 @@ void main() {
 	else if (PASSINDEX== 4)	{
 
 
-	   	vec4 g = IMG_NORM_PIXEL(BufferA,mod(gl_FragCoord.xy/RENDERSIZE.xy,1.0));
+	   	vec4 g = IMG_NORM_PIXEL(BufferA,mod(isf_FragNormCoord,1.0));
 	    vec2 d = vec2(
 	    	IMG_NORM_PIXEL(BufferA,mod((gl_FragCoord.xy+vec2(1,0))/RENDERSIZE.xy,1.0)).w-IMG_NORM_PIXEL(BufferA,mod((gl_FragCoord.xy-vec2(1,0))/RENDERSIZE.xy,1.0)).w,
 	    	IMG_NORM_PIXEL(BufferA,mod((gl_FragCoord.xy+vec2(0,1))/RENDERSIZE.xy,1.0)).w-IMG_NORM_PIXEL(BufferA,mod((gl_FragCoord.xy-vec2(0,1))/RENDERSIZE.xy,1.0)).w

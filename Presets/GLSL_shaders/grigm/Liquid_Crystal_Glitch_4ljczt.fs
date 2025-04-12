@@ -68,7 +68,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 	    
 	    
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    
 	    vec4 flow0  = IMG_NORM_PIXEL(BufferA,mod(uv,1.0));
 	    vec4 flowIn = IMG_NORM_PIXEL(iChannel1,mod(uv,1.0));
@@ -80,7 +80,7 @@ void main() {
 	    
 	    else {
 	        
-	        vec2 vUv = gl_FragCoord.xy / RENDERSIZE.xy;
+	        vec2 vUv = isf_FragNormCoord;
 	        vec2 texel = rate / RENDERSIZE.xy;
 	        vec3 uv = IMG_NORM_PIXEL(BufferA,mod(vUv*(1.0 + leak * 0.005),1.0)).xyz;
 	        
@@ -110,7 +110,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 	    
 	    
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec4 flow0 = IMG_NORM_PIXEL(iChannel2,mod(uv,1.0));
 	    
 	    if ( fract(TIME*0.2)>0.5 ) {gl_FragColor /= flow0 ;}
@@ -119,7 +119,7 @@ void main() {
 	    
 	    else {
 	        
-	        vec2 vUv = gl_FragCoord.xy / RENDERSIZE.xy;
+	        vec2 vUv = isf_FragNormCoord;
 	        vec2 texel = rate / RENDERSIZE.xy;
 	        vec3 uv = IMG_NORM_PIXEL(BufferA,mod(vUv*(1.0 + leak * 0.005),1.0)).xyz;
 	        
@@ -144,7 +144,7 @@ void main() {
 	    }
 	}
 	else if (PASSINDEX == 2)	{
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    gl_FragColor = IMG_NORM_PIXEL(BufferA,mod(uv,1.0)) * IMG_NORM_PIXEL(BufferB,mod(uv,1.0));
 	}
 

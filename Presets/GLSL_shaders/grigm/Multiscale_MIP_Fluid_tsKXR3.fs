@@ -707,7 +707,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec2 tx = 1.0/RENDERSIZE.xy;
 	
 	    
@@ -860,7 +860,7 @@ void main() {
 	else if (PASSINDEX == 4)	{
 	}
 	else if (PASSINDEX == 5)	{
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
 	    vec2 dxy = vec2(0);
 	    float occ, mip = 0.0;

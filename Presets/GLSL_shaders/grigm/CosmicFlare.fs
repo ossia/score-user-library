@@ -122,7 +122,7 @@ float fbm( in vec2 p )
 void main()
 {
 	float t = -TIME*0.03;
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy-0.5;
+	vec2 uv = isf_FragNormCoord-0.5;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	uv*= curvature*.05+0.0001;
 	float r  = sqrt(dot(uv,uv));

@@ -84,7 +84,7 @@ float box(vec2 _st, vec2 _size, float _smoothEdges){
 }
 
 void main(void){
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     vec3 color = vec3(0.0);
 
     // Divide the space in 4

@@ -76,7 +76,7 @@ void main() {
 
 
 
-    vec2 buv = gl_FragCoord.xy / RENDERSIZE.xy - vec2(0.5);
+    vec2 buv = isf_FragNormCoord - vec2(0.5);
 	vec2 uv = buv;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
     gl_FragColor = trace(uv);

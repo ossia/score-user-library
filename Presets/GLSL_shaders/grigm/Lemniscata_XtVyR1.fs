@@ -84,7 +84,7 @@ void main() {
 
 
 
-    vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy) * 2.0 - vec2(1.0);
+    vec2 uv = (isf_FragNormCoord) * 2.0 - vec2(1.0);
     uv.x *= (RENDERSIZE.x / RENDERSIZE.y);
     float r = sin01(TIME) * 0.6 + 0.6;
     const vec2 f1 = vec2(-0.5, 0.0);

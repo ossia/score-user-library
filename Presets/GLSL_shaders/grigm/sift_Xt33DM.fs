@@ -20,7 +20,7 @@
 
 void main()
 {
-	vec2 uv = vec2(0.5) - gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = vec2(0.5) - isf_FragNormCoord;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
     float dist = length(uv);
     const float pi = 3.14159;

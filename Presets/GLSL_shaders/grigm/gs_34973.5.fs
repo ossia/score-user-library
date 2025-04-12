@@ -31,7 +31,7 @@ vec2 rotate(vec2 vec, float angle)
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+	vec2 p = ( isf_FragNormCoord ) * 2.0 - 1.0;
 	p.x /= RENDERSIZE.y / RENDERSIZE.x;
 	
 	float angle = floor((atan(p.y,p.x) + PI - EPS) / TAU * SIDES) / SIDES * TAU;

@@ -106,7 +106,7 @@ float t = TIME;
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	vec2 rst = st;
 	rst = rotate(rst, radians(-spin));
 	float v1 = vesicaSDF(st,.5);

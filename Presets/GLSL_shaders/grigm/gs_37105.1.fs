@@ -109,7 +109,7 @@ vec3 shadePoint(vec3 n, vec3 fragmentpos, vec3 point, vec3 color)
 
 void main( void ) 
 {
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 
 	float sphereradius = 10.0;
 	vec3 spherepos = vec3(0.0, 0.0, -40.0);

@@ -46,7 +46,7 @@ float eq(float v, float compareTo)
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	position.x *= 100.;
 	position.y *= 100.;
 	

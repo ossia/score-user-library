@@ -112,7 +112,7 @@ float circle(vec2 uv, float size){
 
 void main(){
 
-	vec2 uv = gl_FragCoord.xy/RENDERSIZE;
+	vec2 uv = isf_FragNormCoord;
 	uv -= vec2(pos);						
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	

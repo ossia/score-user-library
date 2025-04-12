@@ -316,7 +316,7 @@ void main()
 
     vec3 col = render( ro, rd );
     
-    vec2 q = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 q = isf_FragNormCoord;
     col *= 0.2 + 0.8*pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
 
 	gl_FragColor = vec4( col, 1.0 );

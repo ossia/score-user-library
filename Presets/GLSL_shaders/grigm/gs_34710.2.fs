@@ -139,7 +139,7 @@ bool RaySphereIntersect(vec3 org, vec3 dir, out float near, out float far)
 void main( void )
 {  
 
-    	vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    	vec2 uv = isf_FragNormCoord;
     
 	// ro: ray origin
 	// rd: direction of the ray

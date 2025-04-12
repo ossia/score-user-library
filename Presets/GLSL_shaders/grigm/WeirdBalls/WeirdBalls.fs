@@ -379,7 +379,7 @@ vec3 object_material(vec3 p, vec3 d) //computes the material for the object
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy - 0.5;
+	vec2 uv = isf_FragNormCoord - 0.5;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y; //fix aspect ratio
 	vec3 mouse = vec3(iMouse.xy*RENDERSIZE.xy - 0.5,0.5);
 	

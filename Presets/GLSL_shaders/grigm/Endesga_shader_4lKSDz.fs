@@ -34,7 +34,7 @@ vec2 displace(vec2 uv, vec2 offset)
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     vec2 dr = displace(uv, vec2(0   , 0.02) * AB_SCALE),
          dg = displace(uv, vec2(0.01, 0.01) * AB_SCALE),

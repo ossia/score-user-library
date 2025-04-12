@@ -19,7 +19,7 @@ precision mediump float;
 
 void main( void ) 
 {
-vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.y );
+vec2 uv = ( isf_FragNormCoord *.y );
 vec3 color = vec3(fract(sin(dot(floor(floor(uv.xy*floor(fract(TIME*0.1)*12.0))+TIME*3.0),vec2(5.364,6.357)))*357.536));
 gl_FragColor = vec4(color,1.0);
 }

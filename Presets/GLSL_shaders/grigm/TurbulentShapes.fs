@@ -176,7 +176,7 @@ float getShape(vec2 fpos, int i, float scale) {
 }
 
 void main() {
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
    	st -= vec2(pos);
 	st.x *= RENDERSIZE.x/RENDERSIZE.y;
 

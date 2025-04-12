@@ -141,7 +141,7 @@ float box(vec2 _st, vec2 _size, float _smoothEdges){
 
 
 void main(void){
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
 	st -= vec2(pos);						// move the origin - vec2(0.5) will center it
 	st.x *= RENDERSIZE.x/RENDERSIZE.y;		// make things 1:1 ratio regardless of canvas ratio
 	vec3 color = vec3(0.0);					// instantiate color variable

@@ -147,7 +147,7 @@ void main() {
     if ( iMouse.z>0.) cam_d = iMouse.y/RENDERSIZE.y * 50.; // mouse y axis 
     /////////////////////////////////////////////////////////
     
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy * 2. -1.;
+	vec2 uv = isf_FragNormCoord * 2. -1.;
     uv.x*=RENDERSIZE.x/RENDERSIZE.y;
     
     vec3 col = vec3(0.);

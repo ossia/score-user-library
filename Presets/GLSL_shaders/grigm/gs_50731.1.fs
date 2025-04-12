@@ -153,7 +153,7 @@ void ddigit(int n)
 void main( void ) 
 {
 	vec2 aspect = RENDERSIZE.xy / RENDERSIZE.y;
-	uv = ( gl_FragCoord.xy / RENDERSIZE.y ) - aspect / 2.0;
+	uv = ( isf_FragNormCoord *.y ) - aspect / 2.0;
 	float _d =  1.0-length(uv);
 	uv *= 8.0 ;
 

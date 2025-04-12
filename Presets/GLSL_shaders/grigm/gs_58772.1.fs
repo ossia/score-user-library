@@ -18,7 +18,7 @@ precision mediump float;
 
 
 void main (void) {
-	vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	vec3 color = vec3(sin(0.2 * TIME), 0.1 * sin(TIME), 0.5 * sin(TIME));
 	
 	float a = pow(sin(uv.x*2.1416),.9)*pow(sin(TIME+1.5/uv.y*4.1416),.9);

@@ -38,7 +38,7 @@ float opDisplace( vec3 p )
 
 void main( void ) {
 
-	vec2 p = -1. + 2.*gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 p = -1. + 2.*isf_FragNormCoord;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	//Camera animation

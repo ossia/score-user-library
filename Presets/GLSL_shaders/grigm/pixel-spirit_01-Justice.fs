@@ -24,7 +24,7 @@
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	screenToggle==true ? color += step(0.5,st.x) : color += 1.0-step(0.5,st.x);
     gl_FragColor = vec4(color,1.0);
 }

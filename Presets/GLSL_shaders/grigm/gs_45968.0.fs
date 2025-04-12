@@ -26,7 +26,7 @@ float func(float x){
 
 void main( void ) {
 
-	vec2 position = (( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0) * 10.0;
+	vec2 position = (( isf_FragNormCoord ) * 2.0 - 1.0) * 10.0;
 
 	float color = 0.0;
 	// start from 4;

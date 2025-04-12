@@ -51,7 +51,7 @@ void main()
 {
 // CALCULATE EDGES OF CURRENT CELL
 	// Position of current pixel
-	vec2 xy = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 xy = isf_FragNormCoord;
 	// Left and right of tile
 	float CellWidth = cell_size;
 	float CellHeight = cell_size;

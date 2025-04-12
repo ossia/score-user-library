@@ -43,7 +43,7 @@ vec3 combo(vec2 position, float center, float size) {
 
 void main( void ) {
 	// normalize position
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 	
 	vec3 result = vec3(0.0, 0.0, 0.0);
 	result += combo(position, 0.1, 0.05);

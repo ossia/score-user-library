@@ -103,7 +103,7 @@ void main()	{
 	
 	
 	
-	 vec2 st = gl_FragCoord.xy / RENDERSIZE;
+	 vec2 st = isf_FragNormCoord;
 
     vec3 color = vec3(0.0);
     //    color.x = abs(sin(u_time));

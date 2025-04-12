@@ -189,7 +189,7 @@ float shade1(float d)
 
 void main(void)
 {
-    vec2 uv = 2.0 * iZoom * (gl_FragCoord.xy/RENDERSIZE.xy - 0.5);
+    vec2 uv = 2.0 * iZoom * (isf_FragNormCoord - 0.5);
     uv.x *= float(RENDERSIZE.x )/ float(RENDERSIZE.y); 
 	
 	// using an iq styled camera this time :)

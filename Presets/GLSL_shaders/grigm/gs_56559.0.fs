@@ -71,7 +71,7 @@ float fbm(vec2 x) {
 
 void main( void ) {
 
-	vec2 p= ( gl_FragCoord.xy / RENDERSIZE.xy ) *0.5-1.;
+	vec2 p= ( isf_FragNormCoord ) *0.5-1.;
 	
 	float r = atan(p.x,p.y)+TIME*0.01;
 	

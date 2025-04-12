@@ -86,7 +86,7 @@ vec3 ld = normalize(vec3(1.0, 2.0, 3.));
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv -= vec2(0.5);  
     float a = RENDERSIZE.x / RENDERSIZE.y;
     uv.y /= a;

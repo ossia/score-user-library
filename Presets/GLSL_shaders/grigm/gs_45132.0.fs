@@ -162,7 +162,7 @@ vec3 c(vec2 u,float n){
 }
 
 void main(void){
-	vec2 uv=gl_FragCoord.xy/RENDERSIZE;
+	vec2 uv=isf_FragNormCoord;
 	vec2 a=fract(uv*float(int(circPart)));
 	float b=0.;
 	

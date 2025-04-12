@@ -24,7 +24,7 @@ float rand(int seed, float ray) {
 
 void main( void ) {
 	float pi = 3.14159265359;
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy )-vec2(0.5);
+	vec2 position = ( isf_FragNormCoord )-vec2(0.5);
 	position.y *= RENDERSIZE.y/RENDERSIZE.x;
 	position.x = dot(position,position)*4.0;
 	float ang = atan(position.y, position.x);

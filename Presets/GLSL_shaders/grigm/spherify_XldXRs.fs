@@ -34,7 +34,7 @@ void main()
     float ratio = RENDERSIZE.x/RENDERSIZE.y;
     
     // normalize and center vs
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;    
+	vec2 uv = isf_FragNormCoord;    
     uv -= 0.5;
     
     // spherify    

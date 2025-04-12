@@ -198,7 +198,7 @@ void main()
 	palette[0]=vec3(c6.r,c6.g,c6.b);
 	
 	vec3 color=vec3(0.0);
-    vec2 uv = vec2(gl_FragCoord.xy/RENDERSIZE.xy);
+    vec2 uv = vec2(isf_FragNormCoord);
     vec2 p = vec2(uv * 2.0 - 1.0)*zoom;	
          p.x*=RENDERSIZE.x/RENDERSIZE.y;
     float T = TIME * rate;

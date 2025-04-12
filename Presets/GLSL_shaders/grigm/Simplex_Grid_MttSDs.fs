@@ -58,7 +58,7 @@ void main() {
     vec2 mouse_uv = iMouse.xy / RENDERSIZE.xy;
     
     //screen space -> uv space
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     //Fix aspect ratio
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;

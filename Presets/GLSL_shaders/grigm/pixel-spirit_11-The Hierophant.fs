@@ -47,7 +47,7 @@ float crossSDF(vec2 st, float s){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	float rect = rectSDF(st, vec2(1.0));
 	color += fill(rect,0.5);
 	float cross = crossSDF(st,1.0);

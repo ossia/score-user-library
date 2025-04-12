@@ -75,7 +75,7 @@ vec2 polar_norm(vec2 p) {
 	return cart_polar(polar_cart(p));
 }
 void main(void) {
-	vec2 uv = 2.0 * iZoom * (gl_FragCoord.xy/RENDERSIZE.xy- 0.5);
+	vec2 uv = 2.0 * iZoom * (isf_FragNormCoord- 0.5);
 	uv.x *= float(RENDERSIZE.x )/ float(RENDERSIZE.y);
 	uv.x -= 0.0;
 	uv.y -= 0.0;	

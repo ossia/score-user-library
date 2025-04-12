@@ -44,7 +44,7 @@
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	float time = TIME;
 	float depth = sin(uv.y*2.0+sin(time*timeScale)*1.5+1.0+sin(uv.x*waveFreq*1.5+time*1.2*timeScale))*cos(uv.y*waveFreq+time*timeScale)+sin((uv.x*waveFreq*1.5+time));
 	float texey = (uv.x-0.5);

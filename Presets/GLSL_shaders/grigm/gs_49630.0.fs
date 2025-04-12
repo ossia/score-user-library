@@ -34,7 +34,7 @@ float noise(vec2 n) {
 
 void main( void ) {
 
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy )-.5;
+	vec2 uv = ( isf_FragNormCoord )-.5;
 	vec2 cuv = uv;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	//uv.x += sin(uv.x/5.)*20.;

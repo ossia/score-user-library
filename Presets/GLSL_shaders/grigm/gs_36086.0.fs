@@ -125,7 +125,7 @@ vec3 drawScene(vec3 origin, vec3 direction) {
 }
 
 void main(void) {
-	vec2 p = (gl_FragCoord.xy / RENDERSIZE) * 2.0 - 1.0;
+	vec2 p = (isf_FragNormCoord *) * 2.0 - 1.0;
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
 	p.y /= aspect;
 	p *= 10.0;

@@ -48,7 +48,7 @@ mat2 mm2(in float a) { float c = cos(a), s = sin(a); return mat2(c, s, -s, c); }
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy - vec2(.5);
+    vec2 uv = isf_FragNormCoord - vec2(.5);
     uv.x *= RENDERSIZE.x/RENDERSIZE.y;
     
     /*

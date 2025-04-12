@@ -23,7 +23,7 @@
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     //gl_FragColor = 4.*abs(fwidth(IMG_NORM_PIXEL(inputImage,mod(uv,1.0))));
     

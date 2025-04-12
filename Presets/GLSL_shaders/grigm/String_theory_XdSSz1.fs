@@ -41,7 +41,7 @@ void main() {
 
     float aspect = RENDERSIZE.x/RENDERSIZE.y;
     float featureSize = 60./((RENDERSIZE.x*aspect+RENDERSIZE.y));
-    vec2 p = gl_FragCoord.xy / RENDERSIZE.xy*6.5-3.25;
+    vec2 p = isf_FragNormCoord*6.5-3.25;
 	p.x *= aspect;
 	p.y = abs(p.y);
 	

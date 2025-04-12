@@ -54,7 +54,7 @@
 
 void main(void)
 {
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy; 
+    vec2 uv = isf_FragNormCoord; 
     vec3 rgb = IMG_NORM_PIXEL(inputImage, uv).xyz;
     gl_FragColor=vec4(rgb, 1.0);
 }

@@ -74,7 +74,7 @@ void main()
 
     tot = pow( clamp(tot,0.0,1.0), vec3(0.8,1.1,1.3) );
 	
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     tot *= 0.4 + 0.6*pow( 16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y), 0.1 );
 
     gl_FragColor = vec4( tot, 1.0 );

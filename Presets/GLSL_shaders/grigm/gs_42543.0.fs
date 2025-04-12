@@ -35,7 +35,7 @@ vec4 pattern(vec2 pos, float ang)
 
 void main( void ) 
 {
-	vec2 pos = ( gl_FragCoord.xy / RENDERSIZE.xy ) - vec2(0.5, 0.5);
+	vec2 pos = ( isf_FragNormCoord ) - vec2(0.5, 0.5);
 	vec4 color = vec4(0.0);
 	
 	for(float i =  1.; i < 20. ; i ++)

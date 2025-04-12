@@ -138,7 +138,7 @@ void main()
 {
 	float aspect = RENDERSIZE.x/RENDERSIZE.y;
 	float time = TIME * rate * 10.0;
-	vec2 uv = vec2(gl_FragCoord.xy/RENDERSIZE.xy*2.0-center.xy);
+	vec2 uv = vec2(isf_FragNormCoord*2.0-center.xy);
 	vec2 p = uv.yx;
 	p.y *= RENDERSIZE.x/RENDERSIZE.y;
 	p *= mm2(rot)*zoom;	

@@ -117,7 +117,7 @@ mat2 rotate2d(float _angle){
 }
 
 void main() {
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	st -= vec2(pos);						// move the origin - vec2(0.5) to center
 	st.x *= RENDERSIZE.x/RENDERSIZE.y;		// make things 1:1 ratio regardless of canvas ratio
 

@@ -96,7 +96,7 @@ void main() {
 
 
     HyperbolicDisc(gl_FragCoord.xy);
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;   
+	vec2 uv = isf_FragNormCoord;   
     vec2 oldUV = uv;
     uv -= TIME/18.0;
     uv.y /= 1.7;

@@ -101,7 +101,7 @@ bool collide(vec2 pos,vec2 touch){
 void main( void ) {
 	vec2 pos = (2.0*gl_FragCoord.xy - RENDERSIZE) / RENDERSIZE.y;
 	vec2 touch = (2.0*mouse -1.0) * RENDERSIZE / RENDERSIZE.y;
-	vec2 uv = gl_FragCoord.xy/RENDERSIZE;
+	vec2 uv = isf_FragNormCoord;
 	vec4 pre_status = IMG_NORM_PIXEL(backbuffer,mod(X.yy,1.0));
 	float dt = DT;
 	vec2 pre_vel = remap(Y,REMAP_Y,pre_status.zw);

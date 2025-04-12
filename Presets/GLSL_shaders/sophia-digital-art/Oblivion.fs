@@ -184,7 +184,7 @@ float triNoise2d(in vec2 p)
 
 void main(void)
 {   
-    vec2 p = gl_FragCoord.xy/RENDERSIZE.xy-0.5;
+    vec2 p = isf_FragNormCoord-0.5;
     p.x*=RENDERSIZE.x/RENDERSIZE.y;
     p += vec2(hash(time),hash(time+1.))*0.008;
     float dz = sin(time*ROTSPEED)*8.+1.;

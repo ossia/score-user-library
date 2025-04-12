@@ -40,7 +40,7 @@ void main( void ) {
 	for (float i = 0.; i < 20.; i++) {
 		float angle = i/55. * 3. * 3.14159;
 		vec2 xy = vec2(0. * cos(angle), 0.5 * cos(angle));
-		xy += gl_FragCoord.xy/RENDERSIZE.xy-startPos;
+		xy += isf_FragNormCoord-startPos;
 		intensity += pow(100000., (0.77 - length(xy) * 1.5) * (1. + 0.25 * fract(-i / 55. - TIME/speed*.5))) / (80000.-glow);
 	}
 	gl_FragColor = vec4(clamp(intensity * vec3(1., 1., 1.), vec3(0.), vec3(1.)), 1.);

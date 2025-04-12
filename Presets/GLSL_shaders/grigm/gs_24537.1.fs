@@ -72,7 +72,7 @@ void main()
 {
 	//vec2 pos = vv_FragNormCoord;
 	
-	 vec2 pos = 2.0*( gl_FragCoord.xy / RENDERSIZE.xy )-1.0;
+	 vec2 pos = 2.0*( isf_FragNormCoord )-1.0;
 	pos.x *= RENDERSIZE.x/RENDERSIZE.y; 
 
 

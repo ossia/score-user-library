@@ -112,7 +112,7 @@ void main() {
 
 
 
-	vec2 uv = (gl_FragCoord.xy / RENDERSIZE.xy - vec2(0.5)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.);
+	vec2 uv = (isf_FragNormCoord - vec2(0.5)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.);
     uv *= 5. + 0. * cos(TIME * 0.3);
     gl_FragColor = vec4(galaxy(uv * 3.),1.0);
 }

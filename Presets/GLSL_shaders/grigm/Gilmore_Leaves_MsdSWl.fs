@@ -65,7 +65,7 @@ void main()
 {
 	
      //0-1 on both axes
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     
     //square aspect ratio, centered
     vec2 uvs = vec2( gl_FragCoord.xy - 0.5*RENDERSIZE.xy ) / min(RENDERSIZE.x,RENDERSIZE.y);

@@ -94,7 +94,7 @@ vec4 t(vec2 uv)
 void main( void )
 {
     float aspectRatio = RENDERSIZE.x / RENDERSIZE.y;
-    vec2 p = -1.0 + 2.0 * gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 p = -1.0 + 2.0 * isf_FragNormCoord;
     p.x *= aspectRatio;
     vec2 uv;
     

@@ -149,7 +149,7 @@ void main()
 	mat2 rot_xy = mat2(cos(a_xy),sin(a_xy),-sin(a_xy),cos(a_xy));
 	
 	
-     	//vec2 uv2 = 2. * gl_FragCoord.xy / RENDERSIZE.xy - 1.;
+     	//vec2 uv2 = 2. * isf_FragNormCoord - 1.;
 	
 	vec2 uv2 = vv_FragNormCoord;
 	vec2 uvs = uv2;// * RENDERSIZE.xy / max(RENDERSIZE.x, RENDERSIZE.y);

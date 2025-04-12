@@ -34,7 +34,7 @@ uniform vec2 surfaceSize;
 
 void main( void ) {
 	
-	vec2 uv = abs(mix(vv_FragNormCoord,gl_FragCoord.xy/RENDERSIZE,(cos(TIME)*0.5+0.5)));
+	vec2 uv = abs(mix(vv_FragNormCoord,isf_FragNormCoord,(cos(TIME)*0.5+0.5)));
 	uv -= mouse;
 
 	float t = (abs(fract((surfaceSize.x*surfaceSize.y * mouse.x + mouse.y)+(dot(vv_FragNormCoord,vv_FragNormCoord)))));

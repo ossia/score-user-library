@@ -61,7 +61,7 @@ float tri(vec2 p, vec2 p0, vec2 p1, vec2 p2) {
 }
 void main( void ) {
 	#define PI 3.141592653589793238462
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 uv = ( isf_FragNormCoord );
 	vec2 suv = ((vec2(uv.x,((uv.y-0.5)*(RENDERSIZE.y/RENDERSIZE.x))+0.5)-.5)*2.)+.5;
 	
 	vec3 colors = vec3(0.);

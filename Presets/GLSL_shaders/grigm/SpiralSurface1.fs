@@ -46,7 +46,7 @@ float getval(vec2 car) {
 
 void main( void ) {
 	vec2 mousepersp = perspective(mouse);
-	vec2 vec = perspective(gl_FragCoord.xy / RENDERSIZE.xy) - mousepersp;
+	vec2 vec = perspective(isf_FragNormCoord) - mousepersp;
 	float val = getval(vec);
 	float valx = getval(perspective((gl_FragCoord.xy + vec2(.01,0)) / RENDERSIZE.xy) - mousepersp)-val;
 	float valy = getval(perspective((gl_FragCoord.xy + vec2(0,.01)) / RENDERSIZE.xy) - mousepersp)-val;

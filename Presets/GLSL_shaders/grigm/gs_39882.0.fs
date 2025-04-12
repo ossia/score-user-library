@@ -82,7 +82,7 @@ float cosLine(vec2 st, float freq, float width) {
 }
 
 void main() {
-	vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 st = isf_FragNormCoord;
     st = (st-.5)*zoom+.5;
     if (RENDERSIZE.y > RENDERSIZE.x ) {
         st.y *= RENDERSIZE.y/RENDERSIZE.x;

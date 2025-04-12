@@ -221,7 +221,7 @@ void main() {
 
 
 	float time = TIME * 0.1;
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y;
+	vec2 uv = isf_FragNormCoord *.y;
 	uv -= vec2(.25, 0.);
 	float val1 = 1.;
 	float val2 = 1.;
@@ -264,7 +264,7 @@ void main() {
 	vec3 col  = vec3(0., 0., 0.);
 	vec3 tcol = vec3(0., 0., 0.);
 	
-	vec2 xy = -1.0 + 2.0*gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 xy = -1.0 + 2.0*isf_FragNormCoord;
 	vec2 s = xy*vec2(1.75,1.2);
 	
 	// get camera position and view direction

@@ -83,7 +83,7 @@ float field(in vec3 p) {
 void main()
 {
    
-     	vec2 uv2 = 2. * gl_FragCoord.xy / RENDERSIZE.xy - 1.;
+     	vec2 uv2 = 2. * isf_FragNormCoord - 1.;
 	vec2 uvs = uv2 * RENDERSIZE.xy / max(RENDERSIZE.x, RENDERSIZE.y);
 
 	float time2 = TIME;

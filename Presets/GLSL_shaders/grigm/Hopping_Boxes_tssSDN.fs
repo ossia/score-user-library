@@ -122,7 +122,7 @@ void main() {
     vec3 ray = camera(ro, ta, 0.0) * normalize(vec3(p, 7.5));
     
     vec3 col = trace(ro, ray);
-    p = gl_FragCoord.xy / RENDERSIZE.xy;
+    p = isf_FragNormCoord;
     p *=  1.0 - p.yx;
     float vig = p.x*p.y * 30.0;
     vig = pow(vig, 0.1);

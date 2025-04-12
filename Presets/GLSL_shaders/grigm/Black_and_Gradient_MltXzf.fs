@@ -23,7 +23,7 @@
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     vec4 movie = IMG_NORM_PIXEL(inputImage,mod(uv,1.0));
     vec4 img = IMG_NORM_PIXEL(iChannel0,mod(uv,1.0));
     if (movie.g + movie.b + movie.r < 1.0) {

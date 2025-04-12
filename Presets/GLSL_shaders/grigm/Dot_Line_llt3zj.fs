@@ -51,7 +51,7 @@ vec3 drawCircleFill(vec2 st, vec2 resolution, float radius, float fade) {
 }
 
 void main(){
-    vec2 st = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
 
     // find orientation
     float xCoef = RENDERSIZE.x > RENDERSIZE.y ? 1.0 : 0.0;

@@ -53,7 +53,7 @@ vec3 sample(in vec2 uv)
 
 void main()
 {
-	vec2 uv = (gl_FragCoord.xy / RENDERSIZE.xy * 2. - 1.)
+	vec2 uv = (isf_FragNormCoord * 2. - 1.)
 			* vec2(RENDERSIZE.x / RENDERSIZE.y, 1) * 1.25;
 
     vec3 col = vec3(0);

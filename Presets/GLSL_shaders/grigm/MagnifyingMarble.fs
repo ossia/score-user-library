@@ -205,7 +205,7 @@ void main()
 {
 	//pixel coordinates from 0 to 1
 	float aspectRatio = RENDERSIZE.x/RENDERSIZE.y;
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	
 	//generate a ray with origin ro and direction rd
 	vec4 ro = vec4(0.0, 0.0, 1.5, 1.0);

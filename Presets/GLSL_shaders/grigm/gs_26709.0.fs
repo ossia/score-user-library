@@ -33,7 +33,7 @@ vec3 texture(vec2 uv) {
 
 void main( void ) {
 	#define PI 3.1415926535897932384
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 uv = ( isf_FragNormCoord );
 	vec2 road_uv = vec2(fade(uv.x,uv.y,0.5)*fade(1.-uv.x,uv.y,0.5),(uv.y*1.2)+(TIME/3.));
 	float darken = pow(fade(uv.y,0.,0.5),6.);
 	vec3 outputs = texture(road_uv)-darken;

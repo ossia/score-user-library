@@ -35,7 +35,7 @@ float sdf_ring(vec2 pos, float rad)
 }
 
 void main() {
-	vec2 pos = gl_FragCoord.xy / RENDERSIZE - vec2(0.5, 0.5);
+	vec2 pos = isf_FragNormCoord - vec2(0.5, 0.5);
 	pos.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec3 color = vec3(0.0);

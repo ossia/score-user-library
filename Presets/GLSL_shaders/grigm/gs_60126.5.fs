@@ -42,7 +42,7 @@ void main( void ) {
 	float t2 = TIME*4.0;
 
 	
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) - 0.5;
+	vec2 position = ( isf_FragNormCoord ) - 0.5;
 	position.x = dot(position,position)*4.0;
 	position.x *= RENDERSIZE.x/RENDERSIZE.y;
 	position *= 0.35;

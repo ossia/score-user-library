@@ -29,7 +29,7 @@ void main() {
 
 	    // read previous frame with a perspective twist
 	    vec2 aspect = RENDERSIZE.xy/sqrt(RENDERSIZE.x*RENDERSIZE.y);
-	    vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy-.5)*aspect;
+	    vec2 uv = (isf_FragNormCoord-.5)*aspect;
 	    
 	    // ray trace a plane at z=0, and map uv on that
 	    // this way I can move the camera to control the feedback shape

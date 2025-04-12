@@ -143,7 +143,7 @@ void main()
    vec3 tc = vec3(0.);
    
    #ifdef DITHERING
-   vec2 pos = ( gl_FragCoord.xy / RENDERSIZE.xy );
+   vec2 pos = ( isf_FragNormCoord );
    vec2 seed = pos + fract(TIME);
    //t=(1.+0.2*rand(seed));
    #endif

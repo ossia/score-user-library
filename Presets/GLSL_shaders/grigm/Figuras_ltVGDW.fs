@@ -51,7 +51,7 @@ float xFigura(in vec2 uv, float n, float tam, in vec2 pos ){
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     // coordenadas de -1.0 a 1.0
     vec2 p = -1.0 + 2.0*uv;
     p.x *= RENDERSIZE.x/RENDERSIZE.y;

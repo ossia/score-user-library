@@ -56,7 +56,7 @@ vec3 bridge(vec3 c, float d, float s, float w){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	
 	float inv = step(0.5,st.y);
 	st = rotate(st, radians(-45.))-.2;

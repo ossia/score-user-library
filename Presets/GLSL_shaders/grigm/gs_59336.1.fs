@@ -33,7 +33,7 @@ float circ(vec2 p)
 
 void main( void ) {
 
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 uv = ( isf_FragNormCoord );
 	
 	float t = TWO_PI * TIME / 5.0 * 0.05; 
 	

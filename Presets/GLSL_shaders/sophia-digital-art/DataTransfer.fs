@@ -93,7 +93,7 @@ vec3 DataTransfernorm(vec3 p)
 }
 void main(void)
 {
-   vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+   vec2 uv = isf_FragNormCoord;
 
 	vec2 p = -1.0 + 2.0 * uv;
 	vec3 dir = normalize(vec3(p * vec2(1.77, 1.0), 1.0));

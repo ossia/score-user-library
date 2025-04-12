@@ -50,7 +50,7 @@ void main()
     //a += .1 * TIME;
     vec2 uvt = center+r*vec2(cos(a),sin(a));
     
-	vec2 uv2 = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv2 = isf_FragNormCoord;
     float c = ( .75 + .25 * sin( uvt.x * 1000. ) );
     vec4 color = IMG_NORM_PIXEL(inputImage,mod(uv2,1.0));
     float l = luma( color );

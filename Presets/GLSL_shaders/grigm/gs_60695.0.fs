@@ -32,7 +32,7 @@ float getSpike(vec2 p, float spikes, float t){
 
 void main( void ) {
 
-	vec2 position = (( gl_FragCoord.xy / RENDERSIZE.xy ) -vec2(0.5,0.5))*vec2(RENDERSIZE.x/RENDERSIZE.y,1.0)*2.0;
+	vec2 position = (( isf_FragNormCoord ) -vec2(0.5,0.5))*vec2(RENDERSIZE.x/RENDERSIZE.y,1.0)*2.0;
 	vec2 center = vec2(0.0,0.0);
 	
 	vec2 p = position;

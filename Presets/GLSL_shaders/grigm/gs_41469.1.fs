@@ -28,7 +28,7 @@ vec4 grade( void ) {
 	vec3 v = vec3(1,0,0);
 	vec3 d = vec3(1);
 
-	vec2 p =gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 p =isf_FragNormCoord;
 		
 	vec3 col = vec3(abs((p.y-0.5)*-3.*cos(TIME)));
 	vec3 invrt =  1.0 - col;

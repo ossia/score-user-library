@@ -23,7 +23,7 @@ void main( void ) {
 	
 	*/
 	
-	vec2 position = (( gl_FragCoord.xy / RENDERSIZE.xy ) - .5) * sqrt(vec2(RENDERSIZE.x/RENDERSIZE.y,RENDERSIZE.y/RENDERSIZE.x)) + .5;
+	vec2 position = (( isf_FragNormCoord ) - .5) * sqrt(vec2(RENDERSIZE.x/RENDERSIZE.y,RENDERSIZE.y/RENDERSIZE.x)) + .5;
 	
 	float x,x0,y,y0;
 	x=x0=position.x;

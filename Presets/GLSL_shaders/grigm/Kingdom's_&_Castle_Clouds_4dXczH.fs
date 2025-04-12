@@ -57,7 +57,7 @@ float _smooth(float inVal)
 void main() {
 
     vec2 size = vec2(35.0, 20.0);
-    vec2 coord = gl_FragCoord.xy / RENDERSIZE.xy * size.xy;
+    vec2 coord = isf_FragNormCoord * size.xy;
     vec2 wind = iMouse.xy / RENDERSIZE.xy - 0.5;
 	vec3 uv3 = vec3(floor(coord.xy) / size.xy + wind * TIME * 0.26, TIME * 0.05);
     uv3.xy *= 2.0;

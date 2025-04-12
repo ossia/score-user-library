@@ -23,7 +23,7 @@ mat2 rotate = mat2(cos((TIME*speed)), -sin((TIME*speed)), sin((TIME*speed)), cos
 
 void main( void ) {
 	vec2 aspect = RENDERSIZE.xy / min(RENDERSIZE.x, RENDERSIZE.y);
-	vec2 position = (gl_FragCoord.xy / RENDERSIZE.xy) * aspect;
+	vec2 position = (isf_FragNormCoord) * aspect;
 	vec2 center = 0.5 * aspect;
 	vec3 color = vec3(0.0);
 	

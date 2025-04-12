@@ -93,7 +93,7 @@ void main(  )
 	float BAR_MARGIN = (1.0 - BAR_WIDTH) * 0.5;
 	//COLOR_FG = vec3(color_1);
 	
-    vec2 uv = 2.0 * gl_FragCoord.xy / RENDERSIZE.xy - vec2(1.0);
+    vec2 uv = 2.0 * isf_FragNormCoord - vec2(1.0);
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
     
     float a = 1.0-mod(0.25+0.5+atan(uv.y, uv.x)*0.5/PI,1.0);

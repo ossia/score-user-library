@@ -402,7 +402,7 @@ vec4 patternForType(vec2 coord, int pType, vec2 seed)	{
 	vec4	returnMe = vec4(0.0);
 	int		pt = pType;
 	if (pt <= 2)	{
-    	vec2 p = gl_FragCoord.xy / RENDERSIZE;
+    	vec2 p = isf_FragNormCoord;
 		vec2 uv = p*vec2(RENDERSIZE.x/RENDERSIZE.y,1.0);
 		float f = 0.0;
 
@@ -555,7 +555,7 @@ vec4 patternForType(vec2 coord, int pType, vec2 seed)	{
 }
 
 void main(){
-    vec2 p = gl_FragCoord.xy / RENDERSIZE;
+    vec2 p = isf_FragNormCoord;
     vec4 returnMe = IMG_THIS_PIXEL(inputImage);
     float f = 1.0;
     bool didRowGlitch = false;

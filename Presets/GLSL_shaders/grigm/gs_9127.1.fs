@@ -22,7 +22,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 
 	float sync;
 	

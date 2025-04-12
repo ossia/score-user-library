@@ -50,7 +50,7 @@ vec3 adjust(vec3 color) {
 }
 void main( void ) {
 
-	vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy - vec2(0.5,0.5)) * vec2(1.0, RENDERSIZE.y/RENDERSIZE.x);
+	vec2 p = (isf_FragNormCoord - vec2(0.5,0.5)) * vec2(1.0, RENDERSIZE.y/RENDERSIZE.x);
 	vec3 color;
 	vec2 center = vec2(0.0);
 	vec2 flare = vec2(-0.2 * sin(TIME), 0.1 * sin(TIME) +  0.1 * cos(TIME) * 0.5);//mouse * 2.0 - 1.0;

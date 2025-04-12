@@ -79,7 +79,7 @@ vec4 texture2D_bicubic(sampler2D tex, vec2 uv)
 }
 
 void main(void) {
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy - 0.5;
+    vec2 uv = isf_FragNormCoord - 0.5;
     float obj_x = TIME - RENDERSIZE.x;
     float str = 1.0;
     

@@ -39,7 +39,7 @@ void main() {
 
 
    
-	vec2 r = vec2( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 r = vec2( isf_FragNormCoord );
     float mathy =cos(TIME*.07)*mod(r.y,TIME);
      float n= floor(noise(10.*r));
 	vec3 backgroundColor = vec3(0.0);

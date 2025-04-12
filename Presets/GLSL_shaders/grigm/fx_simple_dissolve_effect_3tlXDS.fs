@@ -96,7 +96,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	   	float totalColumn = 4.0;
 	    float wid = 1.0/totalColumn;
 	    float column = floor(uv.x/wid)+1.0;
@@ -107,7 +107,7 @@ void main() {
 
 
 	    // Normalized pixel coordinates (from 0 to 1)
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    float dissolveAmount = cos(TIME)*0.5+0.5;
 	    float noiseScale = 0.5;
 	    vec2 speed = vec2(0,0);
@@ -124,7 +124,7 @@ void main() {
 	else if (PASSINDEX == 2)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    
 	    gl_FragColor = vec4(0.0,0.0,1.0,1.0);
 	}
@@ -132,7 +132,7 @@ void main() {
 
 
 	    // Normalized pixel coordinates (from 0 to 1)
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    vec4 outColor = IMG_NORM_PIXEL(BufferB,mod(uv,1.0));
 	    //outColor = vec4(ACESToneMapping(outColor.rgb), outColor.a);
 	    gl_FragColor = outColor;

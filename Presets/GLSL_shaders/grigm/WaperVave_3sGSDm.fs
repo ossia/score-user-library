@@ -109,10 +109,10 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	    uv = -1. + 2. * uv;
 	    vec2 R = RENDERSIZE.xy;
-	    vec2 tv = gl_FragCoord.xy/RENDERSIZE.xy;;
+	    vec2 tv = isf_FragNormCoord;;
 	    vec2 px = vec2(1./R.x,1./R.y)*px_multypl;
 	    vec3 c = T(0.,0.);
 	    px *= (1.-c.r)*c.r*4.;
@@ -145,7 +145,7 @@ void main() {
 	    
 	    col = mix(col,(udlr+c)/2.,col.b-col.r*0.95);
 	    if(samp){
-	    	col = vec3(IMG_NORM_PIXEL(sampImage,gl_FragCoord.xy/RENDERSIZE.xy));
+	    	col = vec3(IMG_NORM_PIXEL(sampImage,isf_FragNormCoord));
 	    }
 	    if(blink){
 	    	col.r = 1.;
@@ -159,7 +159,7 @@ void main() {
 
 
 	    // Normalized pixel coordinates (from 0 to 1)
-	    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
 	    // Time varying pixel color
 	    vec3 col = IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).rgb;

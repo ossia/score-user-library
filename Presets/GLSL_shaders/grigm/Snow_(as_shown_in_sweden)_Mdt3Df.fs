@@ -32,7 +32,7 @@ void main() {
         for(int i=0;i<12;i++){
             float cellSize = 2.0 + (float(i)*3.0);
 			float downSpeed = 0.3+(sin(TIME*0.4+float(k+i*20))+1.0)*0.00008;
-            vec2 uv = (gl_FragCoord.xy / RENDERSIZE.x)+vec2(0.01*sin((TIME+float(k*6185))*0.6+float(i))*(5.0/float(i)),downSpeed*(TIME+float(k*1352))*(1.0/float(i)));
+            vec2 uv = (isf_FragNormCoord *.x)+vec2(0.01*sin((TIME+float(k*6185))*0.6+float(i))*(5.0/float(i)),downSpeed*(TIME+float(k*1352))*(1.0/float(i)));
             vec2 uvStep = (ceil((uv)*cellSize-vec2(0.5,0.5))/cellSize);
             float x = fract(sin(dot(uvStep.xy,vec2(12.9898+float(k)*12.0,78.233+float(k)*315.156)))* 43758.5453+float(k)*12.0)-0.5;
             float y = fract(sin(dot(uvStep.xy,vec2(62.2364+float(k)*23.0,94.674+float(k)*95.0)))* 62159.8432+float(k)*12.0)-0.5;

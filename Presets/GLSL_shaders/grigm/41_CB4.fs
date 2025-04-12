@@ -120,7 +120,7 @@ mat2 rotate2d(float _angle){
 
 
 void main() {
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
    
     st -= vec2(canvas_xPos,canvas_yPos); //center uv to pos location
     st *=zoom;

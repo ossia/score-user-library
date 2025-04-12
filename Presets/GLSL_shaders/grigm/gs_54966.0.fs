@@ -433,7 +433,7 @@ vec3 render( in vec3 ro, in vec3 rd )
 //---------------------------------------------------------
 void main( void )
 {
-  vec2 p = 2.0*(gl_FragCoord.xy / RENDERSIZE.xy) - 1.0;
+  vec2 p = 2.0*(isf_FragNormCoord) - 1.0;
   p.x *= RENDERSIZE.x / RENDERSIZE.y;
   vec2 mo = mouse.xy;
 

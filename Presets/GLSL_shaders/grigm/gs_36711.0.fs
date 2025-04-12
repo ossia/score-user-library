@@ -37,7 +37,7 @@ vec4 sky()
 
 vec4 Sphere(vec3 pos, float radius)
 {
-	vec2 screenPos = gl_FragCoord.xy;//(gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 screenPos = gl_FragCoord.xy;//(isf_FragNormCoord );
 	
 	vec2 toSphere = (pos.xy - screenPos);
 	float distToSpherePos = length(toSphere.xy);
@@ -105,7 +105,7 @@ vec4 Wave(in vec3 pos, in float amp, in float freq, in float alpha, out bool out
 
 void main( void ) {
 
-	vec2 mousePos = mouse * RENDERSIZE.xy;// ( gl_FragCoord.xy / RENDERSIZE.xy ) + mouse / 4.0;
+	vec2 mousePos = mouse * RENDERSIZE.xy;// ( isf_FragNormCoord ) + mouse / 4.0;
 
 	
 

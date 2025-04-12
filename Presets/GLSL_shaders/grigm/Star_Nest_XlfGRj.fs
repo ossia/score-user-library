@@ -122,7 +122,7 @@
 void main()
 {
 	//get coords and direction
-	vec2 uv=gl_FragCoord.xy/RENDERSIZE.xy-.5;
+	vec2 uv=isf_FragNormCoord-.5;
 	uv.y*=RENDERSIZE.y/RENDERSIZE.x;
 	vec3 dir=vec3(uv*zoom,1.);
 	float time=TIME*speed+.25;

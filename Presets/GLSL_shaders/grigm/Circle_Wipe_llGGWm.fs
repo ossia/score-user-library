@@ -50,7 +50,7 @@
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	
     vec2 coords = (uv-iMouse);//* 2.0 - 1.0;						//Remap uv to cartesian coordinates. -1 to 1
     coords.x *= RENDERSIZE.x / RENDERSIZE.y;			//Account for aspect ratio

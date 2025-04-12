@@ -237,7 +237,7 @@ vec3 terr_color(in vec3 p, in vec3 n, in vec3 eye, in vec3 dist) {
 // main
 void main() {
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv = uv * 2.0 - 1.0;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;    
     float time = TIME * 0.1;

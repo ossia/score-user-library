@@ -23,7 +23,7 @@ void main(void)
 {
 	float c = 0.0;
 	
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy )-.5;
+	vec2 uv = ( isf_FragNormCoord )-.5;
 	vec2 cuv = uv;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	

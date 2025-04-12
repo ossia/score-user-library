@@ -25,7 +25,7 @@ const float b = 0.003;		//size of the smoothed border
 
 void main()
 {
-	vec2 position = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
     float aspect = RENDERSIZE.x/RENDERSIZE.y;
 	position.x *= aspect;
 	float dist = distance(position, vec2(aspect*0.5, 0.5));

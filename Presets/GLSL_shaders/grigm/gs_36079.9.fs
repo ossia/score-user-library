@@ -41,7 +41,7 @@ vec3 regularPolygon(int parts, float radius, float blur, vec3 color, vec2 pos, f
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy ); 
+	vec2 p = ( isf_FragNormCoord ); 
 	p.y = 0.5 + ((p.y - 0.5) * (RENDERSIZE.y/RENDERSIZE.x));
 	float rot = TIME * 0.1;
 	vec3 col = regularPolygon(3, 0.1, 0.02, vec3(1.0, 1.0, 0.0), vec2(0.2, 0.65), rot, p);

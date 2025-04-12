@@ -34,7 +34,7 @@ vec2 hexify(vec2 p,float hexCount){
  
 
 void main( void ) {
-	vec2 p=gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 p=isf_FragNormCoord;
 	p.x*=RENDERSIZE.x/RENDERSIZE.y;
 	
 	p += 0.5*sin(p.x+(TIME*0.2))+0.5*cos(p.y+(TIME*0.3));

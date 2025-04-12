@@ -88,7 +88,7 @@ float d_num(int t, vec2 position, float R)
 	getnum(9);
 }
 void main( void ) {
-	vec2 position = (( gl_FragCoord.xy / RENDERSIZE.xy ) - vec2(0.5,0.5)) * 5.0;
+	vec2 position = (( isf_FragNormCoord ) - vec2(0.5,0.5)) * 5.0;
 	position.x = position.x*(RENDERSIZE.x / RENDERSIZE.y) - 0.5;
 	vec4 color = vec4(2.0 * abs(fract(0.1 * TIME) - 0.5), 0.3, 1.0, 1.0);	//数字, 框架和圆点的颜色
 	float number[6], line[4], light = 0.0, cycle, R = 0.05;

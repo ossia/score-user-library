@@ -298,7 +298,7 @@ float map2(in vec3 position)
 void main( void ) 
 {
 	vec2 aspect			= RENDERSIZE.xy/RENDERSIZE.yy;
-	vec2 uv 			= gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv 			= isf_FragNormCoord;
 	vec2 screen			= (uv - .5) * aspect;
 	
 	vec2 m				= (mouse-.5) * aspect;

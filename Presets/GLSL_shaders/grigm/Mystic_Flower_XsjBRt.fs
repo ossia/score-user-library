@@ -59,7 +59,7 @@ vec3 pal(float domain, vec3 frequency, vec3 phase) {
 void main() {
 
   // cordinate system from -2 to 2
-  vec2 p = (-0.5 + (gl_FragCoord.xy / RENDERSIZE.xy)) * vec2(4.0);
+  vec2 p = (-0.5 + (isf_FragNormCoord)) * vec2(4.0);
   // aspect ratio
   p.x *= RENDERSIZE.x / RENDERSIZE.y;
   // angle and radius to center 0,0

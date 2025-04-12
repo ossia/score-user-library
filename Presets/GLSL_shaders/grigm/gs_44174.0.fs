@@ -190,7 +190,7 @@ vec3 render(vec2 position) {
 }
 
 void main( void ) {
-	vec2 position = (gl_FragCoord.xy / RENDERSIZE.yy) - vec2(RENDERSIZE.y / RENDERSIZE.x, 0.0);
+	vec2 position = (isf_FragNormCoord *.yy) - vec2(RENDERSIZE.y / RENDERSIZE.x, 0.0);
 
 	gl_FragColor = vec4(render(position), 1.0);
 }

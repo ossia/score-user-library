@@ -45,5 +45,5 @@
 */
 // https://www.shadertoy.com/view/4slXWn
 
-#define f(a,b)sin(50.3*length(gl_FragCoord.xy/RENDERSIZE.xy*4.-vec2(cos(a),sin(b))-3.))
+#define f(a,b)sin(50.3*length(isf_FragNormCoord*4.-vec2(cos(a),sin(b))-3.))
 void main(){float t=TIME;gl_FragColor=vec4(f(t,t)*f(1.4*t,.7*t));}

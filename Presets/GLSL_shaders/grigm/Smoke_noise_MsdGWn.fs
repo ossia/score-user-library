@@ -31,7 +31,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	float noise = getNoise(vec3(uv * noiseScale, TIME * noiseTimeScale));
     noise = noise * noise * noise * noise * 2.0;  //more contrast
     gl_FragColor = vec4(noise, noise, noise, 1.0);

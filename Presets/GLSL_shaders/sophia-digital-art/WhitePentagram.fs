@@ -63,7 +63,7 @@ float polygon(vec2 st, int numVertices) {
 
 void main() {
 
-    vec2 st = (gl_FragCoord.xy / RENDERSIZE.xy) * 2. - 1.;
+    vec2 st = (isf_FragNormCoord) * 2. - 1.;
     st.x *= RENDERSIZE.x/RENDERSIZE.y;
 
     float d = polygon(st, 5);

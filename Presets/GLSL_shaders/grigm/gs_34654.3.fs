@@ -72,7 +72,7 @@ float c( vec2 p ) {
 }
 
 void main( void ) {
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - posX;
+	vec2 uv = ( isf_FragNormCoord ) * 2.0 - posX;
 	uv.x *= RENDERSIZE.x / RENDERSIZE.y;	
 	uv/=dot(uv,uv);
 	uv.x+=TIME*speedx/1.5;uv.y+=TIME*speedy;

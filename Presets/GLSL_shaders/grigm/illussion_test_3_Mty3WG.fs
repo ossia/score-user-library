@@ -27,7 +27,7 @@ vec4 cyan =  vec4(0.,1.,1.,1.);
 float LINES_NUMBER = 30.;
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     uv = uv - vec2 (0.5, 0.5);
     vec2 sc = vec2 (RENDERSIZE.x / RENDERSIZE.y, 1.);
     //

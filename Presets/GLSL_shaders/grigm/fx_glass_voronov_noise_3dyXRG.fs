@@ -179,7 +179,7 @@ vec3 gmain(in vec2 fragCoord) {
     	color = vec3( m_point.x,normalize(sin(TIME))-1.,m_dist);//m_point);
     }
     //color = smoothstep();
-	//vec2 pz = gl_FragCoord.xy/RENDERSIZE.xy;
+	//vec2 pz = isf_FragNormCoord;
 	//vec3 pl = vec3(color.x*mouse.x*2.,color.x*mouse.y,color.y );
 	//color += vec3(pz.x-iMouse.x,pz.y-iMouse.y,color.z)*.2;
 	//color += 1.-step(0.02, m_dist);
@@ -191,7 +191,7 @@ void main() {
 
 
   vec4 outcol;
-  vec2 xy = gl_FragCoord.xy/RENDERSIZE.xy;
+  vec2 xy = isf_FragNormCoord;
  
  
 	vec4 texColor=IMG_NORM_PIXEL(inputImage,mod(xy,1.0));

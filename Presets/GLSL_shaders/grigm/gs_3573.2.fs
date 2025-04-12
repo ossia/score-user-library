@@ -77,7 +77,7 @@ vec3 f2(vec3 c)
 	c+=hash(TIME+gl_FragCoord.x+gl_FragCoord.y*9.9)*0.01;
 	
 	
-	c*=0.7-length(gl_FragCoord.xy / RENDERSIZE.xy -0.5)*0.7;
+	c*=0.7-length(isf_FragNormCoord -0.5)*0.7;
 	float w=length(c);
 	c=mix(c*vec3(1.0,1.2,1.6),vec3(w,w,w)*vec3(1.4,1.2,1.0),w*1.1-0.2);
 	return c;
@@ -85,7 +85,7 @@ vec3 f2(vec3 c)
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy ) ;
+	vec2 position = ( isf_FragNormCoord ) ;
 	
 
 	vec2 coord= position+mouse*vec2(-0.5,0.5);

@@ -22,7 +22,7 @@ float rand(float num)
 }
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy  * 2.0 - 1.0 ) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0);
+	vec2 position = ( isf_FragNormCoord  * 2.0 - 1.0 ) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0);
 	float color = 0.0;
 	float a = atan(sin(position.x*3.0+TIME), cos(position.y*2.5));
 	const float count = 32.0;

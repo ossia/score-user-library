@@ -52,7 +52,7 @@ float voronoi(vec2 p)
 
 void main( void )
 {
-    vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+    vec2 uv = ( isf_FragNormCoord ) * 2.0 - 1.0;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 
     float offset = voronoi(uv*10.0 + vec2(TIME));

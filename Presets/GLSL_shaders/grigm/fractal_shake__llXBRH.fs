@@ -231,7 +231,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-		vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+		vec2 uv = isf_FragNormCoord;
 	    uv = uv * 2.0 - 1.0;
 	    uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 	    
@@ -256,7 +256,7 @@ void main() {
 	else if (PASSINDEX == 1)	{
 
 
-	   	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	   	vec2 uv = isf_FragNormCoord;
 	    
 	    float time = mod(TIME, 1.570795);
 	    float val1 = noise(uv*2. + time)*0.0025;
@@ -293,7 +293,7 @@ void main() {
 	else if (PASSINDEX == 2)	{
 
 
-	   	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	   	vec2 uv = isf_FragNormCoord;
 	    vec2 uuv = uv * 2.0 - 1.0;
 	    
 	    vec4 tex = IMG_NORM_PIXEL(BufferB,mod(uv,1.0));

@@ -190,7 +190,7 @@ void main()
 {
 
     //UV Setup
-    vec2 uv = -1.0 + 2.0 * (gl_FragCoord.xy / RENDERSIZE.xy);
+    vec2 uv = -1.0 + 2.0 * (isf_FragNormCoord);
     uv.y *= -1.;
     uv.x *= 1.7777;
    

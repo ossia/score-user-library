@@ -230,7 +230,7 @@ float whacky(vec3 p)
 
 void main( void )
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	uv *= 1.0;
 	

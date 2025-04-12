@@ -72,7 +72,7 @@ precision mediump float;
 
 
 void main( void ) {
-	vec2 uv2 = gl_FragCoord.xy / RENDERSIZE * 2.0 - 1.0;
+	vec2 uv2 = isf_FragNormCoord ** 2.0 - 1.0;
 	uv2.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	float o = 0.0;
@@ -85,7 +85,7 @@ void main( void ) {
 		float t = TIME*speed;
 		float d = length(uv*10.) - 0.03 - pow(BALL_SIZE * 0.1, 2.0);
 		color = mix(color, vec3(sin(o - t), sin(o*8.0+6.0 + t), cos(o*13.0*16.0 + t))*0.5+0.5, smoothstep(0.01, -0.01, d));
-		color = mix(color, IMG_NORM_PIXEL(backbuffer,mod(gl_FragCoord.xy / RENDERSIZE,1.0)).rgb, 0.01);
+		color = mix(color, IMG_NORM_PIXEL(backbuffer,mod(isf_FragNormCoord *,1.0)).rgb, 0.01);
 		
 		o += sincosIncr * PI / float(BALL_NUM);
 	}

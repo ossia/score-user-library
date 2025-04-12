@@ -34,7 +34,7 @@ uniform vec2 surfaceSize;
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy )-0.5;
+	vec2 position = ( isf_FragNormCoord )-0.5;
 	//position.x*=RENDERSIZE.x/RENDERSIZE.y;
 	position*=surfaceSize;
 	position+=vv_FragNormCoord;

@@ -173,7 +173,7 @@ vec2 barrelDistortion(vec2 coord) {
 
 void main( void ) {
 	float rads = radians(TIME*STAR_ROTATION_SPEED);
-	//vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	//vec2 position = isf_FragNormCoord;
 	vec2 position=barrelDistortion(-1.0+2.0*((gl_FragCoord.xy)/RENDERSIZE.xy));
 	vec2 positionStars = ( gl_FragCoord.xy -  RENDERSIZE.xy*.5 ) / RENDERSIZE.x;
 	position += rotate(position, rads);

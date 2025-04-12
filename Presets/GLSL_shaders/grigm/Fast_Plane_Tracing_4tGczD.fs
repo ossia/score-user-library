@@ -69,7 +69,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy-.5;
+    vec2 uv = isf_FragNormCoord-.5;
     uv.x *= RENDERSIZE.x/RENDERSIZE.y;
     vec3 cam = vec3(0,0,-5);
     vec3 dir = normalize(vec3(uv,1));

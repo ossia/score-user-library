@@ -88,7 +88,7 @@ vec3 enlight(vec3 pos, vec3 normal, vec3 albedo, vec3 lightpos, vec3 lightcolor,
 }
 
 void main( void ) {
-  vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+  vec2 position = ( isf_FragNormCoord );
   position.y -= 0.5;
   position.x -= 0.5;
   float aspect = RENDERSIZE.y / RENDERSIZE.x;

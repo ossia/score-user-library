@@ -21,7 +21,7 @@ float circle(vec2 p, vec2 center) {
 }
 
 void main( void ) {
-	vec2 p = gl_FragCoord.xy / RENDERSIZE;
+	vec2 p = isf_FragNormCoord;
 	p = 2.0 * p - 1.0;
 	p.x *= RENDERSIZE.x / RENDERSIZE.y;
 	

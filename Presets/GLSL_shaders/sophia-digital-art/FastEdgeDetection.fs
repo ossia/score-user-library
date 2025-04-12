@@ -124,7 +124,7 @@ vec3 normal(in vec3 p, in float d)
 
 void main(void)
 {   
-    vec2 q = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 q = isf_FragNormCoord;
     vec2 p = -1.0 + 2.0*q;
     p.x*=RENDERSIZE.x/RENDERSIZE.y;
     vec2 mo = iMouse.xy/RENDERSIZE.xy*2.-1.;

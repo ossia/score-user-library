@@ -67,7 +67,7 @@ vec2 brickTile3(vec2 uv, float zoom)
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	
 	position.x *= RENDERSIZE.x / RENDERSIZE.y;
 	

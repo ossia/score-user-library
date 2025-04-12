@@ -41,7 +41,7 @@ float rectSDF(vec2 st, vec2 s){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	
 	
 	float sdf = rectSDF(st,vec2(1.0));

@@ -228,7 +228,7 @@ void main() {
 
 	
 
-	vec2 position = uv_distorted;//gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = uv_distorted;//isf_FragNormCoord;
 
 	
 

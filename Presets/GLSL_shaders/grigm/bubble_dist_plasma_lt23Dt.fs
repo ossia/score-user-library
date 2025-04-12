@@ -141,7 +141,7 @@ void main() {
 
 
     grad = 0.05+4.*(1.+cos(TIME))*.5;
-    vec2 p = 2.*(gl_FragCoord.xy / RENDERSIZE.y -vec2(.9,.5));
+    vec2 p = 2.*(isf_FragNormCoord *.y -vec2(.9,.5));
   
     float c0=tweaknoise(p), c=sin(c0*5.);
     vec3 col; // = vec3(c);

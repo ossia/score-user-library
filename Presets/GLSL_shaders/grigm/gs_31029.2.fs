@@ -62,7 +62,7 @@ vec2 pattern(vec2 p)
 
 void main( void ) {
 
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 uv = ( isf_FragNormCoord );
 	vec2 p = pattern(uv);
 	gl_FragColor = vec4(step (1.4, p.x));
 	//gl_FragColor = vec4(p.y * p.x * fract(p.x - TIME));

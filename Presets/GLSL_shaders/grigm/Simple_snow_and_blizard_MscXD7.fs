@@ -39,7 +39,7 @@ void main() {
 
 
 
-    uv = gl_FragCoord.xy / RENDERSIZE.x;
+    uv = isf_FragNormCoord *.x;
     
     gl_FragColor = vec4(0.808, 0.89, 0.918, 1.0);
     float j;

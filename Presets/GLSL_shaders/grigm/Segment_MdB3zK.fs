@@ -110,7 +110,7 @@ void main() {
 
 
 
-	vec2 p = gl_FragCoord.xy / RENDERSIZE.xx;
+	vec2 p = isf_FragNormCoord *.xx;
 	vec2 m = iMouse.xy / RENDERSIZE.xx;
 	p -= vec2(0.5,0.5*RENDERSIZE.y/RENDERSIZE.x);
 	m -= vec2(0.5,0.5*RENDERSIZE.y/RENDERSIZE.x);

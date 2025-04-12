@@ -115,7 +115,7 @@ float circ(vec2 p)
 void main(void)
 {
 	//setup system
-	vec2 p = gl_FragCoord.xy / RENDERSIZE.xy-0.5;
+	vec2 p = isf_FragNormCoord-0.5;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 	p*=4.;
 	

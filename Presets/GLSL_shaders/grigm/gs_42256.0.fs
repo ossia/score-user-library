@@ -81,7 +81,7 @@ float shape(float u,vec2 p, float angle) {
 }
 void main(void)
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     vec2 cc = (-RENDERSIZE.xy + 2.0*gl_FragCoord.xy) / RENDERSIZE.y;
         
     float numPhases=1114.5;

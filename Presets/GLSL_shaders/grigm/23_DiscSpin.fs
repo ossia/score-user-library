@@ -146,7 +146,7 @@ vec2 rot(vec2 uv,float a){
 void main()
 {
 	
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	uv -= vec2(pos - 0.5);
 
 	vec2 p = -1. + 2. * uv;

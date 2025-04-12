@@ -23,7 +23,7 @@ precision highp float;
 // Trapped by curiouschettai
 
 void main( void ) {  
-	vec2 uPos = ( gl_FragCoord.xy / RENDERSIZE.y );//normalize wrt y axis
+	vec2 uPos = ( isf_FragNormCoord *.y );//normalize wrt y axis
 	uPos -= vec2((RENDERSIZE.x/RENDERSIZE.y)/2.0, 0.5);//shift origin to center
 	
 	float multiplier = 0.0005; // Grosseur

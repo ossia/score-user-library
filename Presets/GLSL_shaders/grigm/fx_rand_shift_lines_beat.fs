@@ -83,7 +83,7 @@ float rand(vec2 co){
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;//(gl_FragCoord.xy - RENDERSIZE / 2.0) / RENDERSIZE.y;
+    vec2 uv = isf_FragNormCoord;//(gl_FragCoord.xy - RENDERSIZE / 2.0) / RENDERSIZE.y;
     
     if(horizontal){
     	if(direction_switch){

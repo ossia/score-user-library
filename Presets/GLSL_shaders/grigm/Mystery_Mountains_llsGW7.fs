@@ -128,7 +128,7 @@ void main() {
 
 	
 
-    vec4 p=vec4(gl_FragCoord.xy/RENDERSIZE.xy,1,1)-.5,d=p,t;
+    vec4 p=vec4(isf_FragNormCoord,1,1)-.5,d=p,t;
     p.z += (TIME*speed);
     p.x = camXpos+cos(TIME*camXposSinSpeed)*camXposSinAmp;
     d.x-=camrotXang;

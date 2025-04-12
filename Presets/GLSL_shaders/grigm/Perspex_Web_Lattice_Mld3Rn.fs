@@ -365,7 +365,7 @@ void main() {
     
     
     // Vignette.
-    //vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    //vec2 uv = isf_FragNormCoord;
     //gl_FragColor.xyz = mix(gl_FragColor.xyz, vec3(0, 0, .5), .1 -pow(16.*uv.x*uv.y*(1.-uv.x)*(1.-uv.y), 0.25)*.1);
     
     // Apply some statistically unlikely (but close enough) 2.0 gamma correction. :)

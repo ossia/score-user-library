@@ -50,7 +50,7 @@ float partition_noise(vec2 p)
 
 void main() 
 {
-	vec2 uv			= gl_FragCoord.xy/RENDERSIZE;
+	vec2 uv			= isf_FragNormCoord;
 	vec2 aspect		= RENDERSIZE/min(RENDERSIZE.x, RENDERSIZE.y);
 
 	

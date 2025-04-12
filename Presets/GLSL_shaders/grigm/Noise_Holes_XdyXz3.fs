@@ -175,7 +175,7 @@ float getDepth(float n){
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.x;
+	vec2 uv = isf_FragNormCoord *.x;
     float t = TIME * 0.3;    
     vec3 col = vec3(0);
     

@@ -55,7 +55,7 @@ void main() {
 
 
     gl_FragColor = vec4(0.0);
-    vec2 pos = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 pos = isf_FragNormCoord;
     float aspect = RENDERSIZE.x/RENDERSIZE.y;
     pos.x *=aspect;
     float PADDING_X = 0.1;

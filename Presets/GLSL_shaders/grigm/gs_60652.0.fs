@@ -69,7 +69,7 @@ vec3 diff(vec3 L, vec3 N) {
 
 void main( void ) {
 
-	vec2 position = (( gl_FragCoord.xy / RENDERSIZE.xy * 2.0 ) - vec2(1.0)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0)/size;
+	vec2 position = (( isf_FragNormCoord * 2.0 ) - vec2(1.0)) * vec2(RENDERSIZE.x / RENDERSIZE.y, 1.0)/size;
 	vec3 normal = getSphereNormal(position);
 	vec3 light = getSphereNormal((mouse.xy - vec2(0.5)) * 2.0);
 	vec3 view = vec3(0.0, 0.0, 1.0);

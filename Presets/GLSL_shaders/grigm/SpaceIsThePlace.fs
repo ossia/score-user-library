@@ -108,7 +108,7 @@ float field(in vec3 p) {
 }
 
 void main() {
-	vec2 uv=gl_FragCoord.xy/RENDERSIZE.xy-.5;
+	vec2 uv=isf_FragNormCoord-.5;
   	uv.y*=RENDERSIZE.y/RENDERSIZE.x;
 	vec3 p = vec3(uv / 4., 0) + vec3(1., -1.3, 0.);
 	p.x -= 0.25*move.x;

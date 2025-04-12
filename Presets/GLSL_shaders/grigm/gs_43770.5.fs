@@ -45,7 +45,7 @@ void main( void ) {
 	vec2 position  = gl_FragCoord.xy - RENDERSIZE / 2.;
 	vec2 p = 30. * position / RENDERSIZE.x;
 	
-		float mack = abs(triglined(vec2(30.,30.)/RENDERSIZE.xy,mouse,gl_FragCoord.xy/RENDERSIZE.xy));
+		float mack = abs(triglined(vec2(30.,30.)/RENDERSIZE.xy,mouse,isf_FragNormCoord));
 
 	gl_FragColor = vec4(0.02/(mack));
 

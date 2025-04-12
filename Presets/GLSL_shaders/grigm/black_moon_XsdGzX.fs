@@ -101,7 +101,7 @@ float diffuseSphere(vec2 p,vec2 c, float r,vec3 l)
 void main()
 {
     
-	vec2 pos = (gl_FragCoord.xy/RENDERSIZE.xy)*2.-1.;
+	vec2 pos = (isf_FragNormCoord)*2.-1.;
     pos.x *= RENDERSIZE.x/RENDERSIZE.y;
 	float t = TIME;
     

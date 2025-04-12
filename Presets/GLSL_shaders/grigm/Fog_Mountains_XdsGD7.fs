@@ -192,7 +192,7 @@ vec3 render( vec3 ro, vec3 rd ) {
 
 void main() {
 
-	vec2 pos = 2.0 * ( gl_FragCoord.xy / RENDERSIZE.xy ) - 1.0; // bound screen coords to [0, 1]
+	vec2 pos = 2.0 * ( isf_FragNormCoord ) - 1.0; // bound screen coords to [0, 1]
 	pos.x *= RENDERSIZE.x / RENDERSIZE.y; // correct for aspect ratio
 	// camera
 	float x = 5.0 + (0.2*TIME);

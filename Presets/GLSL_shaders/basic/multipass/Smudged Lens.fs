@@ -161,7 +161,7 @@ float map(float n, float i1, float i2, float o1, float o2){
 }
 
 void main(){
-    vec2 p = gl_FragCoord.xy / RENDERSIZE;
+    vec2 p = isf_FragNormCoord;
 
 	vec2 uv = p*vec2(RENDERSIZE.x/RENDERSIZE.y,1.0);
 	float f = 0.0;

@@ -230,7 +230,7 @@ void main() {
 	//col *= .5 + .5 * cos(uv.x + col + TIME + vec3(23, 21, 0));
 	
 	
-	col = col * .5 +  IMG_NORM_PIXEL(backbuffer,mod(gl_FragCoord.xy / RENDERSIZE,1.0)).rgb *.8;
+	col = col * .5 +  IMG_NORM_PIXEL(backbuffer,mod(isf_FragNormCoord *,1.0)).rgb *.8;
 	gl_FragColor = vec4(col, 1.);
 
 }

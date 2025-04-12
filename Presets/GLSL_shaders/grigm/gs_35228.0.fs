@@ -67,7 +67,7 @@ float trace(vec3 camPos, vec3 ray) {
 
 void main( void ) {
 
-	vec2 myPos = (gl_FragCoord.xy / RENDERSIZE.xy);
+	vec2 myPos = (isf_FragNormCoord);
 	myPos *= 2.0;
 	myPos -= 1.0;
 	myPos.x *= RENDERSIZE.x / RENDERSIZE.y;

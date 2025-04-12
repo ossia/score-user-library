@@ -124,7 +124,7 @@ float snoise(vec3 v) {
 	
 void main( void ) {
 	
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 
 	position.x += snoise(vec3(vec2(position.x, position.y) + mouse, TIME));
 	

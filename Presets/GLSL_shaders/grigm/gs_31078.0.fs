@@ -100,7 +100,7 @@ float test(vec2 uv) {
 
 
 void main( void ) {
-	vec2 uv = (gl_FragCoord.xy / RENDERSIZE.xy)-.5;
+	vec2 uv = (isf_FragNormCoord)-.5;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
     
     //Raycaster / Layering

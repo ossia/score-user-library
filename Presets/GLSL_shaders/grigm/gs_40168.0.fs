@@ -38,7 +38,7 @@ precision mediump float;
 
 void main(void)
 {
-	vec2 pos = gl_FragCoord.xy / RENDERSIZE - 0.5;
+	vec2 pos = isf_FragNormCoord - 0.5;
 	pos.x /= RENDERSIZE.y / RENDERSIZE.x;
 	float pi = atan(1.0, 0.0) * 2.0;
 	float twopi = pi * 2.0;

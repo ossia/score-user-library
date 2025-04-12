@@ -153,7 +153,7 @@ vec3 background(vec3 rd)
 
 void main(void)
 {
-    vec2 pixel = iZoom *((gl_FragCoord.xy / RENDERSIZE.xy) * 2.0-1.0);
+    vec2 pixel = iZoom *((isf_FragNormCoord) * 2.0-1.0);
 
     // compute ray origin and direction
     float asp = RENDERSIZE.x / RENDERSIZE.y;

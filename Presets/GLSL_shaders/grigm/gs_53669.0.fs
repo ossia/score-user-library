@@ -35,7 +35,7 @@ mat2 rotate2d(float _angle){
 
 void main( void ) {
 
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 
 	position -= vec2(0.5);
 	position = rotate2d(cos(TIME)*PI)*position;

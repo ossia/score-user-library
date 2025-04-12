@@ -129,7 +129,7 @@ void main() {
 
 
 
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy*2.-1.;
+    vec2 uv = isf_FragNormCoord*2.-1.;
     uv.x *= RENDERSIZE.x/RENDERSIZE.y;
     vec3 col = vec3(0.);
     

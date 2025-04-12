@@ -33,7 +33,7 @@ const float PI = 3.14159265358979323846264;
 
 void main( void ) 
 {
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 uv = ( isf_FragNormCoord );
 	
 	
 	uv.x *= RENDERSIZE.x/ RENDERSIZE.y;

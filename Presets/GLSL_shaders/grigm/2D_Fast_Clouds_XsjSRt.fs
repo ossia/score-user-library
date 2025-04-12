@@ -80,7 +80,7 @@ void main() {
 
 
 
-	vec2 screenUv = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 screenUv = isf_FragNormCoord;
     vec2 uv = gl_FragCoord.xy/(40000.0*cloudScale);
     
     float mouseXAffect = (iMouse.x/RENDERSIZE.x);

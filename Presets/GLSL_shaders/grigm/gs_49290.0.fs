@@ -164,7 +164,7 @@ float fbm(vec2 p)
 void main( void ) 
 {
 
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy ) * 2.0 - 1.0;
+	vec2 uv = ( isf_FragNormCoord ) * 2.0 - 1.0;
 	mat2 r = mat2(cos(rot),-sin(rot), 
 			sin(rot), cos(rot));
         uv *= r;

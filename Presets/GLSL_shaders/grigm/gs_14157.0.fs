@@ -38,7 +38,7 @@ void main()
 {
 
 
-	vec2 coords = gl_FragCoord.xy / RENDERSIZE;
+	vec2 coords = isf_FragNormCoord;
 	
 	vec3 ray_dir = normalize( vec3( coords.x-sin(TIME*0.5)*0.1, coords.y - 0.5, -1.0 +sin(TIME*0.5)*0.1) );
 	vec3 ray_orig = vec3(-20.0+sin(TIME*0.5)*20.0,5.0,100.0);

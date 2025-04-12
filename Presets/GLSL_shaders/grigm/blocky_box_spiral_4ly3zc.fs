@@ -26,7 +26,7 @@
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y*2.0-RENDERSIZE.xy/RENDERSIZE.y;
+	vec2 uv = isf_FragNormCoord *.y*2.0-RENDERSIZE.xy/RENDERSIZE.y;
     
     float l = 0.0;
     mat2 rot = rot2(TIME * speed);

@@ -101,7 +101,7 @@ float InversionMachineLight(in vec3 p, in vec3 dir) {
 
 float InversionMachineRaymarch(in vec3 from, in vec3 dir) 
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy*2.-1.;
+	vec2 uv = isf_FragNormCoord*2.-1.;
 	uv.y*=RENDERSIZE.y/RENDERSIZE.x;
 	float st,d,col,totdist=st=0.;
 	vec3 p;
@@ -134,7 +134,7 @@ float InversionMachineRaymarch(in vec3 from, in vec3 dir)
 }
 void main(void)
 {
-    vec2 uv = iZoom * gl_FragCoord.xy / RENDERSIZE.xy; 
+    vec2 uv = iZoom * isf_FragNormCoord; 
 	float t=TIME*.2;
 	uv.x = uv.x *2.-1.;
 	uv.y = uv.y *2.-1.;

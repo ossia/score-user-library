@@ -51,8 +51,8 @@ void main() {
 		
 	}else{
 
-	 //   vec2 uv = (gl_FragCoord.xy/RENDERSIZE.xy);
-	    vec2 uv = 0.999*(gl_FragCoord.xy/RENDERSIZE.xy)+0.001;
+	 //   vec2 uv = (isf_FragNormCoord);
+	    vec2 uv = 0.999*(isf_FragNormCoord)+0.001;
 	
 	    if (draw) {      
 	        if (length(vec2(sin(TIME)*.75, cos(TIME*1.1294)*.75)-(uv*2.-1.)) < .03) {

@@ -121,7 +121,7 @@ void main() {
    asd = vec4(d.x,d.y,d.z,1.0);	
 	}
 	
-    vec2 uv = 2. * gl_FragCoord.xy / RENDERSIZE.xy - 1.;
+    vec2 uv = 2. * isf_FragNormCoord - 1.;
 	vec2 uvs = uv * RENDERSIZE.xy / max(RENDERSIZE.x, RENDERSIZE.y);
 
 	vec3 p = vec3(uvs / 4., 0) + vec3(1., -1.3, 0.);

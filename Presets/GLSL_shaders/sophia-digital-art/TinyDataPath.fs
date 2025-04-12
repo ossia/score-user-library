@@ -51,7 +51,7 @@
 
 void main(void)
 {  
-    vec2 u=iZoom * abs(gl_FragCoord.xy/RENDERSIZE.xy-.5);
+    vec2 u=iZoom * abs(isf_FragNormCoord-.5);
     u.x*=3.;
 
 	gl_FragColor = vec4(mix( 

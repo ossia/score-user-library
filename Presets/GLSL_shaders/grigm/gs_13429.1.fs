@@ -56,7 +56,7 @@ float linsmoothtri(float x) {
 }
 
 void main(void) {
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy);
+	vec2 uv = ( isf_FragNormCoord);
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
 	uv -= 0.5;
 	uv.x *= aspect;

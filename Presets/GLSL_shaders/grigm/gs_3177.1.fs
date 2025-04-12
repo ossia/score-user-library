@@ -21,7 +21,7 @@ precision highp float;
 
 
 void main( void ) {
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 	float t = 8.;
 	float color = 0.0;
 	color = sin( position.x * cos( t / 166.0 ) * 20.0 ) + cos( position.y * cos( t / 165.0 ) * 10.0*sin(TIME) );

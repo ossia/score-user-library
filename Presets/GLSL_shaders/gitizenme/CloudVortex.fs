@@ -143,7 +143,7 @@ vec3 iLerp(in vec3 a, in vec3 b, in float x) {
 
 void main() 
 {
-	vec2 q = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 q = isf_FragNormCoord;
     vec2 p = (gl_FragCoord.xy - 0.5*RENDERSIZE.xy)/RENDERSIZE.y;    
     vec3 ro = vec3(0.0, 0.0, T);
     ro += vec3(sin(TIME)*0.5, sin(TIME*1.0)*0.0, 0.0);

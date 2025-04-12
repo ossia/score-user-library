@@ -127,7 +127,7 @@ void main()
 {
    const float radius = 0.1;
     
-  	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+  	vec2 uv = isf_FragNormCoord;
 	uv -= vec2(pos);
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
        

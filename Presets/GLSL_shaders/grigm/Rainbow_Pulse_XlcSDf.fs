@@ -22,7 +22,7 @@ float bell(float x, float center, float stretch) {
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     //Center the origin
     uv -= 0.5; 

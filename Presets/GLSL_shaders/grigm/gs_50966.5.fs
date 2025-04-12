@@ -58,7 +58,7 @@ float getLine(vec2 p, float y){
 }
 
 void main( void ) {
-	vec2 p = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 p = isf_FragNormCoord;
 	float f = 0.;
 	
 	for(int i = 0; i < 10; i++){

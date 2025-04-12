@@ -65,7 +65,7 @@ float intersect( in vec3 ro, in vec3 rd, out float resT ) {
 
 void main( void ) {
 	vec3 light = normalize( vec3(0.5,0.6,0.4) );		// ok, here we come, GLSL raytacing!
-	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.xy );  // this is the pixel coords
+	vec2 uv = ( isf_FragNormCoord );  // this is the pixel coords
 	sph1.xz = vec2 ( 0.5 * cos( TIME ),  0.5 * sin( TIME )); // move sphere around
 	
 	vec3 ro = vec3( .1, 0.2, 3.0 ); //ray origin

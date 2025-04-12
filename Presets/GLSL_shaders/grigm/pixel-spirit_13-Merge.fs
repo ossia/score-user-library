@@ -44,7 +44,7 @@ float flip(float v, float pct){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	 
 
 	vec2 offset = vec2(seperate,0.0);

@@ -93,7 +93,7 @@ float triangleNoise(in vec2 p) {
 }
 
 void main() {
- 	vec2 p = gl_FragCoord.xy / RENDERSIZE.xy*2.-1.;
+ 	vec2 p = isf_FragNormCoord*2.-1.;
 	p.x *= aspect;
     p*= 1.05;
     vec2 bp = p;

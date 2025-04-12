@@ -150,7 +150,7 @@ float surface3 ( vec3 coord ) {
 	
 void main( void ) {
 	
-	vec2 position = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = isf_FragNormCoord;
 	
 	float n = surface3(vec3(position, TIME * 0.1));
 		

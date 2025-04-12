@@ -81,7 +81,7 @@ float ease2(float t) {
 
 
 void main() {
-  vec2 p = gl_FragCoord.xy / RENDERSIZE.xy;
+  vec2 p = isf_FragNormCoord;
   vec4 color1 = IMG_NORM_PIXEL(inputImage, p);
   vec4 color2 = IMG_NORM_PIXEL(to, p);
   vec2 disp = displace(color1, p, 0.33, 0.7, 1.0-ease1(progress));

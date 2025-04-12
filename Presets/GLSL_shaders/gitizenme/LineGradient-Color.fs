@@ -44,7 +44,7 @@ float plot (vec2 st, float pct){
 }
 
 void main() {
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     vec3 color = vec3(0.0);
 
     vec3 pct = vec3(st.x);

@@ -38,7 +38,7 @@ float triSDF(vec2 st){
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;
+	vec2 st = isf_FragNormCoord;
 	
 	st.y = 1.0 - st.y;
 	vec2 ts = vec2(st.x, 0.82 - st.y );

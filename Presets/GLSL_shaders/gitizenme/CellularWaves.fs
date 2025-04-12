@@ -191,7 +191,7 @@ float fworley(vec2 p) {
 }
       
 void main() {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     //Calculate an intensity
     float t = fworley(uv * RENDERSIZE.xy / scale);
     //Add some gradient

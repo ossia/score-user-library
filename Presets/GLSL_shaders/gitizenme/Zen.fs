@@ -240,7 +240,7 @@ void main() {
     // timing
     vec3 t = time();
     // space
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     uv = center( uv );
     uv = uv * 2.0 - 1.0;
 

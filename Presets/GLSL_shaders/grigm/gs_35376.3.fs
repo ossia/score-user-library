@@ -30,7 +30,7 @@ float hash(vec2 p) {
 
 void main( void ) {
 
-	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 p = ( isf_FragNormCoord );
 	float span = 1.0;
 	float gt = mod(TIME, span * 4.0) / (span * 4.0);
 	float m = 1.0;

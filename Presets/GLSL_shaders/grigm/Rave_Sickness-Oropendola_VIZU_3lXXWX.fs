@@ -360,7 +360,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 
 
-	    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	    vec2 uv = isf_FragNormCoord;
 	
 	   	// black by default
 	    gl_FragColor = vec4(0.0,0.0,0.0,1.0);

@@ -98,7 +98,7 @@ void main() {
 
 
 
-    vec2 b = 6.0 * gl_FragCoord.xy / RENDERSIZE.x;
+    vec2 b = 6.0 * isf_FragNormCoord *.x;
     vec4 v = voronoi( b );
     vec2 q = v.yz;
     float a = TIME + atan( sign( v.w - 1.0 ) * q.y, q.x );

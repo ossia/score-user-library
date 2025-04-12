@@ -121,7 +121,7 @@ float getGlow(float dist, float radius, float intensity){
 void main() {
 
     
-	vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     float widthHeightRatio = RENDERSIZE.x/RENDERSIZE.y;
     vec2 centre;
     vec2 pos;

@@ -247,7 +247,7 @@ vec3 camPath( float TIME )
 
 void main(void)
 {
-    vec2 xy = -1.0 + 2.0*gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 xy = -1.0 + 2.0*isf_FragNormCoord;
 
 	vec2 s = xy*vec2(1.75,1.0);
 

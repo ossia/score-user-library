@@ -29,7 +29,7 @@ void main() {
 
 
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
 	uv = abs(uv-0.5);
     // Time varying pixel color
     float x = stripes(uv) * (50. * cos(uv.x* (10. * sin(TIME * 0.2))));

@@ -156,7 +156,7 @@ void main(void)
 {
     // screen coord -1..1
     float aspect=RENDERSIZE.y/RENDERSIZE.x;
-    vec2 sc = (gl_FragCoord.xy/RENDERSIZE.xy)*2.-1.;
+    vec2 sc = (isf_FragNormCoord)*2.-1.;
     // viewer position
     float phi = TIME*.08;
     vec3 pos = 17.*vec3(cos(phi),sin(phi),.3);

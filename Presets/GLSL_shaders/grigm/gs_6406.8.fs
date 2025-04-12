@@ -60,7 +60,7 @@ float sq(vec2 p)
 void main( void ) {
 
  
-  vec2 uv  = -1.0 + 2.0 * (gl_FragCoord.xy/RENDERSIZE.xy) +sin(TIME*.4)*0.8;
+  vec2 uv  = -1.0 + 2.0 * (isf_FragNormCoord) +sin(TIME*.4)*0.8;
   vec3 D   = vec3(uv.x * 1.25, uv.y, 0.85);
   vec3 p   = vec3(TIME * 1.2, 0.25, TIME*4.);
   vec3 pdel = vec3 (0,pow(sin(uv.x*.3+uv.y*4.+TIME * 2.1),3.),sin(TIME * 4.0)*cos(TIME*3.)*2.);	

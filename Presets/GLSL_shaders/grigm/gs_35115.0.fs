@@ -33,7 +33,7 @@ void main( void )
 {
 	//vec2 aspect = (RENDERSIZE.xy / cos(sin(TIME)/2.0) ) / (RENDERSIZE.y / sin(cos(TIME)/2.0) );
 	vec2 aspect = (RENDERSIZE.xy ) / (RENDERSIZE.y  );
-	vec2 _uv = gl_FragCoord.xy / RENDERSIZE.y;
+	vec2 _uv = isf_FragNormCoord *.y;
 	vec2 cen = aspect/2.0;
 
 	vec3 color = vec3(0);

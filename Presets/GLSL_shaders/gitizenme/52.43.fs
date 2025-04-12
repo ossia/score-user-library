@@ -258,7 +258,7 @@ mat2 rotate2d(float _angle){
 
 void main(void)
 {
-	vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy) * 2.0 - 1.0;
+	vec2 p = (isf_FragNormCoord) * 2.0 - 1.0;
 	// p += offset;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 
@@ -278,7 +278,7 @@ void main(void)
 	{
 		col = March(origin, rd, col);
 	}
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
 	uv *=  1.0 - uv.yx;
 	float vig = uv.x * uv.y * 15.0; // multiply with sth for intensity
 	vig = pow(vig, 0.35); // change pow for modifying the extend of the  vignette

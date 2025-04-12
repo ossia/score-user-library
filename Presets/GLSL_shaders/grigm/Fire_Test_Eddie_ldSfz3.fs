@@ -82,7 +82,7 @@ void main() {
 
 
 
-	vec2 uvOrigin = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uvOrigin = isf_FragNormCoord;
     vec2 uv = uvOrigin;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;
     float patVal = pattern(uv*vec2(2.0,1.0) + vec2(0.0, TIME*-0.5));

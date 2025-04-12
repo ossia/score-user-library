@@ -102,7 +102,7 @@ float fbm(vec2 x)
 
 void main(void)
 {
-    vec2 p = (gl_FragCoord.xy / RENDERSIZE.xy)*2.0-1.0;
+    vec2 p = (isf_FragNormCoord)*2.0-1.0;
     p.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
     //float w = 0.05+ exp(-p.x*p.x*6.0)*0.5;

@@ -30,7 +30,7 @@ vec3 check(vec2 p, float y, float s)
 
 void main( void ) {
 
-	vec2 p = -1.0 + 2.0 * ( gl_FragCoord.xy/ RENDERSIZE.xy  );
+	vec2 p = -1.0 + 2.0 * ( isf_FragNormCoord  );
 	p.x *=  RENDERSIZE.x/RENDERSIZE.y;
 
 	vec3 col = vec3(1.0);

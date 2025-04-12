@@ -31,7 +31,7 @@ float SDF(vec3 p)
 void main( void ) {
 
 	// Normalized pixel coordinates (from 0 to 1)
-	vec2 uv = 2.*(gl_FragCoord.xy/RENDERSIZE.xy)-1.;
+	vec2 uv = 2.*(isf_FragNormCoord)-1.;
 	uv.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec3 p = vec3 (0.0,0.0,0.0);

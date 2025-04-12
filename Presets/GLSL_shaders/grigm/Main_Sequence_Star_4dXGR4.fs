@@ -96,7 +96,7 @@ void main()
 	vec3 orangeRed		= vec3( 0.8, 0.35, 0.1 );
 	float time		= TIME * 0.1;
 	float aspect	= RENDERSIZE.x/RENDERSIZE.y;
-	vec2 uv			= gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv			= isf_FragNormCoord;
 	vec2 p 			= -0.5 + uv;
 	p.x *= aspect;
 

@@ -169,7 +169,7 @@ float fbm(vec3 p) {
 
 void main(void)
 {
-    vec2 uv = iZoom * gl_FragCoord.xy / RENDERSIZE.xy; 
+    vec2 uv = iZoom * isf_FragNormCoord; 
     vec3 ro = vec3(0, 0, -5.);//-nsin(TIME)*8.
     vec3 rd = normalize(vec3(uv, 1));
 

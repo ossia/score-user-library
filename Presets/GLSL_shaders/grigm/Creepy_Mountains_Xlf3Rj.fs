@@ -101,7 +101,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy-.5;
+	vec2 uv = isf_FragNormCoord-.5;
 	uv.x*=RENDERSIZE.x/RENDERSIZE.y;
 	float v=0., l;
 	float t=TIME*.05;

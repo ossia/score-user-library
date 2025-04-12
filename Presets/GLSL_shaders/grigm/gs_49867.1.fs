@@ -213,7 +213,7 @@ Camera getCamera()
  	cam.up = cross(left, forward);
  
 	vec3 screenOrigin = (cam.position+forward);
-	vec2 screenPos = 2.0*gl_FragCoord.xy/RENDERSIZE.xy - 1.0;
+	vec2 screenPos = 2.0*isf_FragNormCoord - 1.0;
  	float screenAspectRatio = RENDERSIZE.x/RENDERSIZE.y;
 	vec3 screenHit = screenOrigin + screenPos.x * left * screenAspectRatio + screenPos.y * cam.up;
   	cam.rayDir = normalize(screenHit-cam.position);

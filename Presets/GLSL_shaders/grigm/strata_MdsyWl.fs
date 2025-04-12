@@ -48,7 +48,7 @@ float height(float noiseValue) {
 
 void main() {
 
-    vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     uv -= 0.5;
     uv.y *= RENDERSIZE.y / RENDERSIZE.x;
     uv *= 1.2;

@@ -117,7 +117,7 @@ mat4 CamControl( vec3 eye, float pitch)
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     vec2 p = 2.*uv-1.;
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;
 		 

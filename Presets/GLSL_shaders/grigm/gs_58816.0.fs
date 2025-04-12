@@ -40,7 +40,7 @@ vec3 ToneMapFilmicALU_HEJL(vec3 y)
 
 void main( void ) 
 {
-    vec2 unipos = (gl_FragCoord.xy / RENDERSIZE);
+    vec2 unipos = (isf_FragNormCoord *);
     vec2 pos = unipos*2.0-1.0;
     pos.x *= RENDERSIZE.x / RENDERSIZE.y;
 

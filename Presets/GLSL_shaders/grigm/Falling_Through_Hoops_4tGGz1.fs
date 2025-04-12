@@ -106,7 +106,7 @@ float trace(vec3 ro, vec3 rt)
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     
     //Make the coordinate space between -1 and 1
     uv = uv * 2.0 - 1.0;

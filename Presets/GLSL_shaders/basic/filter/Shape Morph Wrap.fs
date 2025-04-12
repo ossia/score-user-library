@@ -292,7 +292,7 @@ float shapeForType(vec2 st, int shape)	{
 
 void main()	{
 	vec4		returnMe = vec4(0.0);
-	vec2		st = gl_FragCoord.xy/RENDERSIZE;
+	vec2		st = isf_FragNormCoord;
 
 	st += (0.5 - resultCenter);
 	st = rotatePoint(st,resultAngle);

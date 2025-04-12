@@ -89,7 +89,7 @@ float t = TIME;
 
 void main(){
 	vec3 color = vec3(0.0);
-	vec2 st = gl_FragCoord.xy/RENDERSIZE;	
+	vec2 st = isf_FragNormCoord;	
 	
 	float bg = starSDF(st,int(count)*2,0.1);
 	color += fill(bg,1.3);

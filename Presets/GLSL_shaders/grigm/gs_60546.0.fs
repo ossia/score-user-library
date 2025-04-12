@@ -56,7 +56,7 @@ vec3 hsl2rgb( in vec3 c )
 
 void main( void ) {
 
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy );
+	vec2 position = ( isf_FragNormCoord );
 	vec2 uv = vec2(((position.x-0.5)*(RENDERSIZE.x/RENDERSIZE.y))+0.5,position.y);
 	
 	vec2 enlarge = vec2(1.9,1.0);

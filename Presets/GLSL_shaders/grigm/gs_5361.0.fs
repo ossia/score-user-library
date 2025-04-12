@@ -211,7 +211,7 @@ void main() {
 	float filter = smoothcircle( uv_distorted, 0.15, 48.);
 	uv_distorted = complex_mul(((uv_distorted - 0.5)*mix(2., 12., filter)), mousePolar) + offset;
 	
-	vec2 position = uv_distorted;//gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 position = uv_distorted;//isf_FragNormCoord;
 	
 	float n = surface3(vec3(position*sin(TIME*0.1), TIME * 0.05)*mat3(1,0,0,0,.8,.6,0,-.6,.8),.9);
 	float n2 = surface3(vec3(position*cos(TIME*0.1), TIME * 0.03)*mat3(1,0,0,0,.8,.6,0,-.6,.8),.5);
@@ -227,7 +227,7 @@ void main() {
 	
 	float scale = sin(0.3 * TIME) + 5.0;
 
-	vec2 position2 = (((gl_FragCoord.xy / RENDERSIZE) - 0.5) * scale);
+	vec2 position2 = (((isf_FragNormCoord *) - 0.5) * scale);
 
 	float gradient = 0.0;
 	vec3 color = vec3(0.0);

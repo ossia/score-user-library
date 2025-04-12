@@ -80,7 +80,7 @@ vec3 doMetaball(in metaball mball, in vec2 testPoint){
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xx;
+	vec2 uv = isf_FragNormCoord *.xx;
     
     metaball ball1 = metaball(vec2(0.5+ .5*cos(TIME + 0.4), 0.25 + .2*sin(TIME)),
                               vec3(COL,1.,1.), .1);

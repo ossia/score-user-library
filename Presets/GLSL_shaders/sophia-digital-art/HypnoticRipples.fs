@@ -44,7 +44,7 @@ float HRInvAr = RENDERSIZE.y / RENDERSIZE.x;
 
 void main(void)
 {
-   vec2 uv = 2.0 * iZoom * (gl_FragCoord.xy/RENDERSIZE.xy- 0.25);
+   vec2 uv = 2.0 * iZoom * (isf_FragNormCoord- 0.25);
    uv.x -= 0.0;
    uv.y -= 0.0;
 vec3 col = vec4(uv,0.5+0.5*sin(TIME),1.0).xyz;

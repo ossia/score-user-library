@@ -29,7 +29,7 @@ vec2 noiseOffset(float time, vec2 uv, vec3 angleParamsX, vec3 angleParamsY, vec2
 
 void main()
 {
-    vec2 centeredCoords = ((gl_FragCoord.xy / RENDERSIZE.xy) - 0.5) * 1.2;
+    vec2 centeredCoords = ((isf_FragNormCoord) - 0.5) * 1.2;
     centeredCoords.y *= RENDERSIZE.y / RENDERSIZE.x;
 	float centerDistance = length(centeredCoords);
 	vec2 noiseUV1 = centeredCoords;

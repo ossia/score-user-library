@@ -205,7 +205,7 @@ vec3 palette( in float t)
 vec3 raycast() {
 	
 	vec3 camera = vec3( 0., 0., TIME * speed );
-	vec2 screenPos = -1.0 + 2.0 * gl_FragCoord.xy /RENDERSIZE;
+	vec2 screenPos = -1.0 + 2.0 * isf_FragNormCoord;
 	screenPos.x *= RENDERSIZE.x / RENDERSIZE.y;
 	vec2 n = IMG_NORM_PIXEL(noise, fract(isf_FragNormCoord.xy + TIME * 10.)).xy - 0.5;
 	

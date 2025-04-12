@@ -24,7 +24,7 @@ const float pi=3.14159265359;
 vec2 tile_num = vec2(80.0,40.0);
 
 void main( void ) {
-	vec2 p  = gl_FragCoord.xy/RENDERSIZE.xy;
+	vec2 p  = isf_FragNormCoord;
 	    // p.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec2  p2 = floor(p*tile_num)/tile_num;

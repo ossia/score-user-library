@@ -43,7 +43,7 @@ float draw_ring(vec2 pos, float radius, float thick)
 void main( void ) 
 {
 	float aspectRatio = RENDERSIZE.x / RENDERSIZE.y;
-	vec2 position = ( gl_FragCoord.xy / RENDERSIZE.xy )-0.5;
+	vec2 position = ( isf_FragNormCoord )-0.5;
 	position.x *= aspectRatio;
 	uv = 2.*position;
 	vec2 dims = vec2(aspectRatio, 1.0);

@@ -34,7 +34,7 @@ void main() {
 
 
  
-    vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 uv = isf_FragNormCoord;
     vec2 r = vec2( gl_FragCoord.xy - 0.5*RENDERSIZE.xy );
 	
 	r = 3.0 * r.xy / RENDERSIZE.xy;

@@ -50,7 +50,7 @@ float line(float x){
 }
 
 void main( void ) {
-	//vec2 position = ( gl_FragCoord.xy / RENDERSIZE.y) * 2.0 - vec2(1.0);
+	//vec2 position = ( isf_FragNormCoord *.y) * 2.0 - vec2(1.0);
 	//float a = step(position.y, sin(TIME + position.x * 2.0));
 	
 	
@@ -70,6 +70,6 @@ void main( void ) {
 	float a = line(TIME * 1.5);
 	
 	//if(a >= 0.1) gl_FragColor = vec4(hsv2rgb(vec3(TIME * 0.25, (sin(TIME) + 1.0) * 0.5, 0.9)), 1.0);
-	//else gl_FragColor = IMG_NORM_PIXEL(backbuffer,mod(vec2(gl_FragCoord.xy/RENDERSIZE.xy),1.0)) - 0.002;
-	//gl_FragColor = IMG_NORM_PIXEL(backbuffer,mod(vec2(gl_FragCoord.xy/RENDERSIZE.xy),1.0)) - 0.002;
+	//else gl_FragColor = IMG_NORM_PIXEL(backbuffer,mod(vec2(isf_FragNormCoord),1.0)) - 0.002;
+	//gl_FragColor = IMG_NORM_PIXEL(backbuffer,mod(vec2(isf_FragNormCoord),1.0)) - 0.002;
 }

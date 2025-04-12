@@ -68,7 +68,7 @@ float hex(vec2 st, float t){
 }
 
 void main(){
-    vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;
+    vec2 st = isf_FragNormCoord;
     st = (st-.5)*2.328+.5;
     st.x *= RENDERSIZE.x/RENDERSIZE.y;
     st.x -= (RENDERSIZE.x*.5-RENDERSIZE.y*.5)/RENDERSIZE.y;

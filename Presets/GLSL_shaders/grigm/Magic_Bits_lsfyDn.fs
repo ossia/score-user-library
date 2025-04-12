@@ -25,7 +25,7 @@ void main() {
 
 
 
-	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+	vec2 uv = isf_FragNormCoord;
     float ar = RENDERSIZE.x/RENDERSIZE.y;
     uv.x = uv.x*ar;
     vec2 m = iMouse.xy/RENDERSIZE.xy;
