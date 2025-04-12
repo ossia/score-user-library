@@ -447,6 +447,8 @@ vec3 blendMode(int mode, vec3 base, vec3 blend) {
     return blendSubtract(base, blend);
   } else if (mode == 25) {
     return blendVividLight(base, blend);
+  } else {
+    return vec3(0.,0.,0.);
   }
 }
 
@@ -501,6 +503,8 @@ vec3 blendMode(int mode, vec3 base, vec3 blend, float opacity) {
     return blendSubtract(base, blend, opacity);
   } else if (mode == 25) {
     return blendVividLight(base, blend, opacity);
+  } else {
+    return vec3(0.,0.,0.);
   }
 }
 
