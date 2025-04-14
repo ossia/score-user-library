@@ -53,9 +53,9 @@ vec4 transition(vec2 uv) {
   
   float circPos = atan(p.y - 0.5, p.x - 0.5) + progress * speed;
   float modPos = mod(circPos, 3.1415 / 4.);
-  float signed = sign(progress - modPos);
+  float signed_val = sign(progress - modPos);
   
-  return mix(getToColor(p), getFromColor(p), step(signed, 0.5));
+  return mix(getToColor(p), getFromColor(p), step(signed_val, 0.5));
   
 }
 
