@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"95a53434-276a-42a3-bb6b-ee92462b9640","Effect":""},"Name":"Movement : Flux-Reflux","Preset":[[0,{"Float":1.0}],[1,{"Bool":true}],[2,{"String":"Linear"}],[3,{"Tuple":[{"Tuple":[{"Vec2f":[0.4,0.8]},{"Vec2f":[0.4,0.2]}]},{"Tuple":[{"Vec2f":[0.60,0.2]},{"Vec2f":[0.6,0.8]}]}]}],[4,{"Vec2f":[0.20,0.20]}]]}
