@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up CMake
+        uses: lukka/get-cmake@v3
+
+      - name: Configure
+        run: cmake -S . -B build
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run Hello World
+        run: ./build/backend/libmgr-hello
+        shell: bash
+        if: runner.os != 'Windows'
+
+      - name: Run Hello World (Windows)
+        run: ./build/backend/Release/libmgr-hello.exe
+        if: runner.os == 'Windows'
+
