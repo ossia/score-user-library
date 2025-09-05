@@ -1,0 +1,46 @@
+/*{
+  "DESCRIPTION": "firstExercise",
+  "CREDIT": "mauricio (ported from https://www.vertexshaderart.com/art/rrbek22fBWSHNDxAE)",
+  "ISFVSN": "2",
+  "MODE": "VERTEX_SHADER_ART",
+  "CATEGORIES": [
+    "Math",
+    "Animated"
+  ],
+  "POINT_COUNT": 12593,
+  "PRIMITIVE_MODE": "LINE_STRIP",
+  "LINE_SIZE": "NATIVE",
+  "BACKGROUND_COLOR": [
+    0,
+    0,
+    0,
+    1
+  ],
+  "INPUTS": [],
+  "METADATA": {
+    "ORIGINAL_VIEWS": 1,
+    "ORIGINAL_DATE": {
+      "$date": 1551481179170
+    }
+  }
+}*/
+
+void main() {
+
+  float width = 20.0;
+
+  float x = mod(vertexId, width);
+  float y = floor(vertexId / width);
+  float u = x / (width - 1.0);
+  float v = y / (width -1.0);
+  float xOffset = cos(time + y * 0.2) * 0.1;
+  float yOffset = sin(time + x * 0.3) * 0.1;
+  float ux = u * 2.0 -1.0 + xOffset;
+  float uy = v* 2.0 -1.0 + yOffset;
+  vec2 xy = vec2(ux, uy) * 0.6;
+
+  gl_Position = vec4(xy, 0.0, 1.0); //posicion del color
+  v_color = vec4(1.0, 0.0, 1.0, 1.0); //color
+  gl_PointSize = 10.0;
+
+}

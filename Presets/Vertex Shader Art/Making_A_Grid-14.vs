@@ -1,0 +1,52 @@
+/*{
+  "DESCRIPTION": "Making A Grid - Making A Grid",
+  "CREDIT": "sangbeom.kim (ported from https://www.vertexshaderart.com/art/XQjMFcAi9qguPBnBG)",
+  "ISFVSN": "2",
+  "MODE": "VERTEX_SHADER_ART",
+  "CATEGORIES": [
+    "Particles"
+  ],
+  "POINT_COUNT": 27167,
+  "PRIMITIVE_MODE": "POINTS",
+  "LINE_SIZE": "NATIVE",
+  "BACKGROUND_COLOR": [
+    0,
+    0,
+    0,
+    1
+  ],
+  "INPUTS": [],
+  "METADATA": {
+    "ORIGINAL_VIEWS": 10,
+    "ORIGINAL_LIKES": 1,
+    "ORIGINAL_DATE": {
+      "$date": 1652806867488
+    }
+  }
+}*/
+
+//CS250 Spring 2022
+//Sangbeom Kim
+//Exercise - Vertexshaderart : Making a Grid Assignment
+
+void main() {
+  float down = floor(sqrt(vertexCount));
+  float across = floor(vertexCount / down);
+
+  float x = mod(vertexId, across);
+  float y = floor(vertexId / across);
+
+  float u = x / (across - 1.);
+  float v = y / (across - 1.);
+
+  float ux = u * 2. -1.;
+  float vy = v * 2. -1.;
+
+  gl_Position = vec4(ux, vy, 0, 1);
+  gl_PointSize = 10.0;
+  gl_PointSize *= 20. / across;
+  gl_PointSize *= resolution.x / 600.;
+
+  v_color = vec4(1, 0, 0, 1);
+
+}

@@ -1,0 +1,58 @@
+/*{
+  "DESCRIPTION": "Oh my word",
+  "CREDIT": "zug (ported from https://www.vertexshaderart.com/art/W6AZjsv3rqioGwCLa)",
+  "ISFVSN": "2",
+  "MODE": "VERTEX_SHADER_ART",
+  "CATEGORIES": [
+    "Math",
+    "Animated"
+  ],
+  "POINT_COUNT": 11111,
+  "PRIMITIVE_MODE": "POINTS",
+  "LINE_SIZE": "NATIVE",
+  "BACKGROUND_COLOR": [
+    0.27058823529411763,
+    0.050980392156862744,
+    0.34901960784313724,
+    1
+  ],
+  "INPUTS": [],
+  "METADATA": {
+    "ORIGINAL_VIEWS": 90,
+    "ORIGINAL_DATE": {
+      "$date": 1642024813634
+    }
+  }
+}*/
+
+
+
+#define PI radians(180.)
+#define NUM_SEGMENTS 2.0
+#define NUM_POINTS (NUM_SEGMENTS * 1.0)
+#define STEP 1.93
+void main() {
+    float T = cos( time*mod(floor(vertexId / 12.0) * -mod(vertexId, 12.0) * STEP, NUM_SEGMENTS));
+
+  float point = mod(floor(vertexId / 2.0) + mod(vertexId, 2.0) * STEP, NUM_SEGMENTS);
+  float count = floor(vertexId / NUM_POINTS);
+  float offset = count * sin(time * .006- mouse.y) + 11.0;
+  float angle = point * PI * 2.0 / NUM_SEGMENTS + offset;
+  float radius = pow(count * 0.0014, 2.0);
+  float c = cos(angle + time) * radius;
+  float s = sin(angle + time) * radius;
+  float orbitAngle = pow(count * 0.0025, .9);
+  float innerRadius = pow(count * 0.005, 1.2);
+  float oC = cos(orbitAngle + count * 0.003) * innerRadius*mouse.y*sin(time);
+  float oS = sin(orbitAngle + count * 0.0001) * innerRadius-mouse.x+sin(time);
+
+  vec2 aspect = vec2(1, resolution.x / resolution.y);
+  vec2 xy = vec2(
+      oC -1.+ c+oS,
+      oS + s+c);
+  gl_Position = vec4(xy * aspect * .60161, sin(time), 1);
+
+  float b = 0.2 *sin(time-1.)/ pow(sin(count *1.4+T) * 2.3 + 0.17, .28);
+  b = 0.1920;mix(-.3, mouse.x/0.9/T, b)/-T;
+  v_color = vec4(c, c, sin(T*2./b)+b/c-b, .489);
+}
