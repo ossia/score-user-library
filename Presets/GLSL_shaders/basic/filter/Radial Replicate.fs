@@ -66,13 +66,13 @@ const float pi = 3.14159265359;
 void main()	{
 	
 	vec4		inputPixelColor = vec4(0.0);
-	vec2		loc = _inputImage_imgRect.zw * vec2(isf_FragNormCoord.x,isf_FragNormCoord.y);
+	vec2		loc = IMG_SIZE(inputImage) * vec2(isf_FragNormCoord.x,isf_FragNormCoord.y);
 	//	'r' is the radius- the distance in pixels from 'loc' to the center of the rendering space
 	//float		r = distance(IMG_SIZE(inputImage)/2.0, loc);
-	float		r = distance(_inputImage_imgRect.zw/2.0, loc);
+	float		r = distance(IMG_SIZE(inputImage)/2.0, loc);
 	//	'a' is the angle of the line segment from the center to loc is rotated
 	//float		a = atan ((loc.y-IMG_SIZE(inputImage).y/2.0),(loc.x-IMG_SIZE(inputImage).x/2.0));
-	float		a = atan ((loc.y-_inputImage_imgRect.w/2.0),(loc.x-_inputImage_imgRect.z/2.0));
+	float		a = atan ((loc.y-IMG_SIZE(inputImage).y/2.0),(loc.x-IMG_SIZE(inputImage).x/2.0));
 	float		modAngle = 2.0 * pi / numberOfDivisions;
 	float		scaledCenterRadiusStart = centerRadiusStart * max(RENDERSIZE.x,RENDERSIZE.y);
 	float		scaledCenterRadiusEnd = centerRadiusEnd * max(RENDERSIZE.x,RENDERSIZE.y);
@@ -91,7 +91,7 @@ void main()	{
 		loc.x = r * cos(a + 2.0 * pi * (preRotateAngle) / 360.0);
 		loc.y = r * sin(a + 2.0 * pi * (preRotateAngle) / 360.0);
 	
-		loc = loc / _inputImage_imgRect.zw + vec2(0.5);
+		loc = loc / IMG_SIZE(inputImage) + vec2(0.5);
 	
 		if ((loc.x < 0.0)||(loc.y < 0.0)||(loc.x > 1.0)||(loc.y > 1.0))	{
 			inputPixelColor = vec4(0.0);

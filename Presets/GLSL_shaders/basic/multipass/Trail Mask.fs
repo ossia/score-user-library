@@ -80,7 +80,7 @@ void main()
 
 	
 	//	get the rect of the mask image after it's been resized according to the passed sizing mode.  this is in pixel coords relative to the rendering space!
-	vec4		rectOfResizedMaskImage = RectThatFitsRectInRect(vec4(0.0, 0.0, _maskImage_imgRect.z, _maskImage_imgRect.w), vec4(0,0,RENDERSIZE.x,RENDERSIZE.y), maskSizingMode);
+	vec4		rectOfResizedMaskImage = RectThatFitsRectInRect(vec4(0.0, 0.0, IMG_SIZE(maskImage)), vec4(0,0,RENDERSIZE.x,RENDERSIZE.y), maskSizingMode);
 	//vec4		rectOfResizedMaskImage = RectThatFitsRectInRect(vec4(0.0, 0.0, IMG_SIZE(maskImage).x, IMG_SIZE(maskImage).y), vec4(0,0,RENDERSIZE.x,RENDERSIZE.y), maskSizingMode);
 	//	i know the pixel coords of this frag in the render space- convert this to NORMALIZED texture coords for the resized mask image
 	vec2		normMaskSrcCoord;
