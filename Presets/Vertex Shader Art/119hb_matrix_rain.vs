@@ -1,7 +1,6 @@
 /*{
   "DESCRIPTION": "119hb matrix rain - 119 bytes",
-  "CREDIT": "zug (ported from
-https://www.vertexshaderart.com/art/MjsCC6T8BoLYtnpKv)", "ISFVSN": "2", "MODE":
+  "CREDIT": "zug (ported from https://www.vertexshaderart.com/art/MjsCC6T8BoLYtnpKv)", "ISFVSN": "2", "MODE":
 "VERTEX_SHADER_ART", "CATEGORIES": [ "Math", "Animated"
   ],
   "POINT_COUNT": 2242,

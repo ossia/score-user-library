@@ -1,7 +1,6 @@
 /*{
   "DESCRIPTION": "124b sin city - 124 bytes",
-  "CREDIT": "shu (ported from
-https://www.vertexshaderart.com/art/Ffs2irmibSP7oFuTu)", "ISFVSN": "2", "MODE":
+  "CREDIT": "shu (ported from https://www.vertexshaderart.com/art/Ffs2irmibSP7oFuTu)", "ISFVSN": "2", "MODE":
 "VERTEX_SHADER_ART", "CATEGORIES": [ "Math", "Animated"
   ],
   "POINT_COUNT": 3840,

@@ -17,7 +17,7 @@
     0.5019607843137255,
     1
   ],
-  "INPUTS": [],
+  "INPUTS": [ { "LABEL": "Mouse", "NAME": "mouse", "TYPE": "point2D", "DEFAULT": [0.0, 0.0], "MIN": [0.0, 0.0], "MAX": [1.0, 1.0] } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 89,
     "ORIGINAL_DATE": {

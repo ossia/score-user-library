@@ -1,7 +1,6 @@
 /*{
   "DESCRIPTION": "412b synchrony - 412 bytes",
-  "CREDIT": "shu (ported from
-https://www.vertexshaderart.com/art/SJYTAAwib5eJy8voP)", "ISFVSN": "2", "MODE":
+  "CREDIT": "shu (ported from https://www.vertexshaderart.com/art/SJYTAAwib5eJy8voP)", "ISFVSN": "2", "MODE":
 "VERTEX_SHADER_ART", "CATEGORIES": [ "Math", "Animated"
   ],
   "POINT_COUNT": 6000,

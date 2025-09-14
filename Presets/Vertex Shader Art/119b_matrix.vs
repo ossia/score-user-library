@@ -1,7 +1,6 @@
 /*{
   "DESCRIPTION": "119b matrix - 119 bytes",
-  "CREDIT": "valentin (ported from
-https://www.vertexshaderart.com/art/wGx3PFi6cT8Dydevv)", "ISFVSN": "2", "MODE":
+  "CREDIT": "valentin (ported from https://www.vertexshaderart.com/art/wGx3PFi6cT8Dydevv)", "ISFVSN": "2", "MODE":
 "VERTEX_SHADER_ART", "CATEGORIES": [ "Math", "Animated"
   ],
   "POINT_COUNT": 999,

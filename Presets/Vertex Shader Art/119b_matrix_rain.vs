@@ -1,7 +1,6 @@
 /*{
   "DESCRIPTION": "119b matrix rain - 119 bytes",
-  "CREDIT": "shu (ported from
-https://www.vertexshaderart.com/art/4MXkkkQvDcbZT2bmy)", "ISFVSN": "2", "MODE":
+  "CREDIT": "shu (ported from https://www.vertexshaderart.com/art/4MXkkkQvDcbZT2bmy)", "ISFVSN": "2", "MODE":
 "VERTEX_SHADER_ART", "CATEGORIES": [ "Math", "Animated"
   ],
   "POINT_COUNT": 999,
