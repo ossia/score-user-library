@@ -16,7 +16,7 @@
     0,
     1
   ],
-  "INPUTS": [ { "LABEL": "Sound", "NAME": "floatSound", "TYPE": "audioFloatHistogram" } ],
+  "INPUTS": [ { "LABEL": "Touch", "NAME": "touch", "TYPE": "image" }, { "LABEL": "Sound", "NAME": "floatSound", "TYPE": "audioFloatHistogram" } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 98,
     "ORIGINAL_DATE": {

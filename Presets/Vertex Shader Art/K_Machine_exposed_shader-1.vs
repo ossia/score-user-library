@@ -16,7 +16,7 @@
     0,
     1
   ],
-  "INPUTS": [ { "LABEL": "Sound", "NAME": "sound", "TYPE": "audioHistogram" } ],
+  "INPUTS": [ { "LABEL": "Touch", "NAME": "touch", "TYPE": "image" }, { "LABEL": "Sound", "NAME": "sound", "TYPE": "audioHistogram" } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 138,
     "ORIGINAL_DATE": {

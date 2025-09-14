@@ -19,7 +19,7 @@
     0,
     1
   ],
-  "INPUTS": [],
+  "INPUTS": [ { "LABEL": "Touch", "NAME": "touch", "TYPE": "image" } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 3580,
     "ORIGINAL_LIKES": 15,

@@ -16,7 +16,7 @@
     0.11372549019607843,
     1
   ],
-  "INPUTS": [ { "LABEL": "Sound", "NAME": "sound", "TYPE": "audioHistogram" } ],
+  "INPUTS": [ { "LABEL": "Touch", "NAME": "touch", "TYPE": "image" }, { "LABEL": "Sound", "NAME": "sound", "TYPE": "audioHistogram" } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 842,
     "ORIGINAL_LIKES": 6,
