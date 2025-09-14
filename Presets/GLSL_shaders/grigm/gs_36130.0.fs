@@ -57,7 +57,7 @@ void f_3(){
 void main( void ) {
 	gl_FragColor = vec4( 1.0 );
 	
-	p = (isf_FragNormCoord *) * 2.0 - 1.0;
+	p = (isf_FragNormCoord) * 2.0 - 1.0;
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
 	p.y /= aspect;
 	

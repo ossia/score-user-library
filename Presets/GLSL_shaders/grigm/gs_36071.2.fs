@@ -38,7 +38,7 @@ float fit(float dist) {
 
 void main( void ) {
 
-	vec2 pos = ((isf_FragNormCoord *) - 0.5) * 2.0;
+	vec2 pos = ((isf_FragNormCoord) - 0.5) * 2.0;
 	pos.x *= RENDERSIZE.x/RENDERSIZE.y;
 	
 	vec3 col = vec3(1);

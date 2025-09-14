@@ -81,7 +81,7 @@ void main() {
 
 
     float pixwidth = length(1.0 / RENDERSIZE.xy);
-	vec2 pos = isf_FragNormCoord *.y;
+	vec2 pos =  gl_FragCoord.xy / RENDERSIZE.xy;
     
     float aawidth = 1.0; // 0.0 to turn off aa or > 1.0 to see sdf falloff.
     float aa = aawidth * pixwidth;

@@ -62,7 +62,7 @@ vec3 getColorAt(vec2 p)
 
 void main( void )
 {
-	vec2 uv = (isf_FragNormCoord *) - 0.5;
+	vec2 uv = (isf_FragNormCoord) - 0.5;
 	uv.x *= RENDERSIZE.x / RENDERSIZE.y;
 	
 	gl_FragColor = vec4(getColorAt(uv * ZOOM), 1);

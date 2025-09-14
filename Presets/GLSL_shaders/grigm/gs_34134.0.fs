@@ -79,6 +79,6 @@ void main( void ) {
 	float m = max(a.x,a.y);
 	float s = stepped(m, step);
 	float f = fract(-TIME*speed+repeat*s);
-	gl_FragColor += f * IMG_NORM_PIXEL(backbuffer,mod((isf_FragNormCoord *),1.0)) + 0.1;
+	gl_FragColor += f * IMG_NORM_PIXEL(backbuffer,mod((isf_FragNormCoord),1.0)) + 0.1;
 	
 }

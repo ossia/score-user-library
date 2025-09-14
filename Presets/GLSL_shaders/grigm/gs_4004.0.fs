@@ -110,7 +110,7 @@ void main( void ) {
         
     //Stars
 	float scale = 8.0;
-	vec2 position2 = ((((isf_FragNormCoord *))) * scale);
+	vec2 position2 = ((((isf_FragNormCoord))) * scale);
 	float gradient = 0.0;
 	float fade = 0.0;
 	float z = 0.0;

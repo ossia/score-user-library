@@ -42,7 +42,7 @@ float smoothHouse( vec2 p, float h, float smooth )
 void main(void)
 {
 
-	vec2 unipos = (isf_FragNormCoord *);
+	vec2 unipos = (isf_FragNormCoord);
 	vec2 pos = unipos*2.0-1.0;
 	pos.x *= RENDERSIZE.x / RENDERSIZE.y;
 

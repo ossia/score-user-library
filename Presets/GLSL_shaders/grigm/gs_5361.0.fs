@@ -227,7 +227,7 @@ void main() {
 	
 	float scale = sin(0.3 * TIME) + 5.0;
 
-	vec2 position2 = (((isf_FragNormCoord *) - 0.5) * scale);
+	vec2 position2 = (((isf_FragNormCoord) - 0.5) * scale);
 
 	float gradient = 0.0;
 	vec3 color = vec3(0.0);

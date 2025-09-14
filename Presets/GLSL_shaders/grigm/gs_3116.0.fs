@@ -43,7 +43,7 @@ float rand(vec2 n)
 void main(void)
 {
 	float aspect = RENDERSIZE.x / RENDERSIZE.y;
-	vec2 unipos = ( isf_FragNormCoord *);
+	vec2 unipos = ( isf_FragNormCoord);
  	vec2 pos = unipos*2.0-1.0;//bipolar
 	pos.x *= aspect;
 	

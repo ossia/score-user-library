@@ -55,7 +55,7 @@ vec3 Krysler_190_clr(vec2 p, float blades)
 void main( void ) {
 	float speed = TIME *0.5;
 float aspect = RENDERSIZE.x / RENDERSIZE.y;
-vec2 unipos = ( isf_FragNormCoord *);
+vec2 unipos = ( isf_FragNormCoord);
 vec2 pos = vec2( (unipos.x*2.0-1.0)*aspect, unipos.y*2.0-1.0);
 
 	vec3 clr = Krysler_190_clr(pos, 4.0)*fract(speed);

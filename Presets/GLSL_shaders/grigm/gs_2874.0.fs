@@ -71,7 +71,7 @@ float thing(vec2 pos)
 
 void main(void) 
 {
-	vec2 position = ( isf_FragNormCoord *);
+	vec2 position = ( isf_FragNormCoord);
 	vec2 world = (position - mouse) * 15.0;
 	world.x *= (RENDERSIZE.x / RENDERSIZE.y)*grid_size_width;
 	world.y *= (RENDERSIZE.x / RENDERSIZE.y)*grid_size_height;
