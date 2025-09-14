@@ -15,7 +15,7 @@
     0,
     1
   ],
-  "INPUTS": [],
+  "INPUTS": [ { "LABEL": "Volume", "NAME": "volume", "TYPE": "audioFloatHistogram" } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 10,
     "ORIGINAL_DATE": {

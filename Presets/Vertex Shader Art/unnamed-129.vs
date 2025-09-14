@@ -16,7 +16,7 @@
     0,
     1
   ],
-  "INPUTS": [],
+  "INPUTS": [ { "LABEL": "Sound", "NAME": "floatSound", "TYPE": "audioFloatHistogram" } ],
   "METADATA": {
     "ORIGINAL_VIEWS": 110,
     "ORIGINAL_DATE": {
