@@ -173,5 +173,5 @@ void main() {
   float sat = 0.2 * circleId/snd;
   float val = .9;
   v_color = vec4(hsv2rgb(vec3(hue, sat, val)), (11. / uv.y) / tan(uv * 83.1* snd));
-  v_color = vec4(v_color.rgb * v_color.a*5., v_color.a-2.0);0
+  v_color = vec4(v_color.rgb * v_color.a*5., v_color.a-2.0);
 }
