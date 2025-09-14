@@ -208,11 +208,6 @@ float getb(float n, float pos)
     return norm(mod(n / (pos * 2.), 1.0));
 }
 
-float round(float n)
-{
-  return floor(n + .5);
-}
-
 float not(float n)
 {
   return floor(n * -1. + 1.);

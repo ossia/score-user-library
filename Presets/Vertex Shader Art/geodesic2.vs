@@ -288,9 +288,6 @@ vec3 shift(vec3 v, float offset) {
    }
 }
 
-float round(float a) {
- return floor(a + .5);
-}
 
 // Step through each vertex of each icosahedron face
 vec3 icosahedronFaceVertex(float i) {

@@ -216,10 +216,6 @@ vec3 getUnitVector(vec3 a) {
  return a / length(a);
 }
 
-float round(float a) {
- return floor(a + 0.5);
-}
-
 void main() {
   float pointId = vertexId;
 
