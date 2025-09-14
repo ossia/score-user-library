@@ -158,8 +158,8 @@ void RenderRaindrop(Raindrop drop, RainParams params, float triangle, float triV
 float GetThunderBrightness(float2 uv)
 {
   float2 lookupCoord = float2(0.0005, 0.0 + uv.x);
-  float sample = texture(sound, lookupCoord).r;
-  return pow(saturate((sample - 0.5) * 2.0), 6.0) * 5.0;
+  float sample_ = texture(sound, lookupCoord).r;
+  return pow(saturate((sample_ - 0.5) * 2.0), 6.0) * 5.0;
 
 }
 
