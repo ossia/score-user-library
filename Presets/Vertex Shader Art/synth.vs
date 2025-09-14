@@ -42,7 +42,7 @@ void main() {
   float v = mod(vertexId, across);
   float x = v / across - .5;
 
-  float snd = texture(floatSound, vec2(v/across,u/5.)).a;
+  float snd = texture(floatSound, vec2(v/across,u/5.)).r;
 
   float y = u / h * 6.5 + snd/100. - .5;
 

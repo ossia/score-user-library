@@ -49,7 +49,7 @@ void main() {
   const int amt_samples = 8;
   float avg_volume = 0.;
   for(int i = 0; i < amt_samples; i++) {
-   avg_volume += texture(volume, vec2(i, 0)).a;
+   avg_volume += texture(volume, vec2(i, 0)).r;
   }
   avg_volume /= float(amt_samples);
 

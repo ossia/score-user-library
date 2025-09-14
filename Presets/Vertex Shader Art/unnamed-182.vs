@@ -105,7 +105,7 @@ void main() {
     float localShapeId = floor(localVertexId/elementPerTriangleShape);
     float localRelShapeId =localShapeId/(maxShapeCount/2.);
 
-    //float snd = texture(soundBuffer, vec2(localRelShapeId,0.) ).a* sndFactor;
+    //float snd = texture(soundBuffer, vec2(localRelShapeId,0.) ).r* sndFactor;
         float snd = texture(sound, vec2(localRelShapeId,0.4) ).r* sndFactor;
     float radius = (1.- localRelShapeId)*radiusParam0+(radiusParam1/10.*cos(1.*2.*PI+localShapeId) );
     float angle = 2.*PI*time+angleParam0*50.*shapeId/500.+snd;

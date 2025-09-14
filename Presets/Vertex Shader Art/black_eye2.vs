@@ -65,8 +65,8 @@ void main() {
   float ratio = resolution.x / resolution.y;
   float seg = floor(vertexId/len);
   float segId = mod(vertexId,len);
-  float v = texture(volume, vec2(1., (2.-seg)/amount*2.)).a;
-  float s = texture(floatSound, vec2(1., (1.+segId)/len*240.)).a;
+  float v = texture(volume, vec2(1., (2.-seg)/amount*2.)).r;
+  float s = texture(floatSound, vec2(1., (1.+segId)/len*240.)).r;
   vec3 p = vec3(vertexId * 0.005, seg, time*0.1 - segId*0.001);
   float n = noise(p);
   float x = cos(vertexId/vertexCount * PI * 2.)*(v*radius+segId*0.001);

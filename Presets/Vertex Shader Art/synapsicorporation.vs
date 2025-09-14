@@ -44,15 +44,15 @@ void main() {
 
   float localTime = time + 20.0;
 
-  float NUM_SEGMENTS = localTime*cos(texture(floatSound,vec2(localTime*0.0000001,cos(localTime*0.0000001))).a*0.00001);
+  float NUM_SEGMENTS = localTime*cos(texture(floatSound,vec2(localTime*0.0000001,cos(localTime*0.0000001))).r*0.00001);
   float point = mod(floor(vertexId / 2.0) + mod(vertexId, 2.0) * STEP, NUM_SEGMENTS);
   float count = floor(vertexId / NUM_POINTS);
   float offset = count * 0.02;
   float angle = point * PI * 2.0 / NUM_SEGMENTS + offset;
-  float radius = 0.2+cos(texture(floatSound,vec2(count*0.01,angle*0.01)).a*0.0001*localTime);
+  float radius = 0.2+cos(texture(floatSound,vec2(count*0.01,angle*0.01)).r*0.0001*localTime);
   float c = cos(angle + localTime) * radius;
   float s = sin(angle + localTime) * radius;
-  float orbitAngle = count * 0.01*texture(floatSound,vec2(localTime,s+vertexId*0.01)).a*0.01;
+  float orbitAngle = count * 0.01*texture(floatSound,vec2(localTime,s+vertexId*0.01)).r*0.01;
   float oC = cos(orbitAngle + localTime * count * 0.01) * sin(orbitAngle);
 
   float aa = (localTime*0.001)*cos(localTime*0.0001*vertexId);

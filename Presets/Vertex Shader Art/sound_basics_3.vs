@@ -52,7 +52,7 @@ void main () {
 
   // grab the volume (single value, no frequency) and use that as the
   // color hue; small multiplier, volume almost never gets near 1.0
-  float vol = texture(volume, vec2(0.0, 0.0)).a * 2.0;
+  float vol = texture(volume, vec2(0.0, 0.0)).r * 2.0;
   vec3 hsv = vec3(vol, 1.0, 1.0);
 
   gl_Position = vec4(x, y, 0.0, 1.0);

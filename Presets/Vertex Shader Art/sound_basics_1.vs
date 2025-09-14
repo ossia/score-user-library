@@ -47,7 +47,7 @@ void main () {
   // this will be the point's y-pos with offsets to separate them
   // note the first array index is frequency; x=0.0 is all bass-driven
   float ySnd = (texture(sound, vec2(0.0, norm)).r - 0.3);
-  float yVol = (texture(volume, vec2(0.0, norm)).a - 0.7);
+  float yVol = (texture(volume, vec2(0.0, norm)).r - 0.7);
 
   // even/odd IDs alternate between textures and colors
   // it would be more readable and flexible to do this with arrays

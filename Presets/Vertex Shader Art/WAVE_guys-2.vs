@@ -163,7 +163,7 @@ void main() {
  gl_Position = pos;
    gl_PointSize = 5.0-pos.z;// - soff*sin(time*.001);
 
-       float S =texture(volume,vec2(0)).a;
+       float S =texture(volume,vec2(0)).r;
 // 72.0 /Snd+cols;
    gl_PointSize *= resolution.x / 333.-S;
     float hue = s;

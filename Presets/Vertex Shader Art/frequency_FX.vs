@@ -43,7 +43,7 @@ void main () {
   float freq = norm * 0.2 + 0.004;
   float y = (texture(sound, vec2(freq, 0.0)).r - 0.5);
 
-  float vol = texture(volume, vec2(0.0, 0.0)).a * 2.0;
+  float vol = texture(volume, vec2(0.0, 0.0)).r * 2.0;
   vec3 hsv = vec3(vol, 1.0, 1.0);
 
   gl_Position = vec4(x, y, 0.0, 1.0);

@@ -37,7 +37,7 @@ void main() {
   float count = floor(vertexId / NUM_POINTS);
   float offset = count * sin(time * 0.01) + 5.0;
   float angle = point * PI * 2.0 / NUM_SEGMENTS + offset;
-  float snd = texture(floatSound, vec2(count / 10000.0, 0)).a;
+  float snd = texture(floatSound, vec2(count / 10000.0, 0)).r;
   float radius = pow(count * 0.014, 1.0) + snd * 0.03;
   float c = cos(angle + localTime) * radius;
   float s = sin(angle + localTime) * radius;

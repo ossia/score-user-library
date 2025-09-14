@@ -43,7 +43,7 @@ void main() {
 
   vec2 sxy = vec2(0.1, 0.0);
   vec4 ts = texture(sound, sxy);
-  vec4 tt = texture(sound, mix(vec2(0.0,0.0), vec2(0.0,0.4), v * ts.a));
+  vec4 tt = texture(sound, mix(vec2(0.0,0.0), vec2(0.0,0.4), v * ts.r));
   float x = (sin(20.0 * PI * v * ts.a + time)) * log(ts.a / (1.0 - tt.a));
 
   float y = cos(30.0 * PI * v * (ts.a));

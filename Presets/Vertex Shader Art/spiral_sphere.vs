@@ -158,8 +158,8 @@ void main()
   float u = floor(vertexId/2.0) / (vertexCount/2.0);
   float v = mod(vertexId,2.0);
 
-  float snd = texture(volume, vec2(0.0,u*0.25)).a;
-  float snd2 = texture(volume, vec2(0.0,u*0.0625)).a;
+  float snd = texture(volume, vec2(0.0,u*0.25)).r;
+  float snd2 = texture(volume, vec2(0.0,u*0.0625)).r;
 
   float lon = u * PI*2.0*numTurns;
   float lat = u * PI - PI*0.5 + v*PI/numTurns*(snd*0.9+0.1);

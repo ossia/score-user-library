@@ -247,7 +247,7 @@ void main() {
 // const int hist = 10;
 // float s = 0.;
 // for (int i = 0; i < hist; ++i) {
-// s += texture(volume, vec2((2. + .5) / 4., (float(i) + .5) / IMG_SIZE(sound).y)).a *
+// s += texture(volume, vec2((2. + .5) / 4., (float(i) + .5) / IMG_SIZE(sound).y)).r *
 // 1.;//float(hist - i);
 // }
 //// s /= float(hist * (hist - 1)) / 2.;

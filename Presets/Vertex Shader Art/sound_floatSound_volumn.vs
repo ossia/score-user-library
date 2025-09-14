@@ -40,8 +40,8 @@ void main () {
 
   float freq = vertexId / vertexCount;
   float s = texture(sound, vec2(freq, 0.0)).r - 0.5;
-  float v = texture(volume, vec2(0, 0.0)).a - 0.5;
-  float f = texture(floatSound, vec2(freq, 0.0)).a * 0.01 + 0.5;
+  float v = texture(volume, vec2(0, 0.0)).r - 0.5;
+  float f = texture(floatSound, vec2(freq, 0.0)).r * 0.01 + 0.5;
 
   float id = mod(vertexId, 3.0);
   float y0 = mix(s, v, step(0.5, id));
