@@ -56,7 +56,7 @@ void main() {
   const int count = 60;
   for (int i = 0; i < count; ++i) {
     float iv = 1. - float(i) / float(count - 1);
-    float hist = (float(i) + 0.5) / IMG_SIZE(sound).y;
+    float hist = (float(i) + 0.5) / 2;
     vec2 m = texture(touch, vec2(0, hist)).xy;
     vec2 dm = m - sp;
     float dist = length(dm);

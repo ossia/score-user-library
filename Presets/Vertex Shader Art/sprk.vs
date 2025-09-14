@@ -308,7 +308,7 @@ void main() {
   sd = abs(atan(length(vec2(pos.xy)), pos.y) / PI);
   su = srv;
   //su = hash(cubeId / maxCubes);
-  float sd2 = floor(sd * IMG_SIZE(sound).y) / soundRes.y;
+  float sd2 = floor(sd * IMG_SIZE(sound).y) / IMG_SIZE(sound).y;
   float s1 = texture(sound, vec2(mix(.25, .02, fract(su + 1.0)), sd2)).r;
   float s2 = texture(sound, vec2(mix(.26, .03, fract(su + 0.8)), sd2)).r;
   float s3 = texture(sound, vec2(mix(.27, .04, fract(su + 0.6)), sd2)).r;

@@ -27,7 +27,8 @@
 }*/
 
 
-#define TAU radians(360.)#define PI radians(180.)
+#define TAU radians(360.)
+#define PI radians(180.)
 
 void main()
 {

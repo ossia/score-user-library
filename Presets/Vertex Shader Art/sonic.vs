@@ -44,16 +44,16 @@ void main() {
   vec2 sxy = vec2(0.1, 0.0);
   vec4 ts = texture(sound, sxy);
   vec4 tt = texture(sound, mix(vec2(0.0,0.0), vec2(0.0,0.4), v * ts.r));
-  float x = (sin(20.0 * PI * v * ts.a + time)) * log(ts.a / (1.0 - tt.a));
+  float x = (sin(20.0 * PI * v * ts.r + time)) * log(ts.a / (1.0 - tt.r));
 
-  float y = cos(30.0 * PI * v * (ts.a));
+  float y = cos(30.0 * PI * v * (ts.r));
   vec2 xy = vec2(x, y) * 0.5;
   gl_Position = vec4(xy, 0, 1);
 
    gl_PointSize = (10.0 * v + 0.1);
 
   //float hue = (time * 0.01 + count * 1.001);
-  v_color = vec4(hsv2rgb(vec3(tt.a * 4.0, v, 1)), 1);
+  v_color = vec4(hsv2rgb(vec3(tt.r * 4.0, v, 1)), 1);
   //v_color = vec4( ts.rgb, 1.0);
   //v_color = vec4(1,1,1,1);
 }
