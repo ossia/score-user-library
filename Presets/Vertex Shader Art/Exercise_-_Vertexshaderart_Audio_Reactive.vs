@@ -92,7 +92,7 @@ void main() {
 
   float snd = texture(sound, vec2(au * 0.05, av * .25)).r;
 
-  float n = noise(vec2(u, v) + u_time * 0.1);
+  float n = noise(vec2(u, v) + time * 0.1);
 
   vec2 xy = vec2( u * 2. - 1., v * 2. - 1.) * 1.3;
   float z = snd * 2.0 - 1.0;
@@ -105,7 +105,7 @@ void main() {
 
   float pump = step(0.8, snd);
 
-  float hue = u * .1 + snd * 0.2 + u_time * .1;
+  float hue = u * .1 + snd * 0.2 + time * .1;
   float sat = mix(0., 1., pump);
   float val = mix(.1, pow(snd + 0.2, 5.0), pump);
   v_color = vec4(hsv2rgb(vec3(n *hue, sat, val)), 1);

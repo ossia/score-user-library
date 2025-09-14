@@ -38,7 +38,6 @@
 #define PI radians(180.)
 mat4 persp(float fov, float aspect, float zNear, float zFar);
 mat4 lookAt(vec3 eye, vec3 target, vec3 up);
-mat4 inverse(mat4 m);
 mat4 cameraLookAt(vec3 eye, vec3 target, vec3 up);
 ////////////////////////////////////////////////////////////
 
