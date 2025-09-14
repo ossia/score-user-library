@@ -162,7 +162,7 @@ vec3 colorBrushStroke(vec2 uv, vec3 inpColor, vec4 brushColor, vec2 p1, vec2 p2,
 
 void main( void )
 {
-	vec2 uv = (isf_FragNormCoord *.y * 2.0) - 1.;
+	vec2 uv = (gl_FragCoord.xy / RENDERSIZE.y * 2.0) - 1.;
     vec2 mymouse = (mouse.xy / RENDERSIZE.y * 2.0) - 1.;
     
     vec3 col = vec3(1.,1.,0.86);// bg

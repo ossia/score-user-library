@@ -36,7 +36,7 @@ void main() {
 
 
 
-    vec2 p = z * (isf_FragNormCoord *.y * 25. 
+    vec2 p = z * (gl_FragCoord.xy / RENDERSIZE.y * 25. 
                   + iMouse.xy*.1 
                   + TIME*vec2(1.5,1.08)),
         c = floor(p);

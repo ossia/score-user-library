@@ -221,7 +221,7 @@ void main() {
 
 
 	float time = TIME * 0.1;
-	vec2 uv = isf_FragNormCoord *.y;
+	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y;
 	uv -= vec2(.25, 0.);
 	float val1 = 1.;
 	float val2 = 1.;

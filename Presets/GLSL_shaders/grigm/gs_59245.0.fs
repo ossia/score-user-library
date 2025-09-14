@@ -20,7 +20,7 @@ precision mediump float;
 
 
 void main() {
-	vec2 p = isf_FragNormCoord *.x * 0.7;
+	vec2 p = gl_FragCoord.xy / RENDERSIZE.x * 0.7;
 	vec3 col;
 	float tt = TIME * 5.0;
 

@@ -38,7 +38,7 @@ precision mediump float;
 
 void main( void ) {
 
-	vec2 position = isf_FragNormCoord *.y;
+	vec2 position = gl_FragCoord.xy / RENDERSIZE.y;
 	float max_x = RENDERSIZE.x / RENDERSIZE.y;
 	vec2 mouse_p = vec2(mouse.x * max_x, mouse.y);
 

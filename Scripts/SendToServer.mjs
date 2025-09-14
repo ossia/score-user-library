@@ -127,8 +127,6 @@ function testConnection()
 }
 
 export function initialize() {
-  // This will be called when the module is loaded.
-  console.log("HTTP Export module loaded");
 }
 
 // This is used to register actions in the Scripts menu in score

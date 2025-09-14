@@ -47,7 +47,7 @@ float PI = 3.14159265;
 
 void main( void ) {
 
-	vec2 p = ( isf_FragNormCoord *.xx ) * vec2( 2.0 ) - vec2( 1.0, RENDERSIZE.y / RENDERSIZE.x );
+	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.xx ) * vec2( 2.0 ) - vec2( 1.0, RENDERSIZE.y / RENDERSIZE.x );
 
 	float bounce = abs( sin( TIME / 1.0 ) );
 	float bounceY = p.y + bounce;

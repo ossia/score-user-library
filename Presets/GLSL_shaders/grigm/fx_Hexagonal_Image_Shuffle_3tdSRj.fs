@@ -31,7 +31,7 @@ void main() {
 
     vec2 uv = isf_FragNormCoord;
     
-	vec2 p = isf_FragNormCoord *.y;
+	vec2 p = gl_FragCoord.xy / RENDERSIZE.y;
     
     vec2 q = HEXES * vec2( p.x * 2.0 * ISQRT3, p.y + p.x * ISQRT3 );
 	

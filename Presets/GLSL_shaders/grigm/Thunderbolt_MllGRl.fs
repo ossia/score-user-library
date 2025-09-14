@@ -106,7 +106,7 @@ void main() {
 
 
 
-	vec2 uv = 2.*isf_FragNormCoord *.yy;
+	vec2 uv = 2.*gl_FragCoord.xy / RENDERSIZE.yy;
     uv*=5.;
     float c = thunderbolt(uv+.02*fbm2(5.*uv));
     c=exp(-5.*c);

@@ -65,7 +65,7 @@ float distVector(vec2 vec, vec2 uv)
 void main( void ) 
 {
 	vec2 aspect = surfaceSize*0.5;//vec2(RENDERSIZE.xy/RENDERSIZE.y);
-	vec2 uv = vv_FragNormCoord;//(isf_FragNormCoord *.y);
+	vec2 uv = vv_FragNormCoord;//(gl_FragCoord.xy / RENDERSIZE.y);
 	
 	//uv.x -= (aspect.x-1.0)/2.0;
 	

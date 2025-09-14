@@ -50,7 +50,7 @@ float line(float x){
 }
 
 void main( void ) {
-	//vec2 position = ( isf_FragNormCoord *.y) * 2.0 - vec2(1.0);
+	//vec2 position = ( gl_FragCoord.xy / RENDERSIZE.y) * 2.0 - vec2(1.0);
 	//float a = step(position.y, sin(TIME + position.x * 2.0));
 	
 	

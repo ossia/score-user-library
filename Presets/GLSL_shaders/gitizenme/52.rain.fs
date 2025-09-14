@@ -68,7 +68,7 @@ void main() {
 
 
     float resolution = 10. * exp2(-3.*iMouse.x/RENDERSIZE.x);
-	vec2 uv = isf_FragNormCoord *.y * resolution;
+	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y * resolution;
     vec2 p0 = floor(uv);
     vec2 circles = vec2(0.);
     for (int j = -MAX_RADIUS; j <= MAX_RADIUS; ++j)

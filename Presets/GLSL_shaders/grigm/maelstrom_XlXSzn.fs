@@ -90,7 +90,7 @@ void main() {
          mouse = vec2(.9,.5)*vec2(cos(1.*t)+.5*sin(2.2*t),sin(1.1*t)+.5*cos(1.9*t))/1.5;   
     else 
          mouse = 2.*mouse-1.;
-	vec2 uv = 2.*(isf_FragNormCoord *.y-vec2(.9,.5));
+	vec2 uv = 2.*(gl_FragCoord.xy / RENDERSIZE.y-vec2(.9,.5));
     float a = .5*t, c=cos(a), s=sin(a); uv *= mat2(c,-s,s,c);
     
     vec4 col=vec4(0.);

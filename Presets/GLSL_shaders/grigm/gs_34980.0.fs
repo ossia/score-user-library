@@ -89,7 +89,7 @@ void main(void)
 {
 	float rep = 1.0 / (RENDERSIZE.x / 2.0);
 	vec2 aspect = RENDERSIZE.xy / RENDERSIZE.y;
-	vec2 uv = ( isf_FragNormCoord *.y );
+	vec2 uv = ( gl_FragCoord.xy / RENDERSIZE.y );
 	
 	float mode = floor(uv.y / 0.25);
 	

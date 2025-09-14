@@ -46,7 +46,7 @@ float solve(float x0,float x1,float y) {
 
 void main()
 {
-	vec2 uv = isf_FragNormCoord *.y;
+	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y;
     uv *= SCALE;
      float y0 = solve(uv.y-3.,uv.y,  floor(f(uv.y))),
            y1 = solve(uv.y,uv.y+3., floor(f(uv.y))+1.);

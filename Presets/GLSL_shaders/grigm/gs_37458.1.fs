@@ -34,7 +34,7 @@ float rand(vec2 co){
 void main( void ) {
 	
 
-	vec2 p = ( isf_FragNormCoord *.x ) - vec2(0.5,0.5);
+	vec2 p = ( gl_FragCoord.xy / RENDERSIZE.x ) - vec2(0.5,0.5);
 
 	float v = mix( 1.-dot(p,p), sqrt(abs(1.-dot(p,p)*(7.0+14.0*sin(TIME*0.5)))), sin(TIME)*0.5+0. );
 	v *= pow(v,102.0*abs(sin(TIME)));

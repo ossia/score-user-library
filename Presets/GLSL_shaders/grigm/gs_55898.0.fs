@@ -18,7 +18,7 @@ precision mediump float;
 
 
 void main( void ) {
-	vec2 pos = isf_FragNormCoord *.x;
+	vec2 pos = gl_FragCoord.xy / RENDERSIZE.x;
 	
 	vec4 c = vec4(vec3(0.),1.);
 	if(distance(vec2(0.5),mod(pos*20.,1.))<abs(0.5-fract(pos.x+TIME/4.))*sqrt(2.)) {

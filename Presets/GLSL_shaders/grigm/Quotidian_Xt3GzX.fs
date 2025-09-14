@@ -21,7 +21,7 @@
 
 void main()
 {
-	vec2 uv = isf_FragNormCoord *.y;
+	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y;
     float reflectVal = 0.0;
     if(uv. y < 0.35) {
         reflectVal = 0.35-(0.35-uv.y);

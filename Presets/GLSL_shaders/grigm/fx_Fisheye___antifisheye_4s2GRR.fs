@@ -31,7 +31,7 @@ void main() {
 
 
 
-	vec2 p = isf_FragNormCoord *.x;//normalized coords with some cheat
+	vec2 p = gl_FragCoord.xy / RENDERSIZE.x;//normalized coords with some cheat
 	                                                         //(assume 1:1 prop)
 	float prop = RENDERSIZE.x / RENDERSIZE.y;//screen proroption
 	vec2 m = vec2(0.5, 0.5 / prop);//center coords

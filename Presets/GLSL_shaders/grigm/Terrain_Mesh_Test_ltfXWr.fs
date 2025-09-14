@@ -188,7 +188,7 @@ vec3 Shade(vec3 position, vec3 normal, vec3 direction, vec3 camera)
 void main()
 {
     vec2 res = RENDERSIZE.xy / RENDERSIZE.y;
-	vec2 uv = isf_FragNormCoord *.y;
+	vec2 uv = gl_FragCoord.xy / RENDERSIZE.y;
     
     vec3 angles = vec3((iMouse.xy/RENDERSIZE.xy)*pi,0);
     
