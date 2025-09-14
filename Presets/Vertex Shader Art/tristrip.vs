@@ -70,9 +70,9 @@ void main(){
   gl_Position.xy = (gl_Position.xy*float(!test))+(float(test)*vec2(PER_ROW*float(gl_Position.x==(PER_ROW+1.0)),row+1.0));
   gl_Position.xy *=aspect/(PER_ROW/2.40);
   gl_Position.xy-=vec2(.7,1.0);
-  float sample =texture(sound, (gl_Position.xy+1.0)/1.9 ).r;
-  gl_PointSize=sample*2.0;
- gl_Position.z=(sample);
-  v_color =vec4(sample);
+  float sample_ =texture(sound, (gl_Position.xy+1.0)/1.9 ).r;
+  gl_PointSize=sample_*2.0;
+ gl_Position.z=(sample_);
+  v_color =vec4(sample_);
 
 }

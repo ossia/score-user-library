@@ -158,7 +158,7 @@ float f2PlaneAngle(vec2 p, float phi) {
  return f2Plane(p, unitVector(phi));
 }
 
-float max3(float a, float b, float c) {
+float max3_(float a, float b, float c) {
  return max(max(a, b), c);
 }
 
@@ -173,7 +173,7 @@ float f2Pentaprism(vec2 p, float r) {
  float side2 = -p.y;
  float side3 = f2PlaneAngle(q, phi2);
 
- float pentagon = max3(side1, side2, side3) - offset;
+ float pentagon = max3_(side1, side2, side3) - offset;
 
  return pentagon;
 }
