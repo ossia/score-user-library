@@ -40,7 +40,6 @@ vec3 hsv2rgb(vec3 c) {
 
 #define PI radians(180.0)
 
-uniform float u_time;
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
 float noise(vec2 v){

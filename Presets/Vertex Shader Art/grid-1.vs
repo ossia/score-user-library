@@ -49,6 +49,6 @@ void main() {
   gl_PointSize*=20./across;
   gl_PointSize*=resolution.x/600.;
 
-  v_color = vec4(1,0,0,1)
+  v_color = vec4(1,0,0,1);
 
 }

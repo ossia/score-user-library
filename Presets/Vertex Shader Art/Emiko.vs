@@ -37,7 +37,7 @@ vec3 hsv2rgb(vec3 c) {
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-float modf( float x, float y )
+float e_modf( float x, float y )
 {
   return x - y * floor(x/y);
 }
@@ -173,7 +173,7 @@ void main() {
 
   vec4 color = vec4(1.0);
 
-  if ( modf(xIndex, 2.0 ) < 0.1)
+  if ( e_modf(xIndex, 2.0 ) < 0.1)
   {
     color.z -= sndPiano * 3.5;
   }

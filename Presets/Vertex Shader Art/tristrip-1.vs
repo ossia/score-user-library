@@ -31,7 +31,6 @@
 #define NUM_POINTS (NUM_SEGMENTS * 2.0)
 #define STEP 5.0
 
-uniform int numPoints;
 
 const vec2 aspect=vec2(1.0,16.0/9.0);
 #define PER_ROW 256.0 // cells per row

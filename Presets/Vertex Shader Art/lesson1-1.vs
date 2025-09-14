@@ -46,7 +46,7 @@ void main() {
   float y = mod(floor(vertexId / 2.) + floor(vertexId / 3.), 2.);
   vec2 xy = vec2(x, y);
   gl_Position = vec4(xy * 0.1, 0, 1);
-  v_color = vec4(1, 0 , 0, 1)
+  v_color = vec4(1, 0 , 0, 1);
 }
 
 // a grid made of points (switch to using Points primitive)

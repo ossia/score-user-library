@@ -75,5 +75,5 @@ void main()
   float sat = mix(0., 1. ,pump);//mix(1., 0., av);
   float val = mix(.1, pow(snd + 0.2, .5), pump);//sin(time*1.4 + v * u * 20.) * .5 + .5;
 
-  v_color = vec4(hsv2rgb(vec3(hue,sat,val)),1)
+  v_color = vec4(hsv2rgb(vec3(hue,sat,val)),1);
 }

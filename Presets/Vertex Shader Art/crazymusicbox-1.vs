@@ -90,9 +90,6 @@ ________1¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1_____
 precision mediump float;
 /*
 attribute float vertexId;
-uniform float vertexCount;
-uniform float time;
-uniform vec2 resolution;
 
 */
 
