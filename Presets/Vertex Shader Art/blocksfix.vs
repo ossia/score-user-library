@@ -16,7 +16,7 @@
     0,
     1
   ],
-  "INPUTS": [],
+  "INPUTS": [ { "LABEL": "surfacePosition", "NAME": "surfacePosition", "TYPE": "point2D", "DEFAULT": [0.0, 0.0], "MIN": [0.0, 0.0], "MAX": [1.0, 1.0] }],
   "METADATA": {
     "ORIGINAL_VIEWS": 50,
     "ORIGINAL_DATE": {
@@ -25,7 +25,6 @@
   }
 }*/
 
-varying vec2 surfacePosition;
 void main(){
  vec2 pos = surfacePosition;
 
