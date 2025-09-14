@@ -34,7 +34,7 @@ float metaball(vec2 p, float r)
 	return r / dot(p, p);
 }
 
-vec3 sample(in vec2 uv)
+vec3 sample_(in vec2 uv)
 {
 	float t0 = sin(TIME * 1.9) * .46;
 	float t1 = sin(TIME * 2.4) * .49;
@@ -63,11 +63,11 @@ void main()
     float e = 1. / min(RENDERSIZE.y , RENDERSIZE.x);    
     for (float i = -AA; i < AA; ++i) {
         for (float j = -AA; j < AA; ++j) {
-    		col += sample(uv + vec2(i, j) * (e/AA)) / (4.*AA*AA);
+    		col += sample_(uv + vec2(i, j) * (e/AA)) / (4.*AA*AA);
         }
     }
 #else
-    col += sample(uv);
+    col += sample_(uv);
 #endif /* AA */
     
     gl_FragColor = vec4(clamp(col, 0., 1.), 1);

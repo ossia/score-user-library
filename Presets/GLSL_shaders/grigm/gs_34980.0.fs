@@ -79,7 +79,7 @@ float f(float x, float mode)
 	return 0.0;
 }
 
-vec4 sample(vec4 sx, float mode)
+vec4 sample_(vec4 sx, float mode)
 {
 	sx *= scale.x * 0.5;
 	return vec4(f(sx.x, mode), f(sx.y, mode), f(sx.z, mode), f(sx.w, mode)) / scale.y * 0.5;
@@ -102,7 +102,7 @@ void main(void)
 	
 	vec4 offs = vec4(-1, 0, 1, 2);
 	vec4 sx = (offs * rep);
-	vec4 sy = sample((offs + floor(uv.x / rep)) * rep, mode);
+	vec4 sy = sample_((offs + floor(uv.x / rep)) * rep, mode);
 	
 	vec2 p0 = vec2(sx.x, sy.x);
 	vec2 p1 = vec2(sx.y, sy.y);
