@@ -101,9 +101,6 @@ precision mediump float;
 
 #define PI 3.14159265359
 
-uniform vec2 u_resolution;
-uniform float u_time;
-
 float circle(in vec2 _st, in float _radius){
     vec2 l = _st-vec2(0.5);
     return 1.-smoothstep(_radius-(_radius*gradient),
