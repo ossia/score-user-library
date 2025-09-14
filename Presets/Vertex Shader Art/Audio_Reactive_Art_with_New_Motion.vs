@@ -57,7 +57,7 @@ void main() {
 
   vec4 soundVal = texture(sound, vec2(au * 0.05, av * .25));
 
-  float snd = soundVal.a;
+  float snd = soundVal.r;
 
   float xoff = sin(time*snd*1.5 + y * 0.2) * 0.015;
   float yoff = sin(time*snd*1.5 + x * 0.3) * 0.02;

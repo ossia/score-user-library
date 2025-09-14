@@ -85,9 +85,9 @@ void main() {
   for (float f = -10.; f < 0.; f++) {
    ofs += push(t+f*.05,i,ofs,2.-exp(-f*.1));
   }
-  ofs += push(t+soundVal.a*10.,i,ofs+soundVal.a*10.,.999);
+  ofs += push(t+soundVal.r*10.,i,ofs+soundVal.r*10.,.999);
 
-  //ofs*=soundVal.a * 2.;
+  //ofs*=soundVal.r * 2.;
 
   pos -= posf0(t);
 

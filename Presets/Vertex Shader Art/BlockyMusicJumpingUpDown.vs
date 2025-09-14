@@ -42,7 +42,7 @@ void main() {
   float point = mod(floor(vertexId / 2.0) + mod(vertexId, 2.0) * STEP, NUM_SEGMENTS);
   float count = floor(vertexId / NUM_POINTS);
   vec4 soundPoint = texture(sound, vec2(fract(count / 128.0), fract(count / 20000.0)));
-  float snd = soundPoint.a;
+  float snd = soundPoint.r;
 
   float c = sin(count)*1.1 - point * 0.01;
   float s = -0.4 + (snd * 0.8) - point * 0.01 * cos(count) * 0.1;
@@ -57,5 +57,5 @@ void main() {
     ? vec4(0)
     : vec4(soundPoint.r * 0.7, soundPoint.g * 0.4 + 0.6, soundPoint.b * 0.8, 1);
   float pointSize = (count > 20.0) ? 10.0 : 30.0;
-  gl_PointSize = soundPoint.r * (soundPoint.a + 0.2) * pointSize - 1.0;
+  gl_PointSize = soundPoint.r * (soundPoint.r + 0.2) * pointSize - 1.0;
 }
