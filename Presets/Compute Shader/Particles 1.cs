@@ -117,14 +117,6 @@
       "MAX": 64
     },
     {
-      "NAME": "particleCount",
-      "TYPE": "float",
-      "LABEL": "Particle Count",
-      "DEFAULT": 1024,
-      "MIN": 64,
-      "MAX": 4096
-    },
-    {
       "NAME": "fadeWithLife",
       "TYPE": "bool",
       "LABEL": "Fade With Life",
@@ -265,14 +257,14 @@ void main_pass1() {
 
   // Handle case where we have more particles than compute threads
   uint particlesPerThread =
-      (uint(particleCount) + gl_NumWorkGroups.x * gl_WorkGroupSize.x - 1u) /
+      (uint(particles.length()) + gl_NumWorkGroups.x * gl_WorkGroupSize.x - 1u) /
       (gl_NumWorkGroups.x * gl_WorkGroupSize.x);
 
   for (uint p = 0u; p < particlesPerThread; p++) {
     uint actualParticleId =
         particleId + p * gl_NumWorkGroups.x * gl_WorkGroupSize.x;
 
-    if (actualParticleId >= uint(particleCount))
+    if (actualParticleId >= uint(particles.length()))
       break;
 
     Particle particle = particles[actualParticleId];
@@ -350,6 +342,7 @@ void main_pass1() {
     particles[actualParticleId] = particle;
   }
 }
+
 void main_pass2() {
   // PASS 3: Rendering (8x8 threads per workgroup)
   ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
@@ -368,7 +361,9 @@ void main_pass2() {
   vec2 pixelPos = vec2(coord);
 
   // Render particles with early exit optimization
-  for (uint i = 0u; i < uint(particleCount); i++) {
+  // TODO: put the particles in a grid so that we only iterate through the visible ones for 
+  // each quadrant, e.g. have a basic octree
+  for (uint i = 0u; i < uint(particles.length()); i++) {
     // Early exit if we've drawn enough particles for this pixel
     if (particlesDrawn >= maxParticlesPerPixel)
       break;
