@@ -1,5 +1,13 @@
 import Ossia 1.0 as Ossia
 
+// Example of connecting to an OAuth based API.
+// 1. Set client_id and client_secret as given by Google Cloud console.
+// 2.a. Send an impulse to /commands/auth ; this will open a browser with the OAuth flow.
+// 2.b. Alternative: directly set the token if known in /commands/token
+// 3. To read a file: /commands/read_text "foo.txt"
+// 4. To write text to a file: /commands/write_text ["foo.txt", "hello world"]
+// 5. To upload a local file: /commands/upload_file ["foo.txt", "file:///path/to/your/file"] 
+
 Ossia.Mapper
 {
   id: root
