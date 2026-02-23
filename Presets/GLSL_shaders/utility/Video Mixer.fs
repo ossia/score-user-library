@@ -27,7 +27,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 1",
            "TYPE" : "long",
            "NAME" : "mode1"
@@ -38,7 +38,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 2",
            "TYPE" : "long",
            "NAME" : "mode2"
@@ -49,7 +49,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 3",
            "TYPE" : "long",
            "NAME" : "mode3"
@@ -60,7 +60,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 4",
            "TYPE" : "long",
            "NAME" : "mode4"
@@ -71,7 +71,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 5",
            "TYPE" : "long",
            "NAME" : "mode5"
@@ -82,7 +82,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 6",
            "TYPE" : "long",
            "NAME" : "mode6"
@@ -93,7 +93,7 @@
                         "Linear Dodge", "Linear Light", "Multiply", "Negation", "Normal", "Overlay", 
                         "Phoenix", "Pin Light", "Reflect", "Screen", "Soft Light", "Subtract", "Vivid Light"],
            "IDENTITY" : 1,
-           "DEFAULT" : 1,
+           "DEFAULT" : 17,
            "LABEL" : "Mode 7",
            "TYPE" : "long",
            "NAME" : "mode7"
@@ -508,16 +508,48 @@ vec3 blendMode(int mode, vec3 base, vec3 blend, float opacity) {
   }
 }
 
-void main()	{
-  gl_FragColor.rgb = 
-    blendMode(mode1, alpha1 * IMG_THIS_NORM_PIXEL(t1).rgb * IMG_THIS_NORM_PIXEL(t1).a,
-    blendMode(mode2, alpha2 * IMG_THIS_NORM_PIXEL(t2).rgb * IMG_THIS_NORM_PIXEL(t2).a,
-    blendMode(mode3, alpha3 * IMG_THIS_NORM_PIXEL(t3).rgb * IMG_THIS_NORM_PIXEL(t3).a,
-    blendMode(mode4, alpha4 * IMG_THIS_NORM_PIXEL(t4).rgb * IMG_THIS_NORM_PIXEL(t4).a,
-    blendMode(mode5, alpha5 * IMG_THIS_NORM_PIXEL(t5).rgb * IMG_THIS_NORM_PIXEL(t5).a,
-    blendMode(mode6, alpha6 * IMG_THIS_NORM_PIXEL(t6).rgb * IMG_THIS_NORM_PIXEL(t6).a,
-    blendMode(mode7, alpha7 * IMG_THIS_NORM_PIXEL(t7).rgb * IMG_THIS_NORM_PIXEL(t7).a,
-                     alpha8 * IMG_THIS_NORM_PIXEL(t8).rgb * IMG_THIS_NORM_PIXEL(t8).a)))))));
+void main() {
+  vec4 s1 = IMG_THIS_PIXEL(t1);
+  vec4 s2 = IMG_THIS_PIXEL(t2);
+  vec4 s3 = IMG_THIS_PIXEL(t3);
+  vec4 s4 = IMG_THIS_PIXEL(t4);
+  vec4 s5 = IMG_THIS_PIXEL(t5);
+  vec4 s6 = IMG_THIS_PIXEL(t6);
+  vec4 s7 = IMG_THIS_PIXEL(t7);
+  vec4 s8 = IMG_THIS_PIXEL(t8);
 
-  gl_FragColor.a = 1.0; 
+  // Bottom-to-top compositing: t1 is the base, each layer blends on top
+  float a = s1.a * alpha1;
+  vec3 rgb = s1.rgb * a;
+  float ea;
+
+  ea = s2.a * alpha2;
+  rgb = blendMode(mode1, rgb, s2.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  ea = s3.a * alpha3;
+  rgb = blendMode(mode2, rgb, s3.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  ea = s4.a * alpha4;
+  rgb = blendMode(mode3, rgb, s4.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  ea = s5.a * alpha5;
+  rgb = blendMode(mode4, rgb, s5.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  ea = s6.a * alpha6;
+  rgb = blendMode(mode5, rgb, s6.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  ea = s7.a * alpha7;
+  rgb = blendMode(mode6, rgb, s7.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  ea = s8.a * alpha8;
+  rgb = blendMode(mode7, rgb, s8.rgb, ea);
+  a = a + ea * (1.0 - a);
+
+  gl_FragColor = vec4(rgb, a);
 }
