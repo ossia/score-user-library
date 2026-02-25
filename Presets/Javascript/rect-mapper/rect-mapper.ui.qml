@@ -2,6 +2,9 @@ import Score as Score
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import "GeomUtils.js" as Geom
+import "SnapUtils.js" as Snap
+import "ShapeData.js" as ShapeData
 
 Score.ScriptUI {
     id: root
@@ -11,7 +14,7 @@ Score.ScriptUI {
     property int stateVersion: 0
     property int selectedRect: -1
     property bool isDragging: false
-    property int dragCorner: -1 // -1 = move whole quad, 0-3 = corner index
+    property int dragCorner: -1
     property real renderWidth: 0
     property real renderHeight: 0
     property var snapLinesX: []
@@ -25,7 +28,7 @@ Score.ScriptUI {
         if (state && state.mapperState) {
             try {
                 var s = typeof state.mapperState === "string" ? JSON.parse(state.mapperState) : state.mapperState;
-                root.rects = root.loadRects(s);
+                root.rects = s || [];
             } catch (e) {
                 root.rects = [];
             }
@@ -39,7 +42,7 @@ Score.ScriptUI {
         if (k === "mapperState") {
             try {
                 var s = typeof v === "string" ? JSON.parse(v) : v;
-                root.rects = root.loadRects(Array.isArray(s) ? s : []);
+                root.rects = Array.isArray(s) ? s : [];
             } catch (e) {
                 return;
             }
@@ -54,19 +57,6 @@ Score.ScriptUI {
         }
     }
 
-    function loadRects(data) {
-        return data || [];
-    }
-
-    // ---- Naming helper ----
-
-    function incrementName(name) {
-        var m = name.match(/^(.*?)(\d+)$/);
-        if (m)
-            return m[1] + (parseInt(m[2]) + 1);
-        return name + " 2";
-    }
-
     // ---- Actions ----
 
     function saveState(actionName) {
@@ -76,69 +66,56 @@ Score.ScriptUI {
     }
 
     function sendLiveUpdate() {
-        root.executionSend({
-            type: "updateRects",
-            rects: root.rects
-        });
+        root.executionSend({ type: "updateRects", rects: root.rects });
     }
 
-    function addRect() {
-        var offset = (rects.length % 5) * 0.05;
-        var x0 = 0.1 + offset, y0 = 0.1 + offset;
-        var x1 = 0.4 + offset, y1 = 0.4 + offset;
-        rects.push({
-            id: "rect-" + Date.now(),
-            name: "Quad " + (rects.length + 1),
-            corners: [[x0, y0], [x1, y0], [x1, y1], [x0, y1]],
-            source: 0,
-            blend: { top: 0, right: 0, bottom: 0, left: 0 },
-            blendGamma: 1.0,
-            srcBlend: 1,
-            dstBlend: 7
-        });
+    function addShape(type) {
+        var shape = ShapeData.createShape(type || "quad", rects.length);
+        shape.name = shape.name + " " + (rects.length + 1);
+        rects.push(shape);
         selectedRect = rects.length - 1;
         stateVersion++;
-        saveState("Add quad");
+        saveState("Add shape");
         sendLiveUpdate();
     }
 
     function deleteRect(idx) {
-        if (idx < 0 || idx >= rects.length)
-            return;
+        if (idx < 0 || idx >= rects.length) return;
         rects.splice(idx, 1);
-        if (selectedRect >= rects.length)
-            selectedRect = rects.length - 1;
+        if (selectedRect >= rects.length) selectedRect = rects.length - 1;
         stateVersion++;
-        saveState("Delete quad");
+        saveState("Delete shape");
         sendLiveUpdate();
     }
 
     function duplicateRect(idx) {
-        if (idx < 0 || idx >= rects.length)
-            return;
+        if (idx < 0 || idx >= rects.length) return;
         var src = rects[idx];
-        var nc = [];
-        for (var i = 0; i < 4; i++)
-            nc.push([src.corners[i][0] + 0.05, src.corners[i][1] + 0.05]);
-        rects.push({
-            id: "rect-" + Date.now(),
-            name: incrementName(src.name),
-            corners: nc,
-            source: src.source,
-            blend: src.blend ? JSON.parse(JSON.stringify(src.blend)) : { top: 0, right: 0, bottom: 0, left: 0 },
-            blendGamma: src.blendGamma || 1.0,
-            srcBlend: src.srcBlend !== undefined ? src.srcBlend : 1,
-            dstBlend: src.dstBlend !== undefined ? src.dstBlend : 7
-        });
+        var dup = ShapeData.cloneShape(src);
+        dup.id = "shape-" + Date.now();
+        dup.name = Geom.incrementName(src.name);
+        for (var i = 0; i < dup.vertices.length; i++) {
+            dup.vertices[i][0] += 0.05;
+            dup.vertices[i][1] += 0.05;
+        }
+        if (dup.edges) {
+            for (var i = 0; i < dup.edges.length; i++) {
+                var e = dup.edges[i];
+                if (e && e.cp1 && e.cp2) {
+                    e.cp1[0] += 0.05; e.cp1[1] += 0.05;
+                    e.cp2[0] += 0.05; e.cp2[1] += 0.05;
+                }
+            }
+        }
+        rects.push(dup);
         selectedRect = rects.length - 1;
         stateVersion++;
-        saveState("Duplicate quad");
+        saveState("Duplicate shape");
         sendLiveUpdate();
     }
 
     function moveRectUp(idx) {
-        if (idx >= rects.length - 1)
-            return;
+        if (idx >= rects.length - 1) return;
         var tmp = rects[idx];
         rects[idx] = rects[idx + 1];
         rects[idx + 1] = tmp;
@@ -149,8 +126,7 @@ Score.ScriptUI {
     }
 
     function moveRectDown(idx) {
-        if (idx <= 0)
-            return;
+        if (idx <= 0) return;
         var tmp = rects[idx];
         rects[idx] = rects[idx - 1];
         rects[idx - 1] = tmp;
@@ -160,159 +136,125 @@ Score.ScriptUI {
         sendLiveUpdate();
     }
 
-    // ---- Geometry helpers ----
+    // ---- Vertex editing ----
 
-    function quadCentroid(c) {
-        return [(c[0][0] + c[1][0] + c[2][0] + c[3][0]) / 4,
-                (c[0][1] + c[1][1] + c[2][1] + c[3][1]) / 4];
-    }
-
-    function pointInPolygon(px, py, pts) {
-        if (!pts || pts.length < 3)
-            return false;
-        var inside = false;
-        for (var i = 0, j = pts.length - 1; i < pts.length; j = i++) {
-            var xi = pts[i][0], yi = pts[i][1];
-            var xj = pts[j][0], yj = pts[j][1];
-            if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi))
-                inside = !inside;
+    function insertVertexOnEdge(nx, ny) {
+        if (selectedRect < 0 || selectedRect >= rects.length) return;
+        var shape = rects[selectedRect];
+        var nearest = Geom.nearestEdge(nx, ny, shape.vertices);
+        if (nearest.edgeIndex < 0) return;
+        var ei = nearest.edgeIndex;
+        var t = nearest.t;
+        var a = shape.vertices[ei];
+        var b = shape.vertices[(ei + 1) % shape.vertices.length];
+        var newVert = [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+        shape.vertices.splice(ei + 1, 0, newVert);
+        if (shape.edges) {
+            // Split the edge: new vertex gets a null (straight) edge after it
+            shape.edges.splice(ei + 1, 0, null);
         }
-        return inside;
+        stateVersion++;
+        saveState("Insert vertex");
+        sendLiveUpdate();
     }
 
-    // ---- Snapping ----
+    function removeVertex(vertIdx) {
+        if (selectedRect < 0 || selectedRect >= rects.length) return;
+        var shape = rects[selectedRect];
+        if (shape.vertices.length <= 3) return;
+        shape.vertices.splice(vertIdx, 1);
+        if (shape.edges && shape.edges.length > vertIdx) {
+            shape.edges.splice(vertIdx, 1);
+        }
+        stateVersion++;
+        saveState("Remove vertex");
+        sendLiveUpdate();
+    }
 
-    function getSnapTargets(excludeIdx) {
-        var tx = [0, 1], ty = [0, 1];
-        for (var i = 0; i < rects.length; i++) {
-            if (i === excludeIdx)
-                continue;
-            var c = rects[i].corners;
-            for (var j = 0; j < 4; j++) {
-                tx.push(c[j][0]);
-                ty.push(c[j][1]);
+    function toggleBezierEdge(edgeIdx) {
+        if (selectedRect < 0 || selectedRect >= rects.length) return;
+        var shape = rects[selectedRect];
+        if (!shape.edges) shape.edges = [];
+        while (shape.edges.length < shape.vertices.length)
+            shape.edges.push(null);
+
+        if (shape.edges[edgeIdx] && shape.edges[edgeIdx].cp1) {
+            // Remove bezier: make straight
+            shape.edges[edgeIdx] = null;
+        } else {
+            // Add bezier: place control points at 1/3 and 2/3 of the edge
+            var a = shape.vertices[edgeIdx];
+            var b = shape.vertices[(edgeIdx + 1) % shape.vertices.length];
+            shape.edges[edgeIdx] = {
+                cp1: [a[0] + (b[0] - a[0]) / 3, a[1] + (b[1] - a[1]) / 3],
+                cp2: [a[0] + 2 * (b[0] - a[0]) / 3, a[1] + 2 * (b[1] - a[1]) / 3]
+            };
+        }
+        stateVersion++;
+        saveState("Toggle bezier");
+        sendLiveUpdate();
+    }
+
+    function toggleAllBezierEdges() {
+        if (selectedRect < 0 || selectedRect >= rects.length) return;
+        var shape = rects[selectedRect];
+        // Check if any edge is bezier
+        var hasBezier = false;
+        if (shape.edges) {
+            for (var i = 0; i < shape.edges.length; i++) {
+                if (shape.edges[i] && shape.edges[i].cp1) { hasBezier = true; break; }
             }
         }
-        return {x: tx, y: ty};
-    }
-
-    function nearestSnap(val, targets) {
-        var best = val, bestDist = Infinity;
-        for (var i = 0; i < targets.length; i++) {
-            var d = Math.abs(val - targets[i]);
-            if (d < bestDist) {
-                bestDist = d;
-                best = targets[i];
+        if (hasBezier) {
+            // Clear all bezier edges
+            shape.edges = [];
+        } else {
+            // Make all edges bezier
+            if (!shape.edges) shape.edges = [];
+            while (shape.edges.length < shape.vertices.length)
+                shape.edges.push(null);
+            for (var i = 0; i < shape.vertices.length; i++) {
+                var a = shape.vertices[i];
+                var b = shape.vertices[(i + 1) % shape.vertices.length];
+                shape.edges[i] = {
+                    cp1: [a[0] + (b[0] - a[0]) / 3, a[1] + (b[1] - a[1]) / 3],
+                    cp2: [a[0] + 2 * (b[0] - a[0]) / 3, a[1] + 2 * (b[1] - a[1]) / 3]
+                };
             }
         }
-        return {value: best, dist: bestDist};
+        stateVersion++;
+        saveState("Toggle bezier");
+        sendLiveUpdate();
     }
 
-    function snapCorner(nx, ny, excludeIdx) {
-        if (!snappingEnabled) {
-            snapLinesX = [];
-            snapLinesY = [];
-            return [nx, ny];
-        }
-        var thX = snapThresholdPx / viewport.width;
-        var thY = snapThresholdPx / viewport.height;
-        var targets = getSnapTargets(excludeIdx);
-        var sX = nearestSnap(nx, targets.x);
-        var sY = nearestSnap(ny, targets.y);
-        var lx = [], ly = [];
-        if (sX.dist <= thX) {
-            nx = sX.value;
-            lx.push(sX.value);
-        }
-        if (sY.dist <= thY) {
-            ny = sY.value;
-            ly.push(sY.value);
-        }
-        snapLinesX = lx;
-        snapLinesY = ly;
-        return [nx, ny];
+    // ---- Snapping wrappers ----
+
+    function snapVertex(nx, ny, excludeIdx) {
+        if (!snappingEnabled) { snapLinesX = []; snapLinesY = []; return [nx, ny]; }
+        var result = Snap.snapVertex(nx, ny, excludeIdx, rects, viewport.width, viewport.height, snapThresholdPx);
+        snapLinesX = result.linesX;
+        snapLinesY = result.linesY;
+        return result.pos;
     }
 
-    function snapQuadMove(origCorners, dx, dy, excludeIdx) {
-        if (!snappingEnabled) {
-            snapLinesX = [];
-            snapLinesY = [];
-            return {dx: dx, dy: dy};
-        }
-        var thX = snapThresholdPx / viewport.width;
-        var thY = snapThresholdPx / viewport.height;
-        var targets = getSnapTargets(excludeIdx);
-
-        var bestSnapDx = 0, bestDistX = thX + 1;
-        var bestSnapDy = 0, bestDistY = thY + 1;
-
-        for (var i = 0; i < 4; i++) {
-            var cx = origCorners[i][0] + dx;
-            var cy = origCorners[i][1] + dy;
-            var sX = nearestSnap(cx, targets.x);
-            if (sX.dist < bestDistX) {
-                bestDistX = sX.dist;
-                bestSnapDx = sX.value - cx;
-            }
-            var sY = nearestSnap(cy, targets.y);
-            if (sY.dist < bestDistY) {
-                bestDistY = sY.dist;
-                bestSnapDy = sY.value - cy;
-            }
-        }
-
-        if (bestDistX <= thX)
-            dx += bestSnapDx;
-        if (bestDistY <= thY)
-            dy += bestSnapDy;
-
-        // Compute snap guide lines
-        var lx = [], ly = [];
-        for (var i = 0; i < 4; i++) {
-            var sX2 = nearestSnap(origCorners[i][0] + dx, targets.x);
-            if (sX2.dist < 0.001)
-                lx.push(sX2.value);
-            var sY2 = nearestSnap(origCorners[i][1] + dy, targets.y);
-            if (sY2.dist < 0.001)
-                ly.push(sY2.value);
-        }
-        snapLinesX = lx;
-        snapLinesY = ly;
-        return {dx: dx, dy: dy};
+    function snapShapeMove(origVertices, dx, dy, excludeIdx) {
+        if (!snappingEnabled) { snapLinesX = []; snapLinesY = []; return { dx: dx, dy: dy }; }
+        var result = Snap.snapShapeMove(origVertices, dx, dy, excludeIdx, rects, viewport.width, viewport.height, snapThresholdPx);
+        snapLinesX = result.linesX;
+        snapLinesY = result.linesY;
+        return { dx: result.dx, dy: result.dy };
     }
 
-    function clearSnap() {
-        snapLinesX = [];
-        snapLinesY = [];
-    }
+    function clearSnap() { snapLinesX = []; snapLinesY = []; }
 
-    // ---- Rotation helper ----
-
-    function rotateCorners(corners, centroid, angle) {
-        var cos = Math.cos(angle);
-        var sin = Math.sin(angle);
-        var result = [];
-        for (var i = 0; i < 4; i++) {
-            var dx = corners[i][0] - centroid[0];
-            var dy = corners[i][1] - centroid[1];
-            result.push([centroid[0] + dx * cos - dy * sin,
-                         centroid[1] + dx * sin + dy * cos]);
+    function isSimpleWarpedQuad(shape) {
+        if (!shape || !shape.vertices || shape.vertices.length !== 4) return false;
+        if (!shape.warp) return false;
+        if (shape.edges) {
+            for (var i = 0; i < shape.edges.length; i++)
+                if (shape.edges[i] && shape.edges[i].cp1) return false;
         }
-        return result;
-    }
-
-    // ---- Info display ----
-
-    function formatInfo(rd) {
-        if (!rd || !rd.corners)
-            return "";
-        var ct = quadCentroid(rd.corners);
-        if (renderWidth > 0 && renderHeight > 0) {
-            var px = Math.round(ct[0] * renderWidth);
-            var py = Math.round(ct[1] * renderHeight);
-            return "(" + px + ", " + py + ")";
-        }
-        return "(" + ct[0].toFixed(2) + ", " + ct[1].toFixed(2) + ")";
+        return true;
     }
 
     readonly property var sourceColors: ["#44ff4444", "#4444ff44", "#444444ff", "#44ffff44", "#44ff44ff", "#4444ffff", "#44ff8844", "#4488ff44"]
@@ -353,10 +295,31 @@ Score.ScriptUI {
             Layout.fillHeight: true
             spacing: 4
 
-            Button {
-                text: "+ Add Quad"
+            RowLayout {
                 Layout.fillWidth: true
-                onClicked: root.addRect()
+                spacing: 2
+
+                Button {
+                    text: "+ Add"
+                    Layout.fillWidth: true
+                    onClicked: root.addShape(shapeTypeCombo.currentValue)
+                }
+                ComboBox {
+                    id: shapeTypeCombo
+                    Layout.preferredWidth: 90
+                    implicitHeight: 30
+                    font.pixelSize: 11
+                    model: ListModel {
+                        ListElement { text: "Quad"; value: "quad" }
+                        ListElement { text: "Triangle"; value: "triangle" }
+                        ListElement { text: "Pentagon"; value: "pentagon" }
+                        ListElement { text: "Hexagon"; value: "hexagon" }
+                        ListElement { text: "Circle"; value: "circle" }
+                        ListElement { text: "Star"; value: "star" }
+                    }
+                    textRole: "text"
+                    valueRole: "value"
+                }
             }
 
             ListView {
@@ -419,7 +382,7 @@ Score.ScriptUI {
                                     if (listDel.delIndex < root.rects.length && root.rects[listDel.delIndex].name !== text) {
                                         root.rects[listDel.delIndex].name = text;
                                         root.stateVersion++;
-                                        root.saveState("Rename quad");
+                                        root.saveState("Rename shape");
                                         root.sendLiveUpdate();
                                     }
                                 }
@@ -482,12 +445,66 @@ Score.ScriptUI {
                                     root.sendLiveUpdate();
                                 }
                             }
+                            CheckBox {
+                                text: "Warp"
+                                checked: listDel.rd ? (listDel.rd.warp || false) : false
+                                font.pixelSize: 11
+                                implicitHeight: 24
+                                onToggled: {
+                                    root.rects[listDel.delIndex].warp = checked;
+                                    root.stateVersion++;
+                                    root.saveState("Toggle warp");
+                                    root.sendLiveUpdate();
+                                }
+                            }
+                        }
+
+                        RowLayout {
+                            spacing: 4
+                            visible: listDel.rd ? root.isSimpleWarpedQuad(listDel.rd) : false
+
+                            Label {
+                                text: "Grid:"
+                                color: palette.windowText
+                                font.pixelSize: 11
+                            }
+                            SpinBox {
+                                from: 1
+                                to: 16
+                                value: listDel.rd ? (listDel.rd.gridW || 4) : 4
+                                implicitWidth: 60
+                                implicitHeight: 24
+                                font.pixelSize: 11
+                                onValueModified: {
+                                    root.rects[listDel.delIndex].gridW = value;
+                                    root.rects[listDel.delIndex].gridOffsets = null;
+                                    root.stateVersion++;
+                                    root.saveState("Grid width");
+                                    root.sendLiveUpdate();
+                                }
+                            }
+                            Label { text: "\u00D7"; color: palette.windowText; font.pixelSize: 11 }
+                            SpinBox {
+                                from: 1
+                                to: 16
+                                value: listDel.rd ? (listDel.rd.gridH || 4) : 4
+                                implicitWidth: 60
+                                implicitHeight: 24
+                                font.pixelSize: 11
+                                onValueModified: {
+                                    root.rects[listDel.delIndex].gridH = value;
+                                    root.rects[listDel.delIndex].gridOffsets = null;
+                                    root.stateVersion++;
+                                    root.saveState("Grid height");
+                                    root.sendLiveUpdate();
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            // ---- Edge Blend controls for selected quad ----
+            // ---- Edge Blend controls for selected shape ----
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 2
@@ -570,7 +587,7 @@ Score.ScriptUI {
                 }
                 RowLayout {
                     spacing: 2
-                    Label { text: "γ:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                    Label { text: "\u03B3:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
                     Slider { from: 0.5; to: 4.0; stepSize: 0.1; value: parent.parent.selGamma; Layout.fillWidth: true; onMoved: parent.parent.setGamma(value) }
                 }
 
@@ -638,21 +655,15 @@ Score.ScriptUI {
                     ctx.lineWidth = 1;
                     var step = Math.max(width, height) / 10;
                     for (var x = step; x < width; x += step) {
-                        ctx.beginPath();
-                        ctx.moveTo(x, 0);
-                        ctx.lineTo(x, height);
-                        ctx.stroke();
+                        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
                     }
                     for (var y = step; y < height; y += step) {
-                        ctx.beginPath();
-                        ctx.moveTo(0, y);
-                        ctx.lineTo(width, y);
-                        ctx.stroke();
+                        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
                     }
                 }
             }
 
-            // Quad overlay canvas
+            // Shape overlay canvas
             Canvas {
                 id: quadOverlay
                 anchors.fill: parent
@@ -667,20 +678,31 @@ Score.ScriptUI {
 
                     for (var qi = 0; qi < root.rects.length; qi++) {
                         var r = root.rects[qi];
-                        var c = r.corners;
-                        if (!c || c.length < 4)
-                            continue;
+                        var c = r.vertices;
+                        if (!c || c.length < 3) continue;
 
                         var isSelected = (qi === root.selectedRect);
+                        var edges = r.edges;
+
+                        // Build path (handles both straight and bezier edges)
+                        ctx.beginPath();
+                        ctx.moveTo(c[0][0] * w, c[0][1] * h);
+                        for (var ci = 0; ci < c.length; ci++) {
+                            var nextIdx = (ci + 1) % c.length;
+                            var edge = (edges && ci < edges.length) ? edges[ci] : null;
+                            if (edge && edge.cp1 && edge.cp2) {
+                                ctx.bezierCurveTo(
+                                    edge.cp1[0] * w, edge.cp1[1] * h,
+                                    edge.cp2[0] * w, edge.cp2[1] * h,
+                                    c[nextIdx][0] * w, c[nextIdx][1] * h
+                                );
+                            } else {
+                                ctx.lineTo(c[nextIdx][0] * w, c[nextIdx][1] * h);
+                            }
+                        }
 
                         // Fill
                         ctx.fillStyle = root.sourceColors[r.source];
-                        ctx.beginPath();
-                        ctx.moveTo(c[0][0] * w, c[0][1] * h);
-                        ctx.lineTo(c[1][0] * w, c[1][1] * h);
-                        ctx.lineTo(c[2][0] * w, c[2][1] * h);
-                        ctx.lineTo(c[3][0] * w, c[3][1] * h);
-                        ctx.closePath();
                         ctx.fill();
 
                         // Border
@@ -688,12 +710,61 @@ Score.ScriptUI {
                         ctx.lineWidth = isSelected ? 2 : 1;
                         ctx.stroke();
 
+                        // Bezier tangent lines for selected shape
+                        if (isSelected && edges) {
+                            ctx.strokeStyle = "rgba(197,128,20,0.6)";
+                            ctx.lineWidth = 1;
+                            for (var ei = 0; ei < edges.length; ei++) {
+                                var e = edges[ei];
+                                if (!e || !e.cp1 || !e.cp2) continue;
+                                // Line from vertex to cp1
+                                ctx.beginPath();
+                                ctx.moveTo(c[ei][0] * w, c[ei][1] * h);
+                                ctx.lineTo(e.cp1[0] * w, e.cp1[1] * h);
+                                ctx.stroke();
+                                // Line from next vertex to cp2
+                                var ni = (ei + 1) % c.length;
+                                ctx.beginPath();
+                                ctx.moveTo(c[ni][0] * w, c[ni][1] * h);
+                                ctx.lineTo(e.cp2[0] * w, e.cp2[1] * h);
+                                ctx.stroke();
+                            }
+                        }
+
+                        // Grid lines for selected simple warped quads
+                        if (isSelected && root.isSimpleWarpedQuad(r)) {
+                            var gw = r.gridW || 4;
+                            var gh = r.gridH || 4;
+                            ctx.strokeStyle = "rgba(255,255,255,0.25)";
+                            ctx.lineWidth = 1;
+                            // Horizontal grid lines
+                            for (var gr = 0; gr <= gh; gr++) {
+                                ctx.beginPath();
+                                for (var gc = 0; gc <= gw; gc++) {
+                                    var gp = ShapeData.gridPointPos(r, gr, gc);
+                                    if (gc === 0) ctx.moveTo(gp[0] * w, gp[1] * h);
+                                    else ctx.lineTo(gp[0] * w, gp[1] * h);
+                                }
+                                ctx.stroke();
+                            }
+                            // Vertical grid lines
+                            for (var gc = 0; gc <= gw; gc++) {
+                                ctx.beginPath();
+                                for (var gr = 0; gr <= gh; gr++) {
+                                    var gp = ShapeData.gridPointPos(r, gr, gc);
+                                    if (gr === 0) ctx.moveTo(gp[0] * w, gp[1] * h);
+                                    else ctx.lineTo(gp[0] * w, gp[1] * h);
+                                }
+                                ctx.stroke();
+                            }
+                        }
+
                         // Label at centroid
-                        var ct = root.quadCentroid(c);
+                        var ct = Geom.polygonCentroid(c);
                         var cx = ct[0] * w, cy = ct[1] * h;
                         var label;
                         if (root.isDragging && isSelected)
-                            label = root.formatInfo(r);
+                            label = Geom.formatInfo(r, root.renderWidth, root.renderHeight);
                         else
                             label = r.name + "\n(Tex " + (r.source + 1) + ")";
 
@@ -715,9 +786,13 @@ Score.ScriptUI {
                 }
             }
 
-            // Corner handles for selected quad
+            // Corner handles for selected shape
             Repeater {
-                model: root.selectedRect >= 0 && root.selectedRect < root.rects.length ? 4 : 0
+                model: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 0;
+                    return root.rects[root.selectedRect].vertices.length;
+                }
 
                 Rectangle {
                     id: cornerHandle
@@ -726,7 +801,8 @@ Score.ScriptUI {
                         root.stateVersion;
                         if (root.selectedRect < 0 || root.selectedRect >= root.rects.length)
                             return [0, 0];
-                        return root.rects[root.selectedRect].corners[ci];
+                        var c = root.rects[root.selectedRect].vertices;
+                        return ci < c.length ? c[ci] : [0, 0];
                     }
 
                     x: corner[0] * viewport.width - 7
@@ -739,7 +815,6 @@ Score.ScriptUI {
                     border.width: 1
                     z: 10
 
-                    // Corner index label
                     Label {
                         anchors.centerIn: parent
                         text: (cornerHandle.ci + 1).toString()
@@ -751,36 +826,52 @@ Score.ScriptUI {
                     MouseArea {
                         anchors.fill: parent
                         anchors.margins: -5
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
                         cursorShape: Qt.CrossCursor
 
                         property real startX
                         property real startY
                         property real origCX
                         property real origCY
+                        property bool removed: false
 
                         onPressed: function (mouse) {
+                            removed = false;
+                            // Right-click: toggle bezier on outgoing edge
+                            if (mouse.button === Qt.RightButton) {
+                                root.toggleBezierEdge(cornerHandle.ci);
+                                return;
+                            }
+                            // Ctrl+click: remove vertex
+                            if (mouse.modifiers & Qt.ControlModifier) {
+                                root.removeVertex(cornerHandle.ci);
+                                removed = true;
+                                return;
+                            }
                             root.isDragging = true;
                             root.dragCorner = cornerHandle.ci;
                             var p = mapToItem(viewport, mouse.x, mouse.y);
                             startX = p.x;
                             startY = p.y;
-                            var c = root.rects[root.selectedRect].corners[cornerHandle.ci];
+                            var c = root.rects[root.selectedRect].vertices[cornerHandle.ci];
                             origCX = c[0];
                             origCY = c[1];
-                            root.beginUpdateState("Move corner");
+                            root.beginUpdateState("Move vertex");
                         }
 
                         onPositionChanged: function (mouse) {
+                            if (removed || !root.isDragging) return;
                             var p = mapToItem(viewport, mouse.x, mouse.y);
                             var nx = origCX + (p.x - startX) / viewport.width;
                             var ny = origCY + (p.y - startY) / viewport.height;
-                            var snapped = root.snapCorner(nx, ny, root.selectedRect);
-                            root.rects[root.selectedRect].corners[cornerHandle.ci] = snapped;
+                            var snapped = root.snapVertex(nx, ny, root.selectedRect);
+                            root.rects[root.selectedRect].vertices[cornerHandle.ci] = snapped;
                             root.stateVersion++;
                             root.sendLiveUpdate();
                         }
 
                         onReleased: {
+                            if (removed || !root.isDragging) return;
                             root.isDragging = false;
                             root.dragCorner = -1;
                             root.clearSnap();
@@ -791,7 +882,7 @@ Score.ScriptUI {
                 }
             }
 
-            // Rotation handle for selected quad
+            // Rotation handle for selected shape
             Item {
                 id: rotHandle
                 visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
@@ -801,14 +892,14 @@ Score.ScriptUI {
                     root.stateVersion;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length)
                         return [0.5, 0.5];
-                    var c = root.rects[root.selectedRect].corners;
-                    return [(c[0][0] + c[1][0]) / 2, (c[0][1] + c[1][1]) / 2];
+                    var c = root.rects[root.selectedRect].vertices;
+                    return [(c[0][0] + c[1 % c.length][0]) / 2,
+                            (c[0][1] + c[1 % c.length][1]) / 2];
                 }
                 readonly property real handleOffset: 25
                 property real hx: topCenter[0] * viewport.width
                 property real hy: topCenter[1] * viewport.height - handleOffset
 
-                // Connecting line
                 Rectangle {
                     x: rotHandle.hx - 0.5
                     y: rotHandle.hy + 5
@@ -818,7 +909,6 @@ Score.ScriptUI {
                     opacity: 0.5
                 }
 
-                // Handle circle
                 Rectangle {
                     id: rotCircle
                     x: rotHandle.hx - 7
@@ -844,26 +934,46 @@ Score.ScriptUI {
                         cursorShape: Qt.ClosedHandCursor
 
                         property real startAngle
-                        property var origCorners
+                        property var origVertices
+                        property var origEdges
+                        property var origGridOffsets
 
                         onPressed: function (mouse) {
                             root.isDragging = true;
-                            var ct = root.quadCentroid(root.rects[root.selectedRect].corners);
+                            var shape = root.rects[root.selectedRect];
+                            var ct = Geom.polygonCentroid(shape.vertices);
                             var p = mapToItem(viewport, mouse.x, mouse.y);
                             var cx = ct[0] * viewport.width;
                             var cy = ct[1] * viewport.height;
                             startAngle = Math.atan2(p.y - cy, p.x - cx);
-                            origCorners = JSON.parse(JSON.stringify(root.rects[root.selectedRect].corners));
-                            root.beginUpdateState("Rotate quad");
+                            origVertices = JSON.parse(JSON.stringify(shape.vertices));
+                            origEdges = shape.edges ? JSON.parse(JSON.stringify(shape.edges)) : null;
+                            origGridOffsets = shape.gridOffsets ? shape.gridOffsets.slice() : null;
+                            root.beginUpdateState("Rotate shape");
                         }
 
                         onPositionChanged: function (mouse) {
-                            var ct = root.quadCentroid(origCorners);
+                            var ct = Geom.polygonCentroid(origVertices);
                             var p = mapToItem(viewport, mouse.x, mouse.y);
                             var cx = ct[0] * viewport.width;
                             var cy = ct[1] * viewport.height;
                             var angle = Math.atan2(p.y - cy, p.x - cx) - startAngle;
-                            root.rects[root.selectedRect].corners = root.rotateCorners(origCorners, ct, angle);
+                            var shape = root.rects[root.selectedRect];
+                            shape.vertices = Geom.rotateVertices(origVertices, ct, angle);
+                            if (origEdges)
+                                shape.edges = Geom.rotateEdges(origEdges, ct, angle);
+                            if (origGridOffsets) {
+                                var cos_a = Math.cos(angle);
+                                var sin_a = Math.sin(angle);
+                                var newOff = origGridOffsets.slice();
+                                for (var i = 0; i < newOff.length; i += 2) {
+                                    var dx = origGridOffsets[i];
+                                    var dy = origGridOffsets[i + 1];
+                                    newOff[i] = dx * cos_a - dy * sin_a;
+                                    newOff[i + 1] = dx * sin_a + dy * cos_a;
+                                }
+                                shape.gridOffsets = newOff;
+                            }
                             root.stateVersion++;
                             root.sendLiveUpdate();
                         }
@@ -872,6 +982,198 @@ Score.ScriptUI {
                             root.isDragging = false;
                             root.updateState("mapperState", JSON.stringify(root.rects));
                             root.endUpdateState();
+                        }
+                    }
+                }
+            }
+
+            // Bezier control point handles for selected shape
+            Repeater {
+                id: bezierCpRepeater
+                model: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [];
+                    var shape = root.rects[root.selectedRect];
+                    if (!shape.edges) return [];
+                    var handles = [];
+                    for (var i = 0; i < shape.edges.length; i++) {
+                        var e = shape.edges[i];
+                        if (e && e.cp1 && e.cp2) {
+                            handles.push({ edgeIdx: i, cpIdx: 0 });
+                            handles.push({ edgeIdx: i, cpIdx: 1 });
+                        }
+                    }
+                    return handles;
+                }
+
+                Rectangle {
+                    id: cpHandle
+                    property var cpInfo: modelData || { edgeIdx: 0, cpIdx: 0 }
+                    property var cpPos: {
+                        root.stateVersion;
+                        if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [0, 0];
+                        var shape = root.rects[root.selectedRect];
+                        if (!shape.edges || cpInfo.edgeIdx >= shape.edges.length) return [0, 0];
+                        var e = shape.edges[cpInfo.edgeIdx];
+                        if (!e) return [0, 0];
+                        return cpInfo.cpIdx === 0 ? (e.cp1 || [0,0]) : (e.cp2 || [0,0]);
+                    }
+
+                    x: cpPos[0] * viewport.width - 5
+                    y: cpPos[1] * viewport.height - 5
+                    width: 10
+                    height: 10
+                    radius: 0
+                    color: palette.light
+                    border.color: palette.buttonText
+                    border.width: 1
+                    z: 10
+
+                    MouseArea {
+                        anchors.fill: parent
+                        anchors.margins: -5
+                        cursorShape: Qt.CrossCursor
+
+                        property real startX
+                        property real startY
+                        property real origX
+                        property real origY
+
+                        onPressed: function (mouse) {
+                            root.isDragging = true;
+                            var p = mapToItem(viewport, mouse.x, mouse.y);
+                            startX = p.x;
+                            startY = p.y;
+                            origX = cpHandle.cpPos[0];
+                            origY = cpHandle.cpPos[1];
+                            root.beginUpdateState("Move control point");
+                        }
+
+                        onPositionChanged: function (mouse) {
+                            var p = mapToItem(viewport, mouse.x, mouse.y);
+                            var nx = origX + (p.x - startX) / viewport.width;
+                            var ny = origY + (p.y - startY) / viewport.height;
+                            var shape = root.rects[root.selectedRect];
+                            var cpKey = cpHandle.cpInfo.cpIdx === 0 ? "cp1" : "cp2";
+                            shape.edges[cpHandle.cpInfo.edgeIdx][cpKey] = [nx, ny];
+                            root.stateVersion++;
+                            root.sendLiveUpdate();
+                        }
+
+                        onReleased: {
+                            root.isDragging = false;
+                            root.updateState("mapperState", JSON.stringify(root.rects));
+                            root.endUpdateState();
+                        }
+                    }
+                }
+            }
+
+            // Grid point handles for selected simple warped quads
+            Repeater {
+                id: gridHandleRepeater
+                model: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [];
+                    var shape = root.rects[root.selectedRect];
+                    if (!root.isSimpleWarpedQuad(shape)) return [];
+                    var gw = shape.gridW || 4;
+                    var gh = shape.gridH || 4;
+                    var handles = [];
+                    for (var row = 0; row <= gh; row++) {
+                        for (var col = 0; col <= gw; col++) {
+                            // Skip the 4 corners (handled by corner handles)
+                            if ((row === 0 || row === gh) && (col === 0 || col === gw)) continue;
+                            handles.push({ row: row, col: col });
+                        }
+                    }
+                    return handles;
+                }
+
+                Rectangle {
+                    id: gridHandle
+                    property var gpInfo: modelData || { row: 0, col: 0 }
+                    property var gpPos: {
+                        root.stateVersion;
+                        if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [0, 0];
+                        return ShapeData.gridPointPos(root.rects[root.selectedRect], gpInfo.row, gpInfo.col);
+                    }
+
+                    x: gpPos[0] * viewport.width - 4
+                    y: gpPos[1] * viewport.height - 4
+                    width: 8
+                    height: 8
+                    radius: 0
+                    color: "transparent"
+                    border.color: Qt.rgba(1.0, 1.0, 1.0, 0.6)
+                    border.width: 1
+                    z: 9
+
+                    MouseArea {
+                        anchors.fill: parent
+                        anchors.margins: -5
+                        cursorShape: Qt.CrossCursor
+
+                        property real startX
+                        property real startY
+                        property real origOffX
+                        property real origOffY
+
+                        onPressed: function (mouse) {
+                            root.isDragging = true;
+                            var p = mapToItem(viewport, mouse.x, mouse.y);
+                            startX = p.x;
+                            startY = p.y;
+
+                            var shape = root.rects[root.selectedRect];
+                            var gw = shape.gridW || 4;
+                            var gh = shape.gridH || 4;
+                            var gi = gridHandle.gpInfo.row * (gw + 1) + gridHandle.gpInfo.col;
+
+                            // Initialize gridOffsets if needed
+                            if (!shape.gridOffsets) {
+                                shape.gridOffsets = ShapeData.initGridOffsets(gw, gh);
+                            }
+
+                            origOffX = shape.gridOffsets[gi * 2] || 0;
+                            origOffY = shape.gridOffsets[gi * 2 + 1] || 0;
+                            root.beginUpdateState("Move grid point");
+                        }
+
+                        onPositionChanged: function (mouse) {
+                            if (!root.isDragging) return;
+                            var p = mapToItem(viewport, mouse.x, mouse.y);
+                            var dx = (p.x - startX) / viewport.width;
+                            var dy = (p.y - startY) / viewport.height;
+
+                            var shape = root.rects[root.selectedRect];
+                            var gw = shape.gridW || 4;
+                            var gi = gridHandle.gpInfo.row * (gw + 1) + gridHandle.gpInfo.col;
+
+                            shape.gridOffsets[gi * 2] = origOffX + dx;
+                            shape.gridOffsets[gi * 2 + 1] = origOffY + dy;
+                            root.stateVersion++;
+                            root.sendLiveUpdate();
+                        }
+
+                        onReleased: {
+                            if (!root.isDragging) return;
+                            root.isDragging = false;
+                            root.updateState("mapperState", JSON.stringify(root.rects));
+                            root.endUpdateState();
+                        }
+
+                        onDoubleClicked: function (mouse) {
+                            // Reset this grid point to default position
+                            var shape = root.rects[root.selectedRect];
+                            if (!shape.gridOffsets) return;
+                            var gw = shape.gridW || 4;
+                            var gi = gridHandle.gpInfo.row * (gw + 1) + gridHandle.gpInfo.col;
+                            shape.gridOffsets[gi * 2] = 0;
+                            shape.gridOffsets[gi * 2 + 1] = 0;
+                            root.stateVersion++;
+                            root.saveState("Reset grid point");
+                            root.sendLiveUpdate();
                         }
                     }
                 }
@@ -912,13 +1214,24 @@ Score.ScriptUI {
                 anchors.fill: parent
                 z: -1
 
-                property int dragMode: 0 // 0=none, 1=move
+                property int dragMode: 0
                 property real startX
                 property real startY
-                property var origCorners: null
+                property var origVertices: null
+                property var origEdges: null
                 property bool wantsAltDup: false
                 property bool didDuplicate: false
                 property int hitSrcIdx: -1
+
+                onDoubleClicked: function (mouse) {
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
+                    var nx = mouse.x / viewport.width;
+                    var ny = mouse.y / viewport.height;
+                    root.insertVertexOnEdge(nx, ny);
+                    // Cancel any drag that was started by the first click
+                    dragMode = 0;
+                    root.isDragging = false;
+                }
 
                 onPressed: function (mouse) {
                     root.forceActiveFocus();
@@ -928,10 +1241,9 @@ Score.ScriptUI {
                     didDuplicate = false;
                     hitSrcIdx = -1;
 
-                    // Hit test quads (top to bottom = last to first)
                     var hitIdx = -1;
                     for (var i = root.rects.length - 1; i >= 0; i--) {
-                        if (root.pointInPolygon(nx, ny, root.rects[i].corners)) {
+                        if (Geom.pointInPolygon(nx, ny, root.rects[i].vertices)) {
                             hitIdx = i;
                             break;
                         }
@@ -946,8 +1258,9 @@ Score.ScriptUI {
                         root.dragCorner = -1;
                         startX = mouse.x;
                         startY = mouse.y;
-                        origCorners = JSON.parse(JSON.stringify(root.rects[hitIdx].corners));
-                        root.beginUpdateState(wantsAltDup ? "Duplicate quad" : "Move quad");
+                        origVertices = JSON.parse(JSON.stringify(root.rects[hitIdx].vertices));
+                        origEdges = root.rects[hitIdx].edges ? JSON.parse(JSON.stringify(root.rects[hitIdx].edges)) : null;
+                        root.beginUpdateState(wantsAltDup ? "Duplicate shape" : "Move shape");
                     } else {
                         root.selectedRect = -1;
                         dragMode = 0;
@@ -955,22 +1268,14 @@ Score.ScriptUI {
                 }
 
                 onPositionChanged: function (mouse) {
-                    if (dragMode !== 1)
-                        return;
+                    if (dragMode !== 1) return;
 
-                    // Deferred alt+duplicate: create copy on first drag movement
                     if (wantsAltDup && !didDuplicate) {
                         var src = root.rects[hitSrcIdx];
-                        root.rects.push({
-                            id: "rect-" + Date.now(),
-                            name: root.incrementName(src.name),
-                            corners: JSON.parse(JSON.stringify(origCorners)),
-                            source: src.source,
-                            blend: src.blend ? JSON.parse(JSON.stringify(src.blend)) : { top: 0, right: 0, bottom: 0, left: 0 },
-                            blendGamma: src.blendGamma || 1.0,
-                            srcBlend: src.srcBlend !== undefined ? src.srcBlend : 1,
-                            dstBlend: src.dstBlend !== undefined ? src.dstBlend : 7
-                        });
+                        var dup = ShapeData.cloneShape(src);
+                        dup.id = "shape-" + Date.now();
+                        dup.name = Geom.incrementName(src.name);
+                        root.rects.push(dup);
                         root.selectedRect = root.rects.length - 1;
                         didDuplicate = true;
                         root.stateVersion++;
@@ -978,11 +1283,23 @@ Score.ScriptUI {
 
                     var dx = (mouse.x - startX) / viewport.width;
                     var dy = (mouse.y - startY) / viewport.height;
-                    var snapped = root.snapQuadMove(origCorners, dx, dy, root.selectedRect);
+                    var snapped = root.snapShapeMove(origVertices, dx, dy, root.selectedRect);
                     var r = root.rects[root.selectedRect];
-                    for (var i = 0; i < 4; i++) {
-                        r.corners[i] = [origCorners[i][0] + snapped.dx,
-                                        origCorners[i][1] + snapped.dy];
+                    for (var i = 0; i < r.vertices.length; i++) {
+                        r.vertices[i] = [origVertices[i][0] + snapped.dx,
+                                        origVertices[i][1] + snapped.dy];
+                    }
+                    if (origEdges) {
+                        if (!r.edges) r.edges = [];
+                        for (var i = 0; i < origEdges.length; i++) {
+                            var e = origEdges[i];
+                            if (e && e.cp1 && e.cp2) {
+                                r.edges[i] = {
+                                    cp1: [e.cp1[0] + snapped.dx, e.cp1[1] + snapped.dy],
+                                    cp2: [e.cp2[0] + snapped.dx, e.cp2[1] + snapped.dy]
+                                };
+                            }
+                        }
                     }
                     root.stateVersion++;
                     root.sendLiveUpdate();
@@ -1008,6 +1325,9 @@ Score.ScriptUI {
         if ((event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) && root.selectedRect >= 0) {
             root.deleteRect(root.selectedRect);
             event.accepted = true;
+        } else if (event.key === Qt.Key_B && root.selectedRect >= 0) {
+            root.toggleAllBezierEdges();
+            event.accepted = true;
         } else if (root.selectedRect >= 0 && root.selectedRect < root.rects.length
                    && (event.key === Qt.Key_Left || event.key === Qt.Key_Right
                        || event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
@@ -1018,12 +1338,21 @@ Score.ScriptUI {
             if (event.key === Qt.Key_Up)    dy = -step;
             if (event.key === Qt.Key_Down)  dy =  step;
             var r = root.rects[root.selectedRect];
-            for (var i = 0; i < 4; i++) {
-                r.corners[i][0] += dx;
-                r.corners[i][1] += dy;
+            for (var i = 0; i < r.vertices.length; i++) {
+                r.vertices[i][0] += dx;
+                r.vertices[i][1] += dy;
+            }
+            if (r.edges) {
+                for (var i = 0; i < r.edges.length; i++) {
+                    var e = r.edges[i];
+                    if (e && e.cp1 && e.cp2) {
+                        e.cp1[0] += dx; e.cp1[1] += dy;
+                        e.cp2[0] += dx; e.cp2[1] += dy;
+                    }
+                }
             }
             root.stateVersion++;
-            root.saveState("Move quad");
+            root.saveState("Move shape");
             root.sendLiveUpdate();
             event.accepted = true;
         }
