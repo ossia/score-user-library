@@ -331,7 +331,7 @@ Score.ScriptUI {
         ColumnLayout {
             SplitView.preferredWidth: 150
             SplitView.minimumWidth: 100
-            SplitView.maximumWidth: 200
+            SplitView.maximumWidth: 230
             SplitView.fillHeight: true
             spacing: 4
 
@@ -493,317 +493,12 @@ Score.ScriptUI {
                             }
                         }
 
-                        RowLayout {
-                            spacing: 4
-                            Label {
-                                text: "Source:"
-                                color: palette.windowText
-                                font.pixelSize: 11
-                            }
-                            ComboBox {
-                                model: ["Tex 1", "Tex 2", "Tex 3", "Tex 4", "Tex 5", "Tex 6", "Tex 7", "Tex 8"]
-                                currentIndex: listDel.rd ? listDel.rd.source : 0
-                                implicitWidth: 90
-                                implicitHeight: 24
-                                font.pixelSize: 11
-                                onActivated: {
-                                    root.rects[listDel.delIndex].source = currentIndex;
-                                    root.stateVersion++;
-                                    root.saveState("Change source");
-                                    root.sendLiveUpdate();
-                                }
-                            }
-                            CheckBox {
-                                text: "Warp"
-                                checked: listDel.rd ? (listDel.rd.warp || false) : false
-                                font.pixelSize: 11
-                                implicitHeight: 24
-                                onToggled: {
-                                    root.rects[listDel.delIndex].warp = checked;
-                                    root.stateVersion++;
-                                    root.saveState("Toggle warp");
-                                    root.sendLiveUpdate();
-                                }
-                            }
-                        }
-
-                        RowLayout {
-                            spacing: 4
-                            visible: listDel.rd ? root.isSimpleWarpedQuad(listDel.rd) : false
-
-                            Label {
-                                text: "Grid:"
-                                color: palette.windowText
-                                font.pixelSize: 11
-                            }
-                            SpinBox {
-                                from: 1
-                                to: 16
-                                value: listDel.rd ? (listDel.rd.gridW || 4) : 4
-                                implicitWidth: 60
-                                implicitHeight: 24
-                                font.pixelSize: 11
-                                onValueModified: {
-                                    root.rects[listDel.delIndex].gridW = value;
-                                    root.rects[listDel.delIndex].gridOffsets = null;
-                                    root.stateVersion++;
-                                    root.saveState("Grid width");
-                                    root.sendLiveUpdate();
-                                }
-                            }
-                            Label { text: "\u00D7"; color: palette.windowText; font.pixelSize: 11 }
-                            SpinBox {
-                                from: 1
-                                to: 16
-                                value: listDel.rd ? (listDel.rd.gridH || 4) : 4
-                                implicitWidth: 60
-                                implicitHeight: 24
-                                font.pixelSize: 11
-                                onValueModified: {
-                                    root.rects[listDel.delIndex].gridH = value;
-                                    root.rects[listDel.delIndex].gridOffsets = null;
-                                    root.stateVersion++;
-                                    root.saveState("Grid height");
-                                    root.sendLiveUpdate();
-                                }
-                            }
+                        Label {
+                            text: listDel.rd ? "(Tex " + (listDel.rd.source + 1) + ")" : ""
+                            color: palette.windowText
+                            font.pixelSize: 10
                         }
                     }
-                }
-            }
-
-            // ---- Edge Blend controls for selected shape ----
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 2
-                visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
-
-                property var selBlend: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return null;
-                    return root.rects[root.selectedRect].blend || { top: 0, right: 0, bottom: 0, left: 0 };
-                }
-                property real selGamma: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1.0;
-                    return root.rects[root.selectedRect].blendGamma || 1.0;
-                }
-                property real selOpacity: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1.0;
-                    var v = root.rects[root.selectedRect].opacity;
-                    return (v !== undefined) ? v : 1.0;
-                }
-                property string selUvMode: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return "auto";
-                    return root.rects[root.selectedRect].uvMode || "auto";
-                }
-                property var selUvOffset: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [0,0];
-                    return root.rects[root.selectedRect].uvOffset || [0,0];
-                }
-                property var selUvScale: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [1,1];
-                    return root.rects[root.selectedRect].uvScale || [1,1];
-                }
-                property real selUvRotation: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 0;
-                    return root.rects[root.selectedRect].uvRotation || 0;
-                }
-                property int selSrcBlend: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1;
-                    var v = root.rects[root.selectedRect].srcBlend;
-                    return (typeof v === 'number') ? v : 1;
-                }
-                property int selDstBlend: {
-                    root.stateVersion;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 7;
-                    var v = root.rects[root.selectedRect].dstBlend;
-                    return (typeof v === 'number') ? v : 7;
-                }
-
-                function setBlendEdge(edge, val) {
-                    var r = root.rects[root.selectedRect];
-                    if (!r.blend) r.blend = { top: 0, right: 0, bottom: 0, left: 0 };
-                    r.blend[edge] = val;
-                    root.stateVersion++;
-                    root.saveState("Edge blend");
-                    root.sendLiveUpdate();
-                }
-
-                function setGamma(val) {
-                    root.rects[root.selectedRect].blendGamma = val;
-                    root.stateVersion++;
-                    root.saveState("Blend gamma");
-                    root.sendLiveUpdate();
-                }
-
-                function setOpacity(val) {
-                    root.rects[root.selectedRect].opacity = val;
-                    root.stateVersion++;
-                    root.saveState("Shape opacity");
-                    root.sendLiveUpdate();
-                }
-
-                function setUvMode(mode) {
-                    root.rects[root.selectedRect].uvMode = mode;
-                    root.stateVersion++;
-                    root.saveState("UV mode");
-                    root.sendLiveUpdate();
-                }
-
-                function setUvOffset(x, y) {
-                    root.rects[root.selectedRect].uvOffset = [x, y];
-                    root.stateVersion++;
-                    root.saveState("UV offset");
-                    root.sendLiveUpdate();
-                }
-
-                function setUvScale(x, y) {
-                    root.rects[root.selectedRect].uvScale = [x, y];
-                    root.stateVersion++;
-                    root.saveState("UV scale");
-                    root.sendLiveUpdate();
-                }
-
-                function setUvRotation(val) {
-                    root.rects[root.selectedRect].uvRotation = val;
-                    root.stateVersion++;
-                    root.saveState("UV rotation");
-                    root.sendLiveUpdate();
-                }
-
-                function setSrcBlend(idx) {
-                    root.rects[root.selectedRect].srcBlend = idx;
-                    root.stateVersion++;
-                    root.saveState("Src blend mode");
-                    root.sendLiveUpdate();
-                }
-
-                function setDstBlend(idx) {
-                    root.rects[root.selectedRect].dstBlend = idx;
-                    root.stateVersion++;
-                    root.saveState("Dst blend mode");
-                    root.sendLiveUpdate();
-                }
-
-                RowLayout {
-                    spacing: 2
-                    Label { text: "Op:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                    Slider { from: 0; to: 1.0; stepSize: 0.01; value: parent.parent.selOpacity; Layout.fillWidth: true; onMoved: parent.parent.setOpacity(value) }
-                }
-
-                Label { text: "Edge Blend"; font.bold: true; color: palette.windowText; font.pixelSize: 11 }
-
-                RowLayout {
-                    spacing: 2
-                    Label { text: "T:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                    Slider { from: 0; to: 0.5; stepSize: 0.01; value: parent.parent.selBlend ? parent.parent.selBlend.top : 0; Layout.fillWidth: true; onMoved: parent.parent.setBlendEdge("top", value) }
-                }
-                RowLayout {
-                    spacing: 2
-                    Label { text: "B:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                    Slider { from: 0; to: 0.5; stepSize: 0.01; value: parent.parent.selBlend ? parent.parent.selBlend.bottom : 0; Layout.fillWidth: true; onMoved: parent.parent.setBlendEdge("bottom", value) }
-                }
-                RowLayout {
-                    spacing: 2
-                    Label { text: "L:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                    Slider { from: 0; to: 0.5; stepSize: 0.01; value: parent.parent.selBlend ? parent.parent.selBlend.left : 0; Layout.fillWidth: true; onMoved: parent.parent.setBlendEdge("left", value) }
-                }
-                RowLayout {
-                    spacing: 2
-                    Label { text: "R:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                    Slider { from: 0; to: 0.5; stepSize: 0.01; value: parent.parent.selBlend ? parent.parent.selBlend.right : 0; Layout.fillWidth: true; onMoved: parent.parent.setBlendEdge("right", value) }
-                }
-                RowLayout {
-                    spacing: 2
-                    Label { text: "\u03B3:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                    Slider { from: 0.5; to: 4.0; stepSize: 0.1; value: parent.parent.selGamma; Layout.fillWidth: true; onMoved: parent.parent.setGamma(value) }
-                }
-
-                Label { text: "Blend Mode"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
-
-                RowLayout {
-                    spacing: 2
-                    Label { text: "Src:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 24 }
-                    ComboBox {
-                        model: root.blendModeNames
-                        currentIndex: parent.parent.selSrcBlend
-                        implicitHeight: 24
-                        font.pixelSize: 11
-                        Layout.fillWidth: true
-                        onActivated: parent.parent.setSrcBlend(currentIndex)
-                    }
-                }
-                RowLayout {
-                    spacing: 2
-                    Label { text: "Dst:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 24 }
-                    ComboBox {
-                        model: root.blendModeNames
-                        currentIndex: parent.parent.selDstBlend
-                        implicitHeight: 24
-                        font.pixelSize: 11
-                        Layout.fillWidth: true
-                        onActivated: parent.parent.setDstBlend(currentIndex)
-                    }
-                }
-
-                Label { text: "UV Mapping"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
-
-                RowLayout {
-                    spacing: 2
-                    Label { text: "Mode:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 32 }
-                    ComboBox {
-                        id: uvModeCombo
-                        model: ["Auto", "Interpolated", "Aligned", "Manual"]
-                        readonly property var modeValues: ["auto", "interpolated", "aligned", "manual"]
-                        currentIndex: {
-                            var m = parent.parent.selUvMode;
-                            var idx = modeValues.indexOf(m);
-                            return idx >= 0 ? idx : 0;
-                        }
-                        implicitHeight: 24
-                        font.pixelSize: 11
-                        Layout.fillWidth: true
-                        onActivated: parent.parent.setUvMode(modeValues[currentIndex])
-                    }
-                }
-
-                // Manual UV controls (visible only in manual mode)
-                RowLayout {
-                    spacing: 2
-                    visible: parent.selUvMode === "manual"
-                    Label { text: "Ox:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
-                    Slider { from: -1; to: 1; stepSize: 0.01; value: parent.parent.selUvOffset[0]; Layout.fillWidth: true; onMoved: parent.parent.setUvOffset(value, parent.parent.selUvOffset[1]) }
-                }
-                RowLayout {
-                    spacing: 2
-                    visible: parent.selUvMode === "manual"
-                    Label { text: "Oy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
-                    Slider { from: -1; to: 1; stepSize: 0.01; value: parent.parent.selUvOffset[1]; Layout.fillWidth: true; onMoved: parent.parent.setUvOffset(parent.parent.selUvOffset[0], value) }
-                }
-                RowLayout {
-                    spacing: 2
-                    visible: parent.selUvMode === "manual"
-                    Label { text: "Sx:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
-                    Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: parent.parent.selUvScale[0]; Layout.fillWidth: true; onMoved: parent.parent.setUvScale(value, parent.parent.selUvScale[1]) }
-                }
-                RowLayout {
-                    spacing: 2
-                    visible: parent.selUvMode === "manual"
-                    Label { text: "Sy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
-                    Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: parent.parent.selUvScale[1]; Layout.fillWidth: true; onMoved: parent.parent.setUvScale(parent.parent.selUvScale[0], value) }
-                }
-                RowLayout {
-                    spacing: 2
-                    visible: parent.selUvMode === "manual"
-                    Label { text: "Rot:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
-                    Slider { from: -180; to: 180; stepSize: 1; value: parent.parent.selUvRotation; Layout.fillWidth: true; onMoved: parent.parent.setUvRotation(value) }
                 }
             }
 
@@ -814,11 +509,11 @@ Score.ScriptUI {
             }
         }
 
-        // ---- Right Panel: viewport ----
+        // ---- Center Panel: viewport ----
         Item {
             id: viewport
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            SplitView.fillWidth: true
+            SplitView.fillHeight: true
             clip: true
 
             Rectangle {
@@ -1700,6 +1395,294 @@ Score.ScriptUI {
                     wantsAltDup = false;
                 }
             }
+        }
+
+        // ---- Right Panel: shape properties ----
+        ColumnLayout {
+            id: propsPanel
+            SplitView.preferredWidth: 170
+            SplitView.minimumWidth: 140
+            SplitView.maximumWidth: 260
+            SplitView.fillHeight: true
+            spacing: 4
+            visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
+
+            property var selShape: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return null;
+                return root.rects[root.selectedRect];
+            }
+            property var selBlend: selShape ? (selShape.blend || { top: 0, right: 0, bottom: 0, left: 0 }) : null
+            property real selGamma: selShape ? (selShape.blendGamma || 1.0) : 1.0
+            property real selOpacity: {
+                if (!selShape) return 1.0;
+                var v = selShape.opacity;
+                return (v !== undefined) ? v : 1.0;
+            }
+            property string selUvMode: selShape ? (selShape.uvMode || "auto") : "auto"
+            property var selUvOffset: selShape ? (selShape.uvOffset || [0,0]) : [0,0]
+            property var selUvScale: selShape ? (selShape.uvScale || [1,1]) : [1,1]
+            property real selUvRotation: selShape ? (selShape.uvRotation || 0) : 0
+            property int selSrcBlend: {
+                if (!selShape) return 1;
+                var v = selShape.srcBlend;
+                return (typeof v === 'number') ? v : 1;
+            }
+            property int selDstBlend: {
+                if (!selShape) return 7;
+                var v = selShape.dstBlend;
+                return (typeof v === 'number') ? v : 7;
+            }
+
+            function setBlendEdge(edge, val) {
+                var r = root.rects[root.selectedRect];
+                if (!r.blend) r.blend = { top: 0, right: 0, bottom: 0, left: 0 };
+                r.blend[edge] = val;
+                root.stateVersion++;
+                root.saveState("Edge blend");
+                root.sendLiveUpdate();
+            }
+            function setGamma(val) {
+                root.rects[root.selectedRect].blendGamma = val;
+                root.stateVersion++;
+                root.saveState("Blend gamma");
+                root.sendLiveUpdate();
+            }
+            function setOpacity(val) {
+                root.rects[root.selectedRect].opacity = val;
+                root.stateVersion++;
+                root.saveState("Shape opacity");
+                root.sendLiveUpdate();
+            }
+            function setUvMode(mode) {
+                root.rects[root.selectedRect].uvMode = mode;
+                root.stateVersion++;
+                root.saveState("UV mode");
+                root.sendLiveUpdate();
+            }
+            function setUvOffset(x, y) {
+                root.rects[root.selectedRect].uvOffset = [x, y];
+                root.stateVersion++;
+                root.saveState("UV offset");
+                root.sendLiveUpdate();
+            }
+            function setUvScale(x, y) {
+                root.rects[root.selectedRect].uvScale = [x, y];
+                root.stateVersion++;
+                root.saveState("UV scale");
+                root.sendLiveUpdate();
+            }
+            function setUvRotation(val) {
+                root.rects[root.selectedRect].uvRotation = val;
+                root.stateVersion++;
+                root.saveState("UV rotation");
+                root.sendLiveUpdate();
+            }
+            function setSrcBlend(idx) {
+                root.rects[root.selectedRect].srcBlend = idx;
+                root.stateVersion++;
+                root.saveState("Src blend mode");
+                root.sendLiveUpdate();
+            }
+            function setDstBlend(idx) {
+                root.rects[root.selectedRect].dstBlend = idx;
+                root.stateVersion++;
+                root.saveState("Dst blend mode");
+                root.sendLiveUpdate();
+            }
+
+            // --- Source & Warp ---
+            Label { text: "Shape"; font.bold: true; color: palette.windowText; font.pixelSize: 11 }
+
+            RowLayout {
+                spacing: 4
+                Layout.fillWidth: true
+                Label { text: "Source:"; color: palette.windowText; font.pixelSize: 11 }
+                ComboBox {
+                    model: ["Tex 1", "Tex 2", "Tex 3", "Tex 4", "Tex 5", "Tex 6", "Tex 7", "Tex 8"]
+                    currentIndex: propsPanel.selShape ? propsPanel.selShape.source : 0
+                    implicitWidth: 90
+                    implicitHeight: 24
+                    font.pixelSize: 11
+                    Layout.fillWidth: true
+                    onActivated: {
+                        root.rects[root.selectedRect].source = currentIndex;
+                        root.stateVersion++;
+                        root.saveState("Change source");
+                        root.sendLiveUpdate();
+                    }
+                }
+            }
+
+            RowLayout {
+                spacing: 4
+                Layout.fillWidth: true
+                CheckBox {
+                    text: "Warp"
+                    checked: propsPanel.selShape ? (propsPanel.selShape.warp || false) : false
+                    font.pixelSize: 11
+                    implicitHeight: 24
+                    onToggled: {
+                        root.rects[root.selectedRect].warp = checked;
+                        root.stateVersion++;
+                        root.saveState("Toggle warp");
+                        root.sendLiveUpdate();
+                    }
+                }
+            }
+
+            RowLayout {
+                spacing: 4
+                Layout.fillWidth: true
+                visible: propsPanel.selShape ? root.isSimpleWarpedQuad(propsPanel.selShape) : false
+                Label { text: "Grid:"; color: palette.windowText; font.pixelSize: 11 }
+                SpinBox {
+                    from: 1; to: 16
+                    value: propsPanel.selShape ? (propsPanel.selShape.gridW || 4) : 4
+                    implicitWidth: 60; implicitHeight: 24; font.pixelSize: 11
+                    onValueModified: {
+                        root.rects[root.selectedRect].gridW = value;
+                        root.rects[root.selectedRect].gridOffsets = null;
+                        root.stateVersion++;
+                        root.saveState("Grid width");
+                        root.sendLiveUpdate();
+                    }
+                }
+                Label { text: "\u00D7"; color: palette.windowText; font.pixelSize: 11 }
+                SpinBox {
+                    from: 1; to: 16
+                    value: propsPanel.selShape ? (propsPanel.selShape.gridH || 4) : 4
+                    implicitWidth: 60; implicitHeight: 24; font.pixelSize: 11
+                    onValueModified: {
+                        root.rects[root.selectedRect].gridH = value;
+                        root.rects[root.selectedRect].gridOffsets = null;
+                        root.stateVersion++;
+                        root.saveState("Grid height");
+                        root.sendLiveUpdate();
+                    }
+                }
+            }
+
+            // --- Opacity ---
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "Opacity:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 42 }
+                Slider { from: 0; to: 1.0; stepSize: 0.01; value: propsPanel.selOpacity; Layout.fillWidth: true; onMoved: propsPanel.setOpacity(value) }
+            }
+
+            // --- Edge Blend ---
+            Label { text: "Edge Blend"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "T:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.top : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("top", value) }
+            }
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "B:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.bottom : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("bottom", value) }
+            }
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "L:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.left : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("left", value) }
+            }
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "R:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.right : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("right", value) }
+            }
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "\u03B3:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                Slider { from: 0.5; to: 4.0; stepSize: 0.1; value: propsPanel.selGamma; Layout.fillWidth: true; onMoved: propsPanel.setGamma(value) }
+            }
+
+            // --- Blend Mode ---
+            Label { text: "Blend Mode"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "Src:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 24 }
+                ComboBox {
+                    model: root.blendModeNames
+                    currentIndex: propsPanel.selSrcBlend
+                    implicitHeight: 24; font.pixelSize: 11
+                    Layout.fillWidth: true
+                    onActivated: propsPanel.setSrcBlend(currentIndex)
+                }
+            }
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "Dst:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 24 }
+                ComboBox {
+                    model: root.blendModeNames
+                    currentIndex: propsPanel.selDstBlend
+                    implicitHeight: 24; font.pixelSize: 11
+                    Layout.fillWidth: true
+                    onActivated: propsPanel.setDstBlend(currentIndex)
+                }
+            }
+
+            // --- UV Mapping ---
+            Label { text: "UV Mapping"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+
+            RowLayout {
+                spacing: 2
+                Layout.fillWidth: true
+                Label { text: "Mode:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 32 }
+                ComboBox {
+                    id: uvModeCombo
+                    model: ["Auto", "Interpolated", "Aligned", "Manual"]
+                    readonly property var modeValues: ["auto", "interpolated", "aligned", "manual"]
+                    currentIndex: {
+                        var m = propsPanel.selUvMode;
+                        var idx = modeValues.indexOf(m);
+                        return idx >= 0 ? idx : 0;
+                    }
+                    implicitHeight: 24; font.pixelSize: 11
+                    Layout.fillWidth: true
+                    onActivated: propsPanel.setUvMode(modeValues[currentIndex])
+                }
+            }
+
+            // Manual UV controls
+            RowLayout {
+                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
+                Label { text: "Ox:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
+                Slider { from: -1; to: 1; stepSize: 0.01; value: propsPanel.selUvOffset[0]; Layout.fillWidth: true; onMoved: propsPanel.setUvOffset(value, propsPanel.selUvOffset[1]) }
+            }
+            RowLayout {
+                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
+                Label { text: "Oy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
+                Slider { from: -1; to: 1; stepSize: 0.01; value: propsPanel.selUvOffset[1]; Layout.fillWidth: true; onMoved: propsPanel.setUvOffset(propsPanel.selUvOffset[0], value) }
+            }
+            RowLayout {
+                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
+                Label { text: "Sx:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
+                Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: propsPanel.selUvScale[0]; Layout.fillWidth: true; onMoved: propsPanel.setUvScale(value, propsPanel.selUvScale[1]) }
+            }
+            RowLayout {
+                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
+                Label { text: "Sy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
+                Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: propsPanel.selUvScale[1]; Layout.fillWidth: true; onMoved: propsPanel.setUvScale(propsPanel.selUvScale[0], value) }
+            }
+            RowLayout {
+                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
+                Label { text: "Rot:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
+                Slider { from: -180; to: 180; stepSize: 1; value: propsPanel.selUvRotation; Layout.fillWidth: true; onMoved: propsPanel.setUvRotation(value) }
+            }
+
+            Item { Layout.fillHeight: true }
         }
     }
     }
