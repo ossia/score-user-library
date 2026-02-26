@@ -111,6 +111,7 @@ Script {
                 Model {
                     id: quadModel
                     property int idx: index
+                    visible: root.getVisible(quadModel.idx)
 
                     property var meshData: {
                         // Explicit dependencies so QML re-evaluates on changes
@@ -147,6 +148,11 @@ Script {
                         property real blendLeft: root.getBlend(quadModel.idx, "left")
                         property real blendRight: root.getBlend(quadModel.idx, "right")
                         property real blendGamma: root.getBlendGamma(quadModel.idx)
+                        property real shapeOpacity: root.getOpacity(quadModel.idx)
+                        property vector2d uvOffset: root.getUvOffset(quadModel.idx)
+                        property vector2d uvScale: root.getUvScale(quadModel.idx)
+                        property real uvRotation: root.getUvRotation(quadModel.idx)
+                        property real manualUv: root.isManualUv(quadModel.idx)
 
                         vertexShader: `${rootPath}/edgeblend.vert`
                         fragmentShader: `${rootPath}/edgeblend.frag`
@@ -181,15 +187,34 @@ Script {
             return meshCacheData[idx];
 
         var result;
+        var uvMode = shape.uvMode || "auto";
         var isSimpleQuad = (shape.vertices.length === 4 && (!shape.edges || shape.edges.length === 0));
-        if (isSimpleQuad && shape.warp && shape.gridOffsets) {
-            result = MeshUtils.computeQuadMeshWithGrid(shape.vertices, shape.gridW || 4, shape.gridH || 4, shape.gridOffsets, N, w, h, z);
-        } else if (isSimpleQuad && shape.warp) {
-            result = MeshUtils.computeQuadMesh(shape.vertices, N, w, h, z);
-        } else if (shape.warp) {
-            result = MeshUtils.computePolygonMeshWarped(shape.vertices, shape.edges, N, w, h, z);
+
+        if (uvMode === "interpolated") {
+            // Interpolated: quads use existing warp paths; non-quads force warped mesh
+            if (isSimpleQuad && shape.warp && shape.gridOffsets) {
+                result = MeshUtils.computeQuadMeshWithGrid(shape.vertices, shape.gridW || 4, shape.gridH || 4, shape.gridOffsets, N, w, h, z);
+            } else if (isSimpleQuad) {
+                result = MeshUtils.computeQuadMesh(shape.vertices, N, w, h, z);
+            } else {
+                result = MeshUtils.computePolygonMeshWarped(shape.vertices, shape.edges, N, w, h, z);
+            }
         } else {
-            result = MeshUtils.computePolygonMesh(shape.vertices, shape.edges, N, w, h, z);
+            // auto, aligned, manual: use standard logic
+            if (isSimpleQuad && shape.warp && shape.gridOffsets) {
+                result = MeshUtils.computeQuadMeshWithGrid(shape.vertices, shape.gridW || 4, shape.gridH || 4, shape.gridOffsets, N, w, h, z);
+            } else if (isSimpleQuad && shape.warp) {
+                result = MeshUtils.computeQuadMesh(shape.vertices, N, w, h, z);
+            } else if (shape.warp) {
+                result = MeshUtils.computePolygonMeshWarped(shape.vertices, shape.edges, N, w, h, z);
+            } else {
+                result = MeshUtils.computePolygonMesh(shape.vertices, shape.edges, N, w, h, z);
+            }
+        }
+
+        // Aligned UV mode: override UVs to axis-aligned bounding box
+        if (uvMode === "aligned") {
+            result = MeshUtils.recomputeAlignedUVs(result, w, h);
         }
 
         while (meshCacheData.length <= idx) {
@@ -230,6 +255,40 @@ Script {
         var s = rects[idx].source || 0;
         var srcs = [texSrc0, texSrc1, texSrc2, texSrc3, texSrc4, texSrc5, texSrc6, texSrc7];
         return srcs[Math.max(0, Math.min(7, s))];
+    }
+
+    function getOpacity(idx) {
+        if (idx < 0 || idx >= rects.length) return 1.0;
+        var v = rects[idx].opacity;
+        return (v !== undefined) ? v : 1.0;
+    }
+
+    function getVisible(idx) {
+        if (idx < 0 || idx >= rects.length) return true;
+        var v = rects[idx].visible;
+        return (v !== undefined) ? v : true;
+    }
+
+    function getUvOffset(idx) {
+        if (idx < 0 || idx >= rects.length) return Qt.vector2d(0, 0);
+        var o = rects[idx].uvOffset || [0, 0];
+        return Qt.vector2d(o[0], o[1]);
+    }
+
+    function getUvScale(idx) {
+        if (idx < 0 || idx >= rects.length) return Qt.vector2d(1, 1);
+        var s = rects[idx].uvScale || [1, 1];
+        return Qt.vector2d(s[0], s[1]);
+    }
+
+    function getUvRotation(idx) {
+        if (idx < 0 || idx >= rects.length) return 0;
+        return rects[idx].uvRotation || 0;
+    }
+
+    function isManualUv(idx) {
+        if (idx < 0 || idx >= rects.length) return 0.0;
+        return (rects[idx].uvMode === "manual") ? 1.0 : 0.0;
     }
 
     loadState: function (state) {

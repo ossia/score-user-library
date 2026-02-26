@@ -2,7 +2,16 @@ VARYING vec2 texcoord;
 
 void MAIN()
 {
-    vec4 tex = texture(srcTex, texcoord);
+    vec2 uv = texcoord;
+    if (manualUv > 0.5) {
+        uv -= vec2(0.5);
+        float rad = uvRotation * 3.14159265 / 180.0;
+        float c = cos(rad), s = sin(rad);
+        uv = vec2(c*uv.x - s*uv.y, s*uv.x + c*uv.y);
+        uv /= uvScale;
+        uv += vec2(0.5) - uvOffset;
+    }
+    vec4 tex = texture(srcTex, uv);
 
     float alpha = 1.0;
 
@@ -16,6 +25,7 @@ void MAIN()
         alpha *= smoothstep(0.0, blendBottom, texcoord.y);
 
     alpha = pow(alpha, blendGamma);
+    alpha *= shapeOpacity;
 
     FRAGCOLOR = vec4(tex.rgb * alpha, alpha);
 }

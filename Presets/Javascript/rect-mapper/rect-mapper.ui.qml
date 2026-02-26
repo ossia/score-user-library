@@ -143,6 +143,7 @@ Score.ScriptUI {
 
     function insertVertexOnEdge(nx, ny) {
         if (selectedRect < 0 || selectedRect >= rects.length) return;
+        if (isShapeLocked(selectedRect)) return;
         var shape = rects[selectedRect];
         var nearest = Geom.nearestEdge(nx, ny, shape.vertices);
         if (nearest.edgeIndex < 0) return;
@@ -163,6 +164,7 @@ Score.ScriptUI {
 
     function removeVertex(vertIdx) {
         if (selectedRect < 0 || selectedRect >= rects.length) return;
+        if (isShapeLocked(selectedRect)) return;
         var shape = rects[selectedRect];
         if (shape.vertices.length <= 3) return;
         shape.vertices.splice(vertIdx, 1);
@@ -176,6 +178,7 @@ Score.ScriptUI {
 
     function toggleBezierEdge(edgeIdx) {
         if (selectedRect < 0 || selectedRect >= rects.length) return;
+        if (isShapeLocked(selectedRect)) return;
         var shape = rects[selectedRect];
         if (!shape.edges) shape.edges = [];
         while (shape.edges.length < shape.vertices.length)
@@ -200,6 +203,7 @@ Score.ScriptUI {
 
     function toggleAllBezierEdges() {
         if (selectedRect < 0 || selectedRect >= rects.length) return;
+        if (isShapeLocked(selectedRect)) return;
         var shape = rects[selectedRect];
         // Check if any edge is bezier
         var hasBezier = false;
@@ -276,6 +280,11 @@ Score.ScriptUI {
         stateVersion++;
         saveState("Draw freehand shape");
         sendLiveUpdate();
+    }
+
+    function isShapeLocked(idx) {
+        if (idx < 0 || idx >= rects.length) return false;
+        return rects[idx].locked || false;
     }
 
     function isSimpleWarpedQuad(shape) {
@@ -380,6 +389,7 @@ Score.ScriptUI {
                         root.stateVersion;
                         return delIndex < root.rects.length ? root.rects[delIndex] : null;
                     }
+                    opacity: (listDel.rd && listDel.rd.visible === false) ? 0.4 : 1.0
 
                     MouseArea {
                         anchors.fill: parent
@@ -401,6 +411,33 @@ Score.ScriptUI {
                                 height: 12
                                 radius: 2
                                 color: listDel.rd ? root.sourceBorderColors[listDel.rd.source] : palette.mid
+                            }
+                            Button {
+                                text: (listDel.rd && listDel.rd.visible !== false) ? "\u25CF" : "\u25CB"
+                                flat: true
+                                implicitWidth: 18
+                                implicitHeight: 18
+                                font.pixelSize: 11
+                                onClicked: {
+                                    var cur = root.rects[listDel.delIndex].visible;
+                                    root.rects[listDel.delIndex].visible = (cur !== undefined ? !cur : false);
+                                    root.stateVersion++;
+                                    root.saveState("Toggle visibility");
+                                    root.sendLiveUpdate();
+                                }
+                            }
+                            Button {
+                                text: (listDel.rd && listDel.rd.locked) ? "Lk" : "Ul"
+                                flat: true
+                                implicitWidth: 18
+                                implicitHeight: 18
+                                font.pixelSize: 9
+                                onClicked: {
+                                    root.rects[listDel.delIndex].locked = !(root.rects[listDel.delIndex].locked || false);
+                                    root.stateVersion++;
+                                    root.saveState("Toggle lock");
+                                    root.sendLiveUpdate();
+                                }
                             }
                             TextInput {
                                 id: nameInput
@@ -551,6 +588,32 @@ Score.ScriptUI {
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1.0;
                     return root.rects[root.selectedRect].blendGamma || 1.0;
                 }
+                property real selOpacity: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1.0;
+                    var v = root.rects[root.selectedRect].opacity;
+                    return (v !== undefined) ? v : 1.0;
+                }
+                property string selUvMode: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return "auto";
+                    return root.rects[root.selectedRect].uvMode || "auto";
+                }
+                property var selUvOffset: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [0,0];
+                    return root.rects[root.selectedRect].uvOffset || [0,0];
+                }
+                property var selUvScale: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [1,1];
+                    return root.rects[root.selectedRect].uvScale || [1,1];
+                }
+                property real selUvRotation: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 0;
+                    return root.rects[root.selectedRect].uvRotation || 0;
+                }
                 property int selSrcBlend: {
                     root.stateVersion;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1;
@@ -580,6 +643,41 @@ Score.ScriptUI {
                     root.sendLiveUpdate();
                 }
 
+                function setOpacity(val) {
+                    root.rects[root.selectedRect].opacity = val;
+                    root.stateVersion++;
+                    root.saveState("Shape opacity");
+                    root.sendLiveUpdate();
+                }
+
+                function setUvMode(mode) {
+                    root.rects[root.selectedRect].uvMode = mode;
+                    root.stateVersion++;
+                    root.saveState("UV mode");
+                    root.sendLiveUpdate();
+                }
+
+                function setUvOffset(x, y) {
+                    root.rects[root.selectedRect].uvOffset = [x, y];
+                    root.stateVersion++;
+                    root.saveState("UV offset");
+                    root.sendLiveUpdate();
+                }
+
+                function setUvScale(x, y) {
+                    root.rects[root.selectedRect].uvScale = [x, y];
+                    root.stateVersion++;
+                    root.saveState("UV scale");
+                    root.sendLiveUpdate();
+                }
+
+                function setUvRotation(val) {
+                    root.rects[root.selectedRect].uvRotation = val;
+                    root.stateVersion++;
+                    root.saveState("UV rotation");
+                    root.sendLiveUpdate();
+                }
+
                 function setSrcBlend(idx) {
                     root.rects[root.selectedRect].srcBlend = idx;
                     root.stateVersion++;
@@ -592,6 +690,12 @@ Score.ScriptUI {
                     root.stateVersion++;
                     root.saveState("Dst blend mode");
                     root.sendLiveUpdate();
+                }
+
+                RowLayout {
+                    spacing: 2
+                    Label { text: "Op:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
+                    Slider { from: 0; to: 1.0; stepSize: 0.01; value: parent.parent.selOpacity; Layout.fillWidth: true; onMoved: parent.parent.setOpacity(value) }
                 }
 
                 Label { text: "Edge Blend"; font.bold: true; color: palette.windowText; font.pixelSize: 11 }
@@ -647,6 +751,59 @@ Score.ScriptUI {
                         Layout.fillWidth: true
                         onActivated: parent.parent.setDstBlend(currentIndex)
                     }
+                }
+
+                Label { text: "UV Mapping"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+
+                RowLayout {
+                    spacing: 2
+                    Label { text: "Mode:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 32 }
+                    ComboBox {
+                        id: uvModeCombo
+                        model: ["Auto", "Interpolated", "Aligned", "Manual"]
+                        readonly property var modeValues: ["auto", "interpolated", "aligned", "manual"]
+                        currentIndex: {
+                            var m = parent.parent.selUvMode;
+                            var idx = modeValues.indexOf(m);
+                            return idx >= 0 ? idx : 0;
+                        }
+                        implicitHeight: 24
+                        font.pixelSize: 11
+                        Layout.fillWidth: true
+                        onActivated: parent.parent.setUvMode(modeValues[currentIndex])
+                    }
+                }
+
+                // Manual UV controls (visible only in manual mode)
+                RowLayout {
+                    spacing: 2
+                    visible: parent.selUvMode === "manual"
+                    Label { text: "Ox:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
+                    Slider { from: -1; to: 1; stepSize: 0.01; value: parent.parent.selUvOffset[0]; Layout.fillWidth: true; onMoved: parent.parent.setUvOffset(value, parent.parent.selUvOffset[1]) }
+                }
+                RowLayout {
+                    spacing: 2
+                    visible: parent.selUvMode === "manual"
+                    Label { text: "Oy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
+                    Slider { from: -1; to: 1; stepSize: 0.01; value: parent.parent.selUvOffset[1]; Layout.fillWidth: true; onMoved: parent.parent.setUvOffset(parent.parent.selUvOffset[0], value) }
+                }
+                RowLayout {
+                    spacing: 2
+                    visible: parent.selUvMode === "manual"
+                    Label { text: "Sx:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
+                    Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: parent.parent.selUvScale[0]; Layout.fillWidth: true; onMoved: parent.parent.setUvScale(value, parent.parent.selUvScale[1]) }
+                }
+                RowLayout {
+                    spacing: 2
+                    visible: parent.selUvMode === "manual"
+                    Label { text: "Sy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 18 }
+                    Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: parent.parent.selUvScale[1]; Layout.fillWidth: true; onMoved: parent.parent.setUvScale(parent.parent.selUvScale[0], value) }
+                }
+                RowLayout {
+                    spacing: 2
+                    visible: parent.selUvMode === "manual"
+                    Label { text: "Rot:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
+                    Slider { from: -180; to: 180; stepSize: 1; value: parent.parent.selUvRotation; Layout.fillWidth: true; onMoved: parent.parent.setUvRotation(value) }
                 }
             }
 
@@ -706,7 +863,11 @@ Score.ScriptUI {
                         if (!c || c.length < 3) continue;
 
                         var isSelected = (qi === root.selectedRect);
+                        var isHidden = (r.visible === false);
                         var edges = r.edges;
+
+                        // Draw hidden shapes ghosted
+                        if (isHidden) ctx.globalAlpha = 0.15;
 
                         // Build path (handles both straight and bezier edges)
                         ctx.beginPath();
@@ -806,6 +967,9 @@ Score.ScriptUI {
                             ctx.fillStyle = "white";
                             ctx.fillText(lines[li], cx, ly);
                         }
+
+                        // Reset alpha after hidden shape
+                        if (isHidden) ctx.globalAlpha = 1.0;
                     }
                 }
             }
@@ -890,7 +1054,7 @@ Score.ScriptUI {
                         anchors.fill: parent
                         anchors.margins: -5
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
-                        cursorShape: Qt.CrossCursor
+                        cursorShape: root.isShapeLocked(root.selectedRect) ? Qt.ForbiddenCursor : Qt.CrossCursor
 
                         property real startX
                         property real startY
@@ -899,6 +1063,7 @@ Score.ScriptUI {
                         property bool removed: false
 
                         onPressed: function (mouse) {
+                            if (root.isShapeLocked(root.selectedRect)) return;
                             removed = false;
                             // Right-click: toggle bezier on outgoing edge
                             if (mouse.button === Qt.RightButton) {
@@ -994,7 +1159,7 @@ Score.ScriptUI {
                     MouseArea {
                         anchors.fill: parent
                         anchors.margins: -5
-                        cursorShape: Qt.ClosedHandCursor
+                        cursorShape: root.isShapeLocked(root.selectedRect) ? Qt.ForbiddenCursor : Qt.ClosedHandCursor
 
                         property real startAngle
                         property var origVertices
@@ -1002,6 +1167,7 @@ Score.ScriptUI {
                         property var origGridOffsets
 
                         onPressed: function (mouse) {
+                            if (root.isShapeLocked(root.selectedRect)) return;
                             root.isDragging = true;
                             var shape = root.rects[root.selectedRect];
                             var ct = Geom.polygonCentroid(shape.vertices);
@@ -1108,7 +1274,7 @@ Score.ScriptUI {
                     MouseArea {
                         anchors.fill: parent
                         anchors.margins: -5
-                        cursorShape: Qt.SizeFDiagCursor
+                        cursorShape: root.isShapeLocked(root.selectedRect) ? Qt.ForbiddenCursor : Qt.SizeFDiagCursor
 
                         property real startDist
                         property var origVertices
@@ -1116,6 +1282,7 @@ Score.ScriptUI {
                         property var origGridOffsets
 
                         onPressed: function (mouse) {
+                            if (root.isShapeLocked(root.selectedRect)) return;
                             root.isDragging = true;
                             var shape = root.rects[root.selectedRect];
                             var ct = Geom.polygonCentroid(shape.vertices);
@@ -1206,7 +1373,7 @@ Score.ScriptUI {
                     MouseArea {
                         anchors.fill: parent
                         anchors.margins: -5
-                        cursorShape: Qt.CrossCursor
+                        cursorShape: root.isShapeLocked(root.selectedRect) ? Qt.ForbiddenCursor : Qt.CrossCursor
 
                         property real startX
                         property real startY
@@ -1214,6 +1381,7 @@ Score.ScriptUI {
                         property real origY
 
                         onPressed: function (mouse) {
+                            if (root.isShapeLocked(root.selectedRect)) return;
                             root.isDragging = true;
                             var p = mapToItem(viewport, mouse.x, mouse.y);
                             startX = p.x;
@@ -1286,7 +1454,7 @@ Score.ScriptUI {
                     MouseArea {
                         anchors.fill: parent
                         anchors.margins: -5
-                        cursorShape: Qt.CrossCursor
+                        cursorShape: root.isShapeLocked(root.selectedRect) ? Qt.ForbiddenCursor : Qt.CrossCursor
 
                         property real startX
                         property real startY
@@ -1294,6 +1462,7 @@ Score.ScriptUI {
                         property real origOffY
 
                         onPressed: function (mouse) {
+                            if (root.isShapeLocked(root.selectedRect)) return;
                             root.isDragging = true;
                             var p = mapToItem(viewport, mouse.x, mouse.y);
                             startX = p.x;
@@ -1400,9 +1569,21 @@ Score.ScriptUI {
                 onDoubleClicked: function (mouse) {
                     if (root.drawingMode) return;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
+                    if (root.isShapeLocked(root.selectedRect)) return;
                     var nx = mouse.x / viewport.width;
                     var ny = mouse.y / viewport.height;
-                    root.insertVertexOnEdge(nx, ny);
+                    // Check if click is near edge or in body
+                    var shape = root.rects[root.selectedRect];
+                    var nearest = Geom.nearestEdge(nx, ny, shape.vertices);
+                    if (nearest.dist > 0.03) {
+                        // Body click: set UV mode to manual
+                        shape.uvMode = "manual";
+                        root.stateVersion++;
+                        root.saveState("UV manual mode");
+                        root.sendLiveUpdate();
+                    } else {
+                        root.insertVertexOnEdge(nx, ny);
+                    }
                     // Cancel any drag that was started by the first click
                     dragMode = 0;
                     root.isDragging = false;
@@ -1425,9 +1606,11 @@ Score.ScriptUI {
                     }
 
                     if (hitIdx >= 0) {
+                        root.selectedRect = hitIdx;
+                        // Allow selection but prevent dragging locked shapes
+                        if (root.isShapeLocked(hitIdx)) return;
                         wantsAltDup = !!(mouse.modifiers & Qt.AltModifier);
                         hitSrcIdx = hitIdx;
-                        root.selectedRect = hitIdx;
                         dragMode = 1;
                         root.isDragging = true;
                         root.dragCorner = -1;
@@ -1537,6 +1720,7 @@ Score.ScriptUI {
             root.toggleAllBezierEdges();
             event.accepted = true;
         } else if (root.selectedRect >= 0 && root.selectedRect < root.rects.length
+                   && !root.isShapeLocked(root.selectedRect)
                    && (event.key === Qt.Key_Left || event.key === Qt.Key_Right
                        || event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
             var step = (event.modifiers & Qt.ShiftModifier) ? 0.05 : 0.01;

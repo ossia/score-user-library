@@ -478,9 +478,37 @@ function flattenEdges(vertices, edges, N) {
     return result;
 }
 
+// Recompute UVs to be axis-aligned bounding box normalized
+// (texture stays upright regardless of shape rotation)
+function recomputeAlignedUVs(mesh, w, h) {
+    if (!mesh.positions || mesh.positions.length === 0) return mesh;
+    // Recover normalized coords from 3D positions: nx = px/w + 0.5, ny = 0.5 - py/h
+    var minU = Infinity, minV = Infinity, maxU = -Infinity, maxV = -Infinity;
+    var coords = new Array(mesh.positions.length);
+    for (var i = 0; i < mesh.positions.length; i++) {
+        var p = mesh.positions[i];
+        var nx = p.x / w + 0.5;
+        var ny = 0.5 - p.y / h;
+        coords[i] = [nx, ny];
+        if (nx < minU) minU = nx;
+        if (ny < minV) minV = ny;
+        if (nx > maxU) maxU = nx;
+        if (ny > maxV) maxV = ny;
+    }
+    var rangeU = maxU - minU || 1;
+    var rangeV = maxV - minV || 1;
+    for (var i = 0; i < mesh.uvs.length; i++) {
+        mesh.uvs[i] = Qt.vector2d(
+            (coords[i][0] - minU) / rangeU,
+            1 - (coords[i][1] - minV) / rangeV
+        );
+    }
+    return mesh;
+}
+
 // Build a cache key string from shape parameters that affect the mesh
 function meshCacheKey(shape, N, w, h) {
-    var key = N + ":" + w + ":" + h + ":" + (shape.warp ? "W" : "P") + ":";
+    var key = N + ":" + w + ":" + h + ":" + (shape.warp ? "W" : "P") + ":" + (shape.uvMode || "auto") + ":";
     var verts = shape.vertices;
     for (var i = 0; i < verts.length; i++)
         key += verts[i][0] + "," + verts[i][1] + ",";

@@ -38,6 +38,23 @@ function shapesEqual(a, b) {
         for (var i = 0; i < ago.length; i++)
             if (ago[i] !== bgo[i]) return false;
     }
+
+    // opacity: 0 is valid so use explicit undefined check
+    var ao = (a.opacity !== undefined) ? a.opacity : 1.0;
+    var bo = (b.opacity !== undefined) ? b.opacity : 1.0;
+    if (ao !== bo) return false;
+    // visible: treat undefined as true
+    if ((a.visible !== undefined ? a.visible : true) !== (b.visible !== undefined ? b.visible : true)) return false;
+    // locked: treat undefined as false
+    if ((a.locked || false) !== (b.locked || false)) return false;
+    // UV fields
+    if ((a.uvMode || "auto") !== (b.uvMode || "auto")) return false;
+    var auo = a.uvOffset || [0,0], buo = b.uvOffset || [0,0];
+    if (auo[0] !== buo[0] || auo[1] !== buo[1]) return false;
+    var aus = a.uvScale || [1,1], bus = b.uvScale || [1,1];
+    if (aus[0] !== bus[0] || aus[1] !== bus[1]) return false;
+    if ((a.uvRotation || 0) !== (b.uvRotation || 0)) return false;
+
     return true;
 }
 
@@ -86,7 +103,14 @@ function createQuad(offset) {
         dstBlend: 7,
         warp: true,
         gridW: 4,
-        gridH: 4
+        gridH: 4,
+        opacity: 1.0,
+        visible: true,
+        locked: false,
+        uvMode: "auto",
+        uvOffset: [0, 0],
+        uvScale: [1, 1],
+        uvRotation: 0
     };
 }
 
@@ -106,7 +130,14 @@ function createTriangle(offset) {
         blendGamma: 1.0,
         srcBlend: 1,
         dstBlend: 7,
-        warp: false
+        warp: false,
+        opacity: 1.0,
+        visible: true,
+        locked: false,
+        uvMode: "auto",
+        uvOffset: [0, 0],
+        uvScale: [1, 1],
+        uvRotation: 0
     };
 }
 
@@ -127,7 +158,14 @@ function createRegularPolygon(n, name, offset) {
         blendGamma: 1.0,
         srcBlend: 1,
         dstBlend: 7,
-        warp: false
+        warp: false,
+        opacity: 1.0,
+        visible: true,
+        locked: false,
+        uvMode: "auto",
+        uvOffset: [0, 0],
+        uvScale: [1, 1],
+        uvRotation: 0
     };
 }
 
@@ -162,7 +200,14 @@ function createStar(offset) {
         blendGamma: 1.0,
         srcBlend: 1,
         dstBlend: 7,
-        warp: false
+        warp: false,
+        opacity: 1.0,
+        visible: true,
+        locked: false,
+        uvMode: "auto",
+        uvOffset: [0, 0],
+        uvScale: [1, 1],
+        uvRotation: 0
     };
 }
 
@@ -176,7 +221,14 @@ function createFreehand(vertices, count) {
         blendGamma: 1.0,
         srcBlend: 1,
         dstBlend: 7,
-        warp: false
+        warp: false,
+        opacity: 1.0,
+        visible: true,
+        locked: false,
+        uvMode: "auto",
+        uvOffset: [0, 0],
+        uvScale: [1, 1],
+        uvRotation: 0
     };
 }
 
