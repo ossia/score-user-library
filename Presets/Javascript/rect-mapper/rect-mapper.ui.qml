@@ -21,6 +21,9 @@ Score.ScriptUI {
     property var snapLinesY: []
     property bool snappingEnabled: true
     readonly property real snapThresholdPx: snappingEnabled ? 10 : 0
+    property bool drawingMode: false
+    property var drawingPoints: []
+    property int drawingVersion: 0
 
     // ---- State management ----
 
@@ -247,6 +250,34 @@ Score.ScriptUI {
 
     function clearSnap() { snapLinesX = []; snapLinesY = []; }
 
+    function finishFreehandShape() {
+        var pts = root.drawingPoints;
+        root.drawingMode = false;
+        root.drawingPoints = [];
+        root.stateVersion++;
+        if (pts.length < 3) return;
+
+        // Simplify with RDP (epsilon in normalized coords)
+        var simplified = Geom.simplifyPath(pts, 0.005);
+        if (simplified.length < 3) simplified = pts;
+
+        // Remove last point if it's too close to first (auto-closed)
+        var last = simplified[simplified.length - 1];
+        var first = simplified[0];
+        var d = Math.sqrt((last[0]-first[0])*(last[0]-first[0]) + (last[1]-first[1])*(last[1]-first[1]));
+        if (d < 0.01 && simplified.length > 3)
+            simplified.pop();
+
+        if (simplified.length < 3) return;
+
+        var shape = ShapeData.createFreehand(simplified, rects.length);
+        rects.push(shape);
+        selectedRect = rects.length - 1;
+        stateVersion++;
+        saveState("Draw freehand shape");
+        sendLiveUpdate();
+    }
+
     function isSimpleWarpedQuad(shape) {
         if (!shape || !shape.vertices || shape.vertices.length !== 4) return false;
         if (!shape.warp) return false;
@@ -282,17 +313,17 @@ Score.ScriptUI {
             light: "#c58014"
             mid: "#252930"
         }
-    RowLayout {
+    SplitView {
         anchors.fill: parent
         anchors.margins: 4
         spacing: 4
 
         // ---- Left Panel ----
         ColumnLayout {
-            Layout.preferredWidth: 200
-            Layout.minimumWidth: 100
-            Layout.maximumWidth: 150
-            Layout.fillHeight: true
+            SplitView.preferredWidth: 150
+            SplitView.minimumWidth: 100
+            SplitView.maximumWidth: 200
+            SplitView.fillHeight: true
             spacing: 4
 
             RowLayout {
@@ -626,13 +657,6 @@ Score.ScriptUI {
             }
         }
 
-        // ---- Separator ----
-        Rectangle {
-            Layout.fillHeight: true
-            Layout.preferredWidth: 1
-            color: palette.mid
-        }
-
         // ---- Right Panel: viewport ----
         Item {
             id: viewport
@@ -783,6 +807,45 @@ Score.ScriptUI {
                             ctx.fillText(lines[li], cx, ly);
                         }
                     }
+                }
+            }
+
+            // Freehand drawing overlay
+            Canvas {
+                id: drawOverlay
+                anchors.fill: parent
+                visible: root.drawingMode
+                z: 15
+
+                property int drawVer: root.drawingVersion
+                onDrawVerChanged: requestPaint()
+
+                onPaint: {
+                    var ctx = getContext("2d");
+                    var w = width, h = height;
+                    ctx.clearRect(0, 0, w, h);
+                    var pts = root.drawingPoints;
+                    if (pts.length < 2) return;
+
+                    // Build closed path from raw points
+                    ctx.beginPath();
+                    ctx.moveTo(pts[0][0] * w, pts[0][1] * h);
+                    for (var i = 1; i < pts.length; i++)
+                        ctx.lineTo(pts[i][0] * w, pts[i][1] * h);
+                    ctx.closePath();
+
+                    // Filled preview
+                    if (pts.length >= 3) {
+                        ctx.fillStyle = "rgba(197,128,20,0.25)";
+                        ctx.fill();
+                    }
+
+                    // Stroke outline
+                    ctx.strokeStyle = "#c58014";
+                    ctx.lineWidth = 2;
+                    ctx.lineJoin = "round";
+                    ctx.lineCap = "round";
+                    ctx.stroke();
                 }
             }
 
@@ -972,6 +1035,117 @@ Score.ScriptUI {
                                     newOff[i] = dx * cos_a - dy * sin_a;
                                     newOff[i + 1] = dx * sin_a + dy * cos_a;
                                 }
+                                shape.gridOffsets = newOff;
+                            }
+                            root.stateVersion++;
+                            root.sendLiveUpdate();
+                        }
+
+                        onReleased: {
+                            root.isDragging = false;
+                            root.updateState("mapperState", JSON.stringify(root.rects));
+                            root.endUpdateState();
+                        }
+                    }
+                }
+            }
+
+            // Scale handle for selected shape
+            Item {
+                id: scaleHandle
+                visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
+                z: 10
+
+                property var bottomRight: {
+                    root.stateVersion;
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length)
+                        return [0.5, 0.5];
+                    var bb = Geom.polygonBBox(root.rects[root.selectedRect].vertices);
+                    return [bb.maxX, bb.maxY];
+                }
+                readonly property real handleOffset: 20
+                property real hx: bottomRight[0] * viewport.width + handleOffset
+                property real hy: bottomRight[1] * viewport.height + handleOffset
+
+                // Connecting line from bottom-right corner to handle
+                Canvas {
+                    x: scaleHandle.bottomRight[0] * viewport.width
+                    y: scaleHandle.bottomRight[1] * viewport.height
+                    width: scaleHandle.handleOffset + 7
+                    height: scaleHandle.handleOffset + 7
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.clearRect(0, 0, width, height);
+                        ctx.strokeStyle = palette.buttonText;
+                        ctx.globalAlpha = 0.5;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        ctx.lineTo(width - 7, height - 7);
+                        ctx.stroke();
+                    }
+                }
+
+                Rectangle {
+                    id: scaleCircle
+                    x: scaleHandle.hx - 7
+                    y: scaleHandle.hy - 7
+                    width: 14
+                    height: 14
+                    radius: 2
+                    color: palette.light
+                    border.color: palette.buttonText
+                    border.width: 1
+
+                    Label {
+                        anchors.centerIn: parent
+                        text: "\u2922"
+                        color: palette.buttonText
+                        font.pixelSize: 10
+                        font.bold: true
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        anchors.margins: -5
+                        cursorShape: Qt.SizeFDiagCursor
+
+                        property real startDist
+                        property var origVertices
+                        property var origEdges
+                        property var origGridOffsets
+
+                        onPressed: function (mouse) {
+                            root.isDragging = true;
+                            var shape = root.rects[root.selectedRect];
+                            var ct = Geom.polygonCentroid(shape.vertices);
+                            var p = mapToItem(viewport, mouse.x, mouse.y);
+                            var cpx = ct[0] * viewport.width;
+                            var cpy = ct[1] * viewport.height;
+                            startDist = Math.sqrt((p.x - cpx) * (p.x - cpx) + (p.y - cpy) * (p.y - cpy));
+                            if (startDist < 1) startDist = 1;
+                            origVertices = JSON.parse(JSON.stringify(shape.vertices));
+                            origEdges = shape.edges ? JSON.parse(JSON.stringify(shape.edges)) : null;
+                            origGridOffsets = shape.gridOffsets ? shape.gridOffsets.slice() : null;
+                            root.beginUpdateState("Scale shape");
+                        }
+
+                        onPositionChanged: function (mouse) {
+                            var ct = Geom.polygonCentroid(origVertices);
+                            var p = mapToItem(viewport, mouse.x, mouse.y);
+                            var cpx = ct[0] * viewport.width;
+                            var cpy = ct[1] * viewport.height;
+                            var curDist = Math.sqrt((p.x - cpx) * (p.x - cpx) + (p.y - cpy) * (p.y - cpy));
+                            var s = curDist / startDist;
+
+                            var shape = root.rects[root.selectedRect];
+                            shape.vertices = Geom.scaleVertices(origVertices, ct, s, s);
+                            if (origEdges)
+                                shape.edges = Geom.scaleEdges(origEdges, ct, s, s);
+                            if (origGridOffsets) {
+                                var newOff = origGridOffsets.slice();
+                                for (var i = 0; i < newOff.length; i++)
+                                    newOff[i] = origGridOffsets[i] * s;
                                 shape.gridOffsets = newOff;
                             }
                             root.stateVersion++;
@@ -1209,12 +1383,12 @@ Score.ScriptUI {
                 }
             }
 
-            // Background MouseArea: selection, deselection, move-drag
+            // Background MouseArea: selection, deselection, move-drag, freehand draw
             MouseArea {
                 anchors.fill: parent
                 z: -1
 
-                property int dragMode: 0
+                property int dragMode: 0 // 0=none, 1=move, 2=drawing
                 property real startX
                 property real startY
                 property var origVertices: null
@@ -1224,6 +1398,7 @@ Score.ScriptUI {
                 property int hitSrcIdx: -1
 
                 onDoubleClicked: function (mouse) {
+                    if (root.drawingMode) return;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
                     var nx = mouse.x / viewport.width;
                     var ny = mouse.y / viewport.height;
@@ -1261,6 +1436,12 @@ Score.ScriptUI {
                         origVertices = JSON.parse(JSON.stringify(root.rects[hitIdx].vertices));
                         origEdges = root.rects[hitIdx].edges ? JSON.parse(JSON.stringify(root.rects[hitIdx].edges)) : null;
                         root.beginUpdateState(wantsAltDup ? "Duplicate shape" : "Move shape");
+                    } else if (mouse.modifiers & Qt.AltModifier) {
+                        // Alt+click on empty space: start freehand drawing
+                        root.selectedRect = -1;
+                        dragMode = 2;
+                        root.drawingMode = true;
+                        root.drawingPoints = [[nx, ny]];
                     } else {
                         root.selectedRect = -1;
                         dragMode = 0;
@@ -1268,6 +1449,21 @@ Score.ScriptUI {
                 }
 
                 onPositionChanged: function (mouse) {
+                    if (dragMode === 2) {
+                        // Freehand drawing: sample points with min distance
+                        var nx = mouse.x / viewport.width;
+                        var ny = mouse.y / viewport.height;
+                        var pts = root.drawingPoints;
+                        if (pts.length > 0) {
+                            var last = pts[pts.length - 1];
+                            var dx = nx - last[0], dy = ny - last[1];
+                            if (dx*dx + dy*dy < 0.0001) return; // min distance filter
+                        }
+                        pts.push([nx, ny]);
+                        root.drawingVersion++;
+                        return;
+                    }
+
                     if (dragMode !== 1) return;
 
                     if (wantsAltDup && !didDuplicate) {
@@ -1306,6 +1502,11 @@ Score.ScriptUI {
                 }
 
                 onReleased: {
+                    if (dragMode === 2) {
+                        root.finishFreehandShape();
+                        dragMode = 0;
+                        return;
+                    }
                     if (dragMode !== 0) {
                         root.isDragging = false;
                         root.clearSnap();
@@ -1322,6 +1523,13 @@ Score.ScriptUI {
 
     // Keyboard shortcuts
     Keys.onPressed: function (event) {
+        if (event.key === Qt.Key_Escape && root.drawingMode) {
+            root.drawingMode = false;
+            root.drawingPoints = [];
+            root.stateVersion++;
+            event.accepted = true;
+            return;
+        }
         if ((event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) && root.selectedRect >= 0) {
             root.deleteRect(root.selectedRect);
             event.accepted = true;

@@ -166,6 +166,20 @@ function createStar(offset) {
     };
 }
 
+function createFreehand(vertices, count) {
+    return {
+        id: "shape-" + Date.now(),
+        name: "Freehand " + (count + 1),
+        vertices: vertices,
+        source: 0,
+        blend: defaultBlend(),
+        blendGamma: 1.0,
+        srcBlend: 1,
+        dstBlend: 7,
+        warp: false
+    };
+}
+
 // Check if shapes array differs from another
 function shapesDiffer(oldShapes, newShapes) {
     if (oldShapes.length !== newShapes.length) return true;
