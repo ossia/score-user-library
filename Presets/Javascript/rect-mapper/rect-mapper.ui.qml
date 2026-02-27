@@ -1405,7 +1405,6 @@ Score.ScriptUI {
             SplitView.maximumWidth: 260
             SplitView.fillHeight: true
             spacing: 4
-            visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
 
             property var selShape: {
                 root.stateVersion;

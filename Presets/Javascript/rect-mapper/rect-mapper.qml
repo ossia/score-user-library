@@ -53,7 +53,7 @@ Script {
         objectName: "Quads"
     }
 
-    readonly property string rootPath: "file://" + Util.settings("d6966670-f69f-48d0-96f6-72a5e2190cbc").RootPath + "/packages/default/Presets/Javascript/rect-mapper/"
+    readonly property string rootPath: "file:///" + Util.settings("d6966670-f69f-48d0-96f6-72a5e2190cbc").RootPath + "/packages/default/Presets/Javascript/rect-mapper/"
     TextureOutlet {
         objectName: "Output"
         item: View3D {
