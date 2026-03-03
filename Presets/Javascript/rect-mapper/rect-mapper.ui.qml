@@ -27,6 +27,10 @@ Score.ScriptUI {
     property int soloIndex: -1  // transient: when >= 0, only this shape renders
     property int listDragIndex: -1
     property int listDropIndex: -1
+    property bool polyDrawing: false
+    property var polyPoints: []
+    property int polyVersion: 0
+    property var polyMousePos: [-1, -1]
 
     // ---- State management ----
 
@@ -301,6 +305,23 @@ Score.ScriptUI {
         selectedRect = rects.length - 1;
         stateVersion++;
         saveState("Draw freehand shape");
+        sendLiveUpdate();
+    }
+
+    function finishPolyShape() {
+        var pts = root.polyPoints;
+        root.polyDrawing = false;
+        root.polyPoints = [];
+        root.polyVersion++;
+        root.stateVersion++;
+        if (pts.length < 3) return;
+
+        var shape = ShapeData.createFreehand(pts, rects.length);
+        shape.name = "Polygon " + (rects.length + 1);
+        rects.push(shape);
+        selectedRect = rects.length - 1;
+        stateVersion++;
+        saveState("Draw polygon");
         sendLiveUpdate();
     }
 
@@ -707,6 +728,83 @@ Score.ScriptUI {
                     ctx.lineJoin = "round";
                     ctx.lineCap = "round";
                     ctx.stroke();
+                }
+            }
+
+            // Polygon pen mode overlay
+            Canvas {
+                id: polyOverlay
+                anchors.fill: parent
+                visible: root.polyDrawing
+                z: 15
+
+                property int pVer: root.polyVersion
+                onPVerChanged: requestPaint()
+
+                onPaint: {
+                    var ctx = getContext("2d");
+                    var w = width, h = height;
+                    ctx.clearRect(0, 0, w, h);
+                    var pts = root.polyPoints;
+                    if (pts.length < 1) return;
+
+                    // Filled preview (if >= 3 points)
+                    if (pts.length >= 3) {
+                        ctx.beginPath();
+                        ctx.moveTo(pts[0][0] * w, pts[0][1] * h);
+                        for (var i = 1; i < pts.length; i++)
+                            ctx.lineTo(pts[i][0] * w, pts[i][1] * h);
+                        ctx.closePath();
+                        ctx.fillStyle = "rgba(197,128,20,0.15)";
+                        ctx.fill();
+                    }
+
+                    // Edges between placed points
+                    ctx.beginPath();
+                    ctx.moveTo(pts[0][0] * w, pts[0][1] * h);
+                    for (var i = 1; i < pts.length; i++)
+                        ctx.lineTo(pts[i][0] * w, pts[i][1] * h);
+                    ctx.strokeStyle = "#c58014";
+                    ctx.lineWidth = 2;
+                    ctx.lineJoin = "round";
+                    ctx.stroke();
+
+                    // Rubber band from last point to mouse
+                    var mp = root.polyMousePos;
+                    if (mp[0] >= 0 && pts.length >= 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(pts[pts.length-1][0] * w, pts[pts.length-1][1] * h);
+                        ctx.lineTo(mp[0] * w, mp[1] * h);
+                        ctx.strokeStyle = "rgba(197,128,20,0.5)";
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([4, 4]);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+
+                    // Vertex dots
+                    for (var i = 0; i < pts.length; i++) {
+                        var px = pts[i][0] * w, py = pts[i][1] * h;
+                        ctx.beginPath();
+                        ctx.arc(px, py, 4, 0, 2 * Math.PI);
+                        ctx.fillStyle = (i === 0) ? "#fff" : "#c58014";
+                        ctx.fill();
+                        ctx.strokeStyle = "#000";
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+
+                    // Highlight first point when mouse is near (close hint)
+                    if (pts.length >= 3 && mp[0] >= 0) {
+                        var dx = mp[0] - pts[0][0], dy = mp[1] - pts[0][1];
+                        if (Math.sqrt(dx*dx + dy*dy) < 0.02) {
+                            ctx.beginPath();
+                            ctx.arc(pts[0][0] * w, pts[0][1] * h, 8, 0, 2 * Math.PI);
+                            ctx.strokeStyle = "#fff";
+                            ctx.lineWidth = 2;
+                            ctx.stroke();
+                        }
+                    }
                 }
             }
 
@@ -1252,10 +1350,11 @@ Score.ScriptUI {
                 }
             }
 
-            // Background MouseArea: selection, deselection, move-drag, freehand draw
+            // Background MouseArea: selection, deselection, move-drag, freehand draw, polygon pen
             MouseArea {
                 anchors.fill: parent
                 z: -1
+                hoverEnabled: root.polyDrawing
 
                 property int dragMode: 0 // 0=none, 1=move, 2=drawing
                 property real startX
@@ -1271,11 +1370,22 @@ Score.ScriptUI {
                     var nx = mouse.x / viewport.width;
                     var ny = mouse.y / viewport.height;
 
-                    // Nothing selected: start freehand drawing
+                    // Polygon pen mode: double-click finishes
+                    if (root.polyDrawing) {
+                        // Remove the 2 points added by the double-click press events
+                        if (root.polyPoints.length > 0) root.polyPoints.pop();
+                        if (root.polyPoints.length > 0) root.polyPoints.pop();
+                        root.finishPolyShape();
+                        dragMode = 0;
+                        root.isDragging = false;
+                        return;
+                    }
+
+                    // Nothing selected: start polygon pen mode
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) {
-                        root.drawingPoints = [[nx, ny]];
-                        root.drawingVersion++;
-                        root.drawingMode = true;
+                        root.polyPoints = [[nx, ny]];
+                        root.polyVersion++;
+                        root.polyDrawing = true;
                         dragMode = 0;
                         root.isDragging = false;
                         return;
@@ -1314,6 +1424,21 @@ Score.ScriptUI {
                         return;
                     }
 
+                    // Polygon pen mode: add vertex or close near first point
+                    if (root.polyDrawing) {
+                        if (root.polyPoints.length >= 3) {
+                            var first = root.polyPoints[0];
+                            var dx = nx - first[0], dy = ny - first[1];
+                            if (Math.sqrt(dx*dx + dy*dy) < 0.02) {
+                                root.finishPolyShape();
+                                return;
+                            }
+                        }
+                        root.polyPoints.push([nx, ny]);
+                        root.polyVersion++;
+                        return;
+                    }
+
                     var hitIdx = -1;
                     for (var i = root.rects.length - 1; i >= 0; i--) {
                         if (Geom.pointInPolygon(nx, ny, root.rects[i].vertices)) {
@@ -1349,6 +1474,12 @@ Score.ScriptUI {
                 }
 
                 onPositionChanged: function (mouse) {
+                    // Rubber band for polygon pen mode
+                    if (root.polyDrawing) {
+                        root.polyMousePos = [mouse.x / viewport.width, mouse.y / viewport.height];
+                        root.polyVersion++;
+                    }
+
                     if (dragMode === 2) {
                         // Freehand drawing: sample points with min distance
                         var nx = mouse.x / viewport.width;
@@ -1832,6 +1963,19 @@ Score.ScriptUI {
             root.drawingMode = false;
             root.drawingPoints = [];
             root.stateVersion++;
+            event.accepted = true;
+            return;
+        }
+        if (event.key === Qt.Key_Escape && root.polyDrawing) {
+            root.polyDrawing = false;
+            root.polyPoints = [];
+            root.polyVersion++;
+            root.stateVersion++;
+            event.accepted = true;
+            return;
+        }
+        if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && root.polyDrawing) {
+            root.finishPolyShape();
             event.accepted = true;
             return;
         }
