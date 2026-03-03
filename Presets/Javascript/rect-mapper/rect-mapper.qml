@@ -164,6 +164,7 @@ Script {
 
     property var rects: []
     property int stateVersion: 0
+    property int soloIndex: -1
     property real lastSentW: 0
     property real lastSentH: 0
     readonly property int subdivisions: subdiv.value
@@ -265,6 +266,7 @@ Script {
 
     function getVisible(idx) {
         if (idx < 0 || idx >= rects.length) return true;
+        if (root.soloIndex >= 0) return idx === root.soloIndex;
         var v = rects[idx].visible;
         return (v !== undefined) ? v : true;
     }
@@ -321,6 +323,7 @@ Script {
         if (!message) return;
         if (message.type === "updateRects") {
             root.rects = message.rects || [];
+            root.soloIndex = (typeof message.soloIndex === 'number') ? message.soloIndex : -1;
             root.stateVersion++;
         }
     }

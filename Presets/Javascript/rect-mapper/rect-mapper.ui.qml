@@ -24,6 +24,9 @@ Score.ScriptUI {
     property bool drawingMode: false
     property var drawingPoints: []
     property int drawingVersion: 0
+    property int soloIndex: -1  // transient: when >= 0, only this shape renders
+    property int listDragIndex: -1
+    property int listDropIndex: -1
 
     // ---- State management ----
 
@@ -69,7 +72,7 @@ Score.ScriptUI {
     }
 
     function sendLiveUpdate() {
-        root.executionSend({ type: "updateRects", rects: root.rects });
+        root.executionSend({ type: "updateRects", rects: root.rects, soloIndex: root.soloIndex });
     }
 
     function addShape(type) {
@@ -86,6 +89,8 @@ Score.ScriptUI {
         if (idx < 0 || idx >= rects.length) return;
         rects.splice(idx, 1);
         if (selectedRect >= rects.length) selectedRect = rects.length - 1;
+        if (soloIndex === idx) soloIndex = -1;
+        else if (soloIndex > idx) soloIndex--;
         stateVersion++;
         saveState("Delete shape");
         sendLiveUpdate();
@@ -123,6 +128,8 @@ Score.ScriptUI {
         rects[idx] = rects[idx + 1];
         rects[idx + 1] = tmp;
         selectedRect = idx + 1;
+        if (soloIndex === idx) soloIndex = idx + 1;
+        else if (soloIndex === idx + 1) soloIndex = idx;
         stateVersion++;
         saveState("Reorder layers");
         sendLiveUpdate();
@@ -134,6 +141,21 @@ Score.ScriptUI {
         rects[idx] = rects[idx - 1];
         rects[idx - 1] = tmp;
         selectedRect = idx - 1;
+        if (soloIndex === idx) soloIndex = idx - 1;
+        else if (soloIndex === idx - 1) soloIndex = idx;
+        stateVersion++;
+        saveState("Reorder layers");
+        sendLiveUpdate();
+    }
+
+    function moveRect(fromIdx, toIdx) {
+        if (fromIdx === toIdx || fromIdx < 0 || fromIdx >= rects.length || toIdx < 0 || toIdx >= rects.length) return;
+        var item = rects.splice(fromIdx, 1)[0];
+        rects.splice(toIdx, 0, item);
+        selectedRect = toIdx;
+        if (soloIndex === fromIdx) soloIndex = toIdx;
+        else if (fromIdx < toIdx && soloIndex > fromIdx && soloIndex <= toIdx) soloIndex--;
+        else if (fromIdx > toIdx && soloIndex >= toIdx && soloIndex < fromIdx) soloIndex++;
         stateVersion++;
         saveState("Reorder layers");
         sendLiveUpdate();
@@ -379,9 +401,13 @@ Score.ScriptUI {
                     required property int index
                     property int delIndex: index
                     width: rectListView.width
-                    height: delLayout.implicitHeight + 12
+                    height: delRow.implicitHeight + 8
                     radius: 4
-                    color: root.selectedRect === delIndex ? palette.highlight : (delIndex % 2 ? palette.alternateBase : palette.base)
+                    color: {
+                        if (root.listDragIndex >= 0 && root.listDropIndex === delIndex && root.listDragIndex !== delIndex)
+                            return palette.mid;
+                        return root.selectedRect === delIndex ? palette.highlight : (delIndex % 2 ? palette.alternateBase : palette.base);
+                    }
                     border.color: root.selectedRect === delIndex ? palette.light : "transparent"
                     border.width: 1
 
@@ -396,107 +422,81 @@ Score.ScriptUI {
                         onClicked: { root.forceActiveFocus(); root.selectedRect = listDel.delIndex; }
                     }
 
-                    ColumnLayout {
-                        id: delLayout
+                    RowLayout {
+                        id: delRow
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        anchors.margins: 6
+                        anchors.margins: 4
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 4
 
-                        RowLayout {
-                            spacing: 2
-                            Rectangle {
-                                width: 12
-                                height: 12
-                                radius: 2
-                                color: listDel.rd ? root.sourceBorderColors[listDel.rd.source] : palette.mid
-                            }
-                            Button {
-                                text: (listDel.rd && listDel.rd.visible !== false) ? "\u25CF" : "\u25CB"
-                                flat: true
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                font.pixelSize: 11
-                                onClicked: {
-                                    var cur = root.rects[listDel.delIndex].visible;
-                                    root.rects[listDel.delIndex].visible = (cur !== undefined ? !cur : false);
-                                    root.stateVersion++;
-                                    root.saveState("Toggle visibility");
-                                    root.sendLiveUpdate();
+                        Label {
+                            text: "\u2261"
+                            font.pixelSize: 14
+                            color: palette.windowText
+                            Layout.preferredWidth: 14
+
+                            MouseArea {
+                                anchors.fill: parent
+                                anchors.margins: -4
+                                cursorShape: Qt.OpenHandCursor
+                                preventStealing: true
+
+                                onPressed: function(mouse) {
+                                    root.listDragIndex = listDel.delIndex;
+                                    root.listDropIndex = listDel.delIndex;
+                                    root.selectedRect = listDel.delIndex;
                                 }
-                            }
-                            Button {
-                                text: (listDel.rd && listDel.rd.locked) ? "Lk" : "Ul"
-                                flat: true
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                font.pixelSize: 9
-                                onClicked: {
-                                    root.rects[listDel.delIndex].locked = !(root.rects[listDel.delIndex].locked || false);
-                                    root.stateVersion++;
-                                    root.saveState("Toggle lock");
-                                    root.sendLiveUpdate();
+
+                                onPositionChanged: function(mouse) {
+                                    if (root.listDragIndex < 0) return;
+                                    var y = mapToItem(rectListView, 0, mouse.y).y;
+                                    var delegateH = listDel.height + rectListView.spacing;
+                                    var targetIdx = Math.floor((y + delegateH / 2) / delegateH);
+                                    targetIdx = Math.max(0, Math.min(root.rects.length - 1, targetIdx));
+                                    root.listDropIndex = targetIdx;
                                 }
-                            }
-                            TextInput {
-                                id: nameInput
-                                text: listDel.rd ? listDel.rd.name : ""
-                                font.bold: true
-                                color: palette.text
-                                Layout.fillWidth: true
-                                selectByMouse: true
-                                function commitName() {
-                                    if (listDel.delIndex < root.rects.length && root.rects[listDel.delIndex].name !== text) {
-                                        root.rects[listDel.delIndex].name = text;
-                                        root.stateVersion++;
-                                        root.saveState("Rename shape");
-                                        root.sendLiveUpdate();
+
+                                onReleased: {
+                                    if (root.listDragIndex >= 0 && root.listDropIndex >= 0 && root.listDragIndex !== root.listDropIndex) {
+                                        root.moveRect(root.listDragIndex, root.listDropIndex);
                                     }
+                                    root.listDragIndex = -1;
+                                    root.listDropIndex = -1;
                                 }
-                                onEditingFinished: { commitName(); focus = false; }
-                                onActiveFocusChanged: if (!activeFocus) commitName()
-                            }
-                            Button {
-                                text: "\u25B2"
-                                flat: true
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                font.pixelSize: 9
-                                enabled: listDel.delIndex > 0
-                                onClicked: root.moveRectDown(listDel.delIndex)
-                            }
-                            Button {
-                                text: "\u25BC"
-                                flat: true
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                font.pixelSize: 9
-                                enabled: listDel.delIndex < root.rects.length - 1
-                                onClicked: root.moveRectUp(listDel.delIndex)
-                            }
-                            Button {
-                                text: "D"
-                                flat: true
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                font.pixelSize: 10
-                                onClicked: root.duplicateRect(listDel.delIndex)
-                            }
-                            Button {
-                                text: "\u2715"
-                                flat: true
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                font.pixelSize: 12
-                                onClicked: root.deleteRect(listDel.delIndex)
                             }
                         }
 
-                        Label {
-                            text: listDel.rd ? "(Tex " + (listDel.rd.source + 1) + ")" : ""
-                            color: palette.windowText
-                            font.pixelSize: 10
+                        Rectangle {
+                            width: 10; height: 10; radius: 2
+                            color: listDel.rd ? root.sourceBorderColors[listDel.rd.source] : palette.mid
+                        }
+
+                        TextInput {
+                            text: listDel.rd ? listDel.rd.name : ""
+                            font.bold: true
+                            font.pixelSize: 11
+                            color: palette.text
+                            Layout.fillWidth: true
+                            selectByMouse: true
+                            function commitName() {
+                                if (listDel.delIndex < root.rects.length && root.rects[listDel.delIndex].name !== text) {
+                                    root.rects[listDel.delIndex].name = text;
+                                    root.stateVersion++;
+                                    root.saveState("Rename shape");
+                                    root.sendLiveUpdate();
+                                }
+                            }
+                            onEditingFinished: { commitName(); focus = false; }
+                            onActiveFocusChanged: if (!activeFocus) commitName()
+                        }
+
+                        Button {
+                            text: "\u2715"
+                            flat: true
+                            implicitWidth: 18; implicitHeight: 18
+                            font.pixelSize: 12
+                            onClicked: root.deleteRect(listDel.delIndex)
                         }
                     }
                 }
@@ -558,7 +558,9 @@ Score.ScriptUI {
                         if (!c || c.length < 3) continue;
 
                         var isSelected = (qi === root.selectedRect);
-                        var isHidden = (r.visible === false);
+                        var isMuted = (r.visible === false);
+                        var isSoloHidden = (root.soloIndex >= 0 && qi !== root.soloIndex);
+                        var isHidden = isMuted || isSoloHidden;
                         var edges = r.edges;
 
                         // Draw hidden shapes ghosted
@@ -708,11 +710,12 @@ Score.ScriptUI {
                 }
             }
 
-            // Corner handles for selected shape
+            // Corner handles for selected shape (hidden when locked)
             Repeater {
                 model: {
                     root.stateVersion;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 0;
+                    if (root.isShapeLocked(root.selectedRect)) return 0;
                     return root.rects[root.selectedRect].vertices.length;
                 }
 
@@ -805,10 +808,10 @@ Score.ScriptUI {
                 }
             }
 
-            // Rotation handle for selected shape
+            // Rotation handle for selected shape (hidden when locked)
             Item {
                 id: rotHandle
-                visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
+                visible: { root.stateVersion; return root.selectedRect >= 0 && root.selectedRect < root.rects.length && !root.isShapeLocked(root.selectedRect); }
                 z: 10
 
                 property var topCenter: {
@@ -911,10 +914,10 @@ Score.ScriptUI {
                 }
             }
 
-            // Scale handle for selected shape
+            // Scale handle for selected shape (hidden when locked)
             Item {
                 id: scaleHandle
-                visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
+                visible: { root.stateVersion; return root.selectedRect >= 0 && root.selectedRect < root.rects.length && !root.isShapeLocked(root.selectedRect); }
                 z: 10
 
                 property var bottomRight: {
@@ -1023,12 +1026,13 @@ Score.ScriptUI {
                 }
             }
 
-            // Bezier control point handles for selected shape
+            // Bezier control point handles for selected shape (hidden when locked)
             Repeater {
                 id: bezierCpRepeater
                 model: {
                     root.stateVersion;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [];
+                    if (root.isShapeLocked(root.selectedRect)) return [];
                     var shape = root.rects[root.selectedRect];
                     if (!shape.edges) return [];
                     var handles = [];
@@ -1106,12 +1110,13 @@ Score.ScriptUI {
                 }
             }
 
-            // Grid point handles for selected simple warped quads
+            // Grid point handles for selected simple warped quads (hidden when locked)
             Repeater {
                 id: gridHandleRepeater
                 model: {
                     root.stateVersion;
                     if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [];
+                    if (root.isShapeLocked(root.selectedRect)) return [];
                     var shape = root.rects[root.selectedRect];
                     if (!root.isSimpleWarpedQuad(shape)) return [];
                     var gw = shape.gridW || 4;
@@ -1263,10 +1268,20 @@ Score.ScriptUI {
 
                 onDoubleClicked: function (mouse) {
                     if (root.drawingMode) return;
-                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
-                    if (root.isShapeLocked(root.selectedRect)) return;
                     var nx = mouse.x / viewport.width;
                     var ny = mouse.y / viewport.height;
+
+                    // Nothing selected: start freehand drawing
+                    if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) {
+                        root.drawingPoints = [[nx, ny]];
+                        root.drawingVersion++;
+                        root.drawingMode = true;
+                        dragMode = 0;
+                        root.isDragging = false;
+                        return;
+                    }
+
+                    if (root.isShapeLocked(root.selectedRect)) return;
                     // Check if click is near edge or in body
                     var shape = root.rects[root.selectedRect];
                     var nearest = Geom.nearestEdge(nx, ny, shape.vertices);
@@ -1291,6 +1306,13 @@ Score.ScriptUI {
                     wantsAltDup = false;
                     didDuplicate = false;
                     hitSrcIdx = -1;
+
+                    // Continue freehand drawing if already in drawing mode
+                    if (root.drawingMode) {
+                        dragMode = 2;
+                        root.drawingPoints = [[nx, ny]];
+                        return;
+                    }
 
                     var hitIdx = -1;
                     for (var i = root.rects.length - 1; i >= 0; i--) {
@@ -1411,25 +1433,65 @@ Score.ScriptUI {
                 if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return null;
                 return root.rects[root.selectedRect];
             }
-            property var selBlend: selShape ? (selShape.blend || { top: 0, right: 0, bottom: 0, left: 0 }) : null
-            property real selGamma: selShape ? (selShape.blendGamma || 1.0) : 1.0
+            // Primitive properties that re-evaluate on stateVersion change
+            // (selShape returns same object ref, so deep reads won't re-fire)
+            property bool selMuted: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return false;
+                return root.rects[root.selectedRect].visible === false;
+            }
+            property bool selLocked: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return false;
+                return root.rects[root.selectedRect].locked || false;
+            }
+            property var selBlend: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return null;
+                var b = root.rects[root.selectedRect].blend;
+                return b || { top: 0, right: 0, bottom: 0, left: 0 };
+            }
+            property real selGamma: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1.0;
+                return root.rects[root.selectedRect].blendGamma || 1.0;
+            }
             property real selOpacity: {
-                if (!selShape) return 1.0;
-                var v = selShape.opacity;
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1.0;
+                var v = root.rects[root.selectedRect].opacity;
                 return (v !== undefined) ? v : 1.0;
             }
-            property string selUvMode: selShape ? (selShape.uvMode || "auto") : "auto"
-            property var selUvOffset: selShape ? (selShape.uvOffset || [0,0]) : [0,0]
-            property var selUvScale: selShape ? (selShape.uvScale || [1,1]) : [1,1]
-            property real selUvRotation: selShape ? (selShape.uvRotation || 0) : 0
+            property string selUvMode: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return "auto";
+                return root.rects[root.selectedRect].uvMode || "auto";
+            }
+            property var selUvOffset: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [0,0];
+                return root.rects[root.selectedRect].uvOffset || [0,0];
+            }
+            property var selUvScale: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return [1,1];
+                return root.rects[root.selectedRect].uvScale || [1,1];
+            }
+            property real selUvRotation: {
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 0;
+                return root.rects[root.selectedRect].uvRotation || 0;
+            }
             property int selSrcBlend: {
-                if (!selShape) return 1;
-                var v = selShape.srcBlend;
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 1;
+                var v = root.rects[root.selectedRect].srcBlend;
                 return (typeof v === 'number') ? v : 1;
             }
             property int selDstBlend: {
-                if (!selShape) return 7;
-                var v = selShape.dstBlend;
+                root.stateVersion;
+                if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return 7;
+                var v = root.rects[root.selectedRect].dstBlend;
                 return (typeof v === 'number') ? v : 7;
             }
 
@@ -1490,8 +1552,84 @@ Score.ScriptUI {
                 root.sendLiveUpdate();
             }
 
+            // All controls hidden when nothing selected
+            ColumnLayout {
+                visible: root.selectedRect >= 0 && root.selectedRect < root.rects.length
+                Layout.fillWidth: true
+                spacing: 4
+
+            // --- General ---
+            Label { text: "General"; font.bold: true; color: palette.windowText; font.pixelSize: 11 }
+
+            RowLayout {
+                spacing: 4
+                Layout.fillWidth: true
+                Button {
+                    text: root.soloIndex === root.selectedRect ? "Solo ON" : "Solo"
+                    flat: true
+                    implicitHeight: 24
+                    font.pixelSize: 11
+                    font.bold: root.soloIndex === root.selectedRect
+                    palette.buttonText: root.soloIndex === root.selectedRect ? palette.light : palette.buttonText
+                    Layout.fillWidth: true
+                    onClicked: {
+                        if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
+                        root.soloIndex = (root.soloIndex === root.selectedRect) ? -1 : root.selectedRect;
+                        root.stateVersion++;
+                        root.sendLiveUpdate();
+                    }
+                }
+                Button {
+                    text: propsPanel.selMuted ? "Muted" : "Mute"
+                    flat: true
+                    implicitHeight: 24
+                    font.pixelSize: 11
+                    font.bold: propsPanel.selMuted
+                    palette.buttonText: propsPanel.selMuted ? "#ff4444" : palette.buttonText
+                    Layout.fillWidth: true
+                    onClicked: {
+                        if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
+                        var cur = root.rects[root.selectedRect].visible;
+                        root.rects[root.selectedRect].visible = (cur !== undefined ? !cur : false);
+                        root.stateVersion++;
+                        root.saveState("Toggle mute");
+                        root.sendLiveUpdate();
+                    }
+                }
+            }
+
+            RowLayout {
+                spacing: 4
+                Layout.fillWidth: true
+                Button {
+                    text: propsPanel.selLocked ? "Locked" : "Lock"
+                    flat: true
+                    implicitHeight: 24
+                    font.pixelSize: 11
+                    Layout.fillWidth: true
+                    onClicked: {
+                        if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
+                        root.rects[root.selectedRect].locked = !(root.rects[root.selectedRect].locked || false);
+                        root.stateVersion++;
+                        root.saveState("Toggle lock");
+                        root.sendLiveUpdate();
+                    }
+                }
+                Button {
+                    text: "Duplicate"
+                    flat: true
+                    implicitHeight: 24
+                    font.pixelSize: 11
+                    Layout.fillWidth: true
+                    onClicked: {
+                        if (root.selectedRect >= 0 && root.selectedRect < root.rects.length)
+                            root.duplicateRect(root.selectedRect);
+                    }
+                }
+            }
+
             // --- Source & Warp ---
-            Label { text: "Shape"; font.bold: true; color: palette.windowText; font.pixelSize: 11 }
+            Label { text: "Shape"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
 
             RowLayout {
                 spacing: 4
@@ -1680,6 +1818,8 @@ Score.ScriptUI {
                 Label { text: "Rot:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
                 Slider { from: -180; to: 180; stepSize: 1; value: propsPanel.selUvRotation; Layout.fillWidth: true; onMoved: propsPanel.setUvRotation(value) }
             }
+
+            } // end controls wrapper
 
             Item { Layout.fillHeight: true }
         }
