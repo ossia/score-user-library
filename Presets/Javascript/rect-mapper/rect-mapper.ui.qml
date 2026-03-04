@@ -27,6 +27,7 @@ Score.ScriptUI {
     property int soloIndex: -1  // transient: when >= 0, only this shape renders
     property int listDragIndex: -1
     property int listDropIndex: -1
+    property bool showOverlay: false
     property bool polyDrawing: false
     property var polyPoints: []
     property int polyVersion: 0
@@ -76,7 +77,7 @@ Score.ScriptUI {
     }
 
     function sendLiveUpdate() {
-        root.executionSend({ type: "updateRects", rects: root.rects, soloIndex: root.soloIndex });
+        root.executionSend({ type: "updateRects", rects: root.rects, soloIndex: root.soloIndex, showOverlay: root.showOverlay });
     }
 
     function addShape(type) {
@@ -523,10 +524,19 @@ Score.ScriptUI {
                 }
             }
 
-            CheckBox {
-                text: "Snap"
-                checked: root.snappingEnabled
-                onToggled: root.snappingEnabled = checked
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 2
+                CheckBox {
+                    text: "Snap"
+                    checked: root.snappingEnabled
+                    onToggled: root.snappingEnabled = checked
+                }
+                CheckBox {
+                    text: "Overlay"
+                    checked: root.showOverlay
+                    onToggled: { root.showOverlay = checked; root.sendLiveUpdate(); }
+                }
             }
         }
 

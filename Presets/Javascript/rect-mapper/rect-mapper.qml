@@ -56,106 +56,186 @@ Script {
     readonly property string rootPath: "file:///" + Util.settings("d6966670-f69f-48d0-96f6-72a5e2190cbc").RootPath + "/packages/default/Presets/Javascript/rect-mapper/"
     TextureOutlet {
         objectName: "Output"
-        item: View3D {
-            id: renderRoot
+        item: Item {
+            id: outputRoot
             anchors.fill: parent
 
-            environment: SceneEnvironment {
-                clearColor: "black"
-                backgroundMode: SceneEnvironment.Color
-                antialiasingQuality: SceneEnvironment.High
-                antialiasingMode: SceneEnvironment.MSAA
-            }
+            View3D {
+                id: renderRoot
+                anchors.fill: parent
 
-            OrthographicCamera {
-                id: camera
-                z: 100
-            }
+                environment: SceneEnvironment {
+                    clearColor: "black"
+                    backgroundMode: SceneEnvironment.Color
+                    antialiasingQuality: SceneEnvironment.High
+                    antialiasingMode: SceneEnvironment.MSAA
+                }
 
-            Texture {
-                id: texSrc0
-                sourceItem: tex0.item
-            }
-            Texture {
-                id: texSrc1
-                sourceItem: tex1.item
-            }
-            Texture {
-                id: texSrc2
-                sourceItem: tex2.item
-            }
-            Texture {
-                id: texSrc3
-                sourceItem: tex3.item
-            }
-            Texture {
-                id: texSrc4
-                sourceItem: tex4.item
-            }
-            Texture {
-                id: texSrc5
-                sourceItem: tex5.item
-            }
-            Texture {
-                id: texSrc6
-                sourceItem: tex6.item
-            }
-            Texture {
-                id: texSrc7
-                sourceItem: tex7.item
-            }
+                OrthographicCamera {
+                    id: camera
+                    z: 100
+                }
 
-            Repeater3D {
-                model: root.rects.length
+                Texture {
+                    id: texSrc0
+                    sourceItem: tex0.item
+                }
+                Texture {
+                    id: texSrc1
+                    sourceItem: tex1.item
+                }
+                Texture {
+                    id: texSrc2
+                    sourceItem: tex2.item
+                }
+                Texture {
+                    id: texSrc3
+                    sourceItem: tex3.item
+                }
+                Texture {
+                    id: texSrc4
+                    sourceItem: tex4.item
+                }
+                Texture {
+                    id: texSrc5
+                    sourceItem: tex5.item
+                }
+                Texture {
+                    id: texSrc6
+                    sourceItem: tex6.item
+                }
+                Texture {
+                    id: texSrc7
+                    sourceItem: tex7.item
+                }
 
-                Model {
-                    id: quadModel
-                    property int idx: index
-                    visible: root.getVisible(quadModel.idx)
+                Repeater3D {
+                    model: root.rects.length
 
-                    property var meshData: {
-                        // Explicit dependencies so QML re-evaluates on changes
-                        var _v = root.stateVersion;
-                        var _s = root.subdivisions;
-                        return root.computeMesh(quadModel.idx);
-                    }
-                    geometry: ProceduralMesh {
-                        positions: quadModel.meshData.positions
-                        normals: quadModel.meshData.normals
-                        uv0s: quadModel.meshData.uvs
-                        indexes: quadModel.meshData.indices
-                    }
+                    Model {
+                        id: quadModel
+                        property int idx: index
+                        visible: root.getVisible(quadModel.idx)
 
-                    materials: CustomMaterial {
-                        shadingMode: CustomMaterial.Unshaded
-                        cullMode: CustomMaterial.NoCulling
-
-                        readonly property var blendModes: [
-                            CustomMaterial.Zero, CustomMaterial.One,
-                            CustomMaterial.SrcColor, CustomMaterial.OneMinusSrcColor,
-                            CustomMaterial.DstColor, CustomMaterial.OneMinusDstColor,
-                            CustomMaterial.SrcAlpha, CustomMaterial.OneMinusSrcAlpha,
-                            CustomMaterial.DstAlpha, CustomMaterial.OneMinusDstAlpha
-                        ]
-                        sourceBlend: blendModes[root.getSrcBlend(quadModel.idx)]
-                        destinationBlend: blendModes[root.getDstBlend(quadModel.idx)]
-
-                        property TextureInput srcTex: TextureInput {
-                            texture: root.getTexSrc(quadModel.idx)
+                        property var meshData: {
+                            // Explicit dependencies so QML re-evaluates on changes
+                            var _v = root.stateVersion;
+                            var _s = root.subdivisions;
+                            return root.computeMesh(quadModel.idx);
                         }
-                        property real blendTop: root.getBlend(quadModel.idx, "top")
-                        property real blendBottom: root.getBlend(quadModel.idx, "bottom")
-                        property real blendLeft: root.getBlend(quadModel.idx, "left")
-                        property real blendRight: root.getBlend(quadModel.idx, "right")
-                        property real blendGamma: root.getBlendGamma(quadModel.idx)
-                        property real shapeOpacity: root.getOpacity(quadModel.idx)
-                        property vector2d uvOffset: root.getUvOffset(quadModel.idx)
-                        property vector2d uvScale: root.getUvScale(quadModel.idx)
-                        property real uvRotation: root.getUvRotation(quadModel.idx)
-                        property real manualUv: root.isManualUv(quadModel.idx)
+                        geometry: ProceduralMesh {
+                            positions: quadModel.meshData.positions
+                            normals: quadModel.meshData.normals
+                            uv0s: quadModel.meshData.uvs
+                            indexes: quadModel.meshData.indices
+                        }
 
-                        vertexShader: `${rootPath}/edgeblend.vert`
-                        fragmentShader: `${rootPath}/edgeblend.frag`
+                        materials: CustomMaterial {
+                            shadingMode: CustomMaterial.Unshaded
+                            cullMode: CustomMaterial.NoCulling
+
+                            readonly property var blendModes: [
+                                CustomMaterial.Zero, CustomMaterial.One,
+                                CustomMaterial.SrcColor, CustomMaterial.OneMinusSrcColor,
+                                CustomMaterial.DstColor, CustomMaterial.OneMinusDstColor,
+                                CustomMaterial.SrcAlpha, CustomMaterial.OneMinusSrcAlpha,
+                                CustomMaterial.DstAlpha, CustomMaterial.OneMinusDstAlpha
+                            ]
+                            sourceBlend: blendModes[root.getSrcBlend(quadModel.idx)]
+                            destinationBlend: blendModes[root.getDstBlend(quadModel.idx)]
+
+                            property TextureInput srcTex: TextureInput {
+                                texture: root.getTexSrc(quadModel.idx)
+                            }
+                            property real blendTop: root.getBlend(quadModel.idx, "top")
+                            property real blendBottom: root.getBlend(quadModel.idx, "bottom")
+                            property real blendLeft: root.getBlend(quadModel.idx, "left")
+                            property real blendRight: root.getBlend(quadModel.idx, "right")
+                            property real blendGamma: root.getBlendGamma(quadModel.idx)
+                            property real shapeOpacity: root.getOpacity(quadModel.idx)
+                            property vector2d uvOffset: root.getUvOffset(quadModel.idx)
+                            property vector2d uvScale: root.getUvScale(quadModel.idx)
+                            property real uvRotation: root.getUvRotation(quadModel.idx)
+                            property real manualUv: root.isManualUv(quadModel.idx)
+
+                            vertexShader: `${rootPath}/edgeblend.vert`
+                            fragmentShader: `${rootPath}/edgeblend.frag`
+                        }
+                    }
+                }
+            }
+
+            // Shape outline & vertex overlay
+            Canvas {
+                anchors.fill: parent
+                visible: root.showOverlay
+
+                readonly property var overlayColors: ["#ff4444", "#44ff44", "#4444ff", "#ffff44", "#ff44ff", "#44ffff", "#ff8844", "#88ff44"]
+
+                property int ver: root.stateVersion
+                onVerChanged: requestPaint()
+
+                onPaint: {
+                    var ctx = getContext("2d");
+                    var w = width, h = height;
+                    ctx.clearRect(0, 0, w, h);
+
+                    for (var qi = 0; qi < root.rects.length; qi++) {
+                        var r = root.rects[qi];
+                        var c = r.vertices;
+                        if (!c || c.length < 3) continue;
+                        if (!root.getVisible(qi)) continue;
+
+                        var col = overlayColors[r.source || 0];
+                        var edges = r.edges;
+
+                        // Shape outline
+                        ctx.beginPath();
+                        ctx.moveTo(c[0][0] * w, c[0][1] * h);
+                        for (var ci = 0; ci < c.length; ci++) {
+                            var nextIdx = (ci + 1) % c.length;
+                            var edge = (edges && ci < edges.length) ? edges[ci] : null;
+                            if (edge && edge.cp1 && edge.cp2) {
+                                ctx.bezierCurveTo(
+                                    edge.cp1[0] * w, edge.cp1[1] * h,
+                                    edge.cp2[0] * w, edge.cp2[1] * h,
+                                    c[nextIdx][0] * w, c[nextIdx][1] * h
+                                );
+                            } else {
+                                ctx.lineTo(c[nextIdx][0] * w, c[nextIdx][1] * h);
+                            }
+                        }
+                        ctx.strokeStyle = col;
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        // Vertex dots
+                        for (var vi = 0; vi < c.length; vi++) {
+                            var vx = c[vi][0] * w, vy = c[vi][1] * h;
+                            ctx.beginPath();
+                            ctx.arc(vx, vy, 4, 0, 2 * Math.PI);
+                            ctx.fillStyle = "#fff";
+                            ctx.fill();
+                            ctx.strokeStyle = col;
+                            ctx.lineWidth = 1.5;
+                            ctx.stroke();
+                        }
+
+                        // Shape label
+                        var sx = 0, sy = 0;
+                        for (var vi = 0; vi < c.length; vi++) {
+                            sx += c[vi][0]; sy += c[vi][1];
+                        }
+                        sx = (sx / c.length) * w;
+                        sy = (sy / c.length) * h;
+                        ctx.font = "bold 11px sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.strokeStyle = "#000";
+                        ctx.lineWidth = 3;
+                        ctx.strokeText(r.name, sx, sy);
+                        ctx.fillStyle = "#fff";
+                        ctx.fillText(r.name, sx, sy);
                     }
                 }
             }
@@ -165,6 +245,7 @@ Script {
     property var rects: []
     property int stateVersion: 0
     property int soloIndex: -1
+    property bool showOverlay: false
     property real lastSentW: 0
     property real lastSentH: 0
     readonly property int subdivisions: subdiv.value
@@ -324,6 +405,7 @@ Script {
         if (message.type === "updateRects") {
             root.rects = message.rects || [];
             root.soloIndex = (typeof message.soloIndex === 'number') ? message.soloIndex : -1;
+            root.showOverlay = !!message.showOverlay;
             root.stateVersion++;
         }
     }
