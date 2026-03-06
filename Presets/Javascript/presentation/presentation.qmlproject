@@ -1,0 +1,7 @@
+import QmlProject 1.3
+
+Project {
+    mainFile: "slide.qml"
+    QmlFiles { directory: "." }
+    importPaths: ["."]
+}
