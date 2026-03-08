@@ -80,7 +80,7 @@
     ]
 }*/
 
-// RGB → HSL
+// RGB to HSL
 vec3 rgb2hsl(vec3 c) {
     float maxC = max(c.r, max(c.g, c.b));
     float minC = min(c.r, min(c.g, c.b));
@@ -100,7 +100,7 @@ vec3 rgb2hsl(vec3 c) {
     return vec3(H, S, L);
 }
 
-// HSL → RGB
+// HSL to RGB
 float hue2rgb(float p, float q, float t) {
     if (t < 0.0) t += 1.0;
     if (t > 1.0) t -= 1.0;

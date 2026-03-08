@@ -17,10 +17,10 @@
             "DEFAULT": 0,
             "VALUES":  [ 0, 1, 2, 3 ],
             "LABELS":  [
-                "Limited → Full (expand)",
-                "Full → Limited (compress)",
-                "Limited → Full (10-bit)",
-                "Full → Limited (10-bit)"
+                "Limited to Full (expand)",
+                "Full to Limited (compress)",
+                "Limited to Full (10-bit)",
+                "Full to Limited (10-bit)"
             ]
         },
         {
@@ -40,19 +40,19 @@ void main() {
     vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
 
     if (conversion == 0) {
-        // 8-bit limited → full: (v - 16/255) * 255/219
+        // 8-bit limited to full: (v - 16/255) * 255/219
         c = (c - 16.0 / 255.0) * (255.0 / 219.0);
     }
     else if (conversion == 1) {
-        // 8-bit full → limited: v * 219/255 + 16/255
+        // 8-bit full to limited: v * 219/255 + 16/255
         c = c * (219.0 / 255.0) + 16.0 / 255.0;
     }
     else if (conversion == 2) {
-        // 10-bit limited → full: (v - 64/1023) * 1023/876
+        // 10-bit limited to full: (v - 64/1023) * 1023/876
         c = (c - 64.0 / 1023.0) * (1023.0 / 876.0);
     }
     else if (conversion == 3) {
-        // 10-bit full → limited: v * 876/1023 + 64/1023
+        // 10-bit full to limited: v * 876/1023 + 64/1023
         c = c * (876.0 / 1023.0) + 64.0 / 1023.0;
     }
 

@@ -45,7 +45,7 @@ void main() {
     // Scan line pattern
     float y = uv.y * line_count;
     float line = fract(y);
-    // line goes 0→1 across each scanline. Dark band where line > thickness.
+    // line goes 0to1 across each scanline. Dark band where line > thickness.
     float scanline = smoothstep(line_thickness, line_thickness + 0.05, line);
     float darkness = 1.0 - line_darkness * scanline;
 

@@ -1,7 +1,7 @@
 /*{
     "CREDIT": "ossia score HDR pipeline",
     "ISFVSN": "2",
-    "DESCRIPTION": "Tone mapping for HDR→SDR conversion. Expects linear-light input where 1.0 = SDR reference white and values > 1.0 are HDR highlights. Luminance-based operators (BT.2446, Reinhard) preserve hue; per-channel operators (ACES, AgX) reshape color.",
+    "DESCRIPTION": "Tone mapping for HDRtoSDR conversion. Expects linear-light input where 1.0 = SDR reference white and values > 1.0 are HDR highlights. Luminance-based operators (BT.2446, Reinhard) preserve hue; per-channel operators (ACES, AgX) reshape color.",
     "CATEGORIES": [
         "Color"
     ],

@@ -80,7 +80,7 @@ float softClipHighQ(float x, float onset, float ceiling) {
     float d = ceiling - onset;
     if (d <= 0.0) return ceiling;
     float t = (x - onset) / d;
-    // Quadratic: maps [onset, ∞) → [onset, ceiling)
+    // Quadratic: maps [onset, ∞) to [onset, ceiling)
     // Formula: onset + d * (1 - 1/(1 + t))  -- this is the reciprocal form
     // Quadratic form: onset + d * t / (1 + t) -- Reinhard-like
     return onset + d * t / (1.0 + t);

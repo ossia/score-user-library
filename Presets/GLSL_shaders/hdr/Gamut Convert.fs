@@ -16,7 +16,7 @@
             "TYPE": "long",
             "DEFAULT": 0,
             "VALUES":  [ 0, 1 ],
-            "LABELS":  [ "BT.2020 → BT.709", "BT.709 → BT.2020" ]
+            "LABELS":  [ "BT.2020 to BT.709", "BT.709 to BT.2020" ]
         },
         {
             "NAME": "gamut_clip",

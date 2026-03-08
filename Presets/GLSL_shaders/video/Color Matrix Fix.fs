@@ -17,12 +17,12 @@
             "DEFAULT": 0,
             "VALUES":  [ 0, 1, 2, 3, 4, 5 ],
             "LABELS":  [
-                "BT.601 → BT.709 (SD→HD fix)",
-                "BT.709 → BT.601 (HD→SD fix)",
-                "BT.709 → BT.2020",
-                "BT.2020 → BT.709",
-                "BT.601 → BT.2020",
-                "BT.2020 → BT.601"
+                "BT.601 to BT.709 (SDtoHD fix)",
+                "BT.709 to BT.601 (HDtoSD fix)",
+                "BT.709 to BT.2020",
+                "BT.2020 to BT.709",
+                "BT.601 to BT.2020",
+                "BT.2020 to BT.601"
             ]
         },
         {
@@ -47,7 +47,7 @@
 
 // BT.601 (NTSC/PAL SD) ↔ BT.709 (HD)
 // These correct for the different luma/chroma definitions.
-// Derived from: BT.601 RGB → XYZ → BT.709 RGB via D65 white.
+// Derived from: BT.601 RGB to XYZ to BT.709 RGB via D65 white.
 
 const mat3 mat_601_to_709 = mat3(
      1.0440,  -0.0000,  0.0000,
@@ -74,7 +74,7 @@ const mat3 mat_2020_to_709 = mat3(
     -0.0728, -0.0083,  1.1187
 );
 
-// BT.601 ↔ BT.2020 (composed: 601→709→2020 and reverse)
+// BT.601 ↔ BT.2020 (composed: 601to709to2020 and reverse)
 const mat3 mat_601_to_2020 = mat3(
     0.6553, 0.0691, 0.0164,
     0.3103, 0.9195, 0.0872,

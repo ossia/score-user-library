@@ -16,7 +16,7 @@
             "TYPE": "long",
             "DEFAULT": 0,
             "VALUES":  [ 0, 1 ],
-            "LABELS":  [ "EOTF (decode → linear)", "OETF (linear → encode)" ]
+            "LABELS":  [ "EOTF (decode to linear)", "OETF (linear to encode)" ]
         },
         {
             "NAME": "transfer",
@@ -90,7 +90,7 @@ void main() {
     vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
 
     if (direction == 0) {
-        // EOTF: decode → linear
+        // EOTF: decode to linear
         if (transfer == 0)      c = srgb_eotf(c);
         else if (transfer == 1) c = gamma_eotf(c, 2.2);
         else if (transfer == 2) c = gamma_eotf(c, 2.4);
@@ -98,7 +98,7 @@ void main() {
         else if (transfer == 4) c = hlg_eotf(c);
         // transfer == 5: linear, no-op
     } else {
-        // OETF: linear → encode
+        // OETF: linear to encode
         if (transfer == 0)      c = srgb_oetf(c);
         else if (transfer == 1) c = gamma_oetf(c, 2.2);
         else if (transfer == 2) c = gamma_oetf(c, 2.4);

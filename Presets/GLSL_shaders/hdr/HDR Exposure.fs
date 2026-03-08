@@ -17,8 +17,8 @@
             "DEFAULT": 0,
             "VALUES":  [ 0, 1, 2 ],
             "LABELS":  [
-                "Nits → Normalized (÷ SDR peak)",
-                "Normalized → Nits (× SDR peak)",
+                "Nits to Normalized (/ SDR peak)",
+                "Normalized to Nits (* SDR peak)",
                 "EV Exposure Only"
             ]
         },
@@ -45,10 +45,10 @@ void main() {
     vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
 
     if (mode == 0) {
-        // Nits → normalized: 203 nits becomes 1.0
+        // Nits to normalized: 203 nits becomes 1.0
         c /= sdr_white_nits;
     } else if (mode == 1) {
-        // Normalized → nits: 1.0 becomes 203 nits
+        // Normalized to nits: 1.0 becomes 203 nits
         c *= sdr_white_nits;
     }
 

@@ -25,7 +25,7 @@
             "TYPE": "long",
             "DEFAULT": 0,
             "VALUES":  [ 0, 1, 2 ],
-            "LABELS":  [ "None", "BT.2020 → BT.709", "BT.709 → BT.2020" ]
+            "LABELS":  [ "None", "BT.2020 to BT.709", "BT.709 to BT.2020" ]
         },
         {
             "NAME": "exposure_enable",
@@ -101,7 +101,7 @@
             "TYPE": "long",
             "DEFAULT": 0,
             "VALUES":  [ 0, 1, 2 ],
-            "LABELS":  [ "None", "BT.2020 → BT.709", "BT.709 → BT.2020" ]
+            "LABELS":  [ "None", "BT.2020 to BT.709", "BT.709 to BT.2020" ]
         },
         {
             "NAME": "output_oetf",
@@ -123,8 +123,8 @@
 // ============================================================
 //  EOTF / OETF Transfer Functions
 //
-//  EOTF: electro-optical, converts encoded signal → linear light
-//  OETF: optical-electro, converts linear light → encoded signal
+//  EOTF: electro-optical, converts encoded signal to linear light
+//  OETF: optical-electro, converts linear light to encoded signal
 // ============================================================
 
 // --- sRGB (IEC 61966-2-1) ---
@@ -172,20 +172,20 @@ const float HLG_b = 0.28466892;  // 1 - 4a
 const float HLG_c = 0.55991073;  // 0.5 - a*ln(4a)
 
 vec3 hlg_eotf(vec3 v) {
-    // HLG inverse OETF: signal → scene-linear (relative, 1.0 = reference white)
+    // HLG inverse OETF: signal to scene-linear (relative, 1.0 = reference white)
     vec3 lo = v * v / 3.0;
     vec3 hi = (exp((v - HLG_c) / HLG_a) + HLG_b) / 12.0;
     return mix(lo, hi, step(vec3(0.5), v));
 }
 
 vec3 hlg_oetf(vec3 v) {
-    // HLG OETF: scene-linear → signal
+    // HLG OETF: scene-linear to signal
     vec3 lo = sqrt(3.0 * v);
     vec3 hi = HLG_a * log(12.0 * v - HLG_b) + HLG_c;
     return mix(lo, hi, step(vec3(1.0 / 12.0), v));
 }
 
-// --- HLG OOTF (scene → display, applies system gamma) ---
+// --- HLG OOTF (scene to display, applies system gamma) ---
 
 const vec3 hlg_luma = vec3(0.2627, 0.6780, 0.0593);
 
@@ -390,7 +390,7 @@ vec3 tonemap_pbr_neutral(vec3 c) {
 //
 //  The stages execute in order:
 //    1. Input EOTF (linearize)
-//    2. HLG OOTF (if enabled, for HLG scene→display)
+//    2. HLG OOTF (if enabled, for HLG scenetodisplay)
 //    3. Input gamut conversion
 //    4. Exposure adjustment
 //    5. HDR normalization (scale to 1.0 = SDR white)
@@ -403,14 +403,14 @@ vec3 tonemap_pbr_neutral(vec3 c) {
 void main() {
     vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
 
-    // ── Stage 1: Input EOTF (signal → linear light) ──
+    // ── Stage 1: Input EOTF (signal to linear light) ──
     if (input_eotf == 1)      c = srgb_eotf(c);
     else if (input_eotf == 2) c = gamma_eotf(c, 2.2);
     else if (input_eotf == 3) c = gamma_eotf(c, 2.4);
     else if (input_eotf == 4) c = pq_eotf(c);         // output in nits
     else if (input_eotf == 5) c = hlg_eotf(c);         // output scene-relative
 
-    // ── Stage 2: HLG OOTF (scene-linear → display-linear) ──
+    // ── Stage 2: HLG OOTF (scene-linear to display-linear) ──
     if (hlg_system_gamma_enable) {
         c = hlg_ootf(c, hlg_display_peak);
     }
@@ -433,7 +433,7 @@ void main() {
             // PQ EOTF outputs nits directly
             c /= sdr_peak_nits;
         } else {
-            // Content-peak normalization (1.0 = content peak → 1.0 = SDR white)
+            // Content-peak normalization (1.0 = content peak to 1.0 = SDR white)
             c *= content_peak_nits / sdr_peak_nits;
         }
     }
@@ -469,7 +469,7 @@ void main() {
     // ── Stage 7: Output gamut conversion ──
     c = gamut_convert(c, output_gamut);
 
-    // ── Stage 8: Output OETF (linear → encoded signal) ──
+    // ── Stage 8: Output OETF (linear to encoded signal) ──
     if (output_oetf == 1)      c = srgb_oetf(c);
     else if (output_oetf == 2) c = gamma_oetf(c, 2.2);
     else if (output_oetf == 3) c = gamma_oetf(c, 2.4);

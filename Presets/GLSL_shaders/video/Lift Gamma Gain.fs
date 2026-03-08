@@ -98,8 +98,8 @@ void main() {
 
     // ── Temperature / Tint ──
     // Simple RGB-domain approximation.
-    // Temperature: warm (positive) shifts blue→red
-    // Tint: positive shifts green→magenta
+    // Temperature: warm (positive) shifts bluetored
+    // Tint: positive shifts greentomagenta
     if (temperature != 0.0 || tint != 0.0) {
         float t = temperature * 0.1;
         float ti = tint * 0.1;

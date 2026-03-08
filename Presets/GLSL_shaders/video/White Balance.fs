@@ -124,7 +124,7 @@ void main() {
     float D = adaptation_strength;
     vec3 gain = mix(vec3(1.0), tgtLMS / max(srcLMS, 1e-10), D);
 
-    // Full transform: RGB → XYZ → CAT16 → adapt → CAT16⁻¹ → XYZ → RGB
+    // Full transform: RGB to XYZ to CAT16 to adapt to CAT16⁻¹ to XYZ to RGB
     // We compose this as a single matrix chain for efficiency
     vec3 xyz = RGB_to_XYZ * c;
     vec3 lms = XYZ_to_CAT16 * xyz;

@@ -11,7 +11,7 @@
             "TYPE": "long",
             "DEFAULT": 0,
             "VALUES": [ 0, 1, 2 ],
-            "LABELS": [ "Edges Only", "Overlay on Original", "Original × Edges" ]
+            "LABELS": [ "Edges Only", "Overlay on Original", "Original * Edges" ]
         },
         {
             "NAME": "strength",
@@ -54,7 +54,7 @@ void main() {
     vec2 uv = isf_FragNormCoord;
     vec2 px = 1.0 / RENDERSIZE;
 
-    // 3×3 Sobel
+    // 3*3 Sobel
     float tl = getLuma(uv + vec2(-px.x, px.y));
     float t  = getLuma(uv + vec2(0,     px.y));
     float tr = getLuma(uv + vec2( px.x, px.y));
