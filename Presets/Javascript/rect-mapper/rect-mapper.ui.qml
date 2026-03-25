@@ -373,9 +373,9 @@ Score.ScriptUI {
 
         // ---- Left Panel ----
         ColumnLayout {
-            SplitView.preferredWidth: 150
+            SplitView.preferredWidth: 200
             SplitView.minimumWidth: 100
-            SplitView.maximumWidth: 230
+            SplitView.maximumWidth: 280
             SplitView.fillHeight: true
             spacing: 4
 
@@ -1561,12 +1561,18 @@ Score.ScriptUI {
         }
 
         // ---- Right Panel: shape properties ----
+        ScrollView {
+            SplitView.preferredWidth: 310
+            SplitView.minimumWidth: 310
+            SplitView.maximumWidth: 310
+            SplitView.fillHeight: true
+            clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
         ColumnLayout {
             id: propsPanel
-            SplitView.preferredWidth: 170
-            SplitView.minimumWidth: 140
-            SplitView.maximumWidth: 260
-            SplitView.fillHeight: true
+            width: parent.width - 8
+            x: 4
             spacing: 4
 
             property var selShape: {
@@ -1711,7 +1717,7 @@ Score.ScriptUI {
                     implicitHeight: 24
                     font.pixelSize: 11
                     font.bold: root.soloIndex === root.selectedRect
-                    palette.buttonText: root.soloIndex === root.selectedRect ? palette.light : palette.buttonText
+                    palette.buttonText: root.soloIndex === root.selectedRect ? root.palette.light : root.palette.buttonText
                     Layout.fillWidth: true
                     onClicked: {
                         if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
@@ -1726,7 +1732,7 @@ Score.ScriptUI {
                     implicitHeight: 24
                     font.pixelSize: 11
                     font.bold: propsPanel.selMuted
-                    palette.buttonText: propsPanel.selMuted ? "#ff4444" : palette.buttonText
+                    palette.buttonText: propsPanel.selMuted ? "#ff4444" : root.palette.buttonText
                     Layout.fillWidth: true
                     onClicked: {
                         if (root.selectedRect < 0 || root.selectedRect >= root.rects.length) return;
@@ -1817,7 +1823,7 @@ Score.ScriptUI {
                 SpinBox {
                     from: 1; to: 16
                     value: propsPanel.selShape ? (propsPanel.selShape.gridW || 4) : 4
-                    implicitWidth: 60; implicitHeight: 24; font.pixelSize: 11
+                    Layout.fillWidth: true; implicitHeight: 28; font.pixelSize: 11
                     onValueModified: {
                         root.rects[root.selectedRect].gridW = value;
                         root.rects[root.selectedRect].gridOffsets = null;
@@ -1830,7 +1836,7 @@ Score.ScriptUI {
                 SpinBox {
                     from: 1; to: 16
                     value: propsPanel.selShape ? (propsPanel.selShape.gridH || 4) : 4
-                    implicitWidth: 60; implicitHeight: 24; font.pixelSize: 11
+                    Layout.fillWidth: true; implicitHeight: 28; font.pixelSize: 11
                     onValueModified: {
                         root.rects[root.selectedRect].gridH = value;
                         root.rects[root.selectedRect].gridOffsets = null;
@@ -1964,6 +1970,7 @@ Score.ScriptUI {
 
             Item { Layout.fillHeight: true }
         }
+        } // end ScrollView
     }
     }
 
