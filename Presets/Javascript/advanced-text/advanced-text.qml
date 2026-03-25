@@ -38,6 +38,33 @@ Script {
         item: Item {
             id: outputRoot
             anchors.fill: parent
+
+            // Hidden container: parents the texture inlet item into the scene
+            // graph so ShaderEffectSource can render from it.
+            Item {
+                id: texFillContainer
+                anchors.fill: parent
+                visible: false
+
+                Component.onCompleted: {
+                    if (texFill.item) {
+                        texFill.item.parent = texFillContainer;
+                        texFill.item.width = Qt.binding(function() { return texFillContainer.width; });
+                        texFill.item.height = Qt.binding(function() { return texFillContainer.height; });
+                    }
+                }
+            }
+
+            // Bridge: ShaderEffectSource mirrors the inlet's texture as a
+            // proper QML item (with engine), so grabToImage() works on it.
+            ShaderEffectSource {
+                id: texBridge
+                anchors.fill: parent
+                sourceItem: texFill.item
+                visible: false
+                live: true
+            }
+
             Canvas {
                 id: textCanvas
                 anchors.fill: parent
@@ -45,12 +72,21 @@ Script {
 
                 property int ver: root.stateVersion
                 onVerChanged: requestPaint()
+                onImageLoaded: requestPaint()
 
                 onPaint: {
                     var ctx = getContext("2d");
+                    // For texture fill, pass the grabbed image URL (Canvas-drawable)
+                    // instead of the QQuickRhiItem (which Canvas can't draw).
+                    var texItem = null;
+                    if (root.textState.fillType === "texture"
+                        && root.texGrabUrl
+                        && isImageLoaded(root.texGrabUrl))
+                    {
+                        texItem = root.texGrabUrl;
+                    }
                     TextRender.paintText(ctx, width, height,
-                        root.textState, root.getInletValues(),
-                        root.textState.fillType === "texture" ? texFill.item : null);
+                        root.textState, root.getInletValues(), texItem);
                 }
             }
         }
@@ -66,6 +102,11 @@ Script {
     property real elapsed: 0
     property real lastTickMs: 0
     property bool needsContinuousRepaint: false
+
+    // Texture grab state for Canvas-based texture fill
+    property var texGrabResult: null
+    property string texGrabUrl: ""
+    property bool texGrabPending: false
 
     function getInletValues() {
         var vals = {
@@ -164,6 +205,23 @@ Script {
                 changed = true;
             } catch(e) {}
         }
+
+        // Grab texture inlet content for Canvas use.
+        // Canvas drawImage() can't render QQuickRhiItem directly,
+        // so we snapshot it via a ShaderEffectSource bridge (which is a
+        // proper QML item with an engine) to an image URL Canvas can draw.
+        if (root.textState.fillType === "texture" && texFill.item && !root.texGrabPending) {
+            root.texGrabPending = true;
+            var oldUrl = root.texGrabUrl;
+            texBridge.grabToImage(function(result) {
+                if (oldUrl) textCanvas.unloadImage(oldUrl);
+                root.texGrabResult = result; // prevent GC
+                root.texGrabUrl = result.url;
+                root.texGrabPending = false;
+                textCanvas.loadImage(result.url);
+            });
+        }
+
         if (changed) root.stateVersion++;
 
         var cw = textCanvas.width, ch = textCanvas.height;

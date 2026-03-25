@@ -231,13 +231,16 @@ function paintBackground(ctx, w, h, state, inlets) {
             state.bgGradEnd || "#333333");
         ctx.fillRect(0, 0, w, h);
     } else if (t === "texture") {
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, w, h);
         var src = state.bgTexSource || 0;
         if (inlets && inlets[src]) {
+            // Draw via Canvas (UI preview path)
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, w, h);
             var fit = state.bgTexFit || "cover";
             drawImageFit(ctx, inlets[src], 0, 0, w, h, fit);
         }
+        // When inlets is null, the background is transparent so that a QML
+        // texture item behind the Canvas can show through (execution path).
     }
 }
 
