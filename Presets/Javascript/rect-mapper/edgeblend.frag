@@ -3,6 +3,9 @@ VARYING vec2 texcoord;
 void MAIN()
 {
     vec2 uv = texcoord;
+    if (FRAMEBUFFER_Y_UP < 0.0)
+      uv.y = 1.0 - uv.y;
+
     if (manualUv > 0.5) {
         uv -= vec2(0.5);
         float rad = uvRotation * 3.14159265 / 180.0;
