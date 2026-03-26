@@ -24,8 +24,8 @@
             "LABEL": "Input Gamut Conversion",
             "TYPE": "long",
             "DEFAULT": 0,
-            "VALUES":  [ 0, 1, 2 ],
-            "LABELS":  [ "None", "BT.2020 to BT.709", "BT.709 to BT.2020" ]
+            "VALUES":  [ 0, 1, 2, 3, 4, 5, 6 ],
+            "LABELS":  [ "None", "BT.2020 to BT.709", "BT.709 to BT.2020", "BT.2020 to Display P3", "Display P3 to BT.2020", "Display P3 to BT.709", "BT.709 to Display P3" ]
         },
         {
             "NAME": "exposure_enable",
@@ -82,7 +82,7 @@
             "LABEL": "Tone Mapping",
             "TYPE": "long",
             "DEFAULT": 0,
-            "VALUES":  [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
+            "VALUES":  [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
             "LABELS":  [
                 "None (passthrough)",
                 "BT.2446 Method A",
@@ -92,7 +92,8 @@
                 "ACES (Hill fit)",
                 "AgX (minimal)",
                 "Khronos PBR Neutral",
-                "Clamp"
+                "Clamp",
+                "BT.2390 EETF (PQ)"
             ]
         },
         {
@@ -100,8 +101,8 @@
             "LABEL": "Output Gamut Conversion",
             "TYPE": "long",
             "DEFAULT": 0,
-            "VALUES":  [ 0, 1, 2 ],
-            "LABELS":  [ "None", "BT.2020 to BT.709", "BT.709 to BT.2020" ]
+            "VALUES":  [ 0, 1, 2, 3, 4, 5, 6 ],
+            "LABELS":  [ "None", "BT.2020 to BT.709", "BT.709 to BT.2020", "BT.2020 to Display P3", "Display P3 to BT.2020", "Display P3 to BT.709", "BT.709 to Display P3" ]
         },
         {
             "NAME": "output_oetf",
@@ -193,7 +194,9 @@ vec3 hlg_ootf(vec3 scene, float Lw) {
     // BT.2100 system gamma
     float gamma = 1.2 + 0.42 * log(Lw / 1000.0) / log(10.0);
     float Ys = dot(hlg_luma, scene);
-    return Lw * pow(max(Ys, 0.0), gamma - 1.0) * scene;
+    // Guard: when gamma < 1 (SDR target), pow(0, negative) = inf
+    if (Ys <= 0.0) return vec3(0.0);
+    return Lw * pow(Ys, gamma - 1.0) * scene;
 }
 
 // ============================================================
@@ -214,9 +217,37 @@ const mat3 mat_bt709_to_bt2020 = mat3(
     0.0433, 0.0114, 0.8956
 );
 
+const mat3 mat_bt2020_to_p3 = mat3(
+     1.343578252584332, -0.065297452789119,  0.002821787261701,
+    -0.282179670526136,  1.075787915848574, -0.019598494524494,
+    -0.061398582058196, -0.010490463059455,  1.016776707262793
+);
+
+const mat3 mat_p3_to_bt2020 = mat3(
+    0.753833034361722,  0.045743848965358, -0.001210340354518,
+    0.198597369052617,  0.941777219811693,  0.017601717301090,
+    0.047569596585662,  0.012478931222948,  0.983608623053428
+);
+
+const mat3 mat_p3_to_bt709 = mat3(
+     1.224940176280561, -0.042056954709688, -0.019637554590334,
+    -0.224940176280560,  1.042056954709688, -0.078636045550632,
+     0.000000000000000,  0.000000000000000,  1.098273600140966
+);
+
+const mat3 mat_bt709_to_p3 = mat3(
+    0.822461968714362,  0.033194198850962,  0.017082630721120,
+    0.177538031285638,  0.966805801149038,  0.072397440663963,
+    0.000000000000000,  0.000000000000000,  0.910519928614917
+);
+
 vec3 gamut_convert(vec3 c, int mode) {
     if (mode == 1) return mat_bt2020_to_bt709 * c;
     if (mode == 2) return mat_bt709_to_bt2020 * c;
+    if (mode == 3) return mat_bt2020_to_p3 * c;
+    if (mode == 4) return mat_p3_to_bt2020 * c;
+    if (mode == 5) return mat_p3_to_bt709 * c;
+    if (mode == 6) return mat_bt709_to_p3 * c;
     return c;
 }
 
@@ -385,6 +416,48 @@ vec3 tonemap_pbr_neutral(vec3 c) {
 }
 
 
+// --- BT.2390 EETF (ITU-R BT.2390, PQ domain hermite spline) ---
+//     Designed specifically for PQ HDR->SDR. Operates on max-RGB
+//     channel in PQ domain, preserving hue ratios.
+
+float pq_fwd(float Y) {
+    float Ym1 = pow(max(Y, 0.0), 0.1593017578125);
+    return pow((0.8359375 + 18.8515625 * Ym1) / (1.0 + 18.6875 * Ym1), 78.84375);
+}
+
+float pq_inv(float N) {
+    float Nm = pow(max(N, 0.0), 1.0 / 78.84375);
+    return pow(max(Nm - 0.8359375, 0.0) / (18.8515625 - 18.6875 * Nm), 1.0 / 0.1593017578125);
+}
+
+vec3 tonemap_bt2390(vec3 color, float srcPeak, float dstPeak) {
+    float srcPeakPQ = pq_fwd(srcPeak / 10000.0);
+    float dstPeakPQ = pq_fwd(dstPeak / 10000.0);
+    float KS = 1.5 * dstPeakPQ - 0.5 * srcPeakPQ;
+
+    float maxC = max(color.r, max(color.g, color.b));
+    if (maxC <= 0.0) return color;
+
+    float absLinear = maxC * srcPeak / 10000.0;
+    float pqVal = pq_fwd(absLinear);
+
+    float mappedPQ = pqVal;
+    if (pqVal >= KS && srcPeakPQ > KS) {
+        float t = (pqVal - KS) / (srcPeakPQ - KS);
+        float t2 = t * t;
+        float t3 = t2 * t;
+        mappedPQ = (2.0*t3 - 3.0*t2 + 1.0) * KS
+                 + (t3 - 2.0*t2 + t) * (srcPeakPQ - KS)
+                 + (-2.0*t3 + 3.0*t2) * dstPeakPQ;
+    }
+
+    float mappedLinear = pq_inv(mappedPQ);
+    float dstLinear = pq_inv(dstPeakPQ);
+    float ratio = mappedLinear / max(dstLinear, 1e-10);
+    float sc = ratio / maxC;
+    return clamp(color * sc, 0.0, 1.0);
+}
+
 // ============================================================
 //  Main Pipeline
 //
@@ -424,16 +497,18 @@ void main() {
     }
 
     // ── Stage 5: HDR normalization ──
-    //    Scales absolute nits (from PQ) or arbitrary linear values
-    //    so that 1.0 = SDR reference white.
-    //    For PQ input: divide by sdr_peak_nits (e.g., 203).
-    //    For other inputs: scale by content_peak / sdr_peak.
+    //    Scales absolute nits (from PQ or HLG+OOTF) or arbitrary
+    //    linear values so that 1.0 = SDR reference white.
+    //    - PQ EOTF outputs nits directly -> divide by sdr_peak
+    //    - HLG+OOTF outputs nits -> divide by sdr_peak
+    //    - HLG without OOTF: scene-relative, ~1.0 = ref white -> scale by content_peak/sdr_peak
+    //    - Other: scale by content_peak / sdr_peak
     if (normalize_enable) {
-        if (input_eotf == 4) {
-            // PQ EOTF outputs nits directly
+        if (input_eotf == 4 || (input_eotf == 5 && hlg_system_gamma_enable)) {
+            // Output is in nits (PQ EOTF or HLG after OOTF)
             c /= sdr_peak_nits;
         } else {
-            // Content-peak normalization (1.0 = content peak to 1.0 = SDR white)
+            // Content-peak normalization (1.0 = content peak -> 1.0 = SDR white)
             c *= content_peak_nits / sdr_peak_nits;
         }
     }
@@ -464,6 +539,9 @@ void main() {
     }
     else if (tonemap == 8) {
         c = clamp(c, 0.0, 1.0);
+    }
+    else if (tonemap == 9) {
+        c = tonemap_bt2390(c, content_peak_nits, sdr_peak_nits);
     }
 
     // ── Stage 7: Output gamut conversion ──

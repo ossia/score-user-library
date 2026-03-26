@@ -15,7 +15,7 @@
             "LABEL": "Algorithm",
             "TYPE": "long",
             "DEFAULT": 0,
-            "VALUES":  [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+            "VALUES":  [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
             "LABELS":  [
                 "BT.2446 Method A",
                 "Reinhard (luminance)",
@@ -24,7 +24,8 @@
                 "ACES (Hill fit)",
                 "AgX (minimal)",
                 "Khronos PBR Neutral",
-                "Clamp"
+                "Clamp",
+                "BT.2390 EETF (PQ)"
             ]
         },
         {
@@ -165,6 +166,53 @@ vec3 tm_pbr(vec3 c) {
     return mix(c, vec3(np), g);
 }
 
+// -- BT.2390 EETF (ITU-R BT.2390, operates in PQ domain) --
+//    Designed specifically for PQ content. Applies a hermite spline
+//    roll-off from knee to peak in PQ domain, preserving hue ratios.
+//    Input: linear light, 1.0 = SDR white, content_peak = peak/SDR ratio.
+
+float pq_forward(float Y) {
+    float Ym1 = pow(max(Y, 0.0), 0.1593017578125);
+    return pow((0.8359375 + 18.8515625 * Ym1) / (1.0 + 18.6875 * Ym1), 78.84375);
+}
+
+float pq_inverse(float N) {
+    float Nm = pow(max(N, 0.0), 1.0 / 78.84375);
+    return pow(max(Nm - 0.8359375, 0.0) / (18.8515625 - 18.6875 * Nm), 1.0 / 0.1593017578125);
+}
+
+vec3 tm_bt2390(vec3 color, float peakRatio) {
+    float srcPeakNits = peakRatio * 203.0;
+    float dstPeakNits = 203.0;
+
+    float srcPeakPQ = pq_forward(srcPeakNits / 10000.0);
+    float dstPeakPQ = pq_forward(dstPeakNits / 10000.0);
+    float KS = 1.5 * dstPeakPQ - 0.5 * srcPeakPQ;
+
+    float maxC = max(color.r, max(color.g, color.b));
+    if (maxC <= 0.0) return color;
+
+    float absLinear = maxC * srcPeakNits / 10000.0;
+    float pqVal = pq_forward(absLinear);
+
+    // Hermite spline EETF
+    float mappedPQ = pqVal;
+    if (pqVal >= KS && srcPeakPQ > KS) {
+        float t = (pqVal - KS) / (srcPeakPQ - KS);
+        float t2 = t * t;
+        float t3 = t2 * t;
+        mappedPQ = (2.0*t3 - 3.0*t2 + 1.0) * KS
+                 + (t3 - 2.0*t2 + t) * (srcPeakPQ - KS)
+                 + (-2.0*t3 + 3.0*t2) * dstPeakPQ;
+    }
+
+    float mappedLinear = pq_inverse(mappedPQ);
+    float dstLinear = pq_inverse(dstPeakPQ);
+    float ratio = mappedLinear / max(dstLinear, 1e-10);
+    float sc = ratio / maxC;
+    return clamp(color * sc, 0.0, 1.0);
+}
+
 void main() {
     vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
 
@@ -180,6 +228,7 @@ void main() {
     else if (tonemap == 5) c = clamp(tm_agx(c), 0.0, 1.0);
     else if (tonemap == 6) c = clamp(tm_pbr(c), 0.0, 1.0);
     else if (tonemap == 7) c = clamp(c, 0.0, 1.0);
+    else if (tonemap == 8) c = tm_bt2390(c, content_peak);
 
     // Post-tonemap saturation
     if (saturation != 1.0) {
