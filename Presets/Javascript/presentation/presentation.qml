@@ -153,6 +153,7 @@ Script {
                     id: bgTex
                     anchors.fill: parent
                     z: 0
+                    smooth: true
                     property var ss: root.slideState
                     visible: ss ? ss.bgType === "texture" : false
                     sourceItem: {
@@ -196,6 +197,7 @@ Script {
                         Rectangle {
                             id: shapeFill
                             anchors.fill: parent
+                            antialiasing: true
                             visible: obj && (obj.type === "rect" || obj.type === "ellipse") && obj.fillEnabled !== false
                             radius: {
                                 if (!obj) return 0;
@@ -229,6 +231,7 @@ Script {
                         // Shape stroke
                         Rectangle {
                             anchors.fill: parent
+                            antialiasing: true
                             visible: obj && (obj.type === "rect" || obj.type === "ellipse") && obj.strokeEnabled
                             radius: shapeFill.radius
                             color: "transparent"
@@ -256,6 +259,7 @@ Script {
 
                             ShaderEffectSource {
                                 id: imgTex
+                                smooth: true
                                 sourceItem: {
                                     if (!obj || obj.type !== "image") return null;
                                     if (obj.imageFileUrl && obj.imageFileUrl.length > 0) return null;
