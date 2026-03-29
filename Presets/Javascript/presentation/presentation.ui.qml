@@ -21,6 +21,7 @@ Score.ScriptUI {
     property real renderWidth: 0
     property real renderHeight: 0
     property int editingTextIdx: -1
+    property var clipboard: null
 
     // Viewport drag state
     property bool isDragging: false
@@ -1507,5 +1508,54 @@ Score.ScriptUI {
             }
         }
     }
+    }
+
+    // Keyboard shortcuts
+    Keys.onPressed: function(event) {
+        // Don't capture shortcuts while editing text inline
+        if (root.editingTextIdx >= 0) return;
+
+        var ctrl = event.modifiers & Qt.ControlModifier;
+        var shift = event.modifiers & Qt.ShiftModifier;
+
+        // Undo: Ctrl+Z
+        if (ctrl && !shift && event.key === Qt.Key_Z) {
+            Score.undo();
+            event.accepted = true;
+        }
+        // Redo: Ctrl+Shift+Z or Ctrl+Y
+        else if ((ctrl && shift && event.key === Qt.Key_Z) || (ctrl && event.key === Qt.Key_Y)) {
+            Score.redo();
+            event.accepted = true;
+        }
+        // Delete: Del/Backspace
+        else if ((event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) && root.selectedObj >= 0) {
+            root.deleteObject(root.selectedObj);
+            event.accepted = true;
+        }
+        // Duplicate: Ctrl+D
+        else if (ctrl && event.key === Qt.Key_D && root.selectedObj >= 0) {
+            root.duplicateObject(root.selectedObj);
+            event.accepted = true;
+        }
+        // Copy: Ctrl+C
+        else if (ctrl && event.key === Qt.Key_C && root.selectedObj >= 0) {
+            var obj = root.curObj();
+            if (obj) root.clipboard = JSON.parse(JSON.stringify(obj));
+            event.accepted = true;
+        }
+        // Paste: Ctrl+V
+        else if (ctrl && event.key === Qt.Key_V && root.clipboard) {
+            var dup = JSON.parse(JSON.stringify(root.clipboard));
+            dup.id = "obj-" + Date.now();
+            dup.x += 0.02;
+            dup.y += 0.02;
+            root.slideState.objects.push(dup);
+            root.selectedObj = root.slideState.objects.length - 1;
+            root.stateVersion++;
+            sendLive();
+            saveState("Paste object");
+            event.accepted = true;
+        }
     }
 }
