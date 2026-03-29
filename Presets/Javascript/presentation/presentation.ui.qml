@@ -1273,8 +1273,8 @@ Score.ScriptUI {
                         }
                         ComboBox {
                             Layout.fillWidth: true
-                            model: ["solid", "linearGradient", "radialGradient"]
-                            currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["solid","linearGradient","radialGradient"].indexOf(o.fillType)) : 0; }
+                            model: ["solid", "linearGradient", "radialGradient", "texture"]
+                            currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["solid","linearGradient","radialGradient","texture"].indexOf(o.fillType)) : 0; }
                             onActivated: root.setObjPropAndSave("fillType", model[currentIndex], "Change fill type")
                         }
                     }
@@ -1291,6 +1291,17 @@ Score.ScriptUI {
                             visible: { root.stateVersion; var o = root.curObj(); return o && o.fillType === "linearGradient"; }
                             Layout.fillWidth: true; label: "Angle"; key: "gradAngle"
                             lo: 0; hi: 360; step: 1; decimals: 0; suffix: "\u00b0"
+                        }
+                    }
+                    RowLayout {
+                        visible: { root.stateVersion; var o = root.curObj(); return o && o.fillType === "texture"; }
+                        Layout.fillWidth: true; spacing: 4
+                        Lbl { text: "Source" }
+                        ComboBox {
+                            Layout.fillWidth: true
+                            model: ["Image 1","Image 2","Image 3","Image 4","Image 5","Image 6","Image 7","Image 8"]
+                            currentIndex: { root.stateVersion; var o = root.curObj(); return o ? (o.fillTexSource || 0) : 0; }
+                            onActivated: root.setObjPropAndSave("fillTexSource", currentIndex, "Change fill texture source")
                         }
                     }
                 }

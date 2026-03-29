@@ -30,6 +30,12 @@ Script {
     property var inletItems: [tex0.item, tex1.item, tex2.item, tex3.item,
                                tex4.item, tex5.item, tex6.item, tex7.item]
 
+    // Grab management for shape texture fills (Canvas can't draw QQuickRhiItem
+    // directly — we snapshot via ShaderEffectSource bridge, like advanced-text)
+    property var texGrabUrls: [null, null, null, null, null, null, null, null]
+    property var texGrabPending: [false, false, false, false, false, false, false, false]
+    property var texGrabResults: [null, null, null, null, null, null, null, null]
+
     TextureOutlet {
         objectName: "Output"
         item: Item {
@@ -54,6 +60,18 @@ Script {
                     }
                 }
             }
+
+            // ShaderEffectSource bridges for grabToImage (shape texture fills).
+            // Canvas drawImage() can't render QQuickRhiItem directly, so we
+            // snapshot via ShaderEffectSource bridge, like advanced-text does.
+            ShaderEffectSource { id: texBridge0; anchors.fill: parent; sourceItem: root.inletItems[0] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge1; anchors.fill: parent; sourceItem: root.inletItems[1] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge2; anchors.fill: parent; sourceItem: root.inletItems[2] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge3; anchors.fill: parent; sourceItem: root.inletItems[3] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge4; anchors.fill: parent; sourceItem: root.inletItems[4] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge5; anchors.fill: parent; sourceItem: root.inletItems[5] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge6; anchors.fill: parent; sourceItem: root.inletItems[6] || null; visible: false; live: true }
+            ShaderEffectSource { id: texBridge7; anchors.fill: parent; sourceItem: root.inletItems[7] || null; visible: false; live: true }
 
             // Letterbox: fill outside slide area with black
             Rectangle {
@@ -197,7 +215,7 @@ Script {
                         Rectangle {
                             id: shapeFill
                             anchors.fill: parent
-                            visible: obj && (obj.type === "rect" || obj.type === "ellipse") && obj.fillEnabled !== false
+                            visible: obj && (obj.type === "rect" || obj.type === "ellipse") && obj.fillEnabled !== false && obj.fillType !== "texture"
                             radius: {
                                 if (!obj) return 0;
                                 if (obj.type === "ellipse") return Math.min(parent.width, parent.height) / 2;
@@ -235,6 +253,39 @@ Script {
                             color: "transparent"
                             border.color: obj ? (obj.strokeColor || "#000000") : "#000000"
                             border.width: obj ? ((obj.strokeWidth || 2) * objDelegate.s) : 0
+                        }
+
+                        // Shape texture fill (Canvas + grabToImage, like advanced-text)
+                        Canvas {
+                            id: shapeTexCanvas
+                            anchors.fill: parent
+                            visible: obj && (obj.type === "rect" || obj.type === "ellipse") && obj.fillType === "texture" && obj.fillEnabled !== false
+                            renderStrategy: Canvas.Cooperative
+                            property int ver: root.stateVersion
+                            onVerChanged: {
+                                if (!visible) return;
+                                var url = root.texGrabUrls[obj.fillTexSource || 0];
+                                if (url && !isImageLoaded(url)) loadImage(url);
+                                else requestPaint();
+                            }
+                            onImageLoaded: requestPaint()
+                            onPaint: {
+                                var ctx = getContext("2d");
+                                ctx.clearRect(0, 0, width, height);
+                                if (!obj || !visible) return;
+                                var url = root.texGrabUrls[obj.fillTexSource || 0];
+                                if (!url || !isImageLoaded(url)) return;
+                                ctx.save();
+                                ctx.beginPath();
+                                if (obj.type === "ellipse") {
+                                    ctx.ellipse(width/2, height/2, width/2, height/2, 0, 0, 2*Math.PI);
+                                } else {
+                                    SlideRender.roundRect(ctx, 0, 0, width, height, (obj.cornerRadius || 0) * objDelegate.s);
+                                }
+                                ctx.clip();
+                                try { ctx.drawImage(url, 0, 0, width, height); } catch(e) {}
+                                ctx.restore();
+                            }
                         }
 
                         // ---- Image ----
@@ -411,6 +462,7 @@ Script {
         if (!objs) return false;
         for (var i = 0; i < objs.length; i++) {
             if (objs[i].type === "image") return true;
+            if (objs[i].fillType === "texture") return true;
         }
         return false;
     }
@@ -488,6 +540,36 @@ Script {
         }
 
         if (root.hasImageSource()) changed = true;
+
+        // Grab texture inlet content for shape texture fills.
+        // Canvas drawImage() can't render QQuickRhiItem directly,
+        // so we snapshot via ShaderEffectSource bridge (like advanced-text).
+        var slide = root.currentSlide();
+        var slideObjs = slide.objects || [];
+        var neededInlets = {};
+        for (var i = 0; i < slideObjs.length; i++) {
+            var o = slideObjs[i];
+            if (o && (o.type === "rect" || o.type === "ellipse")
+                && o.fillType === "texture" && o.fillEnabled !== false) {
+                neededInlets[o.fillTexSource || 0] = true;
+            }
+        }
+        var bridges = [texBridge0, texBridge1, texBridge2, texBridge3,
+                       texBridge4, texBridge5, texBridge6, texBridge7];
+        for (var src in neededInlets) {
+            src = parseInt(src);
+            if (!root.texGrabPending[src] && root.inletItems[src]) {
+                root.texGrabPending[src] = true;
+                (function(s) {
+                    bridges[s].grabToImage(function(result) {
+                        root.texGrabResults[s] = result; // prevent GC
+                        root.texGrabUrls[s] = result.url;
+                        root.texGrabPending[s] = false;
+                        root.stateVersion++;
+                    });
+                })(src);
+            }
+        }
 
         if (changed) root.stateVersion++;
 

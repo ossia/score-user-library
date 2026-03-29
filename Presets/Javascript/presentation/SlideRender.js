@@ -58,6 +58,7 @@ function createObject(type, index) {
         fillEnabled: true,
         fillType: "solid",
         fillColor: type === "text" ? "transparent" : "#ffffff",
+        fillTexSource: 0,
         gradStartColor: "#ffffff",
         gradEndColor: "#4466ff",
         gradAngle: 90,
@@ -274,10 +275,10 @@ function paintObject(ctx, w, h, obj, inlets, s) {
 
     switch (obj.type) {
         case "rect":
-            paintRect(ctx, obj, px, py, pw, ph, s);
+            paintRect(ctx, obj, px, py, pw, ph, s, inlets);
             break;
         case "ellipse":
-            paintEllipse(ctx, obj, px, py, pw, ph, s);
+            paintEllipse(ctx, obj, px, py, pw, ph, s, inlets);
             break;
         case "image":
             paintImage(ctx, obj, px, py, pw, ph, inlets, s);
@@ -294,14 +295,26 @@ function paintObject(ctx, w, h, obj, inlets, s) {
 // Shape painters
 // ============================================================
 
-function paintRect(ctx, obj, x, y, w, h, s) {
+function paintRect(ctx, obj, x, y, w, h, s, inlets) {
     var r = (obj.cornerRadius || 0) * s;
 
     if (obj.fillEnabled !== false) {
-        ctx.beginPath();
-        roundRect(ctx, x, y, w, h, r);
-        applyFill(ctx, obj, x, y, w, h);
-        ctx.fill();
+        if (obj.fillType === "texture" && inlets) {
+            var texItem = inlets[obj.fillTexSource || 0];
+            if (texItem) {
+                ctx.save();
+                ctx.beginPath();
+                roundRect(ctx, x, y, w, h, r);
+                ctx.clip();
+                drawImageFit(ctx, texItem, x, y, w, h, "cover");
+                ctx.restore();
+            }
+        } else {
+            ctx.beginPath();
+            roundRect(ctx, x, y, w, h, r);
+            applyFill(ctx, obj, x, y, w, h);
+            ctx.fill();
+        }
     }
 
     if (obj.strokeEnabled) {
@@ -312,17 +325,29 @@ function paintRect(ctx, obj, x, y, w, h, s) {
     }
 }
 
-function paintEllipse(ctx, obj, x, y, w, h, s) {
+function paintEllipse(ctx, obj, x, y, w, h, s, inlets) {
     var cx = x + w / 2;
     var cy = y + h / 2;
     var rx = w / 2;
     var ry = h / 2;
 
     if (obj.fillEnabled !== false) {
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
-        applyFill(ctx, obj, x, y, w, h);
-        ctx.fill();
+        if (obj.fillType === "texture" && inlets) {
+            var texItem = inlets[obj.fillTexSource || 0];
+            if (texItem) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+                ctx.clip();
+                drawImageFit(ctx, texItem, x, y, w, h, "cover");
+                ctx.restore();
+            }
+        } else {
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+            applyFill(ctx, obj, x, y, w, h);
+            ctx.fill();
+        }
     }
 
     if (obj.strokeEnabled) {
