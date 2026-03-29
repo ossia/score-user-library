@@ -387,7 +387,7 @@ function paintImage(ctx, obj, x, y, w, h, inlets, s) {
             ctx.beginPath();
             ctx.rect(cropX, cropY, cropW, cropH);
             ctx.clip();
-            try { ctx.drawImage(obj.imageFileUrl, cropX, cropY, cropW, cropH); } catch(e) {}
+            try { ctx.drawImage(obj._resolvedUrl || obj.imageFileUrl, cropX, cropY, cropW, cropH); } catch(e) {}
             ctx.restore();
         } else if (texItem) {
             ctx.save();

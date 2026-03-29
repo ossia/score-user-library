@@ -88,7 +88,7 @@ Score.ScriptUI {
         root.stateVersion++;
         sendLive();
         // Sync the backend's Slide IntSlider (1-based)
-        Score.setValue(root.inlet("Slide"), idx + 1);
+        Score.Editor.setValue(root.inlet("Slide"), idx + 1);
     }
 
     function addSlide() {
@@ -909,8 +909,10 @@ Score.ScriptUI {
                     if (!objs) return;
                     for (var i = 0; i < objs.length; i++) {
                         var url = objs[i].imageFileUrl;
-                        if (url && url.length > 0 && !isImageLoaded(url)) {
-                            loadImage(url);
+                        if (url && url.length > 0) {
+                            var resolved = Score.Editor.locateFilePath(url);
+                            objs[i]._resolvedUrl = resolved;
+                            if (!isImageLoaded(resolved)) loadImage(resolved);
                         }
                     }
                 }
@@ -1030,8 +1032,20 @@ Score.ScriptUI {
                         if (isImage) {
                             var objs = root.slideState.objects;
                             var obj = SlideRender.createObject("image", objs.length);
-                            obj.imageFileUrl = url;
+                            var localPath = Util.urlToLocalFile(url);
+                            obj.imageFileUrl = Score.Editor.relativizeFilePath(localPath);
                             obj.name = url.substring(url.lastIndexOf("/") + 1);
+                            // Set aspect-ratio-correct dimensions.
+                            // w/h are normalized to slide width/height respectively,
+                            // so we must account for the slide's own aspect ratio.
+                            var sz = Util.imageSize(localPath);
+                            if (sz.width > 0 && sz.height > 0) {
+                                var imgAspect = sz.width / sz.height;
+                                var slideRatio = SlideRender.getFormatRatio(root.slideState);
+                                if (slideRatio <= 0) slideRatio = root.renderWidth / Math.max(1, root.renderHeight);
+                                if (slideRatio <= 0) slideRatio = 16 / 9;
+                                obj.h = (obj.w / imgAspect) * slideRatio;
+                            }
                             objs.push(obj);
                             root.selectedObj = objs.length - 1;
                         }
@@ -1379,7 +1393,7 @@ Score.ScriptUI {
                         id: imageFileDialog
                         title: "Select Image"
                         nameFilters: ["Image files (*.png *.jpg *.jpeg *.gif *.bmp *.svg *.webp)"]
-                        onAccepted: root.setObjPropAndSave("imageFileUrl", selectedFile.toString(), "Set image file")
+                        onAccepted: root.setObjPropAndSave("imageFileUrl", Score.Editor.relativizeFilePath(Util.urlToLocalFile(selectedFile.toString())), "Set image file")
                     }
 
                     // Inlet-based image source
@@ -1511,12 +1525,12 @@ Score.ScriptUI {
 
         // Undo: Ctrl+Z
         if (ctrl && !shift && event.key === Qt.Key_Z) {
-            Score.undo();
+            Score.Editor.undo();
             event.accepted = true;
         }
         // Redo: Ctrl+Shift+Z or Ctrl+Y
         else if ((ctrl && shift && event.key === Qt.Key_Z) || (ctrl && event.key === Qt.Key_Y)) {
-            Score.redo();
+            Score.Editor.redo();
             event.accepted = true;
         }
         // Delete: Del/Backspace

@@ -307,8 +307,9 @@ Script {
                                 ctx.clearRect(0, 0, width, height);
                                 var url = obj.imageFileUrl;
                                 if (url && url.length > 0) {
-                                    if (!isImageLoaded(url)) { loadImage(url); return; }
-                                    try { ctx.drawImage(url, 0, 0, width, height); } catch(e) {}
+                                    var resolved = Editor.locateFilePath(url);
+                                    if (!isImageLoaded(resolved)) { loadImage(resolved); return; }
+                                    try { ctx.drawImage(resolved, 0, 0, width, height); } catch(e) {}
                                 }
                             }
                         }
