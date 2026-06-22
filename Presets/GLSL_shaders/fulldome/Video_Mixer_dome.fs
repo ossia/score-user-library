@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/video-mixer-dome.html",
     "CATEGORIES": [
         "General",
         "DOME"

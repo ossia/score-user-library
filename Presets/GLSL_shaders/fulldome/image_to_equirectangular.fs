@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/image-to-equirectangular.html",
     "DESCRIPTION": "Overlays an image onto an equirectangular projection with true spherical distortion. Allows 3D positioning, rotation, and scaling of the overlay on the sphere. Surrounding space is transparent or shows a base equirectangular image.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

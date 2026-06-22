@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/claves.html
 import Score 1.0
 import 'total-serialism.js' as Serialism
 

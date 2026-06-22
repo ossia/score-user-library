@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/ui-example.html
 import Score
 import QtQuick
 // This is an example script that showcases the available API.

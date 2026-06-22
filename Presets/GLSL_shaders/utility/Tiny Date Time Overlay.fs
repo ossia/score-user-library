@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/tiny-date-time-overlay.html",
     "CATEGORIES": [
         "Overlay", "Utility"
     ],

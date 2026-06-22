@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/image-editor.html",
   "ISFVSN": "2.0",
   "DESCRIPTION": "Transforms an input image: scale, rotate (positive angle for CW image rotation), flip, and position.",
   "CREDIT": "Edu Meneses + AI Assistant (Gemini)",

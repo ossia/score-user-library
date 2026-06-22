@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/average.html
 import Score 1.0
 Script {
   ValueInlet { id: in1 }

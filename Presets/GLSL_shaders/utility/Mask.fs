@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/mask.html",
     "CATEGORIES": [
         "General"
     ],

@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/euclidean-melody.html
 import Score 1.0
 import TotalSerialism.Serialism as Serialism
 

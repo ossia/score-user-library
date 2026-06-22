@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/cubemap-to-equirectangular.html",
     "DESCRIPTION": "Converts a cubemap atlas (strip or cross layout) to an equirectangular image. Requires knowing the layout and any rotations applied to faces in the atlas.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

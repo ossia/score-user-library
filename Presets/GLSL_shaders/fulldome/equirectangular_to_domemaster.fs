@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/equirectangular-to-domemaster.html",
     "DESCRIPTION": "Generates a Domemaster output by projecting a rotated equirectangular image. Rotations, output FOV, and horizontal flip are controllable.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

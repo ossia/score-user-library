@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/crop-edges.html",
   "ISFVSN": "2",
   "CATEGORIES": ["Geometry Adjustment"],
   "CREDIT": "ossia score",

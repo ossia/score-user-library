@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/advanced-text.html
 import Score
 import QtQuick
 import "TextRender.js" as TextRender

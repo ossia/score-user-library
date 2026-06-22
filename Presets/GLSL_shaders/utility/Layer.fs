@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/layer.html",
     "CATEGORIES": [
         "General"
     ],

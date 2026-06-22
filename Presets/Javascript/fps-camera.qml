@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/fps-camera.html
 import Score 
 import QtQuick
 

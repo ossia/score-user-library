@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/cubemap.html",
     "DESCRIPTION": "Arranges six input cube face images into a selectable layout (Horizontal Strip, Vertical Cross, or Horizontal Cross). Each face can be individually rotated by 0, 90, 180, or 270 degrees clockwise. Defines standard cell mappings for each layout type. Empty cells in cross layouts are transparent black. Assumes input faces are standard 2D views.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

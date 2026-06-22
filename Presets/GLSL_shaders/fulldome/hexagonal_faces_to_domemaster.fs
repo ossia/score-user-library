@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/hexagonal-faces-to-domemaster.html",
     "DESCRIPTION": "Hexagonal Prism Domemaster. 6 side faces (split into top/bottom halves, bottom rotated 180) + 2 pole faces. Preserves transparency.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

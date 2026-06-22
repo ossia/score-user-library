@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/cubesides-to-domemaster.html",
     "DESCRIPTION": "Generates a Domemaster output by projecting a rotated cubemap (6 input images). Rotations and output FOV are controllable.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

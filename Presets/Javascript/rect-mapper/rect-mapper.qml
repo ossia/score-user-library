@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/rect-mapper.html
 import Score
 import QtQuick
 import QtQuick3D

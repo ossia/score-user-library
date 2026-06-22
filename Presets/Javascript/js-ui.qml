@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/js-ui.html
 import Score as Score
 import QtQuick
 import QtQuick.Controls as QQC

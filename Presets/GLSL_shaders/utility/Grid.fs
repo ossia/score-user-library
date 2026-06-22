@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/grid.html",
     "CATEGORIES": [
         "Utility"
     ],

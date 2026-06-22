@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/presentation.html
 import Score
 import QtQuick
 import "SlideRender.js" as SlideRender

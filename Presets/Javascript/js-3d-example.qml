@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/js-3d-example.html
 import Score as Score
 import QtQuick
 import QtQuick3D

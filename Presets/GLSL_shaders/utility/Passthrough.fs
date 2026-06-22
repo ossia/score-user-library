@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/passthrough.html",
 	"CREDIT": "ossia score",
 	"ISFVSN": "2",
 	"DESCRIPTION": "Copy the input texture without changes",

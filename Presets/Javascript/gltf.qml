@@ -1,3 +1,4 @@
+// @documentation https://ossia.io/score-docs/processes/javascript/gltf.html
 import Score as Score
 import QtQuick
 import QtQuick3D

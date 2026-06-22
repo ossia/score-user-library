@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/half-cubesides-to-domemaster.html",
     "DESCRIPTION": "Optimized single-pass Domemaster. Maps raw 2:1 images to top/bottom halves, rotating bottom 180. Includes API-level input flips.",
     "CREDIT": "Edu Meneses + AI Assistant (Gemini)",
     "CATEGORIES": [

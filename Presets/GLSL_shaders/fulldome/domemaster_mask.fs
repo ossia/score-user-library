@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/fulldome/domemaster-mask.html",
     "DESCRIPTION": "Applies a customizable Domemaster mask defined by a polar angle range, a color, and a feathered edge (softness). Assumes the input is a 210-degree FOV Domemaster projection.",
     "CREDIT": "AI Assistant (Gemini)",
     "CATEGORIES": [

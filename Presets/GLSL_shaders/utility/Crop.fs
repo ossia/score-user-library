@@ -1,4 +1,5 @@
 /*{
+    "DOCUMENTATION": "https://ossia.io/score-docs/processes/shaders/utility/crop.html",
   "ISFVSN": 2,
   "CATEGORIES": ["Geometry Adjustment"],
   "CREDIT": "Jean-Michaël Celerier",
