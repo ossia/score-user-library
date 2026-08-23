@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"e977241d-439f-4316-9de8-e316a1651b2e","Effect":""},"Name":"Cautious stage : no stealing","Preset":[[11,{"Int":0}],[12,{"Int":4}],[14,{"Bool":false}],[16,{"Float":500.0}],[17,{"Float":120.0}],[21,{"Float":2000.0}],[22,{"Int":0}]]}
