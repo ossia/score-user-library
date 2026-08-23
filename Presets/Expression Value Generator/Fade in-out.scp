@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Fade in-out","Category":"Envelopes","Preset":[[0,{"String":"var f := 0.01 + 0.4 a;\nclamp(0, min(pos / f, (1 - pos) / f), 1)"}],[1,{"Float":0.2}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

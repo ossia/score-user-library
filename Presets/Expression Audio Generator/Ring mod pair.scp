@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"eae294b3-afeb-4fba-bbe4-337998d3748a","Effect":""},"Name":"Ring mod pair","Category":"Synthesis","Preset":[[0,{"String":"var f1 := 40 + 800 a;\nvar f2 := 40 + 800 b;\nm1[0] := frac(m1[0] + f1 / fs);\nm1[1] := frac(m1[1] + f2 / fs);\nvar s := 0.4 sin(2 pi m1[0]) sin(2 pi m1[1]);\nout[0] := s;\nout[1] := s;"}],[1,{"Float":0.2}],[2,{"Float":0.35}],[3,{"Float":0.5}]]}

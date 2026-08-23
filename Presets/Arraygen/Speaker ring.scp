@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Speaker ring","Category":"Spatial","Preset":[[0,{"String":"// One point per speaker, first one straight ahead, going clockwise.\nvar a := 2 pi i / n - pi / 2;\nreturn [cos(a), sin(a)]"}],[1,{"Int":8}]]}

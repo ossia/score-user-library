@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Breathing","Category":"LFO","Preset":[[0,{"String":"var tsec := t / 705600000;\nvar s := 0.5 + 0.5 sin(2 pi (0.05 + a) tsec);\ns s (3 - 2 s)"}],[1,{"Float":0.1}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

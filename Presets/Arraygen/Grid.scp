@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Grid","Category":"Shapes","Preset":[[0,{"String":"var side := max(1, ceil(sqrt(n)));\nvar cx := i % side;\nvar cy := trunc(i / side);\nvar d := max(1, side - 1);\nreturn [2 cx / d - 1, 2 cy / d - 1]"}],[1,{"Int":256}]]}

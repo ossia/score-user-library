@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Mono","Category":"Utility","Preset":[[1,{"String":"var s := avg(x);\nfor(var i := 0; i < x[]; i += 1) { out[i] := s; }"}],[2,{"Float":0.5}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

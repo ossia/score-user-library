@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Hard clip","Category":"Distortion","Preset":[[1,{"String":"// a: drive, b: ceiling.\nvar d := 1 + 10 a;\nvar lim := 0.05 + 0.95 b;\nfor(var i := 0; i < x[]; i += 1) {\n  var v := d x[i];\n  out[i] := if(v > lim, lim, if(v < -lim, -lim, v));\n}"}],[2,{"Float":0.3}],[3,{"Float":0.8}],[4,{"Float":0.5}]]}

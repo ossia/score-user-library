@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Torus knot","Category":"3D","Preset":[[0,{"String":"var u := 2 pi i / n;\nvar P := 2;\nvar Q := 3;\nvar r := 2 + cos(Q u);\nreturn [0.3 r cos(P u), 0.3 r sin(P u), 0.3 sin(Q u)]"}],[1,{"Int":512}]]}

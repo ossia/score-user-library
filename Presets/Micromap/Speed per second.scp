@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Speed per second","Category":"Smoothing","Preset":[[1,{"String":"// Rate of change in units per second - dt is in flicks.\n(x - px) * 705600000 / max(1, dt)"}]]}

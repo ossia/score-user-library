@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Deadzone","Category":"Shaping","Preset":[[1,{"String":"// a: size of the dead band around zero.\nvar d := 0.001 + a;\nif(abs(x) < d, 0, sgn(x) * (abs(x) - d) / (1 - d))"}],[2,{"Float":0.1}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

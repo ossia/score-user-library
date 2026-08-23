@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Jitter","Category":"Animation","Preset":[[1,{"String":"x + random(-0.02, 0.02)"}]]}

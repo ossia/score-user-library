@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Chromatic scale","Category":"Tables","Preset":[[0,{"String":"// One frequency per element, centred on A440.\n440 * 2 ^ ((i - trunc(n / 2)) / 12)"}],[1,{"Int":24}]]}

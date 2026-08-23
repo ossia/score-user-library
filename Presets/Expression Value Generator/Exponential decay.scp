@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Exponential decay","Category":"Envelopes","Preset":[[0,{"String":"exp(-(0.1 + 20 a) pos)"}],[1,{"Float":0.2}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

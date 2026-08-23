@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Spiral XY","Category":"Motion","Preset":[[0,{"String":"var u := pos;\nvar w := 8 pi u;\nreturn [u cos(w), u sin(w)]"}],[1,{"Float":0.5}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

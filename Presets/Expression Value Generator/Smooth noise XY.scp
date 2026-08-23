@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Smooth noise XY","Category":"Random","Preset":[[0,{"String":"var tsec := t / 705600000;\nvar f := 0.05 + 2 a;\nreturn [2 noise(f tsec, 3, 0.5) - 1, 2 noise(1000 + f tsec, 3, 0.5) - 1]"}],[1,{"Float":0.2}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

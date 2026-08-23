@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Soft clip","Category":"Distortion","Preset":[[1,{"String":"// a: drive. Stays inside -1..1 whatever you feed it.\nvar d := 1 + 30 a;\nout := tanh(d x)"}],[2,{"Float":0.3}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

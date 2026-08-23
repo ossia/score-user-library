@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Fibonacci disc","Category":"Sampling","Preset":[[0,{"String":"// Golden-angle phyllotaxis: the most even way to spread n points on a disc.\nvar a := i * 2.39996322972865332;\nvar r := sqrt((i + 0.5) / n);\nreturn [r cos(a), r sin(a)]"}],[1,{"Int":512}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Hysteresis","Category":"Smoothing","Preset":[[1,{"String":"// Ignores changes smaller than a.\nm1 := if(abs(x - m1) > 0.001 + a, x, m1)"}],[2,{"Float":0.05}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

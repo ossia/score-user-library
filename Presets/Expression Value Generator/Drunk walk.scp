@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Drunk walk","Category":"Random","Preset":[[0,{"String":"// a: step size.\nm1 := clamp(0, m1 + (0.001 + 0.1 a) random(-1, 1), 1)"}],[1,{"Float":0.2}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

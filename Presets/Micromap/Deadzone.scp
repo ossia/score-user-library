@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Deadzone","Category":"Ranges","Preset":[[1,{"String":"// Ignores the first 10% around zero and rescales the rest, so a resting\n// stick or sensor really reads zero.\nvar d := 0.1;\nif(abs(x) < d, 0, sgn(x) * (abs(x) - d) / (1 - d))"}]]}

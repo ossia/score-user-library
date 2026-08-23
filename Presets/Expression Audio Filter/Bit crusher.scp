@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Bit crusher","Category":"Lo-fi","Preset":[[1,{"String":"// a: bit depth (fewer levels to the right).\nvar lv := max(2, round(66 - 62 a));\nfor(var i := 0; i < x[]; i += 1) {\n  out[i] := round(lv x[i]) / lv;\n}"}],[2,{"Float":0.5}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"RMS","Category":"Arrays","Preset":[[1,{"String":"var s := 0;\nfor(var k := 0; k < xv[]; k += 1) { s += xv[k] xv[k]; };\nsqrt(s / max(1, xv[]))"}]]}

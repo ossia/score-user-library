@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"MIDI CC to bipolar","Category":"MIDI","Preset":[[1,{"String":"// 0..127 with 64 as the centre, onto -1..1.\n(clamp(0, x, 127) - 64) / 63"}]]}

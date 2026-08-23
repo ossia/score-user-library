@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Lissajous XY","Category":"Motion","Preset":[[0,{"String":"var tsec := t / 705600000;\nvar f := 0.1 + 2 a;\nreturn [sin(2 pi f tsec), sin(2 pi f (1 + 0.5 b) tsec + 1)]"}],[1,{"Float":0.2}],[2,{"Float":0.6}],[3,{"Float":0.5}]]}

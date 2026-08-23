@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Peak with decay","Category":"Dynamics","Preset":[[1,{"String":"// a: how fast the peak falls back.\nm1 := max(abs(x), m1 (1 - 0.001 - 0.2 a))"}],[2,{"Float":0.1}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

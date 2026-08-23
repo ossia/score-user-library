@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Circle XY","Category":"Motion","Preset":[[0,{"String":"var tsec := t / 705600000;\nvar w := 2 pi (0.02 + 2 a) tsec;\nvar r := 0.1 + b;\nreturn [r cos(w), r sin(w)]"}],[1,{"Float":0.1}],[2,{"Float":0.9}],[3,{"Float":0.5}]]}

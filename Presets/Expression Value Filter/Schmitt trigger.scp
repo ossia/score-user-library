@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Schmitt trigger","Category":"Triggers","Preset":[[1,{"String":"// a: falling threshold, b: rising threshold.\nm1 := if(x > b, 1, if(x < a, 0, m1))"}],[2,{"Float":0.4}],[3,{"Float":0.6}],[4,{"Float":0.5}]]}

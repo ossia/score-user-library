@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"eae294b3-afeb-4fba-bbe4-337998d3748a","Effect":""},"Name":"White noise","Category":"Noise","Preset":[[0,{"String":"var s := b random(-1, 1);\nout[0] := s;\nout[1] := s;"}],[1,{"Float":0.5}],[2,{"Float":0.3}],[3,{"Float":0.5}]]}

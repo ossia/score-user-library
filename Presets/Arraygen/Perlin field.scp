@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Perlin field","Category":"Sampling","Preset":[[0,{"String":"var tsec := t / 705600000;\nnoise(0.15 i + 0.5 tsec, 3, 0.5)"}],[1,{"Int":64}]]}

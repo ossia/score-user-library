@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Ripple","Category":"Animation","Preset":[[0,{"String":"var tsec := t / 705600000;\nvar u := i / max(1, n - 1);\nreturn [2 u - 1, 0.5 sin(10 u - 4 tsec)]"}],[1,{"Int":128}]]}

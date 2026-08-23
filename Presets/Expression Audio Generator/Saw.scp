@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"eae294b3-afeb-4fba-bbe4-337998d3748a","Effect":""},"Name":"Saw","Category":"Oscillators","Preset":[[0,{"String":"// a: pitch, b: level.\nvar f := 20 + 2000 a;\nm1[0] := frac(m1[0] + f / fs);\nvar s := b (2 m1[0] - 1);\nout[0] := s;\nout[1] := s;"}],[1,{"Float":0.1}],[2,{"Float":0.3}],[3,{"Float":0.5}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Fold -1 to 1","Category":"Ranges","Preset":[[1,{"String":"// Triangle fold: values outside -1..1 reflect back in.\n2 asin(sin(pi x / 2)) / pi"}]]}

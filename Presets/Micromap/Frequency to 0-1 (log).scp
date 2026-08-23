@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Frequency to 0-1 (log)","Category":"Audio analysis","Preset":[[1,{"String":"// 20 Hz .. 20 kHz onto 0..1, logarithmically: for Centroid and Rolloff.\nclamp(0, log2(clamp(20, x, 20000) / 20) / 9.9658, 1)"}]]}

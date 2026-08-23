@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Random on trigger","Category":"Triggers","Preset":[[1,{"String":"// New random value in a..b on every rising edge.\nm1 := if(x > 0.5 and px <= 0.5, random(a, b), m1)"}],[2,{"Float":0.0}],[3,{"Float":1.0}],[4,{"Float":0.5}]]}

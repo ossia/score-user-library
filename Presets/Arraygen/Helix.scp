@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Helix","Category":"3D","Preset":[[0,{"String":"var u := i / max(1, n - 1);\nvar a := 6 pi u;\nreturn [cos(a), 2 u - 1, sin(a)]"}],[1,{"Int":256}]]}

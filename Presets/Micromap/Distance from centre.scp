@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Distance from centre","Category":"Tracking","Preset":[[1,{"String":"// For the 0..1 coordinates the computer-vision objects emit.\nvar dx := xv[0] - 0.5;\nvar dy := xv[1] - 0.5;\nsqrt(dx dx + dy dy)"}]]}

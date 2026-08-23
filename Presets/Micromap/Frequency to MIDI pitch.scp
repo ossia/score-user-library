@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Frequency to MIDI pitch","Category":"Pitch","Preset":[[1,{"String":"69 + 12 log2(max(0.000001, x) / 440)"}]]}

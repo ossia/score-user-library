@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Perceptual fader","Category":"Curves","Preset":[[1,{"String":"var u := clamp(0, x, 1);\n(exp(3 u) - 1) / (exp(3) - 1)"}]]}

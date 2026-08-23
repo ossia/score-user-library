@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Saw LFO","Category":"LFO","Preset":[[0,{"String":"var tsec := t / 705600000;\nfrac((0.05 + 5 a) tsec)"}],[1,{"Float":0.1}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Deadzone (rescaled)","Category":"Dynamics","Preset":[[1,{"String":"var d := 0.1;\nif(abs(x) < d, 0, sgn(x) * (abs(x) - d) / (1 - d))"}]]}

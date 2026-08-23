@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Luminance","Category":"Colour","Preset":[[1,{"String":"// Rec. 709 luma of an RGB input.\n0.2126 xv[0] + 0.7152 xv[1] + 0.0722 xv[2]"}]]}
