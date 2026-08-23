@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Milliseconds to Hz","Category":"Time","Preset":[[1,{"String":"1000 / max(0.000001, x)"}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Drifting cloud","Category":"Sampling","Preset":[[0,{"String":"var tsec := t / 705600000;\nreturn [\n  2 noise(10 i + 0.3 tsec, 2, 0.5) - 1,\n  2 noise(10 i + 1000 + 0.3 tsec, 2, 0.5) - 1\n]"}],[1,{"Int":128}]]}

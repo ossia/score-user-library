@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"MIDI 14-bit","Category":"MIDI","Preset":[[1,{"String":"// An [MSB, LSB] pair - pitch bend, high-resolution CC - to 0..16383.\n128 xv[0] + xv[1]"}]]}

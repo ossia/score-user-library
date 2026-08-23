@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Chase","Category":"Animation","Preset":[[0,{"String":"// A gaussian bump running along the strip.\nvar tsec := t / 705600000;\nvar u := i / max(1, n - 1);\nvar head := frac(0.3 tsec);\nvar d := u - head;\nexp(-0.5 (d / 0.08) ^ 2)"}],[1,{"Int":60}]]}

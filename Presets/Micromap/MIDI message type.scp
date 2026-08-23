@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"MIDI message type","Category":"MIDI","Preset":[[1,{"String":"// From a \"MIDI to array\" message: 8 = note off, 9 = note on, 11 = CC,\n// 12 = program change, 14 = pitch bend.\ntrunc(xv[0] / 16)"}]]}

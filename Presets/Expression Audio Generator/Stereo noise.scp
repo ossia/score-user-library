@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"eae294b3-afeb-4fba-bbe4-337998d3748a","Effect":""},"Name":"Stereo noise","Category":"Noise","Preset":[[0,{"String":"out[0] := b random(-1, 1);\nout[1] := b random(-1, 1);"}],[1,{"Float":0.5}],[2,{"Float":0.3}],[3,{"Float":0.5}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Peak hold","Category":"Dynamics","Preset":[[1,{"String":"// Per-band VU meter with a decaying peak.\nmax(abs(x), 0.95 po)"}]]}

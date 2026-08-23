@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Array peak index","Category":"Arrays","Preset":[[1,{"String":"// Which element is loudest / brightest / closest.\nvar best := 0;\nvar peak := -1000000000;\nfor(var k := 0; k < xv[]; k += 1) {\n  if(xv[k] > peak) { peak := xv[k]; best := k; };\n};\nbest"}]]}

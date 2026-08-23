@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Angle from centre","Category":"Tracking","Preset":[[1,{"String":"// Degrees, 0 to the right, counter-clockwise.\nrad2deg(atan2(xv[1] - 0.5, xv[0] - 0.5))"}]]}

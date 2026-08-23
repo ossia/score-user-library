@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Smooth","Category":"Dynamics","Preset":[[1,{"String":"// One-pole per element: po is that element's own previous output.\npo + 0.15 (x - po)"}]]}

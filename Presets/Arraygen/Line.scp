@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Line","Category":"Shapes","Preset":[[0,{"String":"var u := i / max(1, n - 1);\nreturn [2 u - 1, 0]"}],[1,{"Int":32}]]}

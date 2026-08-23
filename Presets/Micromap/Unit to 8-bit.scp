@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Unit to 8-bit","Category":"Colour","Preset":[[1,{"String":"round(255 clamp(0, x, 1))"}]]}

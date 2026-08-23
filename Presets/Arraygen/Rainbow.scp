@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Rainbow","Category":"Colour","Preset":[[0,{"String":"// HSV hue sweep along the array: one RGB triplet per LED.\nvar tsec := t / 705600000;\nvar h := 6 frac(i / n + 0.1 tsec);\nreturn [\n  clamp(0, abs(h - 3) - 1, 1),\n  clamp(0, 2 - abs(h - 2), 1),\n  clamp(0, 2 - abs(h - 4), 1)\n]"}],[1,{"Int":60}]]}

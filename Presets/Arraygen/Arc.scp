@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Arc","Category":"Spatial","Preset":[[0,{"String":"// Spread over the 180 degrees in front: frontal speaker arcs, LED bars.\nvar u := i / max(1, n - 1);\nvar a := pi (u - 0.5);\nreturn [sin(a), cos(a)]"}],[1,{"Int":8}]]}

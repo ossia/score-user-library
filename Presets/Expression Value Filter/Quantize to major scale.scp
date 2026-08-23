@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Quantize to major scale","Category":"Musical","Preset":[[1,{"String":"// 0..1 in, MIDI note out.\nvar sc[7] := {0, 2, 4, 5, 7, 9, 11};\nvar d := round(21 clamp(0, x, 1));\nvar o := trunc(d / 7);\n36 + 12 o + sc[d % 7]"}],[2,{"Float":0.5}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

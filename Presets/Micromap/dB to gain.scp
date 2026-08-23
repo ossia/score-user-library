@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"dB to gain","Category":"Audio analysis","Preset":[[1,{"String":"10 ^ (x / 20)"}]]}

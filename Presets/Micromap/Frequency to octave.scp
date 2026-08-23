@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Frequency to octave","Category":"Pitch","Preset":[[1,{"String":"// Hz to the octave number the note belongs to (A440 is in octave 4).\ntrunc((69 + 12 log2(max(0.000001, x) / 440)) / 12) - 1"}]]}

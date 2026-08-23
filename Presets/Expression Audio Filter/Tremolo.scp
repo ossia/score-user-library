@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Tremolo","Category":"Modulation","Preset":[[1,{"String":"// a: rate, b: depth.\nm1[0] := frac(m1[0] + (0.1 + 20 a) / fs);\nout := x (1 - b (0.5 - 0.5 cos(2 pi m1[0])))"}],[2,{"Float":0.2}],[3,{"Float":0.7}],[4,{"Float":0.5}]]}

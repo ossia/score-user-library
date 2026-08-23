@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"ae84e8b6-74ff-4259-aeeb-305d95cdfcab","Effect":""},"Name":"Step counter","Category":"Triggers","Preset":[[1,{"String":"// Counts rising edges, wrapping at a steps.\nvar m := max(1, round(1 + 15 a));\nm1 := if(x > 0.5 and px <= 0.5, mod(m1 + 1, m), m1)"}],[2,{"Float":0.2}],[3,{"Float":0.5}],[4,{"Float":0.5}]]}

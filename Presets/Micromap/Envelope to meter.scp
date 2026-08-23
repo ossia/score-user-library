@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Envelope to meter","Category":"Audio analysis","Preset":[[1,{"String":"// Linear amplitude to 0..1 over the last 60 dB, the way a meter reads.\nclamp(0, 1 + log10(max(0.000001, abs(x))) / 3, 1)"}]]}

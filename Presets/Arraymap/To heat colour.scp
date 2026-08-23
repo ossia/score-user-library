@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"To heat colour","Category":"Colour","Preset":[[1,{"String":"// Value to red-yellow-white, one colour per element.\nvar u := clamp(0, x, 1);\nreturn [clamp(0, 3 u, 1), clamp(0, 3 u - 1, 1), clamp(0, 3 u - 2, 1)]"}]]}

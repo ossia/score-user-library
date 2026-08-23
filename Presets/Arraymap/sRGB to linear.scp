@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"sRGB to linear","Category":"Colour","Preset":[[1,{"String":"var u := clamp(0, x, 1);\nif(u <= 0.04045, u / 12.92, ((u + 0.055) / 1.055) ^ 2.4)"}]]}

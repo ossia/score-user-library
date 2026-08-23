@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Fade by index","Category":"Animation","Preset":[[1,{"String":"x (1 - i / max(1, n - 1))"}]]}

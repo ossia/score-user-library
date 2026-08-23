@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"To ring","Category":"Geometry","Preset":[[1,{"String":"// Turn a 1-D array into a radial 2-D shape: value drives the radius.\nvar a := 2 pi i / n;\nreturn [x cos(a), x sin(a)]"}]]}

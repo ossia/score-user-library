@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Fibonacci sphere","Category":"3D","Preset":[[0,{"String":"// Evenly distributed points on the unit sphere.\nvar y := 1 - 2 (i + 0.5) / n;\nvar r := sqrt(max(0, 1 - y y));\nvar a := i * 2.39996322972865332;\nreturn [r cos(a), y, r sin(a)]"}],[1,{"Int":512}]]}

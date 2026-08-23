@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Travelling wave","Category":"Animation","Preset":[[1,{"String":"var tsec := t / 705600000;\nx (0.5 + 0.5 sin(6 i / n - 4 tsec))"}]]}

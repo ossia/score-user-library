@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"13e1f4b0-1c2c-40e6-93ad-dfc91aac5335","Effect":""},"Name":"Tube drive","Category":"Distortion","Preset":[[1,{"String":"// Asymmetric saturation. a: drive, b: bias (adds even harmonics).\nvar d := 1 + 20 a;\nout := tanh(d x + 0.6 b) - tanh(0.6 b)"}],[2,{"Float":0.3}],[3,{"Float":0.3}],[4,{"Float":0.5}]]}

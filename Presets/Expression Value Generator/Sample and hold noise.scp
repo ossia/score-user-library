@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"d757bd0d-c0a1-4aec-bf72-945b722ab85b","Effect":""},"Name":"Sample and hold noise","Category":"Random","Preset":[[0,{"String":"// a: how often a new value is drawn.\nvar tsec := t / 705600000;\nvar k := trunc(tsec (0.05 + 10 a));\nif(k != m1) { m1 := k; m2 := random(0, 1); };\nm2"}],[1,{"Float":0.3}],[2,{"Float":0.5}],[3,{"Float":0.5}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"1fe9c806-b601-4ee0-9fbb-0ab817c4dd87","Effect":""},"Name":"Gamma","Category":"Levels","Preset":[[1,{"String":"// Perceptual brightness curve for LEDs.\nsgn(x) abs(x) ^ 2.2"}]]}

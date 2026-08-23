@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"25c64b87-a44a-4fed-9f60-0a48906fd3ec","Effect":""},"Name":"Slew limit","Category":"Smoothing","Preset":[[1,{"String":"po + clamp(-0.02, x - po, 0.02)"}]]}

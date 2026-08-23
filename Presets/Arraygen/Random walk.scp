@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"cf3df02f-a563-4e92-a739-b321d3a84252","Effect":""},"Name":"Random walk","Category":"Sampling","Preset":[[0,{"String":"// Each element keeps its own value between ticks (po) and wanders.\nclamp(0, po + random(-0.03, 0.03), 1)"}],[1,{"Int":32}]]}
