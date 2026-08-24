@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "zones": [
+    { "name": "Stage", "color": "#2bb3a3", "shape": { "type": "rect", "w": 6, "h": 3 }, "pos": [0, 1.5, 0], "hysteresis": { "margin": 0.2, "enterFrames": 2 } },
+    { "name": "Door", "color": "#7ad3ff", "shape": { "type": "line", "points": [[-0.8, 0], [0.8, 0]], "direction": "both", "width": 0.1 }, "pos": [-4, -1, 0], "rot": [0, 0, 90], "line": { "confirmFrames": 2 } },
+    { "name": "Lounge", "color": "#e0a54d", "shape": { "type": "circle", "r": 1.2 }, "pos": [3.5, -2, 0], "dwell": { "loiterS": 3 }, "selection": "nearest" },
+    { "name": "Sensor mask", "role": "exclude", "shape": { "type": "polygon", "points": [[-0.6, -0.4], [0.6, -0.4], [0.8, 0.5], [-0.8, 0.5]] }, "pos": [-3, 2.5, 0] },
+    { "name": "Booth", "color": "#9b7bd6", "shape": { "type": "box", "w": 1.5, "h": 1.5, "d": 2.2 }, "pos": [-3.5, -3, 1.1], "anchor": "head" },
+    { "name": "Walkway", "color": "#c7b24d", "shape": { "type": "path", "points": [[-3, 0], [-1, -1.5], [1, -1.5], [3, 0]], "width": 1.2 }, "pos": [0, -3.5, 0] },
+    { "name": "Arena", "color": "#e08cc7", "shape": { "type": "polygon", "points": [[-1, -1.2], [1, -1.2], [1.6, 0], [1, 1.2], [-1, 1.2], [-1.6, 0]], "useZ": true, "zmin": 0, "zmax": 1.5 }, "pos": [5.5, 2, 0], "occupancy": { "setThreshold": 2, "clearThreshold": 0, "capacity": 4 } }
+  ],
+  "sources": [
+    { "name": "Point Tracker", "units": "m", "axes": "xyz", "originMode": "world", "lostTimeout": 0.4 },
+    { "name": "PSN", "units": "m", "axes": "yup", "originMode": "world", "lostTimeout": 0.5 },
+    { "name": "Pose Detector", "originMode": "normalized", "scene": { "w": 6, "h": 4.5 }, "transform": { "pos": [0, 0, 0], "rot": [0, 0, 0], "scale": [1, 1, 1] }, "lostTimeout": 0.3 },
+    { "name": "Source 4", "enabled": false }
+  ],
+  "settings": { "uiRate": 30, "lostTimeout": 0.5, "heatmap": { "enabled": true, "x": 0, "y": 0, "w": 12, "h": 9, "cols": 24, "rows": 18, "decay": 0.1 }, "proximity": { "enabled": true, "distance": 0.8 } }
+}
