@@ -308,6 +308,19 @@ Engine.prototype.update = function (inputs, t) {
     ee.zones = zl;
     entOut.push({ id: ee.id, key: ee.key, src: ee.src, pos: ee.pos, vel: ee.vel, speed: ee.speed, conf: ee.conf, cls: ee.cls, name: ee.name, state: ee.state, age: t - ee.firstSeen, height: ee.height || 0, size: ee.size || null, heading: ee.heading === null || ee.heading === undefined ? 0 : ee.heading, stationary: ee.stationary, masked: ee.masked, zones: zl, zone_data: zd });
   }
+  // 8. event filtering: the state machines above always run in full, only the *reporting* is
+  // filtered — the global per-type switches first, then the zone's own opt-outs.
+  var ef = settings.events;
+  if (events.length && ef) {
+    var kept = [];
+    for (var fi = 0; fi < events.length; fi++) {
+      var fe = events[fi];
+      if (ef[fe.type] === false) continue;
+      if (fe.zone_id) { var frt = this.zoneRt[fe.zone_id]; var zev = frt && frt.cfg.events; if (zev && zev[fe.type] === false) continue; }
+      kept.push(fe);
+    }
+    events = kept;
+  }
   this.recentEvents = this.recentEvents.concat(events); if (this.recentEvents.length > 200) this.recentEvents.splice(0, this.recentEvents.length - 200);
   return { t: t, zones: zonesOut, events: events, entities: entOut, counts: counts, occupied: occupied, activity: activity, tree: tree, count: entOut.length, heatmap: this.heat ? this.heat.slice() : [], pairs: pairsOut };
 };
@@ -562,6 +575,50 @@ Engine.prototype.updateHeat = function (list, dt) {
     this.heat[r * hm.cols + c] += dt;
   }
 };
+
+// Payload of the simple per-event outlets (Enter / Leave / Dwell / Cross / Occupancy).
+// fmt: "zone" = zone name string, "id" = entity id string, "pair" = [zone, id],
+//      "map" = compact map with the fields that matter for the type, "full" = the raw event.
+function formatEvent(ev, fmt) {
+  var occ = ev.type === "occupied" || ev.type === "empty";
+  switch (fmt) {
+  case "zone": return ev.zone;
+  case "id": return occ ? ev.zone : ev.id;
+  case "pair": return occ ? [ev.zone, ev.type === "occupied" ? 1 : 0] : [ev.zone, ev.id];
+  case "full": return ev;
+  default: {
+    if (occ) return { zone: ev.zone, occupied: ev.type === "occupied", count: ev.count || 0 };
+    var m = { zone: ev.zone, id: ev.id, type: ev.type };
+    if (ev.src !== undefined && ev.src !== -1) m.src = ev.src;
+    if (ev.dwell !== undefined) m.dwell = ev.dwell;
+    if (ev.direction !== undefined) { m.direction = ev.direction; m["in"] = ev["in"]; m.out = ev.out; }
+    if (ev.from !== undefined) m.from = ev.from;
+    if (ev.lost) m.lost = true;
+    return m;
+  }
+  }
+}
+
+// Payload of the Location outlet: where every tracked entity currently is.
+// entities = res.entities. cfg = settings.outputs.location:
+//   all: false = one zone per entity (the last one in draw order, i.e. topmost), true = the full list
+//   includeOutside: also report entities that are in no zone ("" or [])
+//   format: "map" = {id: zone}, "list" = [[id, zone], ...], "zone" = the first entity's zone alone
+function locationOutput(entities, cfg) {
+  var all = !!cfg.all;
+  var rows = [];
+  for (var i = 0; i < entities.length; i++) {
+    var e = entities[i]; var zs = e.zones || [];
+    if (!zs.length && !cfg.includeOutside) continue;
+    rows.push([e.id, all ? zs.slice() : (zs.length ? zs[zs.length - 1] : "")]);
+  }
+  var fmt = cfg.format || "map";
+  if (fmt === "zone") return rows.length ? rows[0][1] : (all ? [] : "");
+  if (fmt === "list") return rows;
+  var m = {};
+  for (var j = 0; j < rows.length; j++) m[rows[j][0]] = rows[j][1];
+  return m;
+}
 
 function mkEvent(t, type, z, e, data) {
   var ev = { t: t, type: type, zone: z.name, zone_id: z.id, id: e ? e.id : "", src: e ? e.src : -1 };

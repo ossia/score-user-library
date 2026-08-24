@@ -420,6 +420,59 @@
     var pie = Model.pieZones(0, 0, 2, 6); eq(pie.length, 6); eq(pie[0].name, "Slice 1"); ok(Geom.polygonArea(pie[0].shape.points) > 0 && !Geom.polygonSelfIntersects(pie[0].shape.points), "pie wedge is a valid polygon"); near(Geom.polygonArea(pie[0].shape.points) * 6, Math.PI * 4, 0.2, "6 slices cover the disc");
   });
 
+  // ---------------- event filtering + simple output formats ----------------
+  test("global event type filter", function () {
+    var eng = new ZE.Engine();
+    var z = Model.makeZone("rect", 0); z.name = "Z"; z.pos = [0, 0, 0];
+    var doc = Model.defaultDoc(); doc.zones = [z]; doc.settings.events.enter = false; doc.settings.events.count = false;
+    eng.setDoc(doc);
+    var t = 0; var evs = [];
+    for (var i = 0; i < 5; i++) { var r = eng.update([{ src: 0, entities: [ent(1, 0, 0)] }], t += 0.1); evs = evs.concat(r.events); }
+    eq(count(evs, "enter"), 0, "enter filtered");
+    eq(count(evs, "count"), 0, "count filtered");
+    eq(count(evs, "occupied"), 1, "occupied still emitted");
+    for (var j = 0; j < 5; j++) { var r2 = eng.update([{ src: 0, entities: [ent(1, 5, 5)] }], t += 0.1); evs = evs.concat(r2.events); }
+    eq(count(evs, "exit"), 1, "exit still emitted");
+  });
+  test("per-zone event opt-out", function () {
+    var eng = new ZE.Engine();
+    var a = Model.makeZone("rect", 0); a.name = "A"; a.pos = [0, 0, 0];
+    var b = Model.makeZone("rect", 1); b.name = "B"; b.pos = [0, 0, 0];
+    a.events = { enter: false, count: false, occupied: false, first_in: false, transition: false };
+    var doc = Model.defaultDoc(); doc.zones = [a, b];
+    eng.setDoc(doc);
+    var t = 0; var evs = [];
+    for (var i = 0; i < 5; i++) { var r = eng.update([{ src: 0, entities: [ent(1, 0, 0)] }], t += 0.1); evs = evs.concat(r.events); }
+    var enters = evs.filter(function (e) { return e.type === "enter"; });
+    eq(enters.length, 1, "one enter"); eq(enters[0].zone, "B", "only B reports");
+    ok(!evs.some(function (e) { return e.zone === "A" && (e.type === "enter" || e.type === "occupied" || e.type === "first_in" || e.type === "count"); }), "A silenced");
+    ok(evs.some(function (e) { return e.zone === "B" && e.type === "occupied"; }), "B unaffected");
+  });
+  test("formatEvent formats", function () {
+    var ev = { t: 1, type: "enter", zone: "Z", zone_id: "z1", id: "e1", src: 0 };
+    eq(ZE.formatEvent(ev, "zone"), "Z");
+    eq(ZE.formatEvent(ev, "id"), "e1");
+    var p = ZE.formatEvent(ev, "pair"); eq(p[0], "Z"); eq(p[1], "e1");
+    var m = ZE.formatEvent(ev, "map"); eq(m.zone, "Z"); eq(m.id, "e1"); eq(m.type, "enter"); eq(m.src, 0);
+    eq(ZE.formatEvent(ev, "full"), ev);
+    var dw = ZE.formatEvent({ type: "dwell", zone: "Z", id: "e1", src: 0, dwell: 3.5 }, "map"); near(dw.dwell, 3.5);
+    var oc = { t: 1, type: "occupied", zone: "Z", zone_id: "z1", id: "", src: -1, count: 2 };
+    var op = ZE.formatEvent(oc, "pair"); eq(op[0], "Z"); eq(op[1], 1);
+    var om = ZE.formatEvent(oc, "map"); eq(om.occupied, true); eq(om.count, 2);
+    eq(ZE.formatEvent({ type: "empty", zone: "Z", count: 0 }, "pair")[1], 0);
+    var cr = ZE.formatEvent({ type: "cross", zone: "Z", id: "e1", src: 0, direction: "in", "in": 3, out: 1 }, "map"); eq(cr.direction, "in"); eq(cr["in"], 3); eq(cr.out, 1);
+  });
+  test("locationOutput formats", function () {
+    var ents = [{ id: "a", zones: ["Z1", "Z2"] }, { id: "b", zones: [] }, { id: "c", zones: ["Z3"] }];
+    var m = ZE.locationOutput(ents, { format: "map" });
+    eq(m.a, "Z2", "topmost zone"); eq(m.c, "Z3"); ok(!("b" in m), "outside excluded by default");
+    eq(ZE.locationOutput(ents, { format: "map", includeOutside: true }).b, "", "outside as empty string");
+    var l = ZE.locationOutput(ents, { format: "list" }); eq(l.length, 2); eq(l[0][0], "a"); eq(l[0][1], "Z2");
+    var ma = ZE.locationOutput(ents, { format: "map", all: true }); eq(ma.a.length, 2); eq(ma.a[0], "Z1");
+    eq(ZE.locationOutput(ents, { format: "zone" }), "Z2", "single-string mode");
+    eq(ZE.locationOutput([], { format: "zone" }), "", "nobody tracked");
+  });
+
   out("\n" + passed + " passed, " + failed + " failed");
   Util.writeFile(OUT, log.join("\n") + "\n");
   var code = failed ? 1 : 0;

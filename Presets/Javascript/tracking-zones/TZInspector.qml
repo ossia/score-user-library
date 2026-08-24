@@ -203,6 +203,20 @@ Rectangle {
                 SectionLabel { text: "Outputs" }
                 CheckRow { label: "Per-entity data (u,v,w, dist, dwell…)"; value: insp.zp("outputs.perId", true); onEdited: function (v) { insp.setZ("outputs.perId", v, "Outputs"); } }
                 CheckRow { label: "Include in Tree output"; value: insp.zp("outputs.tree", true); onEdited: function (v) { insp.setZ("outputs.tree", v, "Outputs"); } }
+                Label { text: "Events sent by this zone"; font.pixelSize: 10; color: palette.placeholderText; Layout.topMargin: 2 }
+                Flow {
+                    Layout.fillWidth: true; spacing: 2
+                    Repeater {
+                        model: Model.ZONE_EVENT_TYPES
+                        TZCheck {
+                            required property var modelData
+                            width: 96
+                            text: modelData.label
+                            checked: insp.zp("events." + modelData.key, true) !== false
+                            onToggled: insp.setZ("events." + modelData.key, checked, "Zone events")
+                        }
+                    }
+                }
 
                 SectionLabel { text: "Live"; visible: insp.st !== null }
                 Label {

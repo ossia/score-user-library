@@ -35,6 +35,13 @@ Script {
     ValueOutlet { id: outCount; objectName: "Count" }
     ValueOutlet { id: outHeat; objectName: "Heatmap" }
     ValueOutlet { id: outPairs; objectName: "Proximity" }
+    // Simple event outlets: one event type each, payload format chosen in the Output pane.
+    ValueOutlet { id: outEnter; objectName: "Enter" }
+    ValueOutlet { id: outLeave; objectName: "Leave" }
+    ValueOutlet { id: outDwell; objectName: "Dwell" }
+    ValueOutlet { id: outCross; objectName: "Cross" }
+    ValueOutlet { id: outOccupancy; objectName: "Occupancy" }
+    ValueOutlet { id: outLocation; objectName: "Location" }
 
     property var engine: new ZE.Engine()
     property var doc: Model.defaultDoc()
@@ -276,8 +283,35 @@ Script {
         outCount.value = res.count;
         if (res.heatmap.length) outHeat.value = res.heatmap;
         if (doc.settings.proximity && doc.settings.proximity.enabled) outPairs.value = res.pairs;
+        emitSimpleOutputs(res);
         if (snap) uiSend(snap);
         perfTickMs = perfTickMs * 0.9 + (Util.timestamp() - w0) * 1000 * 0.1;
+    }
+    // Simple event outlets (Enter/Leave/Dwell/Cross/Occupancy: one message per event via addValue)
+    // and the Location outlet (per-entity current zone, sent on change by default).
+    property string lastLocationJson: ""
+    function emitSimpleOutputs(res) {
+        var so = doc.settings.outputs;
+        if (!so) return;
+        var n = Math.min(res.events.length, 256);
+        for (var i = 0; i < n; i++) {
+            var ev = res.events[i];
+            var cfg = null, dst = null;
+            switch (ev.type) {
+            case "enter": cfg = so.enter; dst = outEnter; break;
+            case "exit": cfg = so.exit; dst = outLeave; break;
+            case "dwell": cfg = so.dwell; dst = outDwell; break;
+            case "cross": cfg = so.cross; dst = outCross; break;
+            case "occupied": case "empty": cfg = so.occupancy; dst = outOccupancy; break;
+            }
+            if (cfg && cfg.enabled) dst.addValue(0, ZE.formatEvent(ev, cfg.format));
+        }
+        var lc = so.location;
+        if (lc && lc.enabled) {
+            var loc = ZE.locationOutput(res.entities, lc);
+            var lj = JSON.stringify(loc);
+            if (lc.onChange === false || lj !== lastLocationJson) { lastLocationJson = lj; outLocation.value = loc; }
+        }
     }
     function handleCommand(cmd) {
         if (typeof cmd === "string") {

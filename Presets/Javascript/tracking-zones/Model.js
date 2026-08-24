@@ -6,6 +6,15 @@ var VERSION = 1;
 var PALETTE = ["#c58014", "#5b9bd5", "#7fc45a", "#d96b6b", "#9b7bd6", "#2bb3a3", "#e08cc7", "#c7b24d", "#4dc0e0", "#e07d4d"];
 
 var ZONE_TYPES = ["rect", "circle", "polygon", "line", "path", "box", "sphere", "cylinder", "prism"];
+// every event type the engine can emit; "proximity" is global (entity pairs), the rest are per-zone
+var EVENT_TYPES = [
+  { key: "enter", label: "Enter" }, { key: "exit", label: "Leave" }, { key: "dwell", label: "Dwell" },
+  { key: "stationary", label: "Stationary" }, { key: "transition", label: "Transition" }, { key: "cross", label: "Cross" },
+  { key: "first_in", label: "First in" }, { key: "occupied", label: "Occupied" }, { key: "empty", label: "Empty" },
+  { key: "last_out", label: "Last out" }, { key: "capacity", label: "Capacity" }, { key: "count", label: "Count change" },
+  { key: "proximity", label: "Proximity" }
+];
+var ZONE_EVENT_TYPES = EVENT_TYPES.filter(function (e) { return e.key !== "proximity"; });
 var ANCHORS = ["center", "feet", "head", "hands", "any", "all"];
 var CONTAINMENTS = ["point", "radius", "bbox"];
 var SELECTIONS = ["all", "nearest", "first_in", "last_in", "max_n"];
@@ -28,7 +37,19 @@ function defaultSettings() {
     proximity: { enabled: false, distance: 1.0, crossSourcesOnly: false }, // entity↔entity proximity events
     backdrop: { path: "", x: 0, y: 0, w: 10, h: 7.5, opacity: 0.5, rotation: 0 },
     grid: 1.0,
-    monitor: { maxEvents: 400, maxEventsPerSec: 100 }  // event log limits (rows kept / rows added per second)
+    monitor: { maxEvents: 400, maxEventsPerSec: 100 },  // event log limits (rows kept / rows added per second)
+    // master switches: an unchecked type is emitted nowhere (Events outlet, simple outlets, monitors).
+    // Zones can additionally opt out per type (zone.events.<type> = false).
+    events: { enter: true, exit: true, dwell: true, stationary: true, transition: true, cross: true, first_in: true, occupied: true, empty: true, last_out: true, capacity: true, count: true, proximity: true },
+    // the per-event outlets and the Location outlet (Output pane): enable + payload format each
+    outputs: {
+      enter: { enabled: true, format: "map" },
+      exit: { enabled: true, format: "map" },
+      dwell: { enabled: true, format: "map" },
+      cross: { enabled: true, format: "map" },
+      occupancy: { enabled: true, format: "map" },
+      location: { enabled: true, format: "map", all: false, onChange: true, includeOutside: false }
+    }
   };
 }
 
@@ -66,7 +87,8 @@ function makeZone(type, index) {
     line: { confirmFrames: 2, countOnce: false },
     soft: { enabled: false, falloff: 0.5 },
     stationary: { speed: 0.1, timeS: 2 },
-    outputs: { perId: true, tree: true }
+    outputs: { perId: true, tree: true },
+    events: {}   // per-type opt-out: events.enter = false silences that type for this zone (missing key = on)
   };
   return z;
 }
