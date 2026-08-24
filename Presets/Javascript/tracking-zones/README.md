@@ -29,10 +29,21 @@ from the Library (*Presets › Javascript › tracking-zones*) on an interval, o
 | `Count` | int | number of tracked entities |
 | `Heatmap` | list of floats | row-major occupancy grid (Settings › Heatmap) |
 | `Proximity` | list of maps | `{a, b, dist}` pairs closer than the proximity distance (Settings › Proximity) |
+| `Enter` / `Leave` / `Dwell` / `Cross` | per event | one message per event of that type, pre-filtered so no downstream patching is needed. Payload format per outlet (Output pane): *Zone name* (string), *Entity id* (string), *[zone, id]*, *Map* (`{zone, id, type, src, …}` with `dwell` / `direction` when relevant), *Full event* |
+| `Occupancy` | per event | one message when a zone becomes occupied or empty: *[zone, 0/1]*, *Map* (`{zone, occupied, count}`) or *Full event* |
+| `Location` | on change | where everybody currently is. *Map* `{id: zone}`, *List* `[[id, zone], …]`, or *Single zone string* (the first entity's zone — the one-performer case). Options: report all zones per entity instead of the topmost, include entities in no zone, send every tick instead of on change |
 
 Maps and lists flow through cables to any node (ExprTK, Pattern applier, Entity To MIDI, JS…).
-Maps do **not** travel over OSC/OSCQuery: use the flat `Counts/Occupied/Activity` lists or the
-`Tree` fan-out for network outputs.
+Maps do **not** travel over OSC/OSCQuery: use the flat `Counts/Occupied/Activity` lists, the
+`Tree` fan-out, or the simple event outlets with a string / `[zone, id]` format for network outputs.
+
+### Choosing which events are sent
+
+The **Output** pane (bottom panel) has a checkbox per event type: unchecked types are emitted
+nowhere — not on `Events`, not on the simple outlets, not in the monitors. Each zone can
+additionally opt out per type in its inspector (*Outputs › Events sent by this zone*): e.g. keep
+`count` events only for the one zone driving a display. The state machines always run in full, so
+counters, occupancy and the `Zones`/`Tree` outputs are unaffected by these switches.
 
 ## Inputs accepted (per source)
 
@@ -146,7 +157,9 @@ crossing after N frames on the other side, and only within the segment unless *e
   inlets), **Event monitor** (event log, per-zone counters table, CSV export, reset), **Source monitor**
   (one row per inlet: status / Hz, messages per tick, how the payload was classified, entities parsed,
   entities in the engine, NaN drops, ids with calibrated positions, and the last raw payload of the
-  selected inlet: the first place to look when a source "does nothing").
+  selected inlet: the first place to look when a source "does nothing"), **Output** (the per-type
+  event checkboxes, the format of each simple event outlet, and the Location outlet options — see
+  *Choosing which events are sent* above).
 * **Both monitors have an on/off checkbox in their header** — off, the event log stops collecting and
   the execution skips the per-inlet classification and raw previews (no cost on the audio thread).
 * **Limits** — the event log keeps at most *Settings › Event log limits › Max rows* rows and adds at
@@ -164,7 +177,9 @@ crossing after N frames on the other side, and only within the segment unless *e
   floor area seen by the camera (or a 4-point homography from image corners to floor points),
   anchor *feet*.
 * *OSC out per zone*: create an OSC device, bind the `Tree` outlet to `osc:/zones`.
-* *Trigger a cue*: cable `Events` into a JS process / Entity To MIDI, or automate from `Occupied`.
+* *Trigger a cue*: cable `Enter` (format *Zone name*) straight into whatever should fire — no
+  filtering needed; `Events` remains the everything-stream for JS / Entity To MIDI.
+* *"Which zone is the performer in?"*: Location outlet, format *Single zone string*.
 * *Zone sets per scene*: give zones a `set` ("act1", "act2"…), then automate the `Active Set` port.
 * *Authoring without people*: Simulator › +walkers, or record a rehearsal and play it back.
 

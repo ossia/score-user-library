@@ -44,6 +44,7 @@ Rectangle {
                 Tab { text: "Simulator & recorder" }
                 Tab { text: "Event monitor" }
                 Tab { text: "Source monitor" }
+                Tab { text: "Output" }
             }
             Item { Layout.fillWidth: true }
             Button { text: bottom.owner.bottomVisible ? "▾" : "▴"; implicitWidth: 24; implicitHeight: 22; onClicked: bottom.owner.bottomVisible = !bottom.owner.bottomVisible }
@@ -56,6 +57,7 @@ Rectangle {
             TZSimPanel { owner: bottom.owner }
             TZMonitorPanel { owner: bottom.owner }
             TZSourceMonitor { owner: bottom.owner }
+            TZOutputPanel { owner: bottom.owner }
         }
     }
 }
