@@ -316,7 +316,7 @@ Score.ScriptUI {
                 Rectangle {
                     Layout.preferredWidth: 210; Layout.fillHeight: true; color: S.Theme.base; border.color: S.Theme.border
                     ColumnLayout {
-                        anchors.fill: parent; anchors.margins: 8; spacing: 6
+                        anchors.fill: parent; anchors.margins: S.Theme.pad; spacing: S.Theme.gap
                         S.SLabel { text: "States"; font.bold: true }
                         RowLayout {
                             S.SButton { text: "Add"; onClicked: root.addState() }
@@ -325,23 +325,25 @@ Score.ScriptUI {
                         }
                         ListView {
                             id: stateList
-                            Layout.fillWidth: true; Layout.preferredHeight: 185; clip: true
+                            Layout.fillWidth: true; Layout.preferredHeight: Math.min(root.doc.states.length * (S.Theme.listRowH + S.Theme.gapSm), 150); clip: true
+                            spacing: S.Theme.gapSm
                             model: root.doc.states.length
                             ScrollBar.vertical: ScrollBar {}
                             delegate: Rectangle {
                                 id: stateRow
                                 required property int index
                                 property var entry: { root.revision; return root.doc.states[index]; }
-                                width: ListView.view.width; height: 32
+                                width: ListView.view.width; height: S.Theme.listRowH; radius: S.Theme.radiusSm
                                 color: entry && entry.id === root.selectedState ? S.Theme.accentFill : index % 2 ? S.Theme.altBase : S.Theme.base
                                 Text {
-                                    anchors.fill: parent; anchors.margins: 6; anchors.leftMargin: 30
+                                    anchors.fill: parent; anchors.leftMargin: S.Theme.pad + stateDrag.width + S.Theme.gap; anchors.rightMargin: S.Theme.pad
                                     text: entry ? (entry.id === root.doc.initial ? "• " : "") + entry.name : ""
-                                    color: S.Theme.text; font.pixelSize: S.Theme.fontMd; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter
+                                    color: S.Theme.text; font.pixelSize: S.Theme.fontSm; font.hintingPreference: S.Theme.hinting; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter
                                 }
                                 MouseArea { anchors.fill: parent; onClicked: if (parent.entry) root.selectState(parent.entry.id) }
                                 S.SLayerDragHandle {
-                                    anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter
+                                    id: stateDrag
+                                    anchors.left: parent.left; anchors.leftMargin: S.Theme.pad; anchors.verticalCenter: parent.verticalCenter
                                     view: stateList; index: stateRow.index
                                     onStarted: if (stateRow.entry) root.selectState(stateRow.entry.id)
                                     onMoved: function(from, to) { root.reorderStates(from, to); }
@@ -359,22 +361,24 @@ Score.ScriptUI {
                         ListView {
                             id: objectList
                             Layout.fillWidth: true; Layout.fillHeight: true; clip: true
+                            spacing: S.Theme.gapSm
                             model: root.currentState ? root.currentState.objects.length : 0
                             ScrollBar.vertical: ScrollBar {}
                             delegate: Rectangle {
                                 id: objectRow
                                 required property int index
                                 property var entry: { root.revision; return root.currentState ? root.currentState.objects[root.currentState.objects.length - index - 1] : null; }
-                                width: ListView.view.width; height: 32
+                                width: ListView.view.width; height: S.Theme.listRowH; radius: S.Theme.radiusSm
                                 color: entry && entry.id === root.selectedObject ? S.Theme.accentFill : index % 2 ? S.Theme.altBase : S.Theme.base
                                 Text {
-                                    anchors.fill: parent; anchors.margins: 6; anchors.leftMargin: 30
+                                    anchors.fill: parent; anchors.leftMargin: S.Theme.pad + objectDrag.width + S.Theme.gap; anchors.rightMargin: S.Theme.pad
                                     text: entry ? entry.label + " (" + entry.type + ")" : ""
-                                    color: S.Theme.text; font.pixelSize: S.Theme.fontMd; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter
+                                    color: S.Theme.text; font.pixelSize: S.Theme.fontSm; font.hintingPreference: S.Theme.hinting; elide: Text.ElideRight; verticalAlignment: Text.AlignVCenter
                                 }
                                 MouseArea { anchors.fill: parent; onClicked: root.selectObject(parent.entry ? parent.entry.id : "") }
                                 S.SLayerDragHandle {
-                                    anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter
+                                    id: objectDrag
+                                    anchors.left: parent.left; anchors.leftMargin: S.Theme.pad; anchors.verticalCenter: parent.verticalCenter
                                     view: objectList; index: objectRow.index
                                     onStarted: if (objectRow.entry) root.selectObject(objectRow.entry.id)
                                     onMoved: function(from, to) { root.reorderObjects(from, to); }
