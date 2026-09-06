@@ -17,6 +17,12 @@ Page {
 
     padding: 0
 
+    // Control font propagation: every Control and Label below inherits this, so
+    // plain `Label {}` in an editor gets the sharper hinting without having to
+    // opt in. (Bare `Text {}` items do not inherit and must set it themselves --
+    // the S* widgets in this module all do.)
+    font.hintingPreference: Theme.hinting
+
     background: Rectangle { color: Theme.window }
 
     palette {

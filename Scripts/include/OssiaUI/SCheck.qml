@@ -9,6 +9,7 @@ CheckBox {
 
     implicitHeight: Theme.rowHsm
     font.pixelSize: Theme.fontSm
+    font.hintingPreference: Theme.hinting
     padding: 0
     spacing: Theme.gap
 

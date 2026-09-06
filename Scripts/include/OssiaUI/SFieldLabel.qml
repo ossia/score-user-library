@@ -9,6 +9,7 @@ Label {
     property string tip: ""
     Layout.preferredWidth: Theme.labelW
     font.pixelSize: Theme.fontMd
+    font.hintingPreference: Theme.hinting
     color: enabled ? "#c0c0c0" : Theme.textMuted
     elide: Text.ElideRight
     verticalAlignment: Text.AlignVCenter

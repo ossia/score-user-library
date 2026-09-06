@@ -6,6 +6,7 @@ import "Theme.js" as Theme
 Label {
     property bool dim: false
     font.pixelSize: Theme.fontMd
+    font.hintingPreference: Theme.hinting
     color: dim ? Theme.textMuted : Theme.text
     elide: Text.ElideRight
     verticalAlignment: Text.AlignVCenter

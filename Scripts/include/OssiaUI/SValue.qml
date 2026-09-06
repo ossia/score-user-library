@@ -7,6 +7,7 @@ import "Theme.js" as Theme
 Label {
     Layout.preferredWidth: 34
     font.pixelSize: Theme.fontSm
+    font.hintingPreference: Theme.hinting
     font.family: "monospace"
     color: Theme.textDim
     horizontalAlignment: Text.AlignRight

@@ -10,6 +10,7 @@ ComboBox {
 
     implicitHeight: Theme.rowH
     font.pixelSize: Theme.fontMd
+    font.hintingPreference: Theme.hinting
     leftPadding: Theme.gapLg; rightPadding: 18
     topPadding: 0; bottomPadding: 0
 
@@ -32,6 +33,7 @@ ComboBox {
         anchors.verticalCenter: parent.verticalCenter
         text: "▾"
         font.pixelSize: Theme.fontSm
+        font.hintingPreference: Theme.hinting
         color: cb.enabled ? Theme.textDim : Theme.textMuted
     }
     background: Rectangle {
@@ -74,6 +76,7 @@ ComboBox {
         contentItem: Text {
             text: dlg.label
             font.pixelSize: Theme.fontSm
+            font.hintingPreference: Theme.hinting
             color: dlg.highlighted ? "#ffffff" : "#e8e8e8"
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight

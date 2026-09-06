@@ -8,6 +8,7 @@ SpinBox {
 
     implicitHeight: Theme.toolH
     font.pixelSize: Theme.fontMd
+    font.hintingPreference: Theme.hinting
     leftPadding: 20; rightPadding: 20
     editable: true
 

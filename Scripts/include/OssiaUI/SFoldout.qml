@@ -33,6 +33,7 @@ Item {
         width: 11
         text: fold.expanded ? "▾" : "▸"
         font.pixelSize: Theme.fontSm
+        font.hintingPreference: Theme.hinting
         color: Theme.textDim
     }
     Text {
@@ -44,6 +45,7 @@ Item {
         text: fold.title
         color: fold.expanded ? Theme.textStrong : Theme.textDim
         font.pixelSize: Theme.fontMd
+        font.hintingPreference: Theme.hinting
         font.bold: true
         elide: Text.ElideRight
     }

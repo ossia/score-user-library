@@ -7,6 +7,7 @@ TextField {
     id: tf
     implicitHeight: Theme.rowH
     font.pixelSize: Theme.fontMd
+    font.hintingPreference: Theme.hinting
     leftPadding: Theme.gapLg; rightPadding: Theme.gapLg
     topPadding: 2; bottomPadding: 2
     color: enabled ? Theme.text : Theme.textMuted

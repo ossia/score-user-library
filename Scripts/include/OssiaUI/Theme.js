@@ -52,15 +52,24 @@ var textMuted    = "#7c7670";   // disabled, placeholders, hints
 var radius       = 2;           // buttons, fields, panels
 var radiusSm     = 2;           // swatches, check indicators, badges
 
-var rowH         = 19;          // standard field height (fields, combos)
-var rowHsm       = 17;          // dense rows (checks, table rows)
+var rowH         = 20;          // standard field height (fields, combos)
+var rowHsm       = 18;          // dense rows (checks, table rows)
 var toolH        = 22;          // toolbar buttons
 var listRowH     = 20;          // list delegates
 var tableRowH    = 16;          // monitor tables
 
-var fontSm       = 10;          // dense panels, tables, value readouts
-var fontMd       = 11;          // default control text
-var fontLg       = 11;          // panel titles (bold carries the hierarchy)
+// Text rasterisation. score turns on Text.NativeRendering globally, so QML text
+// goes through the same FreeType rasteriser as the widgets; what it does NOT
+// inherit usefully is the hinting. The application font asks for
+// PreferVerticalHinting, which at 11 px leaves ~86% of a glyph's pixels in the
+// antialiasing ramp; full hinting snaps stems to the pixel grid and brings that
+// down, measurably sharpening small UI text on this dark ground.
+//   0 = default, 1 = none, 2 = vertical, 3 = full   (QFont::HintingPreference)
+var hinting      = 3;
+
+var fontSm       = 11;          // dense panels, tables, value readouts
+var fontMd       = 12;          // default control text (12 px hints far better than 11)
+var fontLg       = 12;          // panel titles (bold carries the hierarchy)
 
 var gapSm        = 1;
 var gap          = 3;           // between controls in a row

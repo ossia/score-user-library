@@ -25,6 +25,7 @@ Button {
     rightPadding: compact ? 2 : 8
     topPadding: 1; bottomPadding: 1
     font.pixelSize: Theme.fontMd
+    font.hintingPreference: Theme.hinting
 
     ToolTip.visible: hovered && tip.length > 0
     ToolTip.text: tip
