@@ -802,6 +802,54 @@ function applyCharTransforms(ctx, c, prog, woMode, s, fontSize, elapsed, chars, 
     }
 }
 
+// The output editor uses the same measured block and anchor as the renderer.
+function textLayout(ctx, w, h, s, inlet) {
+    var text = applyTextTransform(inlet.text || s.text || "", s.textTransform || "none");
+    var fontStr = buildFontString(s);
+    ctx.font = fontStr;
+    var tracking = s.tracking || 0;
+    var fontSize = s.fontSize || 72;
+    var lineH = fontSize * (s.lineSpacing || 1.3);
+    var maxWrap = (s.wordWrap && s.boundingBoxW > 0) ? s.boundingBoxW * w : 0;
+    var lines = wrapText(ctx, text, maxWrap, tracking);
+    var lineWidths = [];
+    var blockW = 0;
+    for (var i = 0; i < lines.length; i++) {
+        var lw = measureLine(ctx, lines[i], tracking);
+        lineWidths.push(lw);
+        if (lw > blockW) blockW = lw;
+    }
+    var blockH = lines.length * lineH;
+    var ah = s.anchorH || "center", av = s.anchorV || "center";
+    return {
+        text: text, fontStr: fontStr, tracking: tracking, fontSize: fontSize,
+        lineH: lineH, lines: lines, lineWidths: lineWidths,
+        blockW: blockW, blockH: blockH,
+        ancX: ah === "center" ? -blockW / 2 : (ah === "right" ? -blockW : 0),
+        ancY: av === "center" ? -blockH / 2 : (av === "bottom" ? -blockH : 0)
+    };
+}
+
+function editingGeometry(ctx, w, h, s, inlet) {
+    var layout = textLayout(ctx, w, h, s, inlet);
+    var scroll = computeScrollOffset(s, inlet.elapsed || 0, w, h, layout.blockW, layout.blockH);
+    var angle = (s.rotation || 0) * Math.PI / 180;
+    var cos = Math.cos(angle), sin = Math.sin(angle);
+    var sx = s.scaleX || 1, sy = s.scaleY || 1;
+    var kx = Math.tan((s.skewX || 0) * Math.PI / 180);
+    var ky = Math.tan((s.skewY || 0) * Math.PI / 180);
+    var a = cos * sx - sin * sy * ky, b = sin * sx + cos * sy * ky;
+    var c = cos * sx * kx - sin * sy, d = sin * sx * kx + cos * sy;
+    var x = layout.ancX + scroll.x, y = layout.ancY + scroll.y;
+    return {
+        a: a, b: b, c: c, d: d,
+        x: (s.posX !== undefined ? s.posX : 0.5) * w + a * x + c * y,
+        y: (s.posY !== undefined ? s.posY : 0.5) * h + b * x + d * y,
+        width: Math.max(layout.fontSize / 2, layout.blockW),
+        height: layout.blockH
+    };
+}
+
 // ---- Main paint function ----
 
 function paintText(ctx, w, h, state, inlet, texItem) {
@@ -809,33 +857,15 @@ function paintText(ctx, w, h, state, inlet, texItem) {
     var s = state;
     ctx.clearRect(0, 0, w, h);
 
-    var text = applyTextTransform(
-        inlet.text || s.text || "",
-        s.textTransform || "none"
-    );
-    if (!text) return;
-
-    var fontStr = buildFontString(s);
-    ctx.font = fontStr;
+    var layout = textLayout(ctx, w, h, s, inlet);
+    if (!layout.text) return;
+    var fontStr = layout.fontStr;
     ctx.textBaseline = "top";
-    var tracking = s.tracking || 0;
-    var fontSize = s.fontSize || 72;
-    var lineH = fontSize * (s.lineSpacing || 1.3);
-
-    // Word wrap
-    var maxWrap = (s.wordWrap && s.boundingBoxW > 0) ? s.boundingBoxW * w : 0;
-    var lines = wrapText(ctx, text, maxWrap, tracking);
-
-    // Measure
-    var lineWidths = [];
-    var maxLW = 0;
-    for (var i = 0; i < lines.length; i++) {
-        var lw = measureLine(ctx, lines[i], tracking);
-        lineWidths.push(lw);
-        if (lw > maxLW) maxLW = lw;
-    }
-    var totalH = lines.length * lineH;
-    var blockW = maxLW, blockH = totalH;
+    var tracking = layout.tracking;
+    var fontSize = layout.fontSize;
+    var lineH = layout.lineH;
+    var lines = layout.lines, lineWidths = layout.lineWidths;
+    var blockW = layout.blockW, blockH = layout.blockH;
 
     // WriteOn
     var writeOn = (inlet.writeOn !== undefined) ? inlet.writeOn : 1.0;
@@ -855,13 +885,7 @@ function paintText(ctx, w, h, state, inlet, texItem) {
         || s.charAnimEnabled;
 
     // Anchor offset
-    var ancX = 0, ancY = 0;
-    var ah = s.anchorH || "center";
-    if (ah === "center") ancX = -blockW / 2;
-    else if (ah === "right") ancX = -blockW;
-    var av = s.anchorV || "center";
-    if (av === "center") ancY = -blockH / 2;
-    else if (av === "bottom") ancY = -blockH;
+    var ancX = layout.ancX, ancY = layout.ancY;
 
     // Global transform
     var posX = (s.posX !== undefined ? s.posX : 0.5) * w;

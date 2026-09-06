@@ -21,6 +21,7 @@ Score.ScriptUI {
     property int stateVersion: 0
     property real renderWidth: 0
     property real renderHeight: 0
+    property bool applyingState: false
 
     // ---------------- state plumbing ----------------
 
@@ -53,31 +54,44 @@ Score.ScriptUI {
         saveStyle(action);
     }
 
+    function applyStyle(style) {
+        root.applyingState = true;
+        textArea.dirty = false;
+        root.style = TextRender.mergeState(TextRender.defaultState(), style);
+        root.stateVersion++;
+        root.applyingState = false;
+    }
+
     loadState: function(state) {
         if (state && state.textState) {
             try {
                 var s = typeof state.textState === "string"
                     ? JSON.parse(state.textState) : state.textState;
-                root.style = TextRender.mergeState(TextRender.defaultState(), s);
+                root.applyStyle(s);
             } catch(e) {
-                root.style = TextRender.defaultState();
+                root.applyStyle(null);
             }
         }
-        root.stateVersion++;
+        if (!state || !state.textState) root.applyStyle(null);
     }
     stateUpdated: function(k, v) {
         if (k === "textState") {
             try {
                 var s = typeof v === "string" ? JSON.parse(v) : v;
-                root.style = TextRender.mergeState(TextRender.defaultState(), s);
+                root.applyStyle(s);
             } catch(e) { return; }
-            root.stateVersion++;
         }
     }
     executionEvent: function(message) {
         if (message && message.type === "renderSize") {
             root.renderWidth = message.width;
             root.renderHeight = message.height;
+        }
+        else if (message && message.type === "textState") {
+            try {
+                root.applyStyle(typeof message.style === "string"
+                    ? JSON.parse(message.style) : message.style);
+            } catch (error) {}
         }
     }
 
@@ -141,11 +155,12 @@ Score.ScriptUI {
 
                                 TextArea {
                                     id: textArea
+                                    property bool dirty: false
                                     text: root.sty("text", "")
                                     wrapMode: TextEdit.Wrap
                                     font.pixelSize: S.Theme.fontLg
                                     color: S.Theme.text
-                                    placeholderText: "Enter text…"
+                                    placeholderText: "Enter text"
                                     placeholderTextColor: S.Theme.textMuted
                                     selectByMouse: true
                                     selectionColor: S.Theme.accentFill
@@ -158,14 +173,24 @@ Score.ScriptUI {
                                         border.color: textArea.activeFocus ? S.Theme.accent : S.Theme.border
                                     }
                                     onTextChanged: {
-                                        if (root.style.text !== text) { root.style.text = text; root.sendLive(); }
+                                        if (activeFocus && !root.applyingState && root.style.text !== text) {
+                                            dirty = true;
+                                            root.style.text = text;
+                                            root.sendLive();
+                                        }
                                     }
-                                    onActiveFocusChanged: if (!activeFocus) root.saveStyle("Edit text")
+                                    onActiveFocusChanged: {
+                                        if (!activeFocus && dirty) {
+                                            dirty = false;
+                                            root.saveStyle("Edit text");
+                                        }
+                                    }
                                 }
                             }
                             S.SComboRow {
-                                label: "Transform"
+                                label: "Case"
                                 options: ["none", "uppercase", "lowercase", "titlecase"]
+                                labels: ["Unchanged", "Uppercase", "Lowercase", "Title case"]
                                 value: root.sty("textTransform", "none")
                                 onEdited: function (v) { root.setAndSave("textTransform", v, "Change transform"); }
                             }
@@ -248,9 +273,12 @@ Score.ScriptUI {
                                 }
                                 S.SCombo {
                                     Layout.fillWidth: true
-                                    model: ["solid", "linearGradient", "radialGradient", "texture"]
-                                    currentIndex: Math.max(0, model.indexOf(root.sty("fillType", "solid")))
-                                    onActivated: root.setAndSave("fillType", model[currentIndex], "Change fill type")
+                                    readonly property var options: ["solid", "linearGradient", "radialGradient", "texture"]
+                                    model: ["Solid", "Linear gradient", "Radial gradient", "Texture"]
+                                    currentIndex: Math.max(0, options.indexOf(root.sty("fillType", "solid")))
+                                    onActivated: root.setAndSave("fillType", options[currentIndex], "Change fill type")
+                                    ToolTip.visible: hovered && currentIndex === 3
+                                    ToolTip.text: "Texture uses the Fill Texture inlet."
                                 }
                             }
                             S.SColorRow {
@@ -285,6 +313,7 @@ Score.ScriptUI {
                                 S.SComboRow {
                                     label: "Scope"
                                     options: ["fullText", "perLine", "perWord", "perCharacter"]
+                                    labels: ["Whole text", "Each line", "Each word", "Each character"]
                                     value: root.sty("gradientScope", "fullText")
                                     onEdited: function (v) { root.setAndSave("gradientScope", v, "Change gradient scope"); }
                                 }
@@ -295,13 +324,6 @@ Score.ScriptUI {
                                 Layout.fillWidth: true
                                 spacing: S.Theme.gap
 
-                                S.SLabel {
-                                    Layout.fillWidth: true
-                                    dim: true
-                                    wrapMode: Text.Wrap
-                                    elide: Text.ElideNone
-                                    text: "Connect a video or image to the 'Fill Texture' inlet."
-                                }
                                 S.SSliderRow {
                                     label: "Scale X"; from: 0.1; to: 5; stepSize: 0.05; defaultValue: 1
                                     value: root.sty("texFillScaleX", 1)
@@ -416,6 +438,7 @@ Score.ScriptUI {
                             S.SComboRow {
                                 label: "Scope"
                                 options: ["fullText", "perLine"]
+                                labels: ["Whole text", "Each line"]
                                 value: root.sty("bgScope", "fullText")
                                 onEdited: function (v) { root.setAndSave("bgScope", v, "Change bg scope"); }
                             }
@@ -559,6 +582,7 @@ Score.ScriptUI {
                             S.SComboRow {
                                 label: "Direction"
                                 options: ["forward", "reverse", "fromCenter", "random"]
+                                labels: ["Forward", "Reverse", "From center", "Random"]
                                 value: root.sty("writeOnDirection", "forward")
                                 onEdited: function (v) { root.setAndSave("writeOnDirection", v, "Change write-on direction"); }
                             }
@@ -649,6 +673,7 @@ Score.ScriptUI {
                             S.SComboRow {
                                 label: "Property"
                                 options: ["posY", "posX", "rotation", "scale", "opacity"]
+                                labels: ["Position Y", "Position X", "Rotation", "Scale", "Opacity"]
                                 value: root.sty("charWaveProperty", "posY")
                                 onEdited: function (v) { root.setAndSave("charWaveProperty", v, "Change wave property"); }
                             }
@@ -658,7 +683,7 @@ Score.ScriptUI {
                         S.SSection {
                             title: "Char animation"
                             expanded: false
-                            tip: "Resolume-style per-character cascade."
+                            tip: "Animate characters, words or lines in sequence."
 
                             RowLayout {
                                 Layout.fillWidth: true
@@ -684,6 +709,7 @@ Score.ScriptUI {
                             S.SComboRow {
                                 label: "Order"
                                 options: ["forward", "reverse", "random", "fromCenter", "toCenter"]
+                                labels: ["Forward", "Reverse", "Random", "From center", "To center"]
                                 value: root.sty("charAnimOrder", "forward")
                                 onEdited: function (v) { root.setAndSave("charAnimOrder", v, "Change anim order"); }
                             }
@@ -751,7 +777,7 @@ Score.ScriptUI {
             }
 
             S.SStatusBar {
-                hint: "Advanced Text — double-click a slider to reset it"
+                visible: detail.length > 0
                 detail: root.renderWidth > 0
                         ? (Math.round(root.renderWidth) + "×" + Math.round(root.renderHeight))
                         : ""
