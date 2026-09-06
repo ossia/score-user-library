@@ -16,6 +16,7 @@ Item {
     component ToolBtn: S.SButton {
         property string toolName: ""
         lit: toolName.length > 0 && bar.owner.tool === toolName
+        enabled: !bar.owner.showMode || toolName === "" || toolName === "select" || toolName === "sim"
         onClicked: if (toolName.length) bar.owner.tool = toolName
     }
 
@@ -39,32 +40,34 @@ Item {
 
         ToolBtn {
             text: "Generate ▾"; tip: "Templates and generators"
+            enabled: !bar.owner.showMode
             onClicked: genMenu.open()
-            Menu {
+            S.SMenu {
                 id: genMenu
-                MenuItem { text: "Grid 3×2 (6 m × 4 m)"; onTriggered: bar.owner.addZones(Model.gridZones(0, 0, 6, 4, 3, 2, bar.owner.doc.zones.length), "Add grid") }
-                MenuItem { text: "Grid 4×4 (8 m × 8 m)"; onTriggered: bar.owner.addZones(Model.gridZones(0, 0, 8, 8, 4, 4, bar.owner.doc.zones.length), "Add grid") }
-                MenuItem { text: "Radial sectors ×6 (r 1-3 m)"; onTriggered: bar.owner.addZones(Model.sectorZones(0, 0, 1, 3, 6, bar.owner.doc.zones.length), "Add sectors") }
-                MenuItem { text: "Radial sectors ×8 (r 0-4 m)"; onTriggered: bar.owner.addZones(Model.sectorZones(0, 0, 0, 4, 8, bar.owner.doc.zones.length), "Add sectors") }
-                MenuItem { text: "Pie ×4 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 4, bar.owner.doc.zones.length), "Add pie") }
-                MenuItem { text: "Pie ×6 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 6, bar.owner.doc.zones.length), "Add pie") }
-                MenuItem { text: "Pie ×8 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 8, bar.owner.doc.zones.length), "Add pie") }
-                MenuItem { text: "Pie ×12 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 12, bar.owner.doc.zones.length), "Add pie") }
-                MenuItem { text: "Pie ×16 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 16, bar.owner.doc.zones.length), "Add pie") }
-                MenuSeparator {}
-                MenuItem { text: "Template: door tripwire + approach"; onTriggered: bar.owner.addZones(Model.template("door"), "Add template") }
-                MenuItem { text: "Template: stage up/mid/down"; onTriggered: bar.owner.addZones(Model.template("stage"), "Add template") }
-                MenuItem { text: "Template: audience funnel rings"; onTriggered: bar.owner.addZones(Model.template("funnel"), "Add template") }
-                MenuSeparator {}
-                MenuItem { text: "Camera: 3×3 segmentation"; onTriggered: bar.owner.addZones(Model.template("camera-grid"), "Add template") }
-                MenuItem { text: "Camera: quadrants"; onTriggered: bar.owner.addZones(Model.template("camera-quadrants"), "Add template") }
-                MenuItem { text: "Camera: 8 vertical strips (fader bank)"; onTriggered: bar.owner.addZones(Model.template("camera-columns"), "Add template") }
-                MenuItem { text: "Camera: 5 horizontal bands"; onTriggered: bar.owner.addZones(Model.template("camera-rows"), "Add template") }
-                MenuItem { text: "Camera: piano keyboard, 1 octave"; onTriggered: bar.owner.addZones(Model.template("piano"), "Add template") }
-                MenuItem { text: "Camera: piano keyboard, 2 octaves"; onTriggered: bar.owner.addZones(Model.template("piano2"), "Add template") }
-                MenuItem { text: "Camera: XY pad + corner triggers"; onTriggered: bar.owner.addZones(Model.template("xy-pad"), "Add template") }
-                MenuItem { text: "Camera: swipe tripwires"; onTriggered: bar.owner.addZones(Model.template("swipe"), "Add template") }
-                MenuItem { text: "3D: near / mid / far depth layers"; onTriggered: bar.owner.addZones(Model.template("depth-layers"), "Add template") }
+                y: parent.height
+                S.SMenuItem { text: "Grid 3×2 (6 m × 4 m)"; onTriggered: bar.owner.addZones(Model.gridZones(0, 0, 6, 4, 3, 2, bar.owner.doc.zones.length), "Add grid") }
+                S.SMenuItem { text: "Grid 4×4 (8 m × 8 m)"; onTriggered: bar.owner.addZones(Model.gridZones(0, 0, 8, 8, 4, 4, bar.owner.doc.zones.length), "Add grid") }
+                S.SMenuItem { text: "Radial sectors ×6 (r 1-3 m)"; onTriggered: bar.owner.addZones(Model.sectorZones(0, 0, 1, 3, 6, bar.owner.doc.zones.length), "Add sectors") }
+                S.SMenuItem { text: "Radial sectors ×8 (r 0-4 m)"; onTriggered: bar.owner.addZones(Model.sectorZones(0, 0, 0, 4, 8, bar.owner.doc.zones.length), "Add sectors") }
+                S.SMenuItem { text: "Pie ×4 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 4, bar.owner.doc.zones.length), "Add pie") }
+                S.SMenuItem { text: "Pie ×6 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 6, bar.owner.doc.zones.length), "Add pie") }
+                S.SMenuItem { text: "Pie ×8 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 8, bar.owner.doc.zones.length), "Add pie") }
+                S.SMenuItem { text: "Pie ×12 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 12, bar.owner.doc.zones.length), "Add pie") }
+                S.SMenuItem { text: "Pie ×16 (r 2 m)"; onTriggered: bar.owner.addZones(Model.pieZones(0, 0, 2, 16, bar.owner.doc.zones.length), "Add pie") }
+                S.SMenuSeparator {}
+                S.SMenuItem { text: "Template: door tripwire + approach"; onTriggered: bar.owner.addZones(Model.template("door"), "Add template") }
+                S.SMenuItem { text: "Template: stage up/mid/down"; onTriggered: bar.owner.addZones(Model.template("stage"), "Add template") }
+                S.SMenuItem { text: "Template: audience funnel rings"; onTriggered: bar.owner.addZones(Model.template("funnel"), "Add template") }
+                S.SMenuSeparator {}
+                S.SMenuItem { text: "Camera: 3×3 segmentation"; onTriggered: bar.owner.addZones(Model.template("camera-grid"), "Add template") }
+                S.SMenuItem { text: "Camera: quadrants"; onTriggered: bar.owner.addZones(Model.template("camera-quadrants"), "Add template") }
+                S.SMenuItem { text: "Camera: 8 vertical strips (fader bank)"; onTriggered: bar.owner.addZones(Model.template("camera-columns"), "Add template") }
+                S.SMenuItem { text: "Camera: 5 horizontal bands"; onTriggered: bar.owner.addZones(Model.template("camera-rows"), "Add template") }
+                S.SMenuItem { text: "Camera: piano keyboard, 1 octave"; onTriggered: bar.owner.addZones(Model.template("piano"), "Add template") }
+                S.SMenuItem { text: "Camera: piano keyboard, 2 octaves"; onTriggered: bar.owner.addZones(Model.template("piano2"), "Add template") }
+                S.SMenuItem { text: "Camera: XY pad + corner triggers"; onTriggered: bar.owner.addZones(Model.template("xy-pad"), "Add template") }
+                S.SMenuItem { text: "Camera: swipe tripwires"; onTriggered: bar.owner.addZones(Model.template("swipe"), "Add template") }
+                S.SMenuItem { text: "3D: near / mid / far depth layers"; onTriggered: bar.owner.addZones(Model.template("depth-layers"), "Add template") }
             }
         }
 
@@ -93,7 +96,7 @@ Item {
         ToolBtn { text: "Speed"; lit: bar.owner.showVelocity; onClicked: bar.owner.showVelocity = !bar.owner.showVelocity; tip: "Draw velocity lines on entities" }
         ToolBtn { text: "Keypoints"; lit: bar.owner.showKeypoints; onClicked: bar.owner.showKeypoints = !bar.owner.showKeypoints; tip: "Draw skeleton keypoints (costs bandwidth with many entities)" }
         ToolBtn { text: "Heat"; lit: bar.owner.showHeat; onClicked: bar.owner.showHeat = !bar.owner.showHeat; tip: "Show heatmap (enable it in Settings)" }
-        ToolBtn { text: "Floor plan…"; tip: "Load a floor plan image for the 2D and 3D views. Set its real width and height in Settings under Floor plan backdrop."; onClicked: bar.owner.chooseFloorPlan() }
+        ToolBtn { text: "Floor plan…"; enabled: !bar.owner.showMode; tip: "Load a floor plan image for the 2D and 3D views. Set its real width and height in Settings under Floor plan backdrop."; onClicked: bar.owner.chooseFloorPlan() }
 
         Item { width: 12; height: 1 }
 
@@ -116,19 +119,20 @@ Item {
         ToolBtn {
             text: "⋯"; tip: "More actions"
             onClicked: moreMenu.open()
-            Menu {
+            S.SMenu {
                 id: moreMenu
-                MenuItem { text: "Export zones to JSON file…"; onTriggered: Util.saveFileDialog("Export zones", "JSON (*.json)", "", "zones.json", function(path) { if (bar && path) { Util.writeFile(path, bar.owner.exportDoc()); bar.owner.statusText = "Exported to " + path; } }) }
-                MenuItem { text: "Import zones from JSON file…"; enabled: !bar.owner.showMode; onTriggered: Util.openFileDialog("Import zones", "JSON (*.json)", "", function(path) { if (bar && path && !bar.owner.showMode) bar.owner.importDoc(bar.owner.readTextFile(path)); }) }
-                MenuSeparator {}
-                MenuItem { text: "Select all"; onTriggered: bar.owner.selection = bar.owner.doc.zones.map(function (z) { return z.id; }) }
-                MenuItem { text: "Delete selected"; onTriggered: bar.owner.deleteSelected() }
-                MenuItem { text: "Duplicate selected (Ctrl+D)"; onTriggered: bar.owner.duplicateSelected() }
-                MenuSeparator {}
-                MenuItem { text: "Reset all counters"; onTriggered: bar.owner.executionSend({ type: "resetCounters" }) }
-                MenuItem { text: "Clear tracked entities"; onTriggered: bar.owner.executionSend({ type: "clearEntities" }) }
-                MenuItem { text: "Undo (Ctrl+Z)"; onTriggered: bar.owner.uiAction({ action: "undo" }) }
-                MenuItem { text: "Redo (Ctrl+Shift+Z)"; onTriggered: bar.owner.uiAction({ action: "redo" }) }
+                y: parent.height
+                S.SMenuItem { text: "Export zones to JSON file…"; onTriggered: Util.saveFileDialog("Export zones", "JSON (*.json)", "", "zones.json", function(path) { if (bar && path) { Util.writeFile(path, bar.owner.exportDoc()); bar.owner.statusText = "Exported to " + path; } }) }
+                S.SMenuItem { text: "Import zones from JSON file…"; enabled: !bar.owner.showMode; onTriggered: Util.openFileDialog("Import zones", "JSON (*.json)", "", function(path) { if (bar && path && !bar.owner.showMode) bar.owner.importDoc(bar.owner.readTextFile(path)); }) }
+                S.SMenuSeparator {}
+                S.SMenuItem { text: "Select all"; onTriggered: bar.owner.selection = bar.owner.doc.zones.map(function (z) { return z.id; }) }
+                S.SMenuItem { text: "Delete selected"; enabled: !bar.owner.showMode; onTriggered: bar.owner.deleteSelected() }
+                S.SMenuItem { text: "Duplicate selected (Ctrl+D)"; enabled: !bar.owner.showMode; onTriggered: bar.owner.duplicateSelected() }
+                S.SMenuSeparator {}
+                S.SMenuItem { text: "Reset all counters"; onTriggered: bar.owner.executionSend({ type: "resetCounters" }) }
+                S.SMenuItem { text: "Clear tracked entities"; onTriggered: bar.owner.executionSend({ type: "clearEntities" }) }
+                S.SMenuItem { text: "Undo (Ctrl+Z)"; onTriggered: bar.owner.uiAction({ action: "undo" }) }
+                S.SMenuItem { text: "Redo (Ctrl+Shift+Z)"; onTriggered: bar.owner.uiAction({ action: "redo" }) }
             }
         }
     }

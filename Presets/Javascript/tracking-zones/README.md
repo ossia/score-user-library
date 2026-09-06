@@ -127,7 +127,7 @@ crossing after N frames on the other side, and only within the segment unless *e
   layers — all sized for the default 4 m × 3 m normalised camera scene,
   plus pies cut in 4 / 6 / 8 / 12 / 16 slices), 2D / 3D / split, fit (F),
   snapping (G) + grid step, trails, labels, speed lines, keypoints, heatmap, **Floor plan…** (load a
-  PNG/JPG/SVG plan, scaled in metres, shown in both views), zone set, **Show mode** (locks editing),
+  PNG/JPG/SVG plan, scaled in metres, shown in both views), zone set, **Editing locked / unlocked**,
   import / export JSON.
 * **Numeric fields** — every number field (inspector, sources, simulator) drags like score's spinboxes:
   press and move left / right (or up / down) to change the value by its step, click to type, **double
@@ -152,6 +152,8 @@ crossing after N frames on the other side, and only within the segment unless *e
 * **Inspector** — every zone property above, live read-out; with nothing selected: engine
   settings, world transform, proximity, heatmap, floor-plan backdrop. Simulator bounds live in the
   Simulator pane.
+  The backdrop `…` button and toolbar **Floor plan…** open a picker modal to this editor;
+  both are disabled while editing is locked.
 * **Sources & calibration**, **Simulator & recorder** (dummies you drag, random walkers,
   record every source to JSON, play back with loop / speed / scrub — playback replaces the live
   inlets), **Event monitor** (event log, per-zone counters table, CSV export, reset), **Source monitor**

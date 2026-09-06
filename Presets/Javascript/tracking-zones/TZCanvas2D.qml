@@ -524,18 +524,18 @@ Item {
         owner.tool = "select";
     }
 
-    Menu {
+    S.SMenu {
         id: ctxMenu
-        MenuItem { text: "Duplicate"; onTriggered: owner.duplicateSelected() }
-        MenuItem { text: "Delete"; onTriggered: owner.deleteSelected() }
-        MenuSeparator {}
-        MenuItem { text: (owner.selectedZone && owner.selectedZone.enabled === false) ? "Enable" : "Disable"; onTriggered: owner.setSelectedProp("enabled", !(owner.selectedZone && owner.selectedZone.enabled !== false), "Toggle enabled") }
-        MenuItem { text: (owner.selectedZone && owner.selectedZone.locked) ? "Unlock" : "Lock"; onTriggered: owner.setSelectedProp("locked", !(owner.selectedZone && owner.selectedZone.locked), "Toggle lock") }
-        MenuItem { text: "Hide"; onTriggered: owner.setSelectedProp("visible", false, "Hide zone") }
-        MenuSeparator {}
-        MenuItem { text: "Bring to front"; onTriggered: { var i = owner.zoneIndex(owner.selectedId); owner.reorderZone(i, owner.doc.zones.length - 1); } }
-        MenuItem { text: "Send to back"; onTriggered: { var i = owner.zoneIndex(owner.selectedId); owner.reorderZone(i, 0); } }
-        MenuSeparator {}
-        MenuItem { text: "Reset zone counters"; onTriggered: owner.executionSend({ type: "resetCounters", zone: owner.selectedId }) }
+        S.SMenuItem { text: "Duplicate"; enabled: !owner.showMode; onTriggered: owner.duplicateSelected() }
+        S.SMenuItem { text: "Delete"; enabled: !owner.showMode; onTriggered: owner.deleteSelected() }
+        S.SMenuSeparator {}
+        S.SMenuItem { text: (owner.selectedZone && owner.selectedZone.enabled === false) ? "Enable" : "Disable"; enabled: !owner.showMode; onTriggered: owner.setSelectedProp("enabled", !(owner.selectedZone && owner.selectedZone.enabled !== false), "Toggle enabled") }
+        S.SMenuItem { text: (owner.selectedZone && owner.selectedZone.locked) ? "Unlock" : "Lock"; enabled: !owner.showMode; onTriggered: owner.setSelectedProp("locked", !(owner.selectedZone && owner.selectedZone.locked), "Toggle lock") }
+        S.SMenuItem { text: "Hide"; enabled: !owner.showMode; onTriggered: owner.setSelectedProp("visible", false, "Hide zone") }
+        S.SMenuSeparator {}
+        S.SMenuItem { text: "Bring to front"; enabled: !owner.showMode; onTriggered: { var i = owner.zoneIndex(owner.selectedId); owner.reorderZone(i, owner.doc.zones.length - 1); } }
+        S.SMenuItem { text: "Send to back"; enabled: !owner.showMode; onTriggered: { var i = owner.zoneIndex(owner.selectedId); owner.reorderZone(i, 0); } }
+        S.SMenuSeparator {}
+        S.SMenuItem { text: "Reset zone counters"; onTriggered: owner.executionSend({ type: "resetCounters", zone: owner.selectedId }) }
     }
 }

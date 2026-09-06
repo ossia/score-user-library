@@ -273,8 +273,8 @@ Rectangle {
                             onFilesDropped: function(paths, x, y) { owner.applyFloorPlan(paths[0]); }
                         }
                     }
-                    Button { text: "…"; implicitWidth: 26; implicitHeight: 22; onClicked: owner.chooseFloorPlan() }
-                    Button { text: "×"; implicitWidth: 22; implicitHeight: 22; onClicked: owner.setSettings("backdrop.path", "", "Backdrop") }
+                    S.SButton { text: "…"; compact: true; implicitWidth: 26; implicitHeight: 22; enabled: !owner.showMode; onClicked: owner.chooseFloorPlan() }
+                    S.SButton { text: "×"; compact: true; implicitWidth: 22; implicitHeight: 22; enabled: !owner.showMode; onClicked: owner.setSettings("backdrop.path", "", "Backdrop") }
                 }
                 NumField { label: "Centre X"; spath: "backdrop.x"; value: insp.sp("backdrop.x", 0); suffix: "m"; onEdited: function (v) { owner.setSettings("backdrop.x", v, "Backdrop"); } }
                 NumField { label: "Centre Y"; spath: "backdrop.y"; value: insp.sp("backdrop.y", 0); suffix: "m"; onEdited: function (v) { owner.setSettings("backdrop.y", v, "Backdrop"); } }

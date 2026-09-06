@@ -41,22 +41,24 @@ Rectangle {
             Label { text: "Zones"; font.bold: true; font.pixelSize: 12; color: palette.windowText }
             Label { font.pixelSize: 11; color: palette.placeholderText; text: { panel.owner.docVersion; return "(" + panel.owner.doc.zones.length + ")"; } }
             Item { Layout.fillWidth: true }
-            Button {
+            S.SButton {
                 text: "+"; implicitWidth: 26; implicitHeight: 24; font.pixelSize: 12
+                enabled: !panel.owner.showMode
                 onClicked: addMenu.open()
                 ToolTip.visible: hovered; ToolTip.text: "Add a zone at the view centre"
-                Menu {
+                S.SMenu {
                     id: addMenu
-                    MenuItem { text: "Rectangle"; onTriggered: panel.owner.addZone("rect", 0, 0) }
-                    MenuItem { text: "Circle"; onTriggered: panel.owner.addZone("circle", 0, 0) }
-                    MenuItem { text: "Polygon"; onTriggered: panel.owner.addZone("polygon", 0, 0) }
-                    MenuItem { text: "Line (tripwire)"; onTriggered: panel.owner.addZone("line", 0, 0) }
-                    MenuItem { text: "Path"; onTriggered: panel.owner.addZone("path", 0, 0) }
-                    MenuSeparator {}
-                    MenuItem { text: "Box"; onTriggered: panel.owner.addZone("box", 0, 0) }
-                    MenuItem { text: "Sphere"; onTriggered: panel.owner.addZone("sphere", 0, 0) }
-                    MenuItem { text: "Cylinder"; onTriggered: panel.owner.addZone("cylinder", 0, 0) }
-                    MenuItem { text: "Prism (extruded polygon)"; onTriggered: panel.owner.addZone("prism", 0, 0) }
+                    y: parent.height
+                    S.SMenuItem { text: "Rectangle"; onTriggered: panel.owner.addZone("rect", 0, 0) }
+                    S.SMenuItem { text: "Circle"; onTriggered: panel.owner.addZone("circle", 0, 0) }
+                    S.SMenuItem { text: "Polygon"; onTriggered: panel.owner.addZone("polygon", 0, 0) }
+                    S.SMenuItem { text: "Line (tripwire)"; onTriggered: panel.owner.addZone("line", 0, 0) }
+                    S.SMenuItem { text: "Path"; onTriggered: panel.owner.addZone("path", 0, 0) }
+                    S.SMenuSeparator {}
+                    S.SMenuItem { text: "Box"; onTriggered: panel.owner.addZone("box", 0, 0) }
+                    S.SMenuItem { text: "Sphere"; onTriggered: panel.owner.addZone("sphere", 0, 0) }
+                    S.SMenuItem { text: "Cylinder"; onTriggered: panel.owner.addZone("cylinder", 0, 0) }
+                    S.SMenuItem { text: "Prism (extruded polygon)"; onTriggered: panel.owner.addZone("prism", 0, 0) }
                 }
             }
         }
@@ -108,10 +110,21 @@ Rectangle {
                         width: 10; height: 10; radius: 2; color: row.zn ? row.zn.color : "#888"
                         border.color: row.st && row.st.occupied ? "#ffffff" : "transparent"; border.width: 1
                         MouseArea { anchors.fill: parent; onClicked: { panel.owner.select(row.zn.id, false); colorMenu.popup(); } }
-                        Menu {
+                        S.SMenu {
                             id: colorMenu
                             Repeater { model: S.Theme.swatches
-                                MenuItem { required property string modelData; contentItem: Row { spacing: 6; Rectangle { width: 12; height: 12; color: modelData; anchors.verticalCenter: parent.verticalCenter } Label { text: modelData; font.pixelSize: 11 } } onTriggered: panel.owner.setSelectedProp("color", modelData, "Zone colour") }
+                                S.SMenuItem {
+                                    id: swatchItem
+                                    required property string modelData
+                                    text: modelData
+                                    enabled: !panel.owner.showMode
+                                    contentItem: Row {
+                                        spacing: S.Theme.gapLg
+                                        Rectangle { width: S.Theme.fontMd; height: width; radius: S.Theme.radiusSm; color: swatchItem.modelData; anchors.verticalCenter: parent.verticalCenter }
+                                        Text { text: swatchItem.text; font: swatchItem.font; color: swatchItem.foreground; anchors.verticalCenter: parent.verticalCenter }
+                                    }
+                                    onTriggered: panel.owner.setSelectedProp("color", modelData, "Zone colour")
+                                }
                             }
                         }
                     }
@@ -134,14 +147,14 @@ Rectangle {
                     // enabled
                     CheckBox { checked: row.zn ? row.zn.enabled !== false : true; implicitWidth: 18; implicitHeight: 18; padding: 0; onToggled: panel.owner.setZoneProp(row.zn.id, "enabled", checked, "Toggle enabled") }
                 }
-                Menu {
+                S.SMenu {
                     id: rowMenu
-                    MenuItem { text: "Rename"; onTriggered: row.rename() }
-                    MenuItem { text: "Duplicate"; onTriggered: panel.owner.duplicateSelected() }
-                    MenuItem { text: "Delete"; onTriggered: panel.owner.deleteSelected() }
-                    MenuSeparator {}
-                    MenuItem { text: "Move up"; onTriggered: panel.moveVisible(row.index, row.index - 1, panel.visibleIds) }
-                    MenuItem { text: "Move down"; onTriggered: panel.moveVisible(row.index, row.index + 1, panel.visibleIds) }
+                    S.SMenuItem { text: "Rename"; enabled: !panel.owner.showMode && row.zn && !row.zn.locked; onTriggered: row.rename() }
+                    S.SMenuItem { text: "Duplicate"; enabled: !panel.owner.showMode; onTriggered: panel.owner.duplicateSelected() }
+                    S.SMenuItem { text: "Delete"; enabled: !panel.owner.showMode; onTriggered: panel.owner.deleteSelected() }
+                    S.SMenuSeparator {}
+                    S.SMenuItem { text: "Move up"; enabled: !panel.owner.showMode; onTriggered: panel.moveVisible(row.index, row.index - 1, panel.visibleIds) }
+                    S.SMenuItem { text: "Move down"; enabled: !panel.owner.showMode; onTriggered: panel.moveVisible(row.index, row.index + 1, panel.visibleIds) }
                 }
             }
         }

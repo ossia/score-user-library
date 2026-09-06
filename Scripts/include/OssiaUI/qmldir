@@ -20,6 +20,9 @@ SBadge       1.0 SBadge.qml
 SButton      1.0 SButton.qml
 SCheck       1.0 SCheck.qml
 SCombo       1.0 SCombo.qml
+SMenu        1.0 SMenu.qml
+SMenuItem    1.0 SMenuItem.qml
+SMenuSeparator 1.0 SMenuSeparator.qml
 SSlider      1.0 SSlider.qml
 SSpin        1.0 SSpin.qml
 STextField   1.0 STextField.qml
