@@ -1,0 +1,8 @@
+import QmlProject 1.3
+
+Project {
+    mainFile: "control-panel.qml"
+    QmlFiles { directory: "." }
+    JavaScriptFiles { directory: "." }
+    importPaths: [".", "../../../Scripts/include"]
+}
