@@ -1,9 +1,9 @@
-import Score as Score
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import "Model.js" as Model
+import OssiaUI as S
 
 // Top toolbar: tools, creation menu, view options, set selector, show-mode lock, import/export.
 Item {
@@ -11,20 +11,13 @@ Item {
     property var owner
     implicitHeight: flow.implicitHeight
 
-    // "lit" replaces checkable/checked: the active state is always driven by a binding to the owner,
-    // so clicking twice cannot deselect a mode and external changes (shortcuts) stay in sync.
-    component ToolBtn: Button {
+    // Tool buttons come from the shared kit; the only local part is binding
+    // `lit` to the owner's current tool, so clicking twice cannot deselect a
+    // mode and external changes (shortcuts) stay in sync.
+    component ToolBtn: S.SButton {
         property string toolName: ""
-        property string tip: ""
-        property bool lit: toolName.length > 0 && bar.owner.tool === toolName
-        implicitHeight: 26
-        leftPadding: 9; rightPadding: 9; topPadding: 2; bottomPadding: 2
-        font.pixelSize: 11
+        lit: toolName.length > 0 && bar.owner.tool === toolName
         onClicked: if (toolName.length) bar.owner.tool = toolName
-        ToolTip.visible: hovered && tip.length > 0; ToolTip.text: tip; ToolTip.delay: 500
-        property color tint: "#1d1c1a"
-        contentItem: Text { text: parent.text; font: parent.font; color: parent.lit ? "#f4f7f5" : "#e6ebe8"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-        background: Rectangle { implicitWidth: 20; implicitHeight: 26; radius: 3; color: parent.lit ? "#62400a" : (parent.down ? "#3a3835" : (parent.hovered ? "#2c2a27" : parent.tint)); border.color: parent.lit ? "#c58014" : "#3a3835"; border.width: 1 }
     }
 
     Flow {
@@ -43,7 +36,7 @@ Item {
         ToolBtn { text: "Cyl"; toolName: "cylinder"; tip: "3D cylinder" }
         ToolBtn { text: "Dummies"; toolName: "sim"; tip: "Simulation: click to add a dummy entity, drag to move, right-click to remove (7)" }
 
-        Rectangle { width: 1; height: 26; color: palette.mid }
+        S.SVSeparator {}
 
         ToolBtn {
             text: "Generate ▾"; tip: "Templates and generators"
@@ -76,41 +69,25 @@ Item {
             }
         }
 
-        Rectangle { width: 1; height: 26; color: palette.mid }
+        S.SVSeparator {}
 
         ToolBtn { text: "2D"; lit: bar.owner.viewMode === "2d"; onClicked: bar.owner.viewMode = "2d"; tip: "Top view (Tab cycles)" }
         ToolBtn { text: "3D"; lit: bar.owner.viewMode === "3d"; onClicked: bar.owner.viewMode = "3d" }
         ToolBtn { text: "Split"; lit: bar.owner.viewMode === "split"; onClicked: bar.owner.viewMode = "split" }
         ToolBtn { text: "Fit"; tip: "Fit all zones in view (F)"; onClicked: bar.owner.fitView() }
 
-        Rectangle { width: 1; height: 26; color: palette.mid }
+        S.SVSeparator {}
 
         ToolBtn { text: "Snap"; lit: bar.owner.snapping; onClicked: bar.owner.snapping = !bar.owner.snapping; tip: "Snap to grid (G)" }
-        SpinBox {
-            id: gridSpin; from: 1; to: 500; stepSize: 1; value: Math.round(bar.owner.gridStep * 100); editable: true
-            implicitWidth: 96; implicitHeight: 26; font.pixelSize: 11
-            leftPadding: 20; rightPadding: 20
+        S.SSpin {
+            id: gridSpin
+            from: 1; to: 500; stepSize: 1
+            value: Math.round(bar.owner.gridStep * 100)
+            implicitWidth: 92
             textFromValue: function (v) { return (v / 100).toFixed(2) + " m"; }
             valueFromText: function (t) { return Math.round(parseFloat(t) * 100); }
             onValueModified: bar.owner.gridStep = value / 100
             ToolTip.visible: hovered; ToolTip.text: "Grid step"
-            contentItem: TextInput {
-                text: gridSpin.textFromValue(gridSpin.value, gridSpin.locale)
-                font: gridSpin.font; color: "#d0d0d0"
-                horizontalAlignment: Qt.AlignHCenter; verticalAlignment: Qt.AlignVCenter
-                readOnly: !gridSpin.editable; validator: gridSpin.validator; selectByMouse: true
-            }
-            up.indicator: Rectangle {
-                x: gridSpin.width - width; height: gridSpin.height; width: 18; radius: 3
-                color: gridSpin.up.pressed ? "#3a3835" : "#1d1c1a"; border.color: "#3a3835"
-                Text { anchors.centerIn: parent; text: "+"; font.pixelSize: 12; color: "#c0c0c0" }
-            }
-            down.indicator: Rectangle {
-                x: 0; height: gridSpin.height; width: 18; radius: 3
-                color: gridSpin.down.pressed ? "#3a3835" : "#1d1c1a"; border.color: "#3a3835"
-                Text { anchors.centerIn: parent; text: "−"; font.pixelSize: 12; color: "#c0c0c0" }
-            }
-            background: Rectangle { radius: 3; color: "#1d1c1a"; border.color: "#3a3835" }
         }
         ToolBtn { text: "Trails"; lit: bar.owner.showTrails; onClicked: bar.owner.showTrails = !bar.owner.showTrails }
         ToolBtn { text: "Labels"; lit: bar.owner.showLabels; onClicked: bar.owner.showLabels = !bar.owner.showLabels }
@@ -122,7 +99,7 @@ Item {
         Item { width: 12; height: 1 }
 
         Label { text: "Set:"; font.pixelSize: 11; color: palette.windowText; height: 26; verticalAlignment: Text.AlignVCenter }
-        TZCombo {
+        S.SCombo {
             id: setBox
             implicitWidth: 120; implicitHeight: 26; font.pixelSize: 11
             model: { bar.owner.docVersion; return ["(all)"].concat(bar.owner.zoneSetsList()); }
@@ -135,7 +112,7 @@ Item {
             text: bar.owner.showMode ? "🔒 Show mode" : "Edit mode"; lit: bar.owner.showMode
             onClicked: bar.owner.showMode = !bar.owner.showMode
             tip: "Show mode locks all editing so a running show cannot be altered by accident"
-            tint: bar.owner.showMode ? "#7a1e1e" : "#1d1c1a"
+            tint: bar.owner.showMode ? S.Theme.danger : S.Theme.control
         }
         ToolBtn {
             text: "⋯"; tip: "Import / export"
@@ -151,8 +128,8 @@ Item {
                 MenuSeparator {}
                 MenuItem { text: "Reset all counters"; onTriggered: bar.owner.executionSend({ type: "resetCounters" }) }
                 MenuItem { text: "Clear tracked entities"; onTriggered: bar.owner.executionSend({ type: "clearEntities" }) }
-                MenuItem { text: "Undo (Ctrl+Z)"; onTriggered: Score.Editor.undo() }
-                MenuItem { text: "Redo (Ctrl+Shift+Z)"; onTriggered: Score.Editor.redo() }
+                MenuItem { text: "Undo (Ctrl+Z)"; onTriggered: bar.owner.uiAction({ action: "undo" }) }
+                MenuItem { text: "Redo (Ctrl+Shift+Z)"; onTriggered: bar.owner.uiAction({ action: "redo" }) }
             }
         }
     }

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "UiUtil.js" as U
 import "Ingest.js" as Ingest
+import OssiaUI as S
 
 // Sources & calibration: one card per inlet. An inlet can carry a single source or a map of
 // several ({name: payload}, e.g. a device container with one child per sensor); every source
@@ -28,7 +29,7 @@ Item {
         validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
         onEditingFinished: { var nv = parseFloat(text); if (!isNaN(nv) && Math.abs(nv - value) > 1e-9) edited(nv); rebind(); }
         function rebind() { text = Qt.binding(function () { return U.fmt(value, decimals); }); }
-        TZNumDrag { field: sn; value: sn.value; step: sn.decimals >= 3 ? 0.01 : (sn.decimals === 0 ? 1 : 0.1); onDragged: function (v) { sn.text = U.fmt(v, sn.decimals); } onCommitted: function (v) { sn.edited(v); sn.rebind(); } onReset: { var dv = sn.defaultValue(); if (dv !== undefined) { sn.edited(dv); sn.rebind(); } } }
+        S.SNumDrag { field: sn; value: sn.value; step: sn.decimals >= 3 ? 0.01 : (sn.decimals === 0 ? 1 : 0.1); onDragged: function (v) { sn.text = U.fmt(v, sn.decimals); } onCommitted: function (v) { sn.edited(v); sn.rebind(); } onReset: { var dv = sn.defaultValue(); if (dv !== undefined) { sn.edited(dv); sn.rebind(); } } }
     }
     component L: Label { font.pixelSize: 10; color: palette.windowText }
 
@@ -67,26 +68,26 @@ Item {
                                 spacing: 2
                                 RowLayout {
                                     Layout.fillWidth: true
-                                    TZCheck { checked: panel.sget(card.key, "enabled", true); onToggled: owner.setSource(card.key, "enabled", checked, "Source enabled") }
+                                    S.SCheck { checked: panel.sget(card.key, "enabled", true); onToggled: owner.setSource(card.key, "enabled", checked, "Source enabled") }
                                     TextField { Layout.preferredWidth: 92; implicitHeight: 22; topPadding: 2; bottomPadding: 2; font.pixelSize: 11; font.bold: true; text: panel.sget(card.key, "name", "Source " + (card.key + 1)); selectByMouse: true; onEditingFinished: owner.setSource(card.key, "name", text, "Source name") }
                                     L { text: "inlet " + (card.key + 1); color: palette.placeholderText }
-                                    Rectangle { width: 8; height: 8; radius: 4; color: card.alive ? "#c58014" : "#555" }
+                                    Rectangle { width: 8; height: 8; radius: 4; color: card.alive ? S.Theme.accent : "#555" }
                                     L { text: card.h && card.alive ? (U.fmt(card.h.fps, 0) + " Hz, " + card.h.n) : "no data"; color: palette.placeholderText; Layout.fillWidth: true; elide: Text.ElideRight }
                                 }
                                 GridLayout {
                                     columns: 2; columnSpacing: 4; rowSpacing: 2; Layout.fillWidth: true
                                     L { text: "Units" }
-                                    TZCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["m", "cm", "mm", "ft", "in", "custom"]; currentIndex: Math.max(0, model.indexOf(panel.sget(card.key, "units", "m"))); onActivated: function (i) { owner.setSource(card.key, "units", model[i], "Source units"); } }
+                                    S.SCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["m", "cm", "mm", "ft", "in", "custom"]; currentIndex: Math.max(0, model.indexOf(panel.sget(card.key, "units", "m"))); onActivated: function (i) { owner.setSource(card.key, "units", model[i], "Source units"); } }
                                     L { visible: panel.sget(card.key, "units", "m") === "custom"; text: "Scale" }
                                     SmallNum { visible: panel.sget(card.key, "units", "m") === "custom"; Layout.fillWidth: true; path: "unitScale"; value: panel.sget(card.key, "unitScale", 1); decimals: 4; onEdited: function (v) { owner.setSource(card.key, "unitScale", v, "Source scale"); } }
                                     L { text: "Axes" }
-                                    TZCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["Z up (x,y,z)", "Y up (OpenGL/PSN/XR)", "Camera x right, y up, z fwd", "Custom spec"]; property var keys: ["xyz", "yup", "camera-yup", "custom"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "axes", "xyz"))); onActivated: function (i) { owner.setSource(card.key, "axes", keys[i], "Source axes"); } }
+                                    S.SCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["Z up (x,y,z)", "Y up (OpenGL/PSN/XR)", "Camera x right, y up, z fwd", "Custom spec"]; property var keys: ["xyz", "yup", "camera-yup", "custom"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "axes", "xyz"))); onActivated: function (i) { owner.setSource(card.key, "axes", keys[i], "Source axes"); } }
                                     L { visible: panel.sget(card.key, "axes", "xyz") === "custom"; text: "Spec" }
                                     TextField { visible: panel.sget(card.key, "axes", "xyz") === "custom"; Layout.fillWidth: true; implicitHeight: 22; topPadding: 2; bottomPadding: 2; font.pixelSize: 10; placeholderText: "x,-z,y"; text: panel.sget(card.key, "axisSpec", ""); onEditingFinished: owner.setSource(card.key, "axisSpec", text, "Axis spec") }
                                     L { text: "Origin" }
-                                    TZCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["World coordinates", "Normalised 0..1 (top-left)", "Pixels (top-left)"]; property var keys: ["world", "normalized", "pixels"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "originMode", "world"))); onActivated: function (i) { owner.setSource(card.key, "originMode", keys[i], "Source origin"); } }
+                                    S.SCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["World coordinates", "Normalised 0..1 (top-left)", "Pixels (top-left)"]; property var keys: ["world", "normalized", "pixels"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "originMode", "world"))); onActivated: function (i) { owner.setSource(card.key, "originMode", keys[i], "Source origin"); } }
                                     L { text: "Data" }
-                                    TZCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["Auto detect", "Points [x,y]", "Points [x,y,z]", "Boxes [x,y,w,h]", "Boxes [x1,y1,x2,y2]", "Boxes 3D [x1,y1,z1,x2,y2,z2]"]; property var keys: ["auto", "points2", "points3", "boxes_xywh", "boxes_corners2", "boxes_corners3"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "dataFormat", "auto"))); onActivated: function (i) { owner.setSource(card.key, "dataFormat", keys[i], "Source data format"); }; ToolTip.visible: hovered; ToolTip.text: "How bare numeric lists are read. Maps (Point Tracker, Pose Detector, PSN) are recognised automatically." }
+                                    S.SCombo { Layout.preferredWidth: 200; Layout.maximumWidth: 200; model: ["Auto detect", "Points [x,y]", "Points [x,y,z]", "Boxes [x,y,w,h]", "Boxes [x1,y1,x2,y2]", "Boxes 3D [x1,y1,z1,x2,y2,z2]"]; property var keys: ["auto", "points2", "points3", "boxes_xywh", "boxes_corners2", "boxes_corners3"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "dataFormat", "auto"))); onActivated: function (i) { owner.setSource(card.key, "dataFormat", keys[i], "Source data format"); }; ToolTip.visible: hovered; ToolTip.text: "How bare numeric lists are read. Maps (Point Tracker, Pose Detector, PSN) are recognised automatically." }
                                 }
                                 RowLayout {
                                     visible: panel.sget(card.key, "originMode", "world") === "normalized"
@@ -103,9 +104,9 @@ Item {
                                 }
                                 RowLayout {
                                     L { text: "Flip" }
-                                    TZCheck { text: "X"; checked: panel.sget(card.key, "flipX", false); onToggled: owner.setSource(card.key, "flipX", checked, "Flip") }
-                                    TZCheck { text: "Y"; checked: panel.sget(card.key, "flipY", false); onToggled: owner.setSource(card.key, "flipY", checked, "Flip") }
-                                    TZCheck { text: "Z"; checked: panel.sget(card.key, "flipZ", false); onToggled: owner.setSource(card.key, "flipZ", checked, "Flip") }
+                                    S.SCheck { text: "X"; checked: panel.sget(card.key, "flipX", false); onToggled: owner.setSource(card.key, "flipX", checked, "Flip") }
+                                    S.SCheck { text: "Y"; checked: panel.sget(card.key, "flipY", false); onToggled: owner.setSource(card.key, "flipY", checked, "Flip") }
+                                    S.SCheck { text: "Z"; checked: panel.sget(card.key, "flipZ", false); onToggled: owner.setSource(card.key, "flipZ", checked, "Flip") }
                                 }
                                 RowLayout {
                                     L { text: "Position"; Layout.preferredWidth: 48 }
@@ -126,7 +127,7 @@ Item {
                                     SmallNum { path: "transform.scale"; idx: 2; value: panel.sget(card.key, "transform.scale", [1, 1, 1])[2]; onEdited: function (v) { var p = panel.sget(card.key, "transform.scale", [1, 1, 1]).slice(); p[2] = v || 1; owner.setSource(card.key, "transform.scale", p, "Source scale"); } }
                                 }
                                 RowLayout {
-                                    TZCheck { text: "4-point floor homography"; checked: !!panel.sget(card.key, "homography", null); onToggled: owner.setSource(card.key, "homography", checked ? { src: [[0, 0], [1, 0], [1, 1], [0, 1]], dst: [[-2, 1.5], [2, 1.5], [2, -1.5], [-2, -1.5]] } : null, "Homography") }
+                                    S.SCheck { text: "4-point floor homography"; checked: !!panel.sget(card.key, "homography", null); onToggled: owner.setSource(card.key, "homography", checked ? { src: [[0, 0], [1, 0], [1, 1], [0, 1]], dst: [[-2, 1.5], [2, 1.5], [2, -1.5], [-2, -1.5]] } : null, "Homography") }
                                 }
                                 GridLayout {
                                     visible: !!panel.sget(card.key, "homography", null)
@@ -149,7 +150,7 @@ Item {
                                 }
                                 RowLayout {
                                     L { text: "Ids" }
-                                    TZCombo { implicitWidth: 90; model: ["From data", "By index"]; property var keys: ["auto", "index"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "idMode", "auto"))); onActivated: function (i) { owner.setSource(card.key, "idMode", keys[i], "Id mode"); } }
+                                    S.SCombo { implicitWidth: 90; model: ["From data", "By index"]; property var keys: ["auto", "index"]; currentIndex: Math.max(0, keys.indexOf(panel.sget(card.key, "idMode", "auto"))); onActivated: function (i) { owner.setSource(card.key, "idMode", keys[i], "Id mode"); } }
                                     L { text: "Prefix" }
                                     TextField { implicitWidth: 40; implicitHeight: 22; topPadding: 2; bottomPadding: 2; font.pixelSize: 10; text: panel.sget(card.key, "idPrefix", ""); placeholderText: "s" + card.key; onEditingFinished: owner.setSource(card.key, "idPrefix", text, "Id prefix") }
                                     L { text: "Class" }
@@ -164,7 +165,7 @@ Item {
                                     SmallNum { path: "defaultZ"; value: panel.sget(card.key, "defaultZ", 0); onEdited: function (v) { owner.setSource(card.key, "defaultZ", v, "Default Z"); } }
                                 }
                                 RowLayout {
-                                    TZCheck { text: "1€ smoothing"; checked: panel.sget(card.key, "smoothing.enabled", false); onToggled: owner.setSource(card.key, "smoothing.enabled", checked, "Smoothing") }
+                                    S.SCheck { text: "1€ smoothing"; checked: panel.sget(card.key, "smoothing.enabled", false); onToggled: owner.setSource(card.key, "smoothing.enabled", checked, "Smoothing") }
                                     L { text: "cutoff" }
                                     SmallNum { path: "smoothing.minCutoff"; value: panel.sget(card.key, "smoothing.minCutoff", 1); onEdited: function (v) { owner.setSource(card.key, "smoothing.minCutoff", Math.max(0.01, v), "Smoothing"); } }
                                     L { text: "beta" }

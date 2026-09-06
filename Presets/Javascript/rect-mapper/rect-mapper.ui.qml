@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import "GeomUtils.js" as Geom
 import "SnapUtils.js" as Snap
 import "ShapeData.js" as ShapeData
+import OssiaUI as S
 
 Score.ScriptUI {
     id: root
@@ -347,35 +348,38 @@ Score.ScriptUI {
 
     // ---- Layout ----
 
-    Page {
+    // Reusable inspector rows, built on the shared kit so this editor matches
+    // the tracking-zones one without restyling anything locally.
+    component PropSlider: S.SSliderRow {
+        labelWidth: 56
+    }
+    component PropCombo: S.SComboRow {
+        labelWidth: 56
+    }
+
+    S.ThemedPage {
         anchors.fill: parent
 
-        palette {
-            window: "#222222"
-            base: "#161514"
-            alternateBase: "#1e1d1c"
-            highlight: "#62400a"
-            highlightedText: "#FDFDFD"
-            windowText: "silver"
-            text: "#d0d0d0"
-            button: "#1d1c1a"
-            buttonText: "#f0f0f0"
-            toolTipBase: "#161514"
-            toolTipText: "silver"
-            midlight: "#62400a"
-            light: "#c58014"
-            mid: "#252930"
-        }
-    SplitView {
+    ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 4
-        spacing: 4
+        anchors.margins: S.Theme.gap
+        spacing: S.Theme.gap
+
+    SplitView {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        spacing: S.Theme.gap
 
         // ---- Left Panel ----
+        S.SPanel {
+            SplitView.preferredWidth: 210
+            SplitView.minimumWidth: 130
+            SplitView.maximumWidth: 300
+            SplitView.fillHeight: true
+
         ColumnLayout {
-            SplitView.preferredWidth: 200
-            SplitView.minimumWidth: 100
-            SplitView.maximumWidth: 280
+            anchors.fill: parent
+            anchors.margins: S.Theme.pad
             SplitView.fillHeight: true
             spacing: 4
 
@@ -383,12 +387,12 @@ Score.ScriptUI {
                 Layout.fillWidth: true
                 spacing: 2
 
-                Button {
+                S.SButton {
                     text: "+ Add"
                     Layout.fillWidth: true
                     onClicked: root.addShape(shapeTypeCombo.currentValue)
                 }
-                ComboBox {
+                S.SCombo {
                     id: shapeTypeCombo
                     Layout.preferredWidth: 90
                     implicitHeight: 30
@@ -423,8 +427,8 @@ Score.ScriptUI {
                     required property int index
                     property int delIndex: index
                     width: rectListView.width
-                    height: delRow.implicitHeight + 8
-                    radius: 4
+                    height: S.Theme.listRowH
+                    radius: S.Theme.radiusSm
                     color: {
                         if (root.listDragIndex >= 0 && root.listDropIndex === delIndex && root.listDragIndex !== delIndex)
                             return palette.mid;
@@ -454,7 +458,7 @@ Score.ScriptUI {
 
                         Label {
                             text: "\u2261"
-                            font.pixelSize: 14
+                            font.pixelSize: 12
                             color: palette.windowText
                             Layout.preferredWidth: 14
 
@@ -513,11 +517,12 @@ Score.ScriptUI {
                             onActiveFocusChanged: if (!activeFocus) commitName()
                         }
 
-                        Button {
+                        S.SButton {
                             text: "\u2715"
-                            flat: true
+                            compact: true
                             implicitWidth: 18; implicitHeight: 18
-                            font.pixelSize: 12
+                            font.pixelSize: 11
+                            tip: "Delete"
                             onClicked: root.deleteRect(listDel.delIndex)
                         }
                     }
@@ -527,17 +532,18 @@ Score.ScriptUI {
             RowLayout {
                 Layout.fillWidth: true
                 spacing: 2
-                CheckBox {
+                S.SCheck {
                     text: "Snap"
                     checked: root.snappingEnabled
                     onToggled: root.snappingEnabled = checked
                 }
-                CheckBox {
+                S.SCheck {
                     text: "Overlay"
                     checked: root.showOverlay
                     onToggled: { root.showOverlay = checked; root.sendLiveUpdate(); }
                 }
             }
+        }
         }
 
         // ---- Center Panel: viewport ----
@@ -1561,19 +1567,24 @@ Score.ScriptUI {
         }
 
         // ---- Right Panel: shape properties ----
-        ScrollView {
-            SplitView.preferredWidth: 310
-            SplitView.minimumWidth: 310
-            SplitView.maximumWidth: 310
+        S.SPanel {
+            SplitView.preferredWidth: 290
+            SplitView.minimumWidth: 220
+            SplitView.maximumWidth: 400
             SplitView.fillHeight: true
+
+        ScrollView {
+            id: propsScroll
+            anchors.fill: parent
+            anchors.margins: S.Theme.pad
             clip: true
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            contentWidth: availableWidth
 
         ColumnLayout {
             id: propsPanel
-            width: parent.width - 8
-            x: 4
-            spacing: 4
+            width: propsScroll.availableWidth
+            spacing: S.Theme.gapSm
 
             property var selShape: {
                 root.stateVersion;
@@ -1642,22 +1653,26 @@ Score.ScriptUI {
                 return (typeof v === 'number') ? v : 7;
             }
 
-            function setBlendEdge(edge, val) {
+            // `live` = still dragging: preview only, no undo command.
+            function setBlendEdge(edge, val, live) {
                 var r = root.rects[root.selectedRect];
                 if (!r.blend) r.blend = { top: 0, right: 0, bottom: 0, left: 0 };
                 r.blend[edge] = val;
+                if (live) { root.sendLiveUpdate(); return; }
                 root.stateVersion++;
                 root.saveState("Edge blend");
                 root.sendLiveUpdate();
             }
-            function setGamma(val) {
+            function setGamma(val, live) {
                 root.rects[root.selectedRect].blendGamma = val;
+                if (live) { root.sendLiveUpdate(); return; }
                 root.stateVersion++;
                 root.saveState("Blend gamma");
                 root.sendLiveUpdate();
             }
-            function setOpacity(val) {
+            function setOpacity(val, live) {
                 root.rects[root.selectedRect].opacity = val;
+                if (live) { root.sendLiveUpdate(); return; }
                 root.stateVersion++;
                 root.saveState("Shape opacity");
                 root.sendLiveUpdate();
@@ -1668,20 +1683,23 @@ Score.ScriptUI {
                 root.saveState("UV mode");
                 root.sendLiveUpdate();
             }
-            function setUvOffset(x, y) {
+            function setUvOffset(x, y, live) {
                 root.rects[root.selectedRect].uvOffset = [x, y];
+                if (live) { root.sendLiveUpdate(); return; }
                 root.stateVersion++;
                 root.saveState("UV offset");
                 root.sendLiveUpdate();
             }
-            function setUvScale(x, y) {
+            function setUvScale(x, y, live) {
                 root.rects[root.selectedRect].uvScale = [x, y];
+                if (live) { root.sendLiveUpdate(); return; }
                 root.stateVersion++;
                 root.saveState("UV scale");
                 root.sendLiveUpdate();
             }
-            function setUvRotation(val) {
+            function setUvRotation(val, live) {
                 root.rects[root.selectedRect].uvRotation = val;
+                if (live) { root.sendLiveUpdate(); return; }
                 root.stateVersion++;
                 root.saveState("UV rotation");
                 root.sendLiveUpdate();
@@ -1706,14 +1724,13 @@ Score.ScriptUI {
                 spacing: 4
 
             // --- General ---
-            Label { text: "General"; font.bold: true; color: palette.windowText; font.pixelSize: 11 }
+            S.SSectionLabel { text: "General" }
 
             RowLayout {
                 spacing: 4
                 Layout.fillWidth: true
-                Button {
+                S.SButton {
                     text: root.soloIndex === root.selectedRect ? "Solo ON" : "Solo"
-                    flat: true
                     implicitHeight: 24
                     font.pixelSize: 11
                     font.bold: root.soloIndex === root.selectedRect
@@ -1726,9 +1743,8 @@ Score.ScriptUI {
                         root.sendLiveUpdate();
                     }
                 }
-                Button {
+                S.SButton {
                     text: propsPanel.selMuted ? "Muted" : "Mute"
-                    flat: true
                     implicitHeight: 24
                     font.pixelSize: 11
                     font.bold: propsPanel.selMuted
@@ -1748,9 +1764,8 @@ Score.ScriptUI {
             RowLayout {
                 spacing: 4
                 Layout.fillWidth: true
-                Button {
+                S.SButton {
                     text: propsPanel.selLocked ? "Locked" : "Lock"
-                    flat: true
                     implicitHeight: 24
                     font.pixelSize: 11
                     Layout.fillWidth: true
@@ -1762,9 +1777,8 @@ Score.ScriptUI {
                         root.sendLiveUpdate();
                     }
                 }
-                Button {
+                S.SButton {
                     text: "Duplicate"
-                    flat: true
                     implicitHeight: 24
                     font.pixelSize: 11
                     Layout.fillWidth: true
@@ -1776,13 +1790,13 @@ Score.ScriptUI {
             }
 
             // --- Source & Warp ---
-            Label { text: "Shape"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+            S.SSectionLabel { text: "Shape" }
 
             RowLayout {
                 spacing: 4
                 Layout.fillWidth: true
                 Label { text: "Source:"; color: palette.windowText; font.pixelSize: 11 }
-                ComboBox {
+                S.SCombo {
                     model: ["Tex 1", "Tex 2", "Tex 3", "Tex 4", "Tex 5", "Tex 6", "Tex 7", "Tex 8"]
                     currentIndex: propsPanel.selShape ? propsPanel.selShape.source : 0
                     implicitWidth: 90
@@ -1801,7 +1815,7 @@ Score.ScriptUI {
             RowLayout {
                 spacing: 4
                 Layout.fillWidth: true
-                CheckBox {
+                S.SCheck {
                     text: "Warp"
                     checked: propsPanel.selShape ? (propsPanel.selShape.warp || false) : false
                     font.pixelSize: 11
@@ -1820,7 +1834,7 @@ Score.ScriptUI {
                 Layout.fillWidth: true
                 visible: propsPanel.selShape ? root.isSimpleWarpedQuad(propsPanel.selShape) : false
                 Label { text: "Grid:"; color: palette.windowText; font.pixelSize: 11 }
-                SpinBox {
+                S.SSpin {
                     from: 1; to: 16
                     value: propsPanel.selShape ? (propsPanel.selShape.gridW || 4) : 4
                     Layout.fillWidth: true; implicitHeight: 28; font.pixelSize: 11
@@ -1833,7 +1847,7 @@ Score.ScriptUI {
                     }
                 }
                 Label { text: "\u00D7"; color: palette.windowText; font.pixelSize: 11 }
-                SpinBox {
+                S.SSpin {
                     from: 1; to: 16
                     value: propsPanel.selShape ? (propsPanel.selShape.gridH || 4) : 4
                     Layout.fillWidth: true; implicitHeight: 28; font.pixelSize: 11
@@ -1848,55 +1862,61 @@ Score.ScriptUI {
             }
 
             // --- Opacity ---
-            RowLayout {
-                spacing: 2
-                Layout.fillWidth: true
-                Label { text: "Opacity:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 42 }
-                Slider { from: 0; to: 1.0; stepSize: 0.01; value: propsPanel.selOpacity; Layout.fillWidth: true; onMoved: propsPanel.setOpacity(value) }
+            PropSlider {
+                label: "Opacity"
+                from: 0; to: 1.0; stepSize: 0.01; decimals: 2
+                value: propsPanel.selOpacity
+                onMoved: function (v) { propsPanel.setOpacity(v, true) }
+                onCommitted: function (v) { propsPanel.setOpacity(v) }
             }
 
             // --- Edge Blend ---
-            Label { text: "Edge Blend"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+            S.SSectionLabel { text: "Edge Blend" }
 
-            RowLayout {
-                spacing: 2
-                Layout.fillWidth: true
-                Label { text: "T:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.top : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("top", value) }
+            PropSlider {
+                label: "T"
+                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                value: propsPanel.selBlend ? propsPanel.selBlend.top : 0
+                onMoved: function (v) { propsPanel.setBlendEdge("top", v, true) }
+                onCommitted: function (v) { propsPanel.setBlendEdge("top", v) }
             }
-            RowLayout {
-                spacing: 2
-                Layout.fillWidth: true
-                Label { text: "B:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.bottom : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("bottom", value) }
+            PropSlider {
+                label: "B"
+                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                value: propsPanel.selBlend ? propsPanel.selBlend.bottom : 0
+                onMoved: function (v) { propsPanel.setBlendEdge("bottom", v, true) }
+                onCommitted: function (v) { propsPanel.setBlendEdge("bottom", v) }
             }
-            RowLayout {
-                spacing: 2
-                Layout.fillWidth: true
-                Label { text: "L:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.left : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("left", value) }
+            PropSlider {
+                label: "L"
+                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                value: propsPanel.selBlend ? propsPanel.selBlend.left : 0
+                onMoved: function (v) { propsPanel.setBlendEdge("left", v, true) }
+                onCommitted: function (v) { propsPanel.setBlendEdge("left", v) }
             }
-            RowLayout {
-                spacing: 2
-                Layout.fillWidth: true
-                Label { text: "R:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                Slider { from: 0; to: 0.5; stepSize: 0.01; value: propsPanel.selBlend ? propsPanel.selBlend.right : 0; Layout.fillWidth: true; onMoved: propsPanel.setBlendEdge("right", value) }
+            PropSlider {
+                label: "R"
+                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                value: propsPanel.selBlend ? propsPanel.selBlend.right : 0
+                onMoved: function (v) { propsPanel.setBlendEdge("right", v, true) }
+                onCommitted: function (v) { propsPanel.setBlendEdge("right", v) }
             }
-            RowLayout {
-                spacing: 2
-                Layout.fillWidth: true
-                Label { text: "\u03B3:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 14 }
-                Slider { from: 0.5; to: 4.0; stepSize: 0.1; value: propsPanel.selGamma; Layout.fillWidth: true; onMoved: propsPanel.setGamma(value) }
+            PropSlider {
+                label: "Gamma"
+                from: 0.5; to: 4.0; stepSize: 0.1; decimals: 1
+                value: propsPanel.selGamma
+                onMoved: function (v) { propsPanel.setGamma(v, true) }
+                onCommitted: function (v) { propsPanel.setGamma(v) }
             }
 
             // --- Blend Mode ---
-            Label { text: "Blend Mode"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+            S.SSectionLabel { text: "Blend Mode" }
 
             RowLayout {
                 spacing: 2
                 Layout.fillWidth: true
                 Label { text: "Src:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 24 }
-                ComboBox {
+                S.SCombo {
                     model: root.blendModeNames
                     currentIndex: propsPanel.selSrcBlend
                     implicitHeight: 24; font.pixelSize: 11
@@ -1908,7 +1928,7 @@ Score.ScriptUI {
                 spacing: 2
                 Layout.fillWidth: true
                 Label { text: "Dst:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 24 }
-                ComboBox {
+                S.SCombo {
                     model: root.blendModeNames
                     currentIndex: propsPanel.selDstBlend
                     implicitHeight: 24; font.pixelSize: 11
@@ -1918,13 +1938,13 @@ Score.ScriptUI {
             }
 
             // --- UV Mapping ---
-            Label { text: "UV Mapping"; font.bold: true; color: palette.windowText; font.pixelSize: 11; topPadding: 4 }
+            S.SSectionLabel { text: "UV Mapping" }
 
             RowLayout {
                 spacing: 2
                 Layout.fillWidth: true
                 Label { text: "Mode:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 32 }
-                ComboBox {
+                S.SCombo {
                     id: uvModeCombo
                     model: ["Auto", "Interpolated", "Aligned", "Manual"]
                     readonly property var modeValues: ["auto", "interpolated", "aligned", "manual"]
@@ -1940,30 +1960,45 @@ Score.ScriptUI {
             }
 
             // Manual UV controls
-            RowLayout {
-                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
-                Label { text: "Ox:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
-                Slider { from: -1; to: 1; stepSize: 0.01; value: propsPanel.selUvOffset[0]; Layout.fillWidth: true; onMoved: propsPanel.setUvOffset(value, propsPanel.selUvOffset[1]) }
+            PropSlider {
+                visible: propsPanel.selUvMode === "manual"
+                label: "Ox"
+                from: -1; to: 1; stepSize: 0.01; decimals: 2
+                value: propsPanel.selUvOffset[0]
+                onMoved: function (v) { propsPanel.setUvOffset(v, propsPanel.selUvOffset[1], true) }
+                onCommitted: function (v) { propsPanel.setUvOffset(v, propsPanel.selUvOffset[1]) }
             }
-            RowLayout {
-                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
-                Label { text: "Oy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
-                Slider { from: -1; to: 1; stepSize: 0.01; value: propsPanel.selUvOffset[1]; Layout.fillWidth: true; onMoved: propsPanel.setUvOffset(propsPanel.selUvOffset[0], value) }
+            PropSlider {
+                visible: propsPanel.selUvMode === "manual"
+                label: "Oy"
+                from: -1; to: 1; stepSize: 0.01; decimals: 2
+                value: propsPanel.selUvOffset[1]
+                onMoved: function (v) { propsPanel.setUvOffset(propsPanel.selUvOffset[0], v, true) }
+                onCommitted: function (v) { propsPanel.setUvOffset(propsPanel.selUvOffset[0], v) }
             }
-            RowLayout {
-                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
-                Label { text: "Sx:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
-                Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: propsPanel.selUvScale[0]; Layout.fillWidth: true; onMoved: propsPanel.setUvScale(value, propsPanel.selUvScale[1]) }
+            PropSlider {
+                visible: propsPanel.selUvMode === "manual"
+                label: "Sx"
+                from: 0.1; to: 4.0; stepSize: 0.01; decimals: 2
+                value: propsPanel.selUvScale[0]
+                onMoved: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1], true) }
+                onCommitted: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1]) }
             }
-            RowLayout {
-                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
-                Label { text: "Sy:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
-                Slider { from: 0.1; to: 4.0; stepSize: 0.01; value: propsPanel.selUvScale[1]; Layout.fillWidth: true; onMoved: propsPanel.setUvScale(propsPanel.selUvScale[0], value) }
+            PropSlider {
+                visible: propsPanel.selUvMode === "manual"
+                label: "Sy"
+                from: 0.1; to: 4.0; stepSize: 0.01; decimals: 2
+                value: propsPanel.selUvScale[1]
+                onMoved: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v, true) }
+                onCommitted: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v) }
             }
-            RowLayout {
-                spacing: 2; visible: propsPanel.selUvMode === "manual"; Layout.fillWidth: true
-                Label { text: "Rot:"; color: palette.windowText; font.pixelSize: 10; Layout.preferredWidth: 22 }
-                Slider { from: -180; to: 180; stepSize: 1; value: propsPanel.selUvRotation; Layout.fillWidth: true; onMoved: propsPanel.setUvRotation(value) }
+            PropSlider {
+                visible: propsPanel.selUvMode === "manual"
+                label: "Rot"
+                from: -180; to: 180; stepSize: 1; decimals: 0
+                value: propsPanel.selUvRotation
+                onMoved: function (v) { propsPanel.setUvRotation(v, true) }
+                onCommitted: function (v) { propsPanel.setUvRotation(v) }
             }
 
             } // end controls wrapper
@@ -1971,6 +2006,17 @@ Score.ScriptUI {
             Item { Layout.fillHeight: true }
         }
         } // end ScrollView
+        } // end right panel
+    }
+
+    S.SStatusBar {
+        hint: root.selectedRect >= 0
+              ? "Arrows nudge · Shift+arrows nudge faster · B toggles bezier edges · Del removes the shape"
+              : "Rect Mapper — add a shape, then drag its corners to warp it onto the surface"
+        detail: root.renderWidth > 0
+                ? (Math.round(root.renderWidth) + "×" + Math.round(root.renderHeight))
+                : ""
+    }
     }
     }
 

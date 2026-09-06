@@ -1,0 +1,33 @@
+module OssiaUI
+
+Theme        1.0 Theme.js
+
+ThemedPage   1.0 ThemedPage.qml
+SPanel       1.0 SPanel.qml
+SSection     1.0 SSection.qml
+SFoldout     1.0 SFoldout.qml
+SSectionLabel 1.0 SSectionLabel.qml
+SSeparator   1.0 SSeparator.qml
+SVSeparator  1.0 SVSeparator.qml
+SToolBar     1.0 SToolBar.qml
+SStatusBar   1.0 SStatusBar.qml
+
+SLabel       1.0 SLabel.qml
+SFieldLabel  1.0 SFieldLabel.qml
+SValue       1.0 SValue.qml
+SBadge       1.0 SBadge.qml
+
+SButton      1.0 SButton.qml
+SCheck       1.0 SCheck.qml
+SCombo       1.0 SCombo.qml
+SSlider      1.0 SSlider.qml
+SSpin        1.0 SSpin.qml
+STextField   1.0 STextField.qml
+SNumDrag     1.0 SNumDrag.qml
+
+SSliderRow   1.0 SSliderRow.qml
+SNumRow      1.0 SNumRow.qml
+SComboRow    1.0 SComboRow.qml
+SCheckRow    1.0 SCheckRow.qml
+STextRow     1.0 STextRow.qml
+SColorRow    1.0 SColorRow.qml

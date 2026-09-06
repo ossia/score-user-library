@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import OssiaUI as S
 
 Rectangle {
     id: bottom
@@ -24,8 +25,8 @@ Rectangle {
 
     component Tab: TabButton {
         font.pixelSize: 11; implicitHeight: 24; width: implicitWidth + 18
-        contentItem: Text { text: parent.text; font: parent.font; color: parent.checked ? "#f0f0f0" : "#a39d96"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-        background: Rectangle { implicitHeight: 24; color: parent.checked ? "#2c2a27" : (parent.hovered ? "#242220" : "transparent"); radius: 3; Rectangle { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right; height: 2; color: parent.parent.checked ? "#c58014" : "transparent" } }
+        contentItem: Text { text: parent.text; font: parent.font; color: parent.checked ? S.Theme.textStrong : S.Theme.textDim; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+        background: Rectangle { implicitHeight: 24; color: parent.checked ? S.Theme.controlHover : (parent.hovered ? S.Theme.controlHover : "transparent"); radius: 3; Rectangle { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right; height: 2; color: parent.parent.checked ? S.Theme.accent : "transparent" } }
     }
 
     ColumnLayout {

@@ -6,6 +6,7 @@ import QtQuick.Dialogs
 import "Geometry.js" as Geom
 import "Model.js" as Model
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Tracking Zones — editor window.
 // The document (zones / sources / settings) lives in the process state under key "tzDoc" (JSON).
@@ -372,15 +373,10 @@ Score.ScriptUI {
     Component.onCompleted: { root.forceActiveFocus(); sendPrefs(); }
 
     // ---------------- layout ----------------
-    Page {
+    // The score skin now lives in the shared OssiaUI kit, so this editor and the
+    // mapper / text / presentation editors cannot drift apart.
+    S.ThemedPage {
         anchors.fill: parent
-        // score skin (same as the other Javascript presets)
-        palette {
-            window: "#222222"; base: "#161514"; alternateBase: "#1e1d1c"; highlight: "#62400a"; highlightedText: "#FDFDFD"
-            windowText: "#c0c0c0"; text: "#d0d0d0"; button: "#1d1c1a"; buttonText: "#f0f0f0"; brightText: "#f0f0f0"
-            toolTipBase: "#161514"; toolTipText: "#c0c0c0"; midlight: "#62400a"; light: "#c58014"; mid: "#252930"; dark: "#0c0c0b"; shadow: "#000000"
-            placeholderText: "#7c7670"; link: "#c58014"; accent: "#c58014"
-        }
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 4

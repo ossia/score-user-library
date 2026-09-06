@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Left panel: the list of zones with quick toggles, drag reorder and occupancy badges.
 Rectangle {
@@ -81,7 +82,7 @@ Rectangle {
                         MouseArea { anchors.fill: parent; onClicked: { panel.owner.select(row.zn.id, false); colorMenu.popup(); } }
                         Menu {
                             id: colorMenu
-                            Repeater { model: ["#2bb3a3", "#e0a54d", "#5b9bd5", "#d96b6b", "#9b7bd6", "#7fc45a", "#e08cc7", "#c7b24d", "#4dc0e0", "#e07d4d", "#ffffff", "#888888"]
+                            Repeater { model: S.Theme.swatches
                                 MenuItem { required property string modelData; contentItem: Row { spacing: 6; Rectangle { width: 12; height: 12; color: modelData; anchors.verticalCenter: parent.verticalCenter } Label { text: modelData; font.pixelSize: 11 } } onTriggered: panel.owner.setSelectedProp("color", modelData, "Zone colour") }
                             }
                         }
@@ -103,7 +104,7 @@ Rectangle {
                         text: row.st ? (row.zn && row.zn.shape.type === "line" ? (row.st.crossings_in + "/" + row.st.crossings_out) : String(row.st.count)) : ""
                         font.pixelSize: 10; font.bold: true; color: "#0b0d0c"
                         padding: 2; leftPadding: 5; rightPadding: 5
-                        background: Rectangle { radius: 7; color: row.st && row.st.occupied ? (row.zn ? row.zn.color : "#2bb3a3") : "#8a918d" }
+                        background: Rectangle { radius: 7; color: row.st && row.st.occupied ? (row.zn ? row.zn.color : S.Theme.ok) : S.Theme.textDim }
                     }
                     // eye
                     Label { text: row.zn && row.zn.visible === false ? "◌" : "◉"; font.pixelSize: 12; color: palette.windowText; MouseArea { anchors.fill: parent; onClicked: panel.owner.setZoneProp(row.zn.id, "visible", row.zn.visible === false, "Toggle visibility") } ToolTip.visible: false }

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Monitor: event log + per-zone counters table.
 Item {
@@ -16,7 +17,7 @@ Item {
         ColumnLayout {
             Layout.fillHeight: true; Layout.preferredWidth: 420; spacing: 2
             RowLayout {
-                TZCheck { text: "Events"; font.bold: true; font.pixelSize: 11; checked: owner.eventMonitorEnabled; onToggled: owner.eventMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Off: events are not collected into this log (saves UI work). The Events outlet is unaffected." }
+                S.SCheck { text: "Events"; font.bold: true; font.pixelSize: 11; checked: owner.eventMonitorEnabled; onToggled: owner.eventMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Off: events are not collected into this log (saves UI work). The Events outlet is unaffected." }
                 Label { font.pixelSize: 10; color: palette.placeholderText; text: "(" + owner.eventLog.count + " of max " + ((owner.doc.settings.monitor && owner.doc.settings.monitor.maxEvents) || 400) + ")" }
                 Label { visible: owner.droppedEvents > 0; font.pixelSize: 10; color: "#e0a54d"; text: owner.droppedEvents + " not listed (rate limit, see Settings)"; ToolTip.visible: dh.hovered; ToolTip.text: "The log adds at most N rows per second. The Events outlet is not affected."; HoverHandler { id: dh } }
                 Item { Layout.fillWidth: true }
@@ -43,7 +44,7 @@ Item {
                         Label { text: U.fmtTime(t); font.pixelSize: 10; color: palette.placeholderText; Layout.preferredWidth: 44 }
                         Label {
                             text: type; font.pixelSize: 10; font.bold: true; Layout.preferredWidth: 60
-                            color: type === "enter" || type === "occupied" || type === "first_in" ? "#c58014" : (type === "exit" || type === "empty" || type === "last_out" ? "#e0a54d" : (type === "cross" ? "#7ad3ff" : palette.text))
+                            color: type === "enter" || type === "occupied" || type === "first_in" ? S.Theme.accent : (type === "exit" || type === "empty" || type === "last_out" ? "#e0a54d" : (type === "cross" ? "#7ad3ff" : palette.text))
                         }
                         Label { text: zone; font.pixelSize: 10; Layout.preferredWidth: 100; elide: Text.ElideRight; color: palette.text }
                         Label { text: eid !== "" ? ("id " + eid) : ""; font.pixelSize: 10; Layout.preferredWidth: 60; elide: Text.ElideRight; color: palette.text }
@@ -91,7 +92,7 @@ Item {
                     RowLayout { anchors.fill: parent; anchors.leftMargin: 4; spacing: 4
                         Label { text: zn ? zn.name : ""; font.pixelSize: 10; Layout.preferredWidth: 110; elide: Text.ElideRight; color: palette.text }
                         Label { text: st ? st.count : "-"; font.pixelSize: 10; Layout.preferredWidth: 40; color: palette.text }
-                        Label { text: st ? (st.active === false ? "disabled" : (st.occupied ? "occupied" : "empty")) : "-"; font.pixelSize: 10; Layout.preferredWidth: 60; color: st && st.occupied ? "#c58014" : palette.placeholderText }
+                        Label { text: st ? (st.active === false ? "disabled" : (st.occupied ? "occupied" : "empty")) : "-"; font.pixelSize: 10; Layout.preferredWidth: 60; color: st && st.occupied ? S.Theme.accent : palette.placeholderText }
                         Label { text: st ? st.crossings_in + "/" + st.crossings_out : "-"; font.pixelSize: 10; Layout.preferredWidth: 50; color: palette.text }
                         Label { text: st ? st.visits : "-"; font.pixelSize: 10; Layout.preferredWidth: 40; color: palette.text }
                         Label { text: st ? st.unique : "-"; font.pixelSize: 10; Layout.preferredWidth: 44; color: palette.text }

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "Model.js" as Model
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Output pane: which event types are emitted at all, and the configuration of the
 // simple per-event outlets (Enter / Leave / Dwell / Cross / Occupancy) and the Location outlet.
@@ -21,12 +22,12 @@ Item {
         property var formats: ["zone", "id", "pair", "map", "full"]
         property var formatLabels: ["Zone name", "Entity id", "[zone, id]", "Map (zone, id, ...)", "Full event"]
         Layout.fillWidth: true; spacing: 6
-        TZCheck {
+        S.SCheck {
             text: parent.name; Layout.preferredWidth: 90
             checked: panel.sv("outputs." + parent.key + ".enabled", true)
             onToggled: panel.set("outputs." + parent.key + ".enabled", checked, "Event outlets")
         }
-        TZCombo {
+        S.SCombo {
             Layout.preferredWidth: 170; Layout.maximumWidth: 170
             enabled: panel.sv("outputs." + parent.key + ".enabled", true)
             model: parent.formatLabels
@@ -49,7 +50,7 @@ Item {
                 columns: 2; columnSpacing: 10; rowSpacing: 0
                 Repeater {
                     model: Model.EVENT_TYPES
-                    TZCheck {
+                    S.SCheck {
                         required property var modelData
                         text: modelData.label
                         checked: panel.sv("events." + modelData.key, true)
@@ -84,12 +85,12 @@ Item {
             Hint { text: "Reports for each tracked entity the zone it is currently in. With overlapping zones, 'topmost' is the last one in the list order." }
             RowLayout {
                 Layout.fillWidth: true; spacing: 6
-                TZCheck {
+                S.SCheck {
                     text: "Enabled"; Layout.preferredWidth: 90
                     checked: panel.sv("outputs.location.enabled", true)
                     onToggled: panel.set("outputs.location.enabled", checked, "Location outlet")
                 }
-                TZCombo {
+                S.SCombo {
                     Layout.preferredWidth: 170; Layout.maximumWidth: 170
                     enabled: panel.sv("outputs.location.enabled", true)
                     property var formats: ["map", "list", "zone"]
@@ -98,17 +99,17 @@ Item {
                     onActivated: function (i) { panel.set("outputs.location.format", formats[i], "Location format"); }
                 }
             }
-            TZCheck {
+            S.SCheck {
                 text: "All zones per entity (list instead of the topmost zone)"
                 checked: panel.sv("outputs.location.all", false)
                 onToggled: panel.set("outputs.location.all", checked, "Location outlet")
             }
-            TZCheck {
+            S.SCheck {
                 text: "Only send when something changed"
                 checked: panel.sv("outputs.location.onChange", true)
                 onToggled: panel.set("outputs.location.onChange", checked, "Location outlet")
             }
-            TZCheck {
+            S.SCheck {
                 text: "Include entities that are in no zone"
                 checked: panel.sv("outputs.location.includeOutside", false)
                 onToggled: panel.set("outputs.location.includeOutside", checked, "Location outlet")

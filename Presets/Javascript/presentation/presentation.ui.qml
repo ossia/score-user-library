@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import "SlideRender.js" as SlideRender
+import OssiaUI as S
 
 Score.ScriptUI {
     id: root
@@ -253,88 +254,83 @@ Score.ScriptUI {
     }
 
     // ---- Inline components ----
+    // Thin wrappers over the shared OssiaUI kit: they keep the names and the
+    // property APIs this file already uses, so the look changes in one place
+    // while every call site below stays as it was.
 
-    component Hdr: Rectangle {
-        property string title
-        property bool on: true
-        width: parent ? parent.width : 100; height: 22
-        color: on ? "#404040" : "#363636"
-        Text {
-            anchors { left: parent.left; leftMargin: 6; verticalCenter: parent.verticalCenter }
-            text: (parent.on ? "\u25be " : "\u25b8 ") + parent.title
-            color: "#ddd"; font.pixelSize: 11; font.bold: true
-        }
-        MouseArea { anchors.fill: parent; onClicked: parent.on = !parent.on }
+    component Hdr: S.SFoldout {
+        id: hdr
+        property alias on: hdr.expanded
     }
 
-    component Lbl: Text {
-        Layout.preferredWidth: 65; color: "#bbb"; font.pixelSize: 11
-        elide: Text.ElideRight
+    component Lbl: S.SFieldLabel {
+        Layout.preferredWidth: S.Theme.labelWsm
     }
 
-    component Val: Text {
-        Layout.preferredWidth: 32; color: "#ddd"; font.pixelSize: 10
-        horizontalAlignment: Text.AlignRight
-    }
+    component Val: S.SValue {}
 
     component ObjColorRow: RowLayout {
         property string label
         property string key
-        spacing: 4
-        Lbl { text: label }
+        Layout.fillWidth: true
+        spacing: S.Theme.gap
+        Lbl { text: parent.label }
         Rectangle {
-            width: 18; height: 18
-            color: { root.stateVersion; var o = root.curObj(); return o ? (o[key] || "#000") : "#000"; }
-            border.color: "#666"; border.width: 1
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    colorDialog.targetKey = key;
-                    colorDialog.targetLabel = label;
+            implicitWidth: 20; implicitHeight: S.Theme.rowH - 3
+            radius: S.Theme.radiusSm
+            color: { root.stateVersion; var o = root.curObj(); return o ? (o[parent.key] || "#000") : "#000"; }
+            border.width: 1
+            border.color: swHov.hovered ? S.Theme.accent : S.Theme.border
+            HoverHandler { id: swHov; cursorShape: Qt.PointingHandCursor }
+            TapHandler {
+                onTapped: {
+                    colorDialog.targetKey = parent.parent.key;
+                    colorDialog.targetLabel = parent.parent.label;
                     colorDialog.isBg = false;
                     var o = root.curObj();
-                    colorDialog.selectedColor = o ? o[key] : "#000000";
+                    colorDialog.selectedColor = o ? o[parent.parent.key] : "#000000";
                     colorDialog.open();
                 }
             }
         }
-        TextField {
-            Layout.fillWidth: true; Layout.preferredHeight: 22
-            text: { root.stateVersion; var o = root.curObj(); return o ? (o[key] || "#000000") : "#000000"; }
-            font.pixelSize: 10; color: "#eee"
-            verticalAlignment: Text.AlignVCenter
-            background: Rectangle { color: "#1e1e1e"; border.color: "#555"; radius: 2 }
-            onEditingFinished: root.setObjPropAndSave(key, text, "Change " + label.toLowerCase())
+        S.STextField {
+            Layout.fillWidth: true
+            font.pixelSize: S.Theme.fontSm
+            font.family: "monospace"
+            text: { root.stateVersion; var o = root.curObj(); return o ? (o[parent.key] || "#000000") : "#000000"; }
+            onEditingFinished: root.setObjPropAndSave(parent.key, text, "Change " + parent.label.toLowerCase())
         }
     }
 
     component BgColorRow: RowLayout {
         property string label
         property string key
-        spacing: 4
-        Lbl { text: label }
+        Layout.fillWidth: true
+        spacing: S.Theme.gap
+        Lbl { text: parent.label }
         Rectangle {
-            width: 18; height: 18
-            color: (root.stateVersion, root.slideState[key] || "#000")
-            border.color: "#666"; border.width: 1
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    colorDialog.targetKey = key;
-                    colorDialog.targetLabel = label;
+            implicitWidth: 20; implicitHeight: S.Theme.rowH - 3
+            radius: S.Theme.radiusSm
+            color: (root.stateVersion, root.slideState[parent.key] || "#000")
+            border.width: 1
+            border.color: bgHov.hovered ? S.Theme.accent : S.Theme.border
+            HoverHandler { id: bgHov; cursorShape: Qt.PointingHandCursor }
+            TapHandler {
+                onTapped: {
+                    colorDialog.targetKey = parent.parent.key;
+                    colorDialog.targetLabel = parent.parent.label;
                     colorDialog.isBg = true;
                     colorDialog.selectedColor = parent.color;
                     colorDialog.open();
                 }
             }
         }
-        TextField {
-            Layout.fillWidth: true; Layout.preferredHeight: 22
-            text: (root.stateVersion, root.slideState[key] || "#000000")
-            font.pixelSize: 10; color: "#eee"
-            verticalAlignment: Text.AlignVCenter
-            background: Rectangle { color: "#1e1e1e"; border.color: "#555"; radius: 2 }
-            onEditingFinished: root.setBgPropAndSave(key, text, "Change " + label.toLowerCase())
+        S.STextField {
+            Layout.fillWidth: true
+            font.pixelSize: S.Theme.fontSm
+            font.family: "monospace"
+            text: (root.stateVersion, root.slideState[parent.key] || "#000000")
+            onEditingFinished: root.setBgPropAndSave(parent.key, text, "Change " + parent.label.toLowerCase())
         }
     }
 
@@ -347,18 +343,20 @@ Score.ScriptUI {
         property int decimals: 2
         property string suffix: ""
         property real fallback: 0
-        spacing: 4
-        Lbl { text: label }
-        Slider {
+        Layout.fillWidth: true
+        spacing: S.Theme.gap
+        Lbl { text: parent.label }
+        S.SSlider {
+            id: sld
             Layout.fillWidth: true
-            from: lo; to: hi; stepSize: step
-            value: { root.stateVersion; var o = root.curObj(); return o && o[key] !== undefined ? o[key] : fallback; }
-            onMoved: root.setObjProp(key, value)
-            onPressedChanged: if (!pressed) root.saveState("Change " + label.toLowerCase())
+            from: parent.lo; to: parent.hi; stepSize: parent.step
+            defaultValue: parent.fallback
+            value: { root.stateVersion; var o = root.curObj(); return o && o[sld.parent.key] !== undefined ? o[sld.parent.key] : sld.parent.fallback; }
+            onMoved: root.setObjProp(sld.parent.key, value)
+            onPressedChanged: if (!pressed) root.saveState("Change " + sld.parent.label.toLowerCase())
         }
         Val {
-            property real v: { root.stateVersion; var o = root.curObj(); return o && o[key] !== undefined ? o[key] : fallback; }
-            text: (decimals > 0 ? v.toFixed(decimals) : Math.round(v)) + suffix
+            text: (parent.decimals > 0 ? Number(sld.value).toFixed(parent.decimals) : String(Math.round(sld.value))) + parent.suffix
         }
     }
 
@@ -377,38 +375,30 @@ Score.ScriptUI {
 
     // ---- Main layout ----
 
-    Pane {
+    S.ThemedPage {
         anchors.fill: parent
-        padding: 0
-        palette {
-            window: "#222222"
-            base: "#161514"
-            alternateBase: "#1e1d1c"
-            highlight: "#62400a"
-            highlightedText: "#FDFDFD"
-            windowText: "silver"
-            text: "#d0d0d0"
-            button: "#1d1c1a"
-            buttonText: "#f0f0f0"
-            toolTipBase: "#161514"
-            toolTipText: "silver"
-            midlight: "#62400a"
-            light: "#c58014"
-            mid: "#252930"
-        }
+
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: S.Theme.gap
+        spacing: S.Theme.gap
 
     SplitView {
-        anchors.fill: parent
-        anchors.margins: 4
-        spacing: 4
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        spacing: S.Theme.gap
 
         // ======== Left panel: Object list ========
-        ColumnLayout {
-            SplitView.preferredWidth: 180
-            SplitView.minimumWidth: 120
-            SplitView.maximumWidth: 280
+        S.SPanel {
+            SplitView.preferredWidth: 190
+            SplitView.minimumWidth: 130
+            SplitView.maximumWidth: 300
             SplitView.fillHeight: true
-            spacing: 4
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: S.Theme.pad
+            spacing: S.Theme.gap
 
             // ---- Slide list section ----
             Hdr { id: hSlides; title: "Slides"; Layout.fillWidth: true; on: true }
@@ -421,19 +411,19 @@ Score.ScriptUI {
                     Layout.fillWidth: true
                     Layout.margins: 4
                     spacing: 2
-                    Button {
+                    S.SButton {
                         text: "+ Slide"
                         font.pixelSize: 10
                         Layout.fillWidth: true
                         onClicked: root.addSlide()
                     }
-                    Button {
+                    S.SButton {
                         text: "Duplicate"
                         font.pixelSize: 10
                         Layout.fillWidth: true
                         onClicked: root.duplicateSlide(root.currentSlideIndex)
                     }
-                    Button {
+                    S.SButton {
                         text: "Delete"
                         font.pixelSize: 10
                         Layout.fillWidth: true
@@ -445,8 +435,8 @@ Score.ScriptUI {
                 ListView {
                     id: slideListView
                     Layout.fillWidth: true
-                    Layout.preferredHeight: Math.min(root.slides.length * 28, 150)
-                    Layout.minimumHeight: 28
+                    Layout.preferredHeight: Math.min(root.slides.length * (S.Theme.listRowH + 1), 150)
+                    Layout.minimumHeight: S.Theme.listRowH
                     clip: true
                     spacing: 1
 
@@ -459,8 +449,8 @@ Score.ScriptUI {
                         id: slideDel
                         required property int index
                         width: slideListView.width
-                        height: 26
-                        radius: 3
+                        height: S.Theme.listRowH
+                        radius: S.Theme.radiusSm
                         color: {
                             if (root.slideDragIndex >= 0 && root.slideDropIndex === slideDel.index
                                 && root.slideDragIndex !== slideDel.index)
@@ -480,7 +470,7 @@ Score.ScriptUI {
 
                             Label {
                                 text: "\u2261"
-                                font.pixelSize: 14
+                                font.pixelSize: 12
                                 color: palette.windowText
                                 Layout.preferredWidth: 14
                                 MouseArea {
@@ -529,7 +519,7 @@ Score.ScriptUI {
                 }
             }
 
-            Rectangle { Layout.fillWidth: true; height: 1; color: "#444" }
+            Rectangle { Layout.fillWidth: true; height: 1; color: S.Theme.border }
 
             // Slide format section
             Hdr { id: hFormat; title: "Format"; Layout.fillWidth: true; on: false }
@@ -538,7 +528,7 @@ Score.ScriptUI {
                 RowLayout {
                     spacing: 4
                     Lbl { text: "Preset" }
-                    ComboBox {
+                    S.SCombo {
                         Layout.fillWidth: true
                         model: ["fill", "16:9", "4:3", "1:1", "9:16", "custom"]
                         currentIndex: { root.stateVersion; return Math.max(0, ["fill","16:9","4:3","1:1","9:16","custom"].indexOf(root.slideState.slideFormat || "fill")); }
@@ -554,12 +544,9 @@ Score.ScriptUI {
                     visible: (root.stateVersion, root.slideState.slideFormat === "custom")
                     spacing: 4
                     Lbl { text: "Width" }
-                    TextField {
-                        Layout.fillWidth: true; Layout.preferredHeight: 22
+                    S.STextField {
+                        Layout.fillWidth: true
                         text: (root.stateVersion, root.slideState.customWidth || 1920)
-                        font.pixelSize: 10; color: "#eee"
-                        verticalAlignment: Text.AlignVCenter
-                        background: Rectangle { color: "#1e1e1e"; border.color: "#555"; radius: 2 }
                         validator: IntValidator { bottom: 1; top: 16384 }
                         onEditingFinished: {
                             root.slideState.customWidth = parseInt(text) || 1920;
@@ -573,12 +560,9 @@ Score.ScriptUI {
                     visible: (root.stateVersion, root.slideState.slideFormat === "custom")
                     spacing: 4
                     Lbl { text: "Height" }
-                    TextField {
-                        Layout.fillWidth: true; Layout.preferredHeight: 22
+                    S.STextField {
+                        Layout.fillWidth: true
                         text: (root.stateVersion, root.slideState.customHeight || 1080)
-                        font.pixelSize: 10; color: "#eee"
-                        verticalAlignment: Text.AlignVCenter
-                        background: Rectangle { color: "#1e1e1e"; border.color: "#555"; radius: 2 }
                         validator: IntValidator { bottom: 1; top: 16384 }
                         onEditingFinished: {
                             root.slideState.customHeight = parseInt(text) || 1080;
@@ -594,14 +578,14 @@ Score.ScriptUI {
             RowLayout {
                 Layout.fillWidth: true
                 spacing: 2
-                Button { text: "+ Rect"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("rect") }
-                Button { text: "+ Ellipse"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("ellipse") }
+                S.SButton { text: "+ Rect"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("rect") }
+                S.SButton { text: "+ Ellipse"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("ellipse") }
             }
             RowLayout {
                 Layout.fillWidth: true
                 spacing: 2
-                Button { text: "+ Image"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("image") }
-                Button { text: "+ Text"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("text") }
+                S.SButton { text: "+ Image"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("image") }
+                S.SButton { text: "+ Text"; font.pixelSize: 10; Layout.fillWidth: true; onClicked: root.addObject("text") }
             }
 
             // Object list
@@ -622,8 +606,8 @@ Score.ScriptUI {
                     required property int index
                     property int delIndex: index
                     width: objListView.width
-                    height: delRow.implicitHeight + 8
-                    radius: 4
+                    height: S.Theme.listRowH
+                    radius: S.Theme.radiusSm
                     color: {
                         if (root.listDragIndex >= 0 && root.listDropIndex === delIndex && root.listDragIndex !== delIndex)
                             return palette.mid;
@@ -655,7 +639,7 @@ Score.ScriptUI {
                         // Drag handle
                         Label {
                             text: "\u2261"
-                            font.pixelSize: 14
+                            font.pixelSize: 12
                             color: palette.windowText
                             Layout.preferredWidth: 14
 
@@ -741,11 +725,12 @@ Score.ScriptUI {
                         }
 
                         // Delete button
-                        Button {
+                        S.SButton {
                             text: "\u2715"
-                            flat: true
+                            compact: true
                             implicitWidth: 18; implicitHeight: 18
-                            font.pixelSize: 12
+                            font.pixelSize: 11
+                            tip: "Delete"
                             onClicked: root.deleteObject(listDel.delIndex)
                         }
                     }
@@ -759,7 +744,7 @@ Score.ScriptUI {
                 RowLayout {
                     spacing: 4
                     Lbl { text: "Type" }
-                    ComboBox {
+                    S.SCombo {
                         Layout.fillWidth: true
                         model: ["solid", "linearGradient", "radialGradient", "texture"]
                         currentIndex: { root.stateVersion; return Math.max(0, ["solid","linearGradient","radialGradient","texture"].indexOf(root.slideState.bgType)); }
@@ -779,7 +764,7 @@ Score.ScriptUI {
                         visible: (root.stateVersion, root.slideState.bgType === "linearGradient")
                         spacing: 4
                         Lbl { text: "Angle" }
-                        Slider {
+                        S.SSlider {
                             Layout.fillWidth: true
                             from: 0; to: 360; stepSize: 1
                             value: (root.stateVersion, root.slideState.bgGradAngle || 90)
@@ -795,7 +780,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Source" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["Image 1","Image 2","Image 3","Image 4","Image 5","Image 6","Image 7","Image 8"]
                             currentIndex: (root.stateVersion, root.slideState.bgTexSource || 0)
@@ -805,7 +790,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Fit" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["cover", "contain", "stretch", "tile"]
                             currentIndex: { root.stateVersion; return Math.max(0, ["cover","contain","stretch","tile"].indexOf(root.slideState.bgTexFit)); }
@@ -815,12 +800,14 @@ Score.ScriptUI {
                 }
             }
         }
+        }
 
         // ======== Center panel: Visual canvas ========
         Item {
             id: viewport
             SplitView.fillWidth: true
             SplitView.fillHeight: true
+            SplitView.minimumWidth: 240
             clip: true
 
             // Effective aspect ratio: always letterbox to match the output
@@ -864,7 +851,7 @@ Score.ScriptUI {
 
             Rectangle {
                 anchors.fill: parent
-                color: "#333"
+                color: S.Theme.dark
             }
 
             // Active slide area background
@@ -1235,12 +1222,18 @@ Score.ScriptUI {
         }
 
         // ======== Right panel: Property editor ========
+        S.SPanel {
+            SplitView.preferredWidth: 270
+            SplitView.minimumWidth: 200
+            SplitView.maximumWidth: 420
+            SplitView.fillHeight: true
+
         ScrollView {
             id: propScroll
-            SplitView.preferredWidth: 250
-            SplitView.minimumWidth: 180
-            SplitView.maximumWidth: 400
-            SplitView.fillHeight: true
+            anchors.fill: parent
+            anchors.margins: S.Theme.pad
+            clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             contentWidth: availableWidth
 
             ColumnLayout {
@@ -1251,7 +1244,7 @@ Score.ScriptUI {
                 Text {
                     visible: { root.stateVersion; return root.selectedObj < 0 || !root.slideState.objects || root.selectedObj >= root.slideState.objects.length; }
                     text: "Select an object to edit its properties"
-                    color: "#888"; font.pixelSize: 12; font.italic: true
+                    color: S.Theme.textMuted; font.pixelSize: S.Theme.fontMd; font.italic: true
                     Layout.fillWidth: true; Layout.margins: 12
                     horizontalAlignment: Text.AlignHCenter
                 }
@@ -1283,12 +1276,12 @@ Score.ScriptUI {
                     visible: hFill.on && hFill.visible; Layout.fillWidth: true; Layout.margins: 6; spacing: 4
                     RowLayout {
                         spacing: 4
-                        CheckBox {
+                        S.SCheck {
                             text: "Enabled"; font.pixelSize: 11
                             checked: { root.stateVersion; var o = root.curObj(); return o ? o.fillEnabled !== false : false; }
                             onToggled: root.setObjPropAndSave("fillEnabled", checked, "Toggle fill")
                         }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["solid", "linearGradient", "radialGradient"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["solid","linearGradient","radialGradient"].indexOf(o.fillType)) : 0; }
@@ -1319,7 +1312,7 @@ Score.ScriptUI {
                 }
                 ColumnLayout {
                     visible: hStroke.on && hStroke.visible; Layout.fillWidth: true; Layout.margins: 6; spacing: 4
-                    CheckBox {
+                    S.SCheck {
                         text: "Enabled"; font.pixelSize: 11
                         checked: { root.stateVersion; var o = root.curObj(); return o ? (o.strokeEnabled || false) : false; }
                         onToggled: root.setObjPropAndSave("strokeEnabled", checked, "Toggle stroke")
@@ -1329,7 +1322,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Style" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["solid", "dashed", "dotted"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["solid","dashed","dotted"].indexOf(o.strokeStyle)) : 0; }
@@ -1362,7 +1355,7 @@ Score.ScriptUI {
                         Lbl { text: "File" }
                         Text {
                             Layout.fillWidth: true
-                            font.pixelSize: 10; color: "#ccc"
+                            font.pixelSize: S.Theme.fontSm; color: S.Theme.text
                             elide: Text.ElideMiddle
                             text: {
                                 root.stateVersion;
@@ -1374,14 +1367,15 @@ Score.ScriptUI {
                                 return "From inlet";
                             }
                         }
-                        Button {
+                        S.SButton {
                             text: "Browse..."
                             font.pixelSize: 10
                             implicitHeight: 22
                             onClicked: imageFileDialog.open()
                         }
-                        Button {
+                        S.SButton {
                             text: "\u2715"
+                            compact: true
                             font.pixelSize: 10
                             implicitWidth: 22; implicitHeight: 22
                             visible: { root.stateVersion; var o = root.curObj(); return o && o.imageFileUrl && o.imageFileUrl.length > 0; }
@@ -1400,7 +1394,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Inlet" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["Image 1","Image 2","Image 3","Image 4","Image 5","Image 6","Image 7","Image 8"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o ? (o.imageSource || 0) : 0; }
@@ -1410,20 +1404,20 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Fit" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["cover", "contain", "stretch", "tile"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["cover","contain","stretch","tile"].indexOf(o.imageFit)) : 0; }
                             onActivated: root.setObjPropAndSave("imageFit", model[currentIndex], "Change image fit")
                         }
                     }
-                    Rectangle { Layout.fillWidth: true; height: 1; color: "#444"; Layout.topMargin: 2 }
+                    Rectangle { Layout.fillWidth: true; height: 1; color: S.Theme.border; Layout.topMargin: 2 }
                     Lbl { text: "Crop"; font.bold: true }
                     ObjSliderRow { label: "Left"; key: "imageCropL"; lo: 0; hi: 0.5; step: 0.01; decimals: 2 }
                     ObjSliderRow { label: "Right"; key: "imageCropR"; lo: 0; hi: 0.5; step: 0.01; decimals: 2 }
                     ObjSliderRow { label: "Top"; key: "imageCropT"; lo: 0; hi: 0.5; step: 0.01; decimals: 2 }
                     ObjSliderRow { label: "Bottom"; key: "imageCropB"; lo: 0; hi: 0.5; step: 0.01; decimals: 2 }
-                    Rectangle { Layout.fillWidth: true; height: 1; color: "#444"; Layout.topMargin: 2 }
+                    Rectangle { Layout.fillWidth: true; height: 1; color: S.Theme.border; Layout.topMargin: 2 }
                     ObjColorRow { Layout.fillWidth: true; label: "Border"; key: "imageBorderColor" }
                     ObjSliderRow { label: "Border W"; key: "imageBorderWidth"; lo: 0; hi: 20; step: 0.5; decimals: 1 }
                 }
@@ -1440,7 +1434,6 @@ Score.ScriptUI {
                         text: { root.stateVersion; var o = root.curObj(); return o ? (o.text || "") : ""; }
                         wrapMode: TextEdit.Wrap; font.pixelSize: 12; color: "#eee"
                         placeholderText: "Enter text..."
-                        background: Rectangle { color: "#1e1e1e"; border.color: "#555"; radius: 2 }
                         onTextChanged: {
                             var o = root.curObj();
                             if (o && o.text !== text) { root.setObjProp("text", text); }
@@ -1450,7 +1443,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Family" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             editable: true
                             model: Qt.fontFamilies()
@@ -1463,7 +1456,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Weight" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["normal", "bold"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o && o.fontWeight === "bold" ? 1 : 0; }
@@ -1473,7 +1466,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "Style" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["normal", "italic"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o && o.fontStyle === "italic" ? 1 : 0; }
@@ -1484,7 +1477,7 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "H Align" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["left", "center", "right"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["left","center","right"].indexOf(o.hAlign)) : 1; }
@@ -1494,14 +1487,14 @@ Score.ScriptUI {
                     RowLayout {
                         spacing: 4
                         Lbl { text: "V Align" }
-                        ComboBox {
+                        S.SCombo {
                             Layout.fillWidth: true
                             model: ["top", "center", "bottom"]
                             currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["top","center","bottom"].indexOf(o.vAlign)) : 1; }
                             onActivated: root.setObjPropAndSave("vAlign", model[currentIndex], "Change alignment")
                         }
                     }
-                    CheckBox {
+                    S.SCheck {
                         text: "Word Wrap"; font.pixelSize: 11
                         checked: { root.stateVersion; var o = root.curObj(); return o ? (o.wordWrap !== false) : true; }
                         onToggled: root.setObjPropAndSave("wordWrap", checked, "Toggle word wrap")
@@ -1509,9 +1502,18 @@ Score.ScriptUI {
                     ObjSliderRow { label: "Line Sp."; key: "lineSpacing"; lo: 0.5; hi: 4; step: 0.05; decimals: 2; fallback: 1.3 }
                 }
 
-                Item { Layout.fillHeight: true; Layout.minimumHeight: 20 }
+                Item { Layout.fillHeight: true; Layout.minimumHeight: S.Theme.pad }
             }
         }
+        }
+    }
+
+    S.SStatusBar {
+        hint: "Presentation — Ctrl+D duplicate, Ctrl+C/V copy-paste, Del removes the selected object"
+        detail: root.renderWidth > 0
+                ? (Math.round(root.renderWidth) + "×" + Math.round(root.renderHeight))
+                : ""
+    }
     }
     }
 

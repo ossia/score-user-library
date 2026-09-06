@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import "Model.js" as Model
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Right panel: properties of the selected zone, or the global settings when nothing is selected.
 Rectangle {
@@ -58,7 +59,7 @@ Rectangle {
             Keys.onDownPressed: { parent.edited(parent.value - parent.step); }
             WheelHandler { onWheel: function (ev) { if (tf.activeFocus) parent.parent.edited(parent.parent.value + (ev.angleDelta.y > 0 ? 1 : -1) * parent.parent.step); } }
             // drag left/right to change the value (click to type)
-            TZNumDrag {
+            S.SNumDrag {
                 field: tf; value: tf.nf.value; step: tf.nf.step
                 onDragged: function (v) { tf.text = U.fmt(v, tf.nf.decimals); if (tf.nf.livePath.length && insp.zn) owner.setZonePropLive(insp.zn.id, tf.nf.livePath, v); }
                 onCommitted: function (v) { tf.nf.edited(v); tf.rebind(); }
@@ -84,7 +85,7 @@ Rectangle {
         signal edited(string v)
         Layout.fillWidth: true; spacing: 4
         FieldLabel { text: parent.label }
-        TZCombo {
+        S.SCombo {
             Layout.fillWidth: true; font.pixelSize: 11
             model: parent.labels.length ? parent.labels : parent.options
             currentIndex: Math.max(0, parent.options.indexOf(parent.value))
@@ -96,7 +97,7 @@ Rectangle {
         property bool value: false
         signal edited(bool v)
         Layout.fillWidth: true; spacing: 4
-        TZCheck { text: parent.label; checked: parent.value; font.pixelSize: 11; onToggled: parent.edited(checked) }
+        S.SCheck { text: parent.label; checked: parent.value; font.pixelSize: 11; onToggled: parent.edited(checked) }
     }
 
     ScrollView {
@@ -208,7 +209,7 @@ Rectangle {
                     Layout.fillWidth: true; spacing: 2
                     Repeater {
                         model: Model.ZONE_EVENT_TYPES
-                        TZCheck {
+                        S.SCheck {
                             required property var modelData
                             width: 96
                             text: modelData.label

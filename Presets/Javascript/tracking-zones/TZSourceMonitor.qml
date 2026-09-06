@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Source monitor: one row per inlet showing what arrives and what the ingest made of it.
 // Data comes from the execution snapshot (already rate-limited to the UI rate).
@@ -21,7 +22,7 @@ Item {
         spacing: 3
         RowLayout {
             Layout.fillWidth: true
-            TZCheck { text: "Source monitor"; font.bold: true; font.pixelSize: 11; checked: owner.sourceMonitorEnabled; onToggled: owner.sourceMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Off: the execution skips payload classification and raw previews (saves CPU on the audio thread)." }
+            S.SCheck { text: "Source monitor"; font.bold: true; font.pixelSize: 11; checked: owner.sourceMonitorEnabled; onToggled: owner.sourceMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Off: the execution skips payload classification and raw previews (saves CPU on the audio thread)." }
             Label {
                 Layout.fillWidth: true; wrapMode: Text.WordWrap; font.pixelSize: 10; color: palette.placeholderText
                 text: !owner.sourceMonitorEnabled ? "Disabled." : (owner.liveData ? "Live. Click a row to see the last raw payload received on that inlet." : "Transport stopped: nothing arrives on the inlets until score plays.")
@@ -57,14 +58,14 @@ Item {
                         property bool alive: h && owner.liveData && owner.snapshot && (owner.snapshot.t - h.lastT) < 1.0
                         property string name: isSim ? "Simulation" : ((owner.doc.sources[index] && owner.doc.sources[index].name) || ("Source " + (index + 1)))
                         Layout.fillWidth: true; Layout.preferredHeight: 22
-                        Rectangle { anchors.fill: parent; color: panel.selectedRow === rowItem.index ? "#2c2a27" : (rowItem.index % 2 ? palette.alternateBase : "transparent") }
+                        Rectangle { anchors.fill: parent; color: panel.selectedRow === rowItem.index ? S.Theme.controlHover : (rowItem.index % 2 ? palette.alternateBase : "transparent") }
                         MouseArea { anchors.fill: parent; onClicked: panel.selectedRow = rowItem.index }
                         RowLayout {
                             anchors.fill: parent; spacing: 8
                             Cell { text: rowItem.name + (rowItem.isSim ? "" : " (inlet " + (rowItem.index + 1) + ")"); w: 110; Layout.leftMargin: 6; font.bold: true }
                             RowLayout {
                                 Layout.preferredWidth: 90; Layout.minimumWidth: 90; Layout.maximumWidth: 90; spacing: 4
-                                Rectangle { width: 8; height: 8; radius: 4; color: rowItem.alive ? "#c58014" : ((rowItem.r && rowItem.r.enabled === false) ? "#7a1e1e" : "#555") }
+                                Rectangle { width: 8; height: 8; radius: 4; color: rowItem.alive ? S.Theme.accent : ((rowItem.r && rowItem.r.enabled === false) ? S.Theme.danger : "#555") }
                                 Label { text: rowItem.r && rowItem.r.enabled === false ? "disabled" : (rowItem.alive ? (U.fmt(rowItem.h.fps, 0) + " Hz") : "no data"); font.pixelSize: 10; color: palette.placeholderText; Layout.fillWidth: true; elide: Text.ElideRight }
                             }
                             Cell { text: rowItem.isSim ? "-" : (rowItem.r ? String(rowItem.r.msgs) : "-"); w: 60 }
