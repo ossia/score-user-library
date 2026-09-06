@@ -52,31 +52,49 @@ var textMuted    = "#7c7670";   // disabled, placeholders, hints
 var radius       = 2;           // buttons, fields, panels
 var radiusSm     = 2;           // swatches, check indicators, badges
 
-var rowH         = 20;          // standard field height (fields, combos)
-var rowHsm       = 18;          // dense rows (checks, table rows)
-var toolH        = 22;          // toolbar buttons
-var listRowH     = 20;          // list delegates
-var tableRowH    = 16;          // monitor tables
 
-// Text rasterisation. score turns on Text.NativeRendering globally, so QML text
-// goes through the same FreeType rasteriser as the widgets; what it does NOT
-// inherit usefully is the hinting. The application font asks for
-// PreferVerticalHinting, which at 11 px leaves ~86% of a glyph's pixels in the
-// antialiasing ramp; full hinting snaps stems to the pixel grid and brings that
-// down, measurably sharpening small UI text on this dark ground.
+// ---------------------------------------------------- font, from the app
+// score's base UI font is a setting (Settings > User interface > Font size /
+// Font hinting), applied to QGuiApplication at startup. Deriving from it here
+// means the Qt Quick editors follow that setting exactly like the widgets do,
+// instead of pinning their own size and drifting from the rest of the app.
+//
+// The fallbacks are what score defaults to, so the kit still looks right when
+// loaded outside score (the plain `qml` runtime, the offscreen test harness).
+var _appFont = (function () {
+  try {
+    return Qt.application.font;
+  } catch (e) {
+    return null;
+  }
+})();
+
+var fontMd = (_appFont && _appFont.pixelSize > 0) ? _appFont.pixelSize : 12;
+var fontSm = Math.max(9, fontMd - 1);   // dense panels, tables, value readouts
+var fontLg = fontMd;                    // panel titles (bold carries the hierarchy)
+
 //   0 = default, 1 = none, 2 = vertical, 3 = full   (QFont::HintingPreference)
-var hinting      = 3;
+// Bare Text{} does not inherit a Control's font, so the widgets here set this
+// explicitly; Controls and Labels would have inherited it anyway.
+var hinting = (_appFont && _appFont.hintingPreference !== undefined)
+    ? _appFont.hintingPreference : 3;
 
-var fontSm       = 11;          // dense panels, tables, value readouts
-var fontMd       = 12;          // default control text (12 px hints far better than 11)
-var fontLg       = 12;          // panel titles (bold carries the hierarchy)
+// Row metrics follow the font so the UI keeps its proportions at any size.
+// At the default 12px these are exactly the values the kit was tuned with:
+// 20 / 18 / 22 / 20 / 16.
+var rowH      = fontMd + 8;     // standard field height (fields, combos)
+var rowHsm    = fontMd + 6;     // dense rows (checks, table rows)
+var toolH     = fontMd + 10;    // toolbar buttons
+var listRowH  = fontMd + 8;     // list delegates
+var tableRowH = fontMd + 4;     // monitor tables
+
+var labelW   = Math.round(fontMd * 7.33);  // inspector field-label column
+var labelWsm = Math.round(fontMd * 5.17);  // narrow variant for cramped panels
 
 var gapSm        = 1;
 var gap          = 3;           // between controls in a row
 var gapLg        = 5;           // between sections
 var pad          = 4;           // panel inner padding
-var labelW       = 88;          // inspector field-label column (all S*Row types)
-var labelWsm     = 62;          // narrow variant for cramped panels
 
 // ------------------------------------------------------------------ helpers
 
