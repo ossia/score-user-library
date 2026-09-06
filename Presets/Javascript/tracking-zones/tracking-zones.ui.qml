@@ -2,7 +2,6 @@ import Score as Score
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import "Geometry.js" as Geom
 import "Model.js" as Model
 import "UiUtil.js" as U
@@ -62,6 +61,41 @@ Score.ScriptUI {
     property bool liveData: false         // true while snapshots keep arriving (transport running)
     property var perf: ({ tickMs: 0, engineMs: 0, tickHz: 0, snapshotHz: 0, uiFps: 0 })
     property string statusText: ""
+
+    function renameZone(id, surface, x, y, width, pixelSize) {
+        var zone = zoneById(id);
+        if (showMode || !zone || zone.locked) return;
+        zoneNameEditor.finish(true);
+        select(id, false);
+        zoneNameEditor.zoneId = id;
+        zoneNameEditor.originalName = zone.name;
+        zoneNameEditor.parent = surface;
+        zoneNameEditor.width = Math.min(surface.width, Math.max(120, width));
+        zoneNameEditor.x = Math.max(0, Math.min(surface.width - zoneNameEditor.width, x));
+        zoneNameEditor.y = Math.max(0, Math.min(surface.height - 32, y));
+        zoneNameEditor.font.pixelSize = pixelSize;
+        zoneNameEditor.begin(zone.name);
+    }
+    onSelectionChanged: zoneNameEditor.finish(true)
+    onDocChanged: zoneNameEditor.finish(false)
+    onViewModeChanged: zoneNameEditor.finish(true)
+    onToolChanged: zoneNameEditor.finish(true)
+    onShowModeChanged: zoneNameEditor.finish(false)
+    S.SInlineTextEditor {
+        id: zoneNameEditor
+        property string zoneId: ""
+        property string originalName: ""
+        z: 100
+        padding: 3
+        background: Rectangle { color: S.Theme.control; border.color: S.Theme.accent; border.width: 1 }
+        height: Math.max(28, contentHeight + topPadding + bottomPadding)
+        onFinished: function(value, accepted) {
+            var id = zoneId;
+            zoneId = "";
+            if (accepted && value !== originalName && root.zoneById(id))
+                root.setZoneProp(id, "name", value, "Rename zone");
+        }
+    }
 
     // ---------------- simulation ----------------
     property bool simEnabled: true
@@ -268,6 +302,32 @@ Score.ScriptUI {
     function setSelectedProp(path, value, label) { if (showMode) return; for (var i = 0; i < selection.length; i++) { var z = zoneById(selection[i]); if (z) U.deepSet(z, path, value); } commit(label || ("Edit " + path)); }
     function reorderZone(from, to) { if (showMode || from === to || from < 0 || to < 0 || from >= doc.zones.length || to >= doc.zones.length) return; var z = doc.zones.splice(from, 1)[0]; doc.zones.splice(to, 0, z); commit("Reorder zones"); }
     function setSettings(path, value, label) { if (showMode) return; U.deepSet(doc.settings, path, value); commit(label || "Edit settings"); }
+    readonly property url floorPlanUrl: {
+        docVersion;
+        var path = doc.settings.backdrop.path;
+        if (!path) return "";
+        path = path.replace(/\\/g, "/");
+        var encoded = encodeURI(path).replace(/#/g, "%23").replace(/\?/g, "%3F");
+        return (path.charAt(0) === "/" ? "file://" : "file:///") + encoded;
+    }
+    function applyFloorPlan(path, position) {
+        if (showMode || !path) return;
+        zoneNameEditor.finish(true);
+        var backdrop = doc.settings.backdrop;
+        var size = Util.imageSize(path);
+        backdrop.path = path;
+        if (size && size.width > 0 && size.height > 0)
+            backdrop.h = backdrop.w * size.height / size.width;
+        if (position) { backdrop.x = position[0]; backdrop.y = position[1]; }
+        commit("Load floor plan");
+        statusText = "Floor plan loaded: " + path;
+    }
+    function chooseFloorPlan() {
+        if (showMode) return;
+        Util.openFileDialog("Load floor plan", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.svg *.svgz *.webp)", "", function(path) {
+            if (root && path) root.applyFloorPlan(path);
+        });
+    }
     function setSource(i, path, value, label) { if (showMode) return; var cfg = doc.sources[i]; if (!cfg) return; U.deepSet(cfg, path, value); commit(label || "Edit source"); }
     function sourceCfg(i) { return doc.sources[i]; }
     function sourceKeys() { docVersion; return [0, 1, 2, 3]; }
@@ -415,7 +475,7 @@ Score.ScriptUI {
                 Layout.fillWidth: true
                 Label {
                     Layout.fillWidth: true
-                    text: root.statusText.length ? root.statusText : (root.liveData && root.snapshot ? ("entities: " + root.snapshot.count + "   zones: " + root.doc.zones.length + (root.snapshot.activeSet ? "   set: " + root.snapshot.activeSet : "") + (root.recording ? "   ● REC " : "") + (root.playbackInfo ? "   ▶ playback " + U.fmtTime(root.playbackInfo.pos) + "/" + U.fmtTime(root.playbackInfo.duration) : "")) : "Transport stopped. Press play in score to see live data. Keys: 1-7 tools, W/E/R gizmo, F fit, Tab view")
+                    text: root.statusText.length ? root.statusText : (root.liveData && root.snapshot ? ("entities: " + root.snapshot.count + "   zones: " + root.doc.zones.length + (root.snapshot.activeSet ? "   set: " + root.snapshot.activeSet : "") + (root.recording ? "   ● REC " : "") + (root.playbackInfo ? "   ▶ playback " + U.fmtTime(root.playbackInfo.pos) + "/" + U.fmtTime(root.playbackInfo.duration) : "")) : "Transport stopped.")
                     font.pixelSize: 11; color: palette.placeholderText; elide: Text.ElideRight
                 }
                 Label { text: root.perfText; font.pixelSize: 10; color: palette.placeholderText; font.family: "monospace" }

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import "Geometry.js" as Geom
 import "Model.js" as Model
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // Top-down 2D editor: grid, backdrop, zones, handles, live entities, tools.
 Item {
@@ -64,7 +65,7 @@ Item {
     Image {
         id: backdrop
         property var bd: { owner.docVersion; return owner.doc.settings.backdrop; }
-        source: bd && bd.path ? ("file:///" + bd.path.replace(/\\/g, "/")) : ""
+        source: owner.floorPlanUrl
         visible: status === Image.Ready && bd && bd.path
         opacity: bd ? bd.opacity : 0.5
         x: bd ? view.w2sx(bd.x - bd.w / 2) : 0
@@ -210,12 +211,16 @@ Item {
                 var c = labelPos(z);
                 ctx.save();
                 ctx.font = (selected ? "bold " : "") + "11px sans-serif";
-                var nm = z.name + (Model.is3D(s) ? "  z " + (s.type === "box" || s.type === "sphere" || s.type === "cylinder" ? U.fmt(z.pos[2], 1) : (U.fmt(s.zmin, 1) + "-" + U.fmt(s.zmax, 1))) : "");
+                var nm = labelText(z);
                 var tw = ctx.measureText(nm).width;
                 ctx.fillStyle = "rgba(0,0,0,0.55)"; ctx.fillRect(c[0] - tw / 2 - 4, c[1] - 9, tw + 8, 15);
                 ctx.fillStyle = z.enabled === false ? "#8a918d" : "#f0f3f1"; ctx.textAlign = "center"; ctx.fillText(nm, c[0], c[1] + 3);
                 ctx.restore();
             }
+        }
+        function labelText(z) {
+            var s = z.shape;
+            return z.name + (Model.is3D(s) ? "  z " + (s.type === "box" || s.type === "sphere" || s.type === "cylinder" ? U.fmt(z.pos[2], 1) : (U.fmt(s.zmin, 1) + "-" + U.fmt(s.zmax, 1))) : "");
         }
         function labelPos(z) {
             var s = z.shape; var lx = 0, ly = 0;
@@ -353,6 +358,20 @@ Item {
         for (var i = zs.length - 1; i >= 0; i--) { var z = zs[i]; if (z.visible === false) continue; if (U.hitZone(z, wx, wy, tol)) return z; }
         return null;
     }
+    function labelAt(sx, sy) {
+        if (!owner.showLabels) return null;
+        var ctx = staticLayer.getContext("2d"), zones = owner.doc.zones;
+        for (var i = zones.length - 1; i >= 0; --i) {
+            var zone = zones[i];
+            if (zone.visible === false) continue;
+            var p = staticLayer.labelPos(zone);
+            ctx.font = (owner.isSelected(zone.id) ? "bold " : "") + "11px sans-serif";
+            var halfWidth = ctx.measureText(staticLayer.labelText(zone)).width / 2 + 4;
+            if (sx >= p[0] - halfWidth && sx <= p[0] + halfWidth && sy >= p[1] - 9 && sy <= p[1] + 6)
+                return { zone: zone, x: p[0] - halfWidth, y: p[1] - 9, width: halfWidth * 2 };
+        }
+        return null;
+    }
     function simAt(wx, wy) { var l = owner.simEntities; var tol = 12 / ppm; for (var i = l.length - 1; i >= 0; i--) if (Geom.dist2d(l[i].pos, [wx, wy, 0]) < tol) return l[i]; return null; }
 
     MouseArea {
@@ -382,12 +401,13 @@ Item {
                     var zr = zoneAt(wx, wy); if (zr) { if (!owner.isSelected(zr.id)) owner.select(zr.id, false); ctxMenu.popup(); }
                     return;
                 }
-                var h = handleAt(m.x, m.y);
+                var label = view.labelAt(m.x, m.y);
+                var h = label ? null : handleAt(m.x, m.y);
                 if (h) {
                     if (h.kind === "mid") { var z0 = owner.selectedZone; var f0 = U.zoneFrame(z0); var lp0 = Geom.toLocal(f0, [wx, wy, 0]); U.insertVertex(z0, h.idx, lp0); h = { kind: "vertex", idx: h.idx + 1, x: lp0[0], y: lp0[1] }; owner.touch(); }
                     view.activeHandle = h; view.mode = "handle"; return;
                 }
-                var z = zoneAt(wx, wy);
+                var z = label ? label.zone : zoneAt(wx, wy);
                 if (z) {
                     if (m.modifiers & Qt.ShiftModifier) { owner.select(z.id, true); view.mode = ""; return; }
                     if (!owner.isSelected(z.id)) owner.select(z.id, false);
@@ -415,7 +435,11 @@ Item {
         }
         onDoubleClicked: function (m) {
             if (owner.tool === "polygon" || owner.tool === "path") { finishPoly(); }
-            else if (owner.tool === "select") { var z = zoneAt(s2wx(m.x), s2wy(m.y)); if (z) owner.select(z.id, false); }
+            else if (owner.tool === "select" && m.button === Qt.LeftButton) {
+                var label = view.labelAt(m.x, m.y);
+                if (label) owner.renameZone(label.zone.id, view, label.x, label.y, label.width, 11);
+                else { var z = zoneAt(s2wx(m.x), s2wy(m.y)); if (z) owner.select(z.id, false); }
+            }
         }
         onPositionChanged: function (m) {
             var wx = s2wx(m.x), wy = s2wy(m.y);
@@ -464,6 +488,11 @@ Item {
         onExited: { view.hoverZone = ""; }
     }
 
+    S.SImageDropArea {
+        anchors.fill: parent; enabled: !owner.showMode
+        onFilesDropped: function(paths, x, y) { owner.applyFloorPlan(paths[0], [view.s2wx(x), view.s2wy(y)]); }
+    }
+
     function finishPoly() {
         var dp = view.drawPoints; var t = owner.tool;
         var minPts = t === "polygon" ? 3 : 2;
@@ -507,6 +536,6 @@ Item {
         MenuItem { text: "Bring to front"; onTriggered: { var i = owner.zoneIndex(owner.selectedId); owner.reorderZone(i, owner.doc.zones.length - 1); } }
         MenuItem { text: "Send to back"; onTriggered: { var i = owner.zoneIndex(owner.selectedId); owner.reorderZone(i, 0); } }
         MenuSeparator {}
-        MenuItem { text: "Reset counters of this zone"; onTriggered: owner.executionSend({ type: "resetCounters", zone: owner.selectedId }) }
+        MenuItem { text: "Reset zone counters"; onTriggered: owner.executionSend({ type: "resetCounters", zone: owner.selectedId }) }
     }
 }

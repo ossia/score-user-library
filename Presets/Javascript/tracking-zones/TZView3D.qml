@@ -4,6 +4,7 @@ import QtQuick3D
 import QtQuick3D.Helpers
 import "Geometry.js" as Geom
 import "UiUtil.js" as U
+import OssiaUI as S
 
 // 3D view: zones as translucent volumes, entities as pins, orbit camera, pick to select,
 // TZGizmo3D to move / rotate the selection, drag a zone body to slide it on the floor.
@@ -93,7 +94,7 @@ Item {
                 eulerRotation: Qt.vector3d(0, 0, bd ? (bd.rotation || 0) : 0)
                 scale: bd ? Qt.vector3d(bd.w / 100, bd.h / 100, 1) : Qt.vector3d(1, 1, 1)
                 materials: DefaultMaterial { lighting: DefaultMaterial.NoLighting; opacity: backdrop3d.bd ? backdrop3d.bd.opacity : 0.5; cullMode: Material.NoCulling
-                    diffuseMap: Texture { source: backdrop3d.bd && backdrop3d.bd.path ? ("file:///" + backdrop3d.bd.path.replace(/\\/g, "/")) : "" } }
+                    diffuseMap: Texture { source: owner.floorPlanUrl } }
             }
             // pickable invisible floor for dragging
             Model {
@@ -347,7 +348,16 @@ Item {
         onExited: { v3.hoverAxis = ""; if (!v3.dragMode) gizmo.hotAxis = ""; }
     }
 
-    // overlay: gizmo mode buttons + short help
+    S.SImageDropArea {
+        anchors.fill: parent; enabled: !owner.showMode
+        onFilesDropped: function(paths, x, y) {
+            var point = v3.floorPoint(x, y);
+            if (point) owner.applyFloorPlan(paths[0], point);
+            else owner.statusText = "Drop the floor plan on the floor";
+        }
+    }
+
+    // overlay: gizmo mode buttons + selected zone
     Row {
         id: modeRow
         anchors.left: parent.left; anchors.top: parent.top; anchors.margins: 6
@@ -366,11 +376,20 @@ Item {
         }
     }
     Label {
+        id: zoneLabel
         anchors.left: parent.left; anchors.top: modeRow.bottom; anchors.margins: 6; anchors.topMargin: 3
-        text: (owner.selectedZone ? owner.selectedZone.name + ". " : "") + "Drag empty space to orbit, right-drag to pan, wheel to zoom."
+        visible: owner.selectedZone !== null
+        text: owner.selectedZone ? owner.selectedZone.name : ""
         font.pixelSize: 10; color: "#9a958e"
         background: Rectangle { color: "#80141312"; radius: 3 }
         padding: 3
+        MouseArea {
+            anchors.fill: parent
+            enabled: owner.tool === "select" && !owner.showMode
+            onDoubleClicked: {
+                if (owner.selectedZone) owner.renameZone(owner.selectedId, v3, zoneLabel.x, zoneLabel.y, zoneLabel.width, 10);
+            }
+        }
     }
     Row {
         anchors.right: parent.right; anchors.top: parent.top; anchors.margins: 6; spacing: 6

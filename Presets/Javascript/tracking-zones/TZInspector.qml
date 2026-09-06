@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import "Model.js" as Model
 import "UiUtil.js" as U
 import OssiaUI as S
@@ -52,6 +51,8 @@ Rectangle {
             property var nf: parent
             text: U.fmt(parent.value, parent.decimals)
             selectByMouse: true
+            ToolTip.visible: hovered && nf.tip.length > 0
+            ToolTip.text: nf.tip
             validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
             onEditingFinished: { var nv = parseFloat(text); if (!isNaN(nv) && Math.abs(nv - parent.value) > 1e-9) parent.edited(nv); rebind(); }
             function rebind() { text = Qt.binding(function () { return U.fmt(tf.nf.value, tf.nf.decimals); }); }
@@ -95,9 +96,10 @@ Rectangle {
     component CheckRow: RowLayout {
         property string label: ""
         property bool value: false
+        property string tip: ""
         signal edited(bool v)
         Layout.fillWidth: true; spacing: 4
-        S.SCheck { text: parent.label; checked: parent.value; font.pixelSize: 11; onToggled: parent.edited(checked) }
+        S.SCheck { text: parent.label; checked: parent.value; font.pixelSize: 11; onToggled: parent.edited(checked); ToolTip.visible: hovered && parent.tip.length > 0; ToolTip.text: parent.tip }
     }
 
     ScrollView {
@@ -153,10 +155,10 @@ Rectangle {
                 NumField { visible: insp.zp("shape.type", "") === "circle"; label: "Radius X (ellipse)"; livePath: "shape.rx"; path: "shape.rx"; value: insp.zp("shape.rx", 0); suffix: "m"; tip: "0 = use Radius (circle)"; onEdited: function (v) { insp.setZ("shape.rx", Math.max(0, v), "Resize zone"); } }
                 NumField { visible: insp.zp("shape.type", "") === "circle"; label: "Radius Y (ellipse)"; livePath: "shape.ry"; path: "shape.ry"; value: insp.zp("shape.ry", 0); suffix: "m"; onEdited: function (v) { insp.setZ("shape.ry", Math.max(0, v), "Resize zone"); } }
                 // polygon / path / line
-                RowLayout { visible: ["polygon", "path", "line", "prism"].indexOf(insp.zp("shape.type", "")) >= 0; Layout.fillWidth: true; FieldLabel { text: "Points" } Label { text: (insp.zp("shape.points", []) || []).length + "  (drag handles, click midpoints to insert, right-click to remove)"; font.pixelSize: 10; color: palette.placeholderText; wrapMode: Text.WordWrap; Layout.fillWidth: true } }
+                RowLayout { visible: ["polygon", "path", "line", "prism"].indexOf(insp.zp("shape.type", "")) >= 0; Layout.fillWidth: true; FieldLabel { text: "Points"; ToolTip.visible: pointsHover.hovered; ToolTip.text: "Drag handles to move points, click midpoints to insert, right-click to remove."; HoverHandler { id: pointsHover } } Label { text: (insp.zp("shape.points", []) || []).length; font.pixelSize: 10; color: palette.placeholderText; Layout.fillWidth: true } }
                 NumField { visible: ["path", "line"].indexOf(insp.zp("shape.type", "")) >= 0; label: "Width"; path: "shape.width"; value: insp.zp("shape.width", 1); suffix: "m"; tip: "Path: band width counted as inside. Line: display width."; onEdited: function (v) { insp.setZ("shape.width", Math.max(0.01, v), "Zone width"); } }
                 ComboRow { visible: insp.zp("shape.type", "") === "line"; label: "Direction"; options: ["both", "a_to_b", "b_to_a"]; labels: ["Both ways", "A→B (in) only", "B→A (out) only"]; value: insp.zp("shape.direction", "both"); onEdited: function (v) { insp.setZ("shape.direction", v, "Line direction"); } }
-                CheckRow { visible: insp.zp("shape.type", "") === "line"; label: "Extended (infinite line)"; value: insp.zp("shape.extended", false); onEdited: function (v) { insp.setZ("shape.extended", v, "Line extent"); } }
+                CheckRow { visible: insp.zp("shape.type", "") === "line"; label: "Extended"; tip: "Treat the tripwire as an infinite line."; value: insp.zp("shape.extended", false); onEdited: function (v) { insp.setZ("shape.extended", v, "Line extent"); } }
                 NumField { visible: insp.zp("shape.type", "") === "line"; label: "Confirm frames"; path: "line.confirmFrames"; value: insp.zp("line.confirmFrames", 2); step: 1; decimals: 0; tip: "Frames on the other side before a crossing counts (anti-jitter)"; onEdited: function (v) { insp.setZ("line.confirmFrames", Math.max(1, Math.round(v)), "Line confirm"); } }
                 CheckRow { visible: insp.zp("shape.type", "") === "line"; label: "Count each entity once"; value: insp.zp("line.countOnce", false); onEdited: function (v) { insp.setZ("line.countOnce", v, "Count once"); } }
                 // z band for 2D shapes
@@ -175,7 +177,7 @@ Rectangle {
                 TextFieldRow { label: "Classes"; value: insp.zp("filters.cls", ""); placeholder: "any (e.g. person,0)"; onEdited: function (v) { insp.setZ("filters.cls", v, "Class filter"); } }
                 TextFieldRow { label: "Sources"; value: (insp.zp("filters.sources", []) || []).join(","); placeholder: "any (e.g. 0,2)"; onEdited: function (v) { insp.setZ("filters.sources", v.split(",").map(function (s) { return parseInt(s.trim()); }).filter(function (n) { return !isNaN(n); }), "Source filter"); } }
                 NumField { label: "Min confidence"; path: "filters.minConf"; value: insp.zp("filters.minConf", 0); step: 0.05; onEdited: function (v) { insp.setZ("filters.minConf", v, "Min confidence"); } }
-                NumField { label: "Min age"; path: "filters.minAge"; value: insp.zp("filters.minAge", 0); suffix: "s"; tip: "Ignore entities younger than this (ghost tracks)"; onEdited: function (v) { insp.setZ("filters.minAge", v, "Min age"); } }
+                NumField { label: "Min age"; path: "filters.minAge"; value: insp.zp("filters.minAge", 0); suffix: "s"; tip: "Ignore entities tracked for less than this time"; onEdited: function (v) { insp.setZ("filters.minAge", v, "Min age"); } }
                 NumField { label: "Height min"; path: "filters.heightMin"; value: insp.zp("filters.heightMin", 0); suffix: "m"; tip: "0 = no limit"; onEdited: function (v) { insp.setZ("filters.heightMin", v, "Height filter"); } }
                 NumField { label: "Height max"; path: "filters.heightMax"; value: insp.zp("filters.heightMax", 0); suffix: "m"; onEdited: function (v) { insp.setZ("filters.heightMax", v, "Height filter"); } }
                 NumField { label: "Speed min"; path: "filters.speedMin"; value: insp.zp("filters.speedMin", 0); suffix: "m/s"; onEdited: function (v) { insp.setZ("filters.speedMin", v, "Speed filter"); } }
@@ -183,7 +185,7 @@ Rectangle {
                 NumField { label: "Max count"; path: "filters.maxCount"; value: insp.zp("filters.maxCount", 0); step: 1; decimals: 0; tip: "Limit reported ids (0 = unlimited)"; onEdited: function (v) { insp.setZ("filters.maxCount", Math.max(0, Math.round(v)), "Max count"); } }
 
                 SectionLabel { text: "Stability" }
-                NumField { label: "Exit margin"; path: "hysteresis.margin"; value: insp.zp("hysteresis.margin", 0.05); suffix: "m"; step: 0.05; tip: "Spatial hysteresis: must go this far outside before exiting"; onEdited: function (v) { insp.setZ("hysteresis.margin", Math.max(0, v), "Hysteresis"); } }
+                NumField { label: "Exit margin"; path: "hysteresis.margin"; value: insp.zp("hysteresis.margin", 0.05); suffix: "m"; step: 0.05; tip: "An entity must move this far outside the zone before it counts as an exit"; onEdited: function (v) { insp.setZ("hysteresis.margin", Math.max(0, v), "Hysteresis"); } }
                 NumField { label: "Enter delay"; path: "hysteresis.enterMs"; value: insp.zp("hysteresis.enterMs", 0); suffix: "ms"; step: 50; decimals: 0; onEdited: function (v) { insp.setZ("hysteresis.enterMs", Math.max(0, v), "Enter delay"); } }
                 NumField { label: "Exit delay"; path: "hysteresis.exitMs"; value: insp.zp("hysteresis.exitMs", 0); suffix: "ms"; step: 50; decimals: 0; onEdited: function (v) { insp.setZ("hysteresis.exitMs", Math.max(0, v), "Exit delay"); } }
                 NumField { label: "Enter frames"; path: "hysteresis.enterFrames"; value: insp.zp("hysteresis.enterFrames", 1); step: 1; decimals: 0; onEdited: function (v) { insp.setZ("hysteresis.enterFrames", Math.max(1, Math.round(v)), "Enter frames"); } }
@@ -198,13 +200,13 @@ Rectangle {
                 NumField { label: "Occupied at ≥"; path: "occupancy.setThreshold"; value: insp.zp("occupancy.setThreshold", 1); step: 1; decimals: 0; onEdited: function (v) { insp.setZ("occupancy.setThreshold", Math.max(1, Math.round(v)), "Occupancy threshold"); } }
                 NumField { label: "Empty at ≤"; path: "occupancy.clearThreshold"; value: insp.zp("occupancy.clearThreshold", 0); step: 1; decimals: 0; onEdited: function (v) { insp.setZ("occupancy.clearThreshold", Math.max(0, Math.round(v)), "Occupancy threshold"); } }
                 NumField { label: "Capacity"; path: "occupancy.capacity"; value: insp.zp("occupancy.capacity", 0); step: 1; decimals: 0; tip: "0 = off; emits 'capacity' events"; onEdited: function (v) { insp.setZ("occupancy.capacity", Math.max(0, Math.round(v)), "Capacity"); } }
-                CheckRow { label: "Soft edge (weight 0..1 outside)"; value: insp.zp("soft.enabled", false); onEdited: function (v) { insp.setZ("soft.enabled", v, "Soft edge"); } }
+                CheckRow { label: "Soft edge"; tip: "Report a weight from 0 to 1 outside the zone."; value: insp.zp("soft.enabled", false); onEdited: function (v) { insp.setZ("soft.enabled", v, "Soft edge"); } }
                 NumField { visible: insp.zp("soft.enabled", false); label: "Falloff"; path: "soft.falloff"; value: insp.zp("soft.falloff", 0.5); suffix: "m"; onEdited: function (v) { insp.setZ("soft.falloff", Math.max(0.01, v), "Falloff"); } }
 
                 SectionLabel { text: "Outputs" }
-                CheckRow { label: "Per-entity data (u,v,w, dist, dwell…)"; value: insp.zp("outputs.perId", true); onEdited: function (v) { insp.setZ("outputs.perId", v, "Outputs"); } }
+                CheckRow { label: "Per-entity data"; tip: "Include u, v, w, distance and dwell data for each entity."; value: insp.zp("outputs.perId", true); onEdited: function (v) { insp.setZ("outputs.perId", v, "Outputs"); } }
                 CheckRow { label: "Include in Tree output"; value: insp.zp("outputs.tree", true); onEdited: function (v) { insp.setZ("outputs.tree", v, "Outputs"); } }
-                Label { text: "Events sent by this zone"; font.pixelSize: 10; color: palette.placeholderText; Layout.topMargin: 2 }
+                Label { text: "Event types"; font.pixelSize: 10; color: palette.placeholderText; Layout.topMargin: 2 }
                 Flow {
                     Layout.fillWidth: true; spacing: 2
                     Repeater {
@@ -215,6 +217,8 @@ Rectangle {
                             text: modelData.label
                             checked: insp.zp("events." + modelData.key, true) !== false
                             onToggled: insp.setZ("events." + modelData.key, checked, "Zone events")
+                            ToolTip.visible: hovered
+                            ToolTip.text: "Send this event type from this zone when enabled globally under Output."
                         }
                     }
                 }
@@ -232,7 +236,6 @@ Rectangle {
                 visible: insp.zn === null
                 Layout.fillWidth: true; spacing: 3
                 Label { text: "Settings"; font.bold: true; font.pixelSize: 12; color: palette.windowText }
-                Label { text: "Select a zone to edit it. Draw with the tools above, or use Generate."; font.pixelSize: 10; color: palette.placeholderText; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                 SectionLabel { text: "Engine" }
                 TextFieldRow { label: "Active set"; value: insp.sp("activeSet", ""); placeholder: "(all)"; onEdited: function (v) { owner.setSettings("activeSet", v, "Active set"); } }
                 NumField { label: "Lost timeout"; spath: "lostTimeout"; value: insp.sp("lostTimeout", 0.5); suffix: "s"; tip: "Default time without data before an entity is dropped (per source overrides in Sources)"; onEdited: function (v) { owner.setSettings("lostTimeout", Math.max(0.02, v), "Lost timeout"); } }
@@ -240,12 +243,12 @@ Rectangle {
                 SectionLabel { text: "Event log limits" }
                 NumField { label: "Max rows"; spath: "monitor.maxEvents"; value: insp.sp("monitor.maxEvents", 400); step: 100; decimals: 0; tip: "Rows kept in the Monitor event log"; onEdited: function (v) { owner.setSettings("monitor.maxEvents", Math.max(10, Math.round(v)), "Event log"); } }
                 NumField { label: "Max rows/s"; spath: "monitor.maxEventsPerSec"; value: insp.sp("monitor.maxEventsPerSec", 100); step: 10; decimals: 0; tip: "Rows added per second; extra events are counted but not listed"; onEdited: function (v) { owner.setSettings("monitor.maxEventsPerSec", Math.max(1, Math.round(v)), "Event log"); } }
-                SectionLabel { text: "World transform (moves every source)" }
-                NumField { label: "Offset X"; spath: "worldTransform.pos"; idx: 0; value: insp.sp("worldTransform.pos", [0, 0, 0])[0]; suffix: "m"; onEdited: function (v) { var p = insp.sp("worldTransform.pos", [0, 0, 0]).slice(); p[0] = v; owner.setSettings("worldTransform.pos", p, "World offset"); } }
-                NumField { label: "Offset Y"; spath: "worldTransform.pos"; idx: 1; value: insp.sp("worldTransform.pos", [0, 0, 0])[1]; suffix: "m"; onEdited: function (v) { var p = insp.sp("worldTransform.pos", [0, 0, 0]).slice(); p[1] = v; owner.setSettings("worldTransform.pos", p, "World offset"); } }
-                NumField { label: "Offset Z"; spath: "worldTransform.pos"; idx: 2; value: insp.sp("worldTransform.pos", [0, 0, 0])[2]; suffix: "m"; onEdited: function (v) { var p = insp.sp("worldTransform.pos", [0, 0, 0]).slice(); p[2] = v; owner.setSettings("worldTransform.pos", p, "World offset"); } }
-                NumField { label: "Rotation Z"; spath: "worldTransform.rot"; idx: 2; value: insp.sp("worldTransform.rot", [0, 0, 0])[2]; suffix: "°"; step: 5; decimals: 1; onEdited: function (v) { var r = insp.sp("worldTransform.rot", [0, 0, 0]).slice(); r[2] = v; owner.setSettings("worldTransform.rot", r, "World rotation"); } }
-                SectionLabel { text: "Proximity (entity ↔ entity)" }
+                SectionLabel { text: "World transform" }
+                NumField { label: "Offset X"; spath: "worldTransform.pos"; idx: 0; value: insp.sp("worldTransform.pos", [0, 0, 0])[0]; suffix: "m"; tip: "Move every source along the world X axis."; onEdited: function (v) { var p = insp.sp("worldTransform.pos", [0, 0, 0]).slice(); p[0] = v; owner.setSettings("worldTransform.pos", p, "World offset"); } }
+                NumField { label: "Offset Y"; spath: "worldTransform.pos"; idx: 1; value: insp.sp("worldTransform.pos", [0, 0, 0])[1]; suffix: "m"; tip: "Move every source along the world Y axis."; onEdited: function (v) { var p = insp.sp("worldTransform.pos", [0, 0, 0]).slice(); p[1] = v; owner.setSettings("worldTransform.pos", p, "World offset"); } }
+                NumField { label: "Offset Z"; spath: "worldTransform.pos"; idx: 2; value: insp.sp("worldTransform.pos", [0, 0, 0])[2]; suffix: "m"; tip: "Move every source along the world Z axis."; onEdited: function (v) { var p = insp.sp("worldTransform.pos", [0, 0, 0]).slice(); p[2] = v; owner.setSettings("worldTransform.pos", p, "World offset"); } }
+                NumField { label: "Rotation Z"; spath: "worldTransform.rot"; idx: 2; value: insp.sp("worldTransform.rot", [0, 0, 0])[2]; suffix: "°"; step: 5; decimals: 1; tip: "Rotate every source around the world Z axis."; onEdited: function (v) { var r = insp.sp("worldTransform.rot", [0, 0, 0]).slice(); r[2] = v; owner.setSettings("worldTransform.rot", r, "World rotation"); } }
+                SectionLabel { text: "Proximity between entities" }
                 CheckRow { label: "Emit proximity events + Proximity output"; value: insp.sp("proximity.enabled", false); onEdited: function (v) { owner.setSettings("proximity.enabled", v, "Proximity"); } }
                 NumField { visible: insp.sp("proximity.enabled", false); label: "Distance"; spath: "proximity.distance"; value: insp.sp("proximity.distance", 1); suffix: "m"; onEdited: function (v) { owner.setSettings("proximity.distance", Math.max(0.01, v), "Proximity"); } }
                 CheckRow { visible: insp.sp("proximity.enabled", false); label: "Only across different sources"; value: insp.sp("proximity.crossSourcesOnly", false); onEdited: function (v) { owner.setSettings("proximity.crossSourcesOnly", v, "Proximity"); } }
@@ -259,14 +262,26 @@ Rectangle {
                 NumField { label: "Rows"; spath: "heatmap.rows"; value: insp.sp("heatmap.rows", 12); step: 1; decimals: 0; onEdited: function (v) { owner.setSettings("heatmap.rows", Math.max(1, Math.round(v)), "Heatmap"); } }
                 NumField { label: "Decay"; spath: "heatmap.decay"; value: insp.sp("heatmap.decay", 0.2); suffix: "/s"; step: 0.05; onEdited: function (v) { owner.setSettings("heatmap.decay", Math.max(0, v), "Heatmap"); } }
                 SectionLabel { text: "Floor plan backdrop" }
-                RowLayout { Layout.fillWidth: true; FieldLabel { text: "Image" } Label { Layout.fillWidth: true; elide: Text.ElideMiddle; font.pixelSize: 10; text: insp.sp("backdrop.path", "") || "(none)"; color: palette.text } Button { text: "…"; implicitWidth: 26; implicitHeight: 22; onClicked: bdDlg.open() } Button { text: "×"; implicitWidth: 22; implicitHeight: 22; onClicked: owner.setSettings("backdrop.path", "", "Backdrop") } }
+                RowLayout {
+                    Layout.fillWidth: true
+                    FieldLabel { text: "Image" }
+                    Label {
+                        Layout.fillWidth: true; elide: Text.ElideMiddle; font.pixelSize: 10
+                        text: insp.sp("backdrop.path", "") || "(none)"; color: palette.text
+                        S.SImageDropArea {
+                            anchors.fill: parent; enabled: !owner.showMode
+                            onFilesDropped: function(paths, x, y) { owner.applyFloorPlan(paths[0]); }
+                        }
+                    }
+                    Button { text: "…"; implicitWidth: 26; implicitHeight: 22; onClicked: owner.chooseFloorPlan() }
+                    Button { text: "×"; implicitWidth: 22; implicitHeight: 22; onClicked: owner.setSettings("backdrop.path", "", "Backdrop") }
+                }
                 NumField { label: "Centre X"; spath: "backdrop.x"; value: insp.sp("backdrop.x", 0); suffix: "m"; onEdited: function (v) { owner.setSettings("backdrop.x", v, "Backdrop"); } }
                 NumField { label: "Centre Y"; spath: "backdrop.y"; value: insp.sp("backdrop.y", 0); suffix: "m"; onEdited: function (v) { owner.setSettings("backdrop.y", v, "Backdrop"); } }
                 NumField { label: "Width"; spath: "backdrop.w"; value: insp.sp("backdrop.w", 10); suffix: "m"; tip: "Measure two points on the plan and set the real-world width"; onEdited: function (v) { owner.setSettings("backdrop.w", Math.max(0.1, v), "Backdrop"); } }
                 NumField { label: "Height"; spath: "backdrop.h"; value: insp.sp("backdrop.h", 7.5); suffix: "m"; onEdited: function (v) { owner.setSettings("backdrop.h", Math.max(0.1, v), "Backdrop"); } }
                 NumField { label: "Opacity"; spath: "backdrop.opacity"; value: insp.sp("backdrop.opacity", 0.5); step: 0.1; onEdited: function (v) { owner.setSettings("backdrop.opacity", Math.max(0, Math.min(1, v)), "Backdrop"); } }
                 NumField { label: "Rotation"; spath: "backdrop.rotation"; value: insp.sp("backdrop.rotation", 0); suffix: "°"; step: 5; decimals: 1; onEdited: function (v) { owner.setSettings("backdrop.rotation", v, "Backdrop"); } }
-                FileDialog { id: bdDlg; fileMode: FileDialog.OpenFile; nameFilters: ["Images (*.png *.jpg *.jpeg *.bmp *.svg)"]; onAccepted: { var p = Util.urlToLocalFile(selectedFile); var sz = Util.imageSize(p); owner.setSettings("backdrop.path", p, "Backdrop"); if (sz && sz.width > 0) owner.setSettings("backdrop.h", insp.sp("backdrop.w", 10) * sz.height / sz.width, "Backdrop"); } }
             }
             Item { height: 20 }
         }

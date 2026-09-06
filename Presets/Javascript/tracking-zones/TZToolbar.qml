@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import "Model.js" as Model
 import OssiaUI as S
 
@@ -72,8 +71,8 @@ Item {
         S.SVSeparator {}
 
         ToolBtn { text: "2D"; lit: bar.owner.viewMode === "2d"; onClicked: bar.owner.viewMode = "2d"; tip: "Top view (Tab cycles)" }
-        ToolBtn { text: "3D"; lit: bar.owner.viewMode === "3d"; onClicked: bar.owner.viewMode = "3d" }
-        ToolBtn { text: "Split"; lit: bar.owner.viewMode === "split"; onClicked: bar.owner.viewMode = "split" }
+        ToolBtn { text: "3D"; lit: bar.owner.viewMode === "3d"; onClicked: bar.owner.viewMode = "3d"; tip: "3D view (Tab cycles). Drag empty space to orbit, right-drag to pan, wheel to zoom." }
+        ToolBtn { text: "Split"; lit: bar.owner.viewMode === "split"; onClicked: bar.owner.viewMode = "split"; tip: "2D and 3D views (Tab cycles). In 3D, drag empty space to orbit, right-drag to pan, wheel to zoom." }
         ToolBtn { text: "Fit"; tip: "Fit all zones in view (F)"; onClicked: bar.owner.fitView() }
 
         S.SVSeparator {}
@@ -94,7 +93,7 @@ Item {
         ToolBtn { text: "Speed"; lit: bar.owner.showVelocity; onClicked: bar.owner.showVelocity = !bar.owner.showVelocity; tip: "Draw velocity lines on entities" }
         ToolBtn { text: "Keypoints"; lit: bar.owner.showKeypoints; onClicked: bar.owner.showKeypoints = !bar.owner.showKeypoints; tip: "Draw skeleton keypoints (costs bandwidth with many entities)" }
         ToolBtn { text: "Heat"; lit: bar.owner.showHeat; onClicked: bar.owner.showHeat = !bar.owner.showHeat; tip: "Show heatmap (enable it in Settings)" }
-        ToolBtn { text: "Floor plan…"; tip: "Load a floor plan image (PNG, JPG, SVG...) as a scaled backdrop in the 2D and 3D views. Position, size, opacity and rotation are in Settings."; onClicked: planDlg.open() }
+        ToolBtn { text: "Floor plan…"; tip: "Load a floor plan image for the 2D and 3D views. Set its real width and height in Settings under Floor plan backdrop."; onClicked: bar.owner.chooseFloorPlan() }
 
         Item { width: 12; height: 1 }
 
@@ -109,18 +108,18 @@ Item {
         }
 
         ToolBtn {
-            text: bar.owner.showMode ? "🔒 Show mode" : "Edit mode"; lit: bar.owner.showMode
+            text: bar.owner.showMode ? "Editing locked" : "Editing unlocked"; lit: bar.owner.showMode
             onClicked: bar.owner.showMode = !bar.owner.showMode
-            tip: "Show mode locks all editing so a running show cannot be altered by accident"
+            tip: "Lock editing to prevent accidental changes during a show"
             tint: bar.owner.showMode ? S.Theme.danger : S.Theme.control
         }
         ToolBtn {
-            text: "⋯"; tip: "Import / export"
+            text: "⋯"; tip: "More actions"
             onClicked: moreMenu.open()
             Menu {
                 id: moreMenu
-                MenuItem { text: "Export zones to JSON file…"; onTriggered: exportDlg.open() }
-                MenuItem { text: "Import zones from JSON file…"; onTriggered: importDlg.open() }
+                MenuItem { text: "Export zones to JSON file…"; onTriggered: Util.saveFileDialog("Export zones", "JSON (*.json)", "", "zones.json", function(path) { if (bar && path) { Util.writeFile(path, bar.owner.exportDoc()); bar.owner.statusText = "Exported to " + path; } }) }
+                MenuItem { text: "Import zones from JSON file…"; enabled: !bar.owner.showMode; onTriggered: Util.openFileDialog("Import zones", "JSON (*.json)", "", function(path) { if (bar && path && !bar.owner.showMode) bar.owner.importDoc(bar.owner.readTextFile(path)); }) }
                 MenuSeparator {}
                 MenuItem { text: "Select all"; onTriggered: bar.owner.selection = bar.owner.doc.zones.map(function (z) { return z.id; }) }
                 MenuItem { text: "Delete selected"; onTriggered: bar.owner.deleteSelected() }
@@ -133,7 +132,4 @@ Item {
             }
         }
     }
-    FileDialog { id: planDlg; fileMode: FileDialog.OpenFile; nameFilters: ["Images (*.png *.jpg *.jpeg *.bmp *.svg *.webp *.gif)"]; onAccepted: { var p = Util.urlToLocalFile(selectedFile); var sz = Util.imageSize(p); var w = bar.owner.doc.settings.backdrop.w || 10; bar.owner.doc.settings.backdrop.path = p; if (sz && sz.width > 0) bar.owner.doc.settings.backdrop.h = w * sz.height / sz.width; bar.owner.commit("Load floor plan"); bar.owner.selection = []; bar.owner.statusText = "Floor plan loaded: set its real width/height in Settings › Floor plan backdrop"; } }
-    FileDialog { id: exportDlg; fileMode: FileDialog.SaveFile; nameFilters: ["JSON (*.json)"]; defaultSuffix: "json"; onAccepted: { Util.writeFile(Util.urlToLocalFile(selectedFile), bar.owner.exportDoc()); bar.owner.statusText = "Exported to " + Util.urlToLocalFile(selectedFile); } }
-    FileDialog { id: importDlg; fileMode: FileDialog.OpenFile; nameFilters: ["JSON (*.json)"]; onAccepted: bar.owner.importDoc(bar.owner.readTextFile(Util.urlToLocalFile(selectedFile))) }
 }

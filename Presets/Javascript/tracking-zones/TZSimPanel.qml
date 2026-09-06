@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import "UiUtil.js" as U
 import OssiaUI as S
 
@@ -30,14 +29,14 @@ Item {
 
         // ---- simulator ----
         GroupBox {
-            title: "Simulation (virtual entities, source 5)"
+            title: "Simulation"
             Layout.fillHeight: true; Layout.preferredWidth: 430
             font.pixelSize: 11
             clip: true
             ColumnLayout {
                 anchors.fill: parent; spacing: 4
                 RowLayout {
-                    S.SCheck { text: "Enabled"; checked: owner.simEnabled; onToggled: owner.simEnabled = checked }
+                    S.SCheck { text: "Enabled"; checked: owner.simEnabled; onToggled: owner.simEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Generate virtual entities as source 5. Requires the Simulation process control to be enabled." }
                     Label { font.pixelSize: 11; color: palette.placeholderText; text: { owner.simVersion; return owner.simEntities.length + " entities"; } }
                     Item { Layout.fillWidth: true }
                     Button {
@@ -74,29 +73,28 @@ Item {
                     Label { text: "m"; font.pixelSize: 10; color: palette.placeholderText }
                     Item { Layout.fillWidth: true }
                 }
-                Label { text: "The process 'Simulation' toggle must be on. Playback replaces live sources."; font.pixelSize: 10; color: palette.placeholderText; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                 Item { Layout.fillHeight: true }
             }
         }
 
         // ---- recorder / playback ----
         GroupBox {
-            title: "Record & playback (calibrated entities, all sources)"
+            title: "Record & playback"
             Layout.fillHeight: true; Layout.fillWidth: true
             font.pixelSize: 11
             clip: true
             ColumnLayout {
                 anchors.fill: parent; spacing: 4
                 RowLayout {
-                    Button { text: owner.recording ? "Stop recording" : "● Record"; implicitHeight: 22; font.pixelSize: 11; palette.button: owner.recording ? S.Theme.danger : S.Theme.control; onClicked: owner.recording ? owner.stopRecording() : owner.startRecording() }
+                    Button { text: owner.recording ? "Stop recording" : "● Record"; implicitHeight: 22; font.pixelSize: 11; palette.button: owner.recording ? S.Theme.danger : S.Theme.control; onClicked: owner.recording ? owner.stopRecording() : owner.startRecording(); ToolTip.visible: hovered; ToolTip.text: "Record calibrated entities from all sources. Save as JSON in " + owner.recordingsDir + "." }
                     Label { text: owner.recording && owner.snapshot ? owner.snapshot.recordingFrames + " frames" : ""; font.pixelSize: 11; color: palette.placeholderText }
                     Item { Layout.fillWidth: true }
-                    Button { text: "Load recording…"; implicitHeight: 22; font.pixelSize: 11; onClicked: loadDlg.open() }
-                    Button { text: "Load last"; enabled: owner.lastRecordingPath.length > 0; implicitHeight: 22; font.pixelSize: 11; onClicked: owner.loadRecording(owner.lastRecordingPath) }
+                    Button { text: "Load recording…"; implicitHeight: 22; font.pixelSize: 11; onClicked: Util.openFileDialog("Load recording", "Recordings (*.json)", owner.recordingsDir, function(path) { if (panel && path) panel.owner.loadRecording(path); }); ToolTip.visible: hovered; ToolTip.text: "Load a JSON recording. Playback replaces live input with recorded entities." }
+                    Button { text: "Load last"; enabled: owner.lastRecordingPath.length > 0; implicitHeight: 22; font.pixelSize: 11; onClicked: owner.loadRecording(owner.lastRecordingPath); ToolTip.visible: hovered; ToolTip.text: "Load the last saved recording. Playback replaces live input with recorded entities." }
                 }
                 RowLayout {
                     visible: owner.playbackInfo !== null
-                    Button { text: owner.playbackInfo && owner.playbackInfo.playing ? "Pause" : "Play"; implicitWidth: 52; implicitHeight: 22; onClicked: owner.playbackControl(owner.playbackInfo && owner.playbackInfo.playing ? "pause" : "play") }
+                    Button { text: owner.playbackInfo && owner.playbackInfo.playing ? "Pause" : "Play"; implicitWidth: 52; implicitHeight: 22; onClicked: owner.playbackControl(owner.playbackInfo && owner.playbackInfo.playing ? "pause" : "play"); ToolTip.visible: hovered; ToolTip.text: "Playback replaces live input with recorded entities." }
                     Button { text: "Stop"; implicitWidth: 44; implicitHeight: 22; onClicked: owner.playbackControl("stop") }
                     S.SSlider {
                         id: scrub; Layout.fillWidth: true; from: 0; to: owner.playbackInfo ? Math.max(0.001, owner.playbackInfo.duration) : 1
@@ -108,10 +106,8 @@ Item {
                     S.SCombo { implicitWidth: 64; model: ["0.25×", "0.5×", "1×", "2×", "4×"]; currentIndex: 2; onActivated: function (i) { owner.playbackControl("speed", [0.25, 0.5, 1, 2, 4][i]); } }
                     Button { text: "Close"; implicitHeight: 22; font.pixelSize: 11; onClicked: owner.playbackControl("close") }
                 }
-                Label { text: "Recordings are saved as JSON in " + owner.recordingsDir + ". During playback the recorded entities replace the live inlets, so zones can be tested without anybody on site."; font.pixelSize: 10; color: palette.placeholderText; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                 Item { Layout.fillHeight: true }
             }
         }
     }
-    FileDialog { id: loadDlg; fileMode: FileDialog.OpenFile; nameFilters: ["Recordings (*.json)"]; currentFolder: "file:///" + owner.recordingsDir; onAccepted: owner.loadRecording(Util.urlToLocalFile(selectedFile)) }
 }

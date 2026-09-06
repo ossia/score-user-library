@@ -14,6 +14,23 @@ Rectangle {
     property string filter: ""
     property int dragIndex: -1
     property int dropIndex: -1
+    property var visibleIds: {
+        owner.docVersion;
+        var ids = [], zones = owner.doc.zones;
+        for (var i = 0; i < zones.length; ++i) {
+            var zone = zones[i];
+            if (!filter.length || zone.name.toLowerCase().indexOf(filter) >= 0
+                    || (zone.set && zone.set.toLowerCase().indexOf(filter) >= 0)
+                    || (zone.group && zone.group.toLowerCase().indexOf(filter) >= 0))
+                ids.push(zone.id);
+        }
+        return ids;
+    }
+    property var dragIds: []
+    function moveVisible(from, to, ids) {
+        if (from < 0 || to < 0 || from >= ids.length || to >= ids.length) return;
+        owner.reorderZone(owner.zoneIndex(ids[from]), owner.zoneIndex(ids[to]));
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -44,7 +61,7 @@ Rectangle {
             }
         }
         TextField {
-            Layout.fillWidth: true; placeholderText: "filter by name / set / group"; font.pixelSize: 11; implicitHeight: 24
+            Layout.fillWidth: true; placeholderText: "Filter by name, set or group"; font.pixelSize: 11; implicitHeight: 24
             onTextChanged: panel.filter = text.toLowerCase()
         }
         ListView {
@@ -52,30 +69,41 @@ Rectangle {
             Layout.fillWidth: true; Layout.fillHeight: true
             clip: true
             spacing: 1
-            model: { panel.owner.docVersion; return panel.owner.doc.zones.length; }
+            model: panel.visibleIds
             ScrollBar.vertical: ScrollBar {}
             delegate: Rectangle {
                 id: row
                 required property int index
-                property var zn: { panel.owner.docVersion; return index < panel.owner.doc.zones.length ? panel.owner.doc.zones[index] : null; }
+                required property string modelData
+                property var zn: { panel.owner.docVersion; return panel.owner.zoneById(modelData); }
                 property var st: { var zs = panel.owner.zoneStates; return zn && zs ? (zs[zn.id] || null) : null; }
-                property bool matches: !zn ? false : (panel.filter.length === 0 || zn.name.toLowerCase().indexOf(panel.filter) >= 0 || (zn.set && zn.set.toLowerCase().indexOf(panel.filter) >= 0) || (zn.group && zn.group.toLowerCase().indexOf(panel.filter) >= 0))
                 width: list.width
-                height: matches ? 26 : 0
-                visible: matches
+                height: 26
                 color: zn && panel.owner.isSelected(zn.id) ? palette.highlight : (index % 2 ? palette.alternateBase : palette.base)
                 opacity: zn && zn.visible === false ? 0.45 : 1
+                function rename() {
+                    if (!zn) return;
+                    var p = nameLabel.mapToItem(panel, 0, 0);
+                    panel.owner.renameZone(zn.id, panel, p.x, p.y, nameLabel.width, 11);
+                }
                 Rectangle { visible: panel.dropIndex === row.index && panel.dragIndex >= 0 && panel.dragIndex !== row.index; anchors.left: parent.left; anchors.right: parent.right; height: 2; color: palette.light; y: panel.dragIndex < row.index ? parent.height - 2 : 0 }
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    onPressed: function (m) { panel.owner.forceActiveFocus(); if (!row.zn) return; if (m.button === Qt.RightButton) { panel.owner.select(row.zn.id, false); rowMenu.popup(); return; } panel.owner.select(row.zn.id, (m.modifiers & Qt.ShiftModifier) !== 0 || (m.modifiers & Qt.ControlModifier) !== 0); panel.dragIndex = row.index; panel.dropIndex = row.index; }
-                    onPositionChanged: function (m) { if (panel.dragIndex < 0) return; var p = mapToItem(list, m.x, m.y); var it = list.itemAt(p.x, p.y + list.contentY); if (it) panel.dropIndex = it.index; }
-                    onReleased: { if (panel.dragIndex >= 0 && panel.dropIndex >= 0 && panel.dragIndex !== panel.dropIndex) panel.owner.reorderZone(panel.dragIndex, panel.dropIndex); panel.dragIndex = -1; panel.dropIndex = -1; }
-                    onDoubleClicked: { nameEdit.visible = true; nameEdit.forceActiveFocus(); nameEdit.selectAll(); }
+                    onPressed: function (m) { panel.owner.forceActiveFocus(); if (!row.zn) return; if (m.button === Qt.RightButton) { panel.owner.select(row.zn.id, false); rowMenu.popup(); return; } panel.owner.select(row.zn.id, (m.modifiers & Qt.ShiftModifier) !== 0 || (m.modifiers & Qt.ControlModifier) !== 0); }
+                    onDoubleClicked: row.rename()
                 }
                 RowLayout {
                     anchors.fill: parent; anchors.leftMargin: 4; anchors.rightMargin: 4; spacing: 4
+                    S.SLayerDragHandle {
+                        view: list; index: row.index
+                        Layout.preferredWidth: 18; Layout.fillHeight: true
+                        enabled: !panel.owner.showMode
+                        onStarted: { panel.owner.forceActiveFocus(); panel.dragIds = panel.visibleIds.slice(); panel.dragIndex = row.index; panel.dropIndex = row.index; }
+                        onTargetIndexChanged: if (panel.dragIndex === row.index) panel.dropIndex = targetIndex
+                        onMoved: function(from, to) { panel.moveVisible(from, to, panel.dragIds); }
+                        onFinished: { panel.dragIndex = -1; panel.dropIndex = -1; panel.dragIds = []; }
+                    }
                     Rectangle {
                         width: 10; height: 10; radius: 2; color: row.zn ? row.zn.color : "#888"
                         border.color: row.st && row.st.occupied ? "#ffffff" : "transparent"; border.width: 1
@@ -88,16 +116,9 @@ Rectangle {
                         }
                     }
                     Label {
+                        id: nameLabel
                         Layout.fillWidth: true; text: row.zn ? row.zn.name + (row.zn.set ? "  ·" + row.zn.set : "") : ""; font.pixelSize: 11; elide: Text.ElideRight
                         color: row.zn && row.zn.enabled === false ? palette.placeholderText : palette.text
-                        visible: !nameEdit.visible
-                    }
-                    TextField {
-                        id: nameEdit; visible: false; Layout.fillWidth: true; implicitHeight: 22; font.pixelSize: 11
-                        text: row.zn ? row.zn.name : ""
-                        onAccepted: { panel.owner.setZoneProp(row.zn.id, "name", text, "Rename zone"); visible = false; }
-                        onActiveFocusChanged: if (!activeFocus) visible = false
-                        Keys.onEscapePressed: visible = false
                     }
                     Label {
                         visible: row.st && (row.st.count > 0 || row.st.crossings_in > 0 || row.st.crossings_out > 0)
@@ -115,12 +136,12 @@ Rectangle {
                 }
                 Menu {
                     id: rowMenu
-                    MenuItem { text: "Rename"; onTriggered: { nameEdit.visible = true; nameEdit.forceActiveFocus(); } }
+                    MenuItem { text: "Rename"; onTriggered: row.rename() }
                     MenuItem { text: "Duplicate"; onTriggered: panel.owner.duplicateSelected() }
                     MenuItem { text: "Delete"; onTriggered: panel.owner.deleteSelected() }
                     MenuSeparator {}
-                    MenuItem { text: "Move up"; onTriggered: panel.owner.reorderZone(row.index, Math.max(0, row.index - 1)) }
-                    MenuItem { text: "Move down"; onTriggered: panel.owner.reorderZone(row.index, Math.min(panel.owner.doc.zones.length - 1, row.index + 1)) }
+                    MenuItem { text: "Move up"; onTriggered: panel.moveVisible(row.index, row.index - 1, panel.visibleIds) }
+                    MenuItem { text: "Move down"; onTriggered: panel.moveVisible(row.index, row.index + 1, panel.visibleIds) }
                 }
             }
         }

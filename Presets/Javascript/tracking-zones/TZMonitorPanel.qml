@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import "UiUtil.js" as U
 import OssiaUI as S
 
@@ -17,9 +16,9 @@ Item {
         ColumnLayout {
             Layout.fillHeight: true; Layout.preferredWidth: 420; spacing: 2
             RowLayout {
-                S.SCheck { text: "Events"; font.bold: true; font.pixelSize: 11; checked: owner.eventMonitorEnabled; onToggled: owner.eventMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Off: events are not collected into this log (saves UI work). The Events outlet is unaffected." }
+                S.SCheck { text: "Events"; font.bold: true; font.pixelSize: 11; checked: owner.eventMonitorEnabled; onToggled: owner.eventMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Turn off to stop collecting this log. The Events outlet is unaffected." }
                 Label { font.pixelSize: 10; color: palette.placeholderText; text: "(" + owner.eventLog.count + " of max " + ((owner.doc.settings.monitor && owner.doc.settings.monitor.maxEvents) || 400) + ")" }
-                Label { visible: owner.droppedEvents > 0; font.pixelSize: 10; color: "#e0a54d"; text: owner.droppedEvents + " not listed (rate limit, see Settings)"; ToolTip.visible: dh.hovered; ToolTip.text: "The log adds at most N rows per second. The Events outlet is not affected."; HoverHandler { id: dh } }
+                Label { visible: owner.droppedEvents > 0; font.pixelSize: 10; color: "#e0a54d"; text: owner.droppedEvents + " not listed"; ToolTip.visible: dh.hovered; ToolTip.text: "Rate limit reached. Set the row limit in Settings under Event log limits. The Events outlet is unaffected."; HoverHandler { id: dh } }
                 Item { Layout.fillWidth: true }
                 CheckBox { id: autoScroll; text: "Follow"; checked: true; font.pixelSize: 10; implicitHeight: 18 }
                 Button { text: "Clear"; implicitHeight: 20; font.pixelSize: 10; onClicked: { owner.eventLog.clear(); owner.eventLogVersion++; } }
@@ -59,7 +58,7 @@ Item {
             RowLayout {
                 Label { text: "Zone counters"; font.bold: true; font.pixelSize: 11; color: palette.windowText }
                 Item { Layout.fillWidth: true }
-                Button { text: "Export CSV"; implicitHeight: 20; font.pixelSize: 10; onClicked: csvDlg.open(); ToolTip.visible: hovered; ToolTip.text: "Save the current per-zone counters as CSV" }
+                Button { text: "Export CSV"; implicitHeight: 20; font.pixelSize: 10; onClicked: Util.saveFileDialog("Export counters", "CSV (*.csv)", "", "counters.csv", function(path) { if (panel && path) { Util.writeFile(path, panel.zonesCsv()); panel.owner.statusText = "Exported counters to " + path; } }); ToolTip.visible: hovered; ToolTip.text: "Save the current per-zone counters as CSV" }
                 Button { text: "Reset all"; implicitHeight: 20; font.pixelSize: 10; onClicked: owner.executionSend({ type: "resetCounters" }) }
                 Button { text: "Clear entities"; implicitHeight: 20; font.pixelSize: 10; onClicked: owner.executionSend({ type: "clearEntities" }) }
             }
@@ -104,7 +103,6 @@ Item {
             }
         }
     }
-    FileDialog { id: csvDlg; fileMode: FileDialog.SaveFile; nameFilters: ["CSV (*.csv)"]; defaultSuffix: "csv"; onAccepted: { Util.writeFile(Util.urlToLocalFile(selectedFile), panel.zonesCsv()); owner.statusText = "Exported counters to " + Util.urlToLocalFile(selectedFile); } }
     function zonesCsv() {
         var rows = ["zone,type,count,occupied,crossings_in,crossings_out,visits,unique,dwell_now_s,dwell_max_s,idle_s,ids"];
         var s = owner.snapshot; var byId = {}; if (s) for (var i = 0; i < s.zones.length; i++) byId[s.zones[i].id] = s.zones[i];

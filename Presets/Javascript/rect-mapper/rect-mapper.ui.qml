@@ -388,7 +388,7 @@ Score.ScriptUI {
                 spacing: 2
 
                 S.SButton {
-                    text: "+ Add"
+                    text: "Add shape"
                     Layout.fillWidth: true
                     onClicked: root.addShape(shapeTypeCombo.currentValue)
                 }
@@ -456,40 +456,21 @@ Score.ScriptUI {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 4
 
-                        Label {
-                            text: "\u2261"
-                            font.pixelSize: 12
-                            color: palette.windowText
+                        S.SLayerDragHandle {
+                            view: rectListView
+                            index: listDel.delIndex
                             Layout.preferredWidth: 14
-
-                            MouseArea {
-                                anchors.fill: parent
-                                anchors.margins: -4
-                                cursorShape: Qt.OpenHandCursor
-                                preventStealing: true
-
-                                onPressed: function(mouse) {
-                                    root.listDragIndex = listDel.delIndex;
-                                    root.listDropIndex = listDel.delIndex;
-                                    root.selectedRect = listDel.delIndex;
-                                }
-
-                                onPositionChanged: function(mouse) {
-                                    if (root.listDragIndex < 0) return;
-                                    var y = mapToItem(rectListView, 0, mouse.y).y;
-                                    var delegateH = listDel.height + rectListView.spacing;
-                                    var targetIdx = Math.floor((y + delegateH / 2) / delegateH);
-                                    targetIdx = Math.max(0, Math.min(root.rects.length - 1, targetIdx));
-                                    root.listDropIndex = targetIdx;
-                                }
-
-                                onReleased: {
-                                    if (root.listDragIndex >= 0 && root.listDropIndex >= 0 && root.listDragIndex !== root.listDropIndex) {
-                                        root.moveRect(root.listDragIndex, root.listDropIndex);
-                                    }
-                                    root.listDragIndex = -1;
-                                    root.listDropIndex = -1;
-                                }
+                            onStarted: {
+                                root.forceActiveFocus();
+                                root.listDragIndex = index;
+                                root.listDropIndex = index;
+                                root.selectedRect = index;
+                            }
+                            onTargetIndexChanged: if (dragging) root.listDropIndex = targetIndex
+                            onMoved: function(from, to) { root.moveRect(from, to); }
+                            onFinished: {
+                                root.listDragIndex = -1;
+                                root.listDropIndex = -1;
                             }
                         }
 
@@ -2010,9 +1991,7 @@ Score.ScriptUI {
     }
 
     S.SStatusBar {
-        hint: root.selectedRect >= 0
-              ? "Arrows nudge · Shift+arrows nudge faster · B toggles bezier edges · Del removes the shape"
-              : "Rect Mapper — add a shape, then drag its corners to warp it onto the surface"
+        visible: detail.length > 0
         detail: root.renderWidth > 0
                 ? (Math.round(root.renderWidth) + "×" + Math.round(root.renderHeight))
                 : ""
