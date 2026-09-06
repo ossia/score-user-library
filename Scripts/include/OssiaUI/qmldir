@@ -24,6 +24,9 @@ SSlider      1.0 SSlider.qml
 SSpin        1.0 SSpin.qml
 STextField   1.0 STextField.qml
 SNumDrag     1.0 SNumDrag.qml
+SImageDropArea 1.0 SImageDropArea.qml
+SInlineTextEditor 1.0 SInlineTextEditor.qml
+SLayerDragHandle 1.0 SLayerDragHandle.qml
 
 SSliderRow   1.0 SSliderRow.qml
 SNumRow      1.0 SNumRow.qml
