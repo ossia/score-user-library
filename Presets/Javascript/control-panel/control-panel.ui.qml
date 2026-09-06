@@ -274,6 +274,7 @@ Score.ScriptUI {
     Component {
         id: imageProbe
         Image {
+            id: probeImage
             property var batch
             property int slot
             property bool completed: false
@@ -282,7 +283,7 @@ Score.ScriptUI {
                 if (completed || !batch || (status !== Image.Ready && status !== Image.Error)) return;
                 completed = true;
                 root.imageLoaded(batch, slot, status === Image.Ready ? sourceSize.width : 0, status === Image.Ready ? sourceSize.height : 0);
-                destroy();
+                Qt.callLater(function() { probeImage.destroy(); });
             }
             onStatusChanged: complete()
             Component.onCompleted: complete()

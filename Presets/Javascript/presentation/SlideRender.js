@@ -1,5 +1,14 @@
 .pragma library
 
+function localFileUrl(path) {
+    if (!path) return "";
+    var local = path.replace(/\\/g, "/");
+    var encoded = encodeURI(local).replace(/#/g, "%23").replace(/\?/g, "%3F");
+    if (local.charAt(0) === "/") return "file://" + encoded;
+    if (/^[A-Za-z]:\//.test(local)) return "file:///" + encoded;
+    return encoded;
+}
+
 // ============================================================
 // Default state & object factory
 // ============================================================

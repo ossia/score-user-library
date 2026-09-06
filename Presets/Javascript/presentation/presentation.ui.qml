@@ -2,7 +2,6 @@ import Score as Score
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import "SlideRender.js" as SlideRender
 import OssiaUI as S
 
@@ -21,7 +20,15 @@ Score.ScriptUI {
     property int slideDropIndex: -1
     property real renderWidth: 0
     property real renderHeight: 0
-    property int editingTextIdx: -1
+    property var editingTextObject: null
+    property var editingTextSlide: null
+    property string editingTextOriginal: ""
+    property var editingTextEditor: null
+    readonly property int editingTextIdx: {
+        root.stateVersion;
+        return editingTextEditor === inlineTextEdit && editingTextSlide === slideState && editingTextObject
+                ? slideState.objects.indexOf(editingTextObject) : -1;
+    }
     property var clipboard: null
 
     // Viewport drag state
@@ -59,6 +66,7 @@ Score.ScriptUI {
         sendLive();
     }
     function setObjPropAndSave(key, val, action) {
+        finishTextEditing(true);
         setObjProp(key, val);
         saveState(action);
     }
@@ -68,6 +76,7 @@ Score.ScriptUI {
         sendLive();
     }
     function setBgPropAndSave(key, val, action) {
+        finishTextEditing(true);
         setBgProp(key, val);
         saveState(action);
     }
@@ -78,14 +87,70 @@ Score.ScriptUI {
         return root.slideState.objects[idx];
     }
 
+    function finishTextEditing(accept) {
+        if (editingTextEditor) editingTextEditor.finish(accept);
+    }
+
+    function beginTextEditing(idx, editor) {
+        finishTextEditing(true);
+        var obj = root.slideState.objects[idx];
+        if (!obj || obj.type !== "text") return;
+        root.editingTextSlide = root.slideState;
+        root.editingTextObject = obj;
+        root.editingTextOriginal = obj.text || "";
+        root.editingTextEditor = editor || inlineTextEdit;
+        root.editingTextEditor.begin(root.editingTextOriginal);
+        root.stateVersion++;
+    }
+
+    onSelectedObjChanged: {
+        if (editingTextObject && curObj() !== editingTextObject)
+            finishTextEditing(true);
+    }
+
+    function chooseColor(key, label, background) {
+        finishTextEditing(true);
+        var slide = root.slideState;
+        var target = background ? slide : root.curObj();
+        if (!target) return;
+        Util.openColorDialog("Change " + label.toLowerCase(), target[key] || "#000000", function(color) {
+            if (!root || !color || root.slides.indexOf(slide) < 0
+                    || (!background && slide.objects.indexOf(target) < 0)) return;
+            target[key] = color;
+            root.stateVersion++;
+            root.sendLive();
+            root.saveState("Change " + label.toLowerCase());
+        });
+    }
+
+    function replaceImage(slide, obj, path) {
+        if (!path || !obj || obj.type !== "image" || root.slides.indexOf(slide) < 0
+                || slide.objects.indexOf(obj) < 0) return;
+        finishTextEditing(true);
+        obj.imageFileUrl = Score.Editor.relativizeFilePath(path);
+        root.stateVersion++;
+        root.sendLive();
+        root.saveState("Set image file");
+    }
+
+    function chooseImage() {
+        var slide = root.slideState;
+        var obj = root.curObj();
+        Util.openFileDialog("Select image",
+                            "Image files (*.png *.jpg *.jpeg *.gif *.bmp *.svg *.svgz *.webp)",
+                            "", function(path) {
+            if (root && path) root.replaceImage(slide, obj, path);
+        });
+    }
+
     // ---- Slide operations ----
 
     function selectSlide(idx) {
         if (idx < 0 || idx >= root.slides.length) return;
+        finishTextEditing(true);
         root.currentSlideIndex = idx;
         root.slideState = root.slides[idx];
         root.selectedObj = -1;
-        root.editingTextIdx = -1;
         root.stateVersion++;
         sendLive();
         // Sync the backend's Slide IntSlider (1-based)
@@ -93,11 +158,11 @@ Score.ScriptUI {
     }
 
     function addSlide() {
+        finishTextEditing(true);
         root.slides.push(SlideRender.defaultSlideState());
         root.currentSlideIndex = root.slides.length - 1;
         root.slideState = root.slides[root.currentSlideIndex];
         root.selectedObj = -1;
-        root.editingTextIdx = -1;
         root.stateVersion++;
         sendLive();
         saveState("Add slide");
@@ -105,12 +170,12 @@ Score.ScriptUI {
 
     function duplicateSlide(idx) {
         if (idx < 0 || idx >= root.slides.length) return;
+        finishTextEditing(true);
         var dup = SlideRender.cloneSlide(root.slides[idx]);
         root.slides.splice(idx + 1, 0, dup);
         root.currentSlideIndex = idx + 1;
         root.slideState = root.slides[root.currentSlideIndex];
         root.selectedObj = -1;
-        root.editingTextIdx = -1;
         root.stateVersion++;
         sendLive();
         saveState("Duplicate slide");
@@ -119,12 +184,14 @@ Score.ScriptUI {
     function deleteSlide(idx) {
         if (root.slides.length <= 1) return;
         if (idx < 0 || idx >= root.slides.length) return;
+        finishTextEditing(true);
         root.slides.splice(idx, 1);
-        if (root.currentSlideIndex >= root.slides.length)
+        if (idx < root.currentSlideIndex)
+            root.currentSlideIndex--;
+        else if (root.currentSlideIndex >= root.slides.length)
             root.currentSlideIndex = root.slides.length - 1;
         root.slideState = root.slides[root.currentSlideIndex];
         root.selectedObj = -1;
-        root.editingTextIdx = -1;
         root.stateVersion++;
         sendLive();
         saveState("Delete slide");
@@ -134,10 +201,11 @@ Score.ScriptUI {
         if (fromIdx === toIdx) return;
         if (fromIdx < 0 || fromIdx >= root.slides.length) return;
         if (toIdx < 0 || toIdx >= root.slides.length) return;
+        finishTextEditing(true);
+        var selectedSlide = root.slideState;
         var item = root.slides.splice(fromIdx, 1)[0];
         root.slides.splice(toIdx, 0, item);
-        root.currentSlideIndex = toIdx;
-        root.slideState = root.slides[toIdx];
+        root.currentSlideIndex = root.slides.indexOf(selectedSlide);
         root.stateVersion++;
         sendLive();
         saveState("Reorder slides");
@@ -157,6 +225,7 @@ Score.ScriptUI {
     }
 
     loadState: function(state) {
+        finishTextEditing(false);
         if (state && state.slideState) {
             try {
                 var s = typeof state.slideState === "string"
@@ -173,11 +242,11 @@ Score.ScriptUI {
             root.slideState = root.slides[0];
         }
         root.selectedObj = -1;
-        root.editingTextIdx = -1;
         root.stateVersion++;
     }
     stateUpdated: function(k, v) {
         if (k === "slideState") {
+            finishTextEditing(false);
             try {
                 var s = typeof v === "string" ? JSON.parse(v) : v;
                 root.loadMultiSlideState(s);
@@ -195,6 +264,7 @@ Score.ScriptUI {
     // ---- Object actions ----
 
     function addObject(type) {
+        finishTextEditing(true);
         var objs = root.slideState.objects;
         var obj = SlideRender.createObject(type, objs.length);
         objs.push(obj);
@@ -205,16 +275,19 @@ Score.ScriptUI {
     }
 
     function deleteObject(idx) {
+        finishTextEditing(true);
         var objs = root.slideState.objects;
         if (idx < 0 || idx >= objs.length) return;
         objs.splice(idx, 1);
-        if (root.selectedObj >= objs.length) root.selectedObj = objs.length - 1;
+        if (idx < root.selectedObj) root.selectedObj--;
+        else if (root.selectedObj >= objs.length) root.selectedObj = objs.length - 1;
         root.stateVersion++;
         sendLive();
         saveState("Delete object");
     }
 
     function moveObject(fromIdx, toIdx) {
+        finishTextEditing(true);
         var objs = root.slideState.objects;
         if (fromIdx === toIdx || fromIdx < 0 || fromIdx >= objs.length || toIdx < 0 || toIdx >= objs.length) return;
         var item = objs.splice(fromIdx, 1)[0];
@@ -226,6 +299,7 @@ Score.ScriptUI {
     }
 
     function duplicateObject(idx) {
+        finishTextEditing(true);
         var objs = root.slideState.objects;
         if (idx < 0 || idx >= objs.length) return;
         var dup = JSON.parse(JSON.stringify(objs[idx]));
@@ -269,6 +343,26 @@ Score.ScriptUI {
 
     component Val: S.SValue {}
 
+    component SlideTextEditor: S.SInlineTextEditor {
+        padding: 6
+        onEdited: function(value) {
+            var obj = root.editingTextObject;
+            if (obj && obj.text !== value) {
+                obj.text = value;
+                root.stateVersion++;
+                root.sendLive();
+            }
+        }
+        onFinished: function(value, accepted) {
+            var changed = value !== root.editingTextOriginal;
+            root.editingTextObject = null;
+            root.editingTextSlide = null;
+            root.editingTextEditor = null;
+            root.stateVersion++;
+            if (accepted && changed) root.saveState("Edit text");
+        }
+    }
+
     component ObjColorRow: RowLayout {
         property string label
         property string key
@@ -283,14 +377,7 @@ Score.ScriptUI {
             border.color: swHov.hovered ? S.Theme.accent : S.Theme.border
             HoverHandler { id: swHov; cursorShape: Qt.PointingHandCursor }
             TapHandler {
-                onTapped: {
-                    colorDialog.targetKey = parent.parent.key;
-                    colorDialog.targetLabel = parent.parent.label;
-                    colorDialog.isBg = false;
-                    var o = root.curObj();
-                    colorDialog.selectedColor = o ? o[parent.parent.key] : "#000000";
-                    colorDialog.open();
-                }
+                onTapped: root.chooseColor(parent.parent.key, parent.parent.label, false)
             }
         }
         S.STextField {
@@ -316,13 +403,7 @@ Score.ScriptUI {
             border.color: bgHov.hovered ? S.Theme.accent : S.Theme.border
             HoverHandler { id: bgHov; cursorShape: Qt.PointingHandCursor }
             TapHandler {
-                onTapped: {
-                    colorDialog.targetKey = parent.parent.key;
-                    colorDialog.targetLabel = parent.parent.label;
-                    colorDialog.isBg = true;
-                    colorDialog.selectedColor = parent.color;
-                    colorDialog.open();
-                }
+                onTapped: root.chooseColor(parent.parent.key, parent.parent.label, true)
             }
         }
         S.STextField {
@@ -360,18 +441,6 @@ Score.ScriptUI {
         }
     }
 
-    ColorDialog {
-        id: colorDialog
-        property string targetKey: ""
-        property string targetLabel: ""
-        property bool isBg: false
-        onAccepted: {
-            if (isBg)
-                root.setBgPropAndSave(targetKey, selectedColor.toString(), "Change " + targetLabel.toLowerCase());
-            else
-                root.setObjPropAndSave(targetKey, selectedColor.toString(), "Change " + targetLabel.toLowerCase());
-        }
-    }
 
     // ---- Main layout ----
 
@@ -468,36 +537,21 @@ Score.ScriptUI {
                             anchors.margins: 4
                             spacing: 4
 
-                            Label {
-                                text: "\u2261"
-                                font.pixelSize: 12
-                                color: palette.windowText
+                            S.SLayerDragHandle {
+                                view: slideListView
+                                index: slideDel.index
                                 Layout.preferredWidth: 14
-                                MouseArea {
-                                    anchors.fill: parent
-                                    anchors.margins: -4
-                                    cursorShape: Qt.OpenHandCursor
-                                    preventStealing: true
-                                    onPressed: function(mouse) {
-                                        root.slideDragIndex = slideDel.index;
-                                        root.slideDropIndex = slideDel.index;
-                                    }
-                                    onPositionChanged: function(mouse) {
-                                        if (root.slideDragIndex < 0) return;
-                                        var y = mapToItem(slideListView, 0, mouse.y).y;
-                                        var delegateH = slideDel.height + slideListView.spacing;
-                                        var targetIdx = Math.floor((y + delegateH / 2) / delegateH);
-                                        targetIdx = Math.max(0, Math.min(root.slides.length - 1, targetIdx));
-                                        root.slideDropIndex = targetIdx;
-                                    }
-                                    onReleased: {
-                                        if (root.slideDragIndex >= 0 && root.slideDropIndex >= 0
-                                            && root.slideDragIndex !== root.slideDropIndex) {
-                                            root.moveSlide(root.slideDragIndex, root.slideDropIndex);
-                                        }
-                                        root.slideDragIndex = -1;
-                                        root.slideDropIndex = -1;
-                                    }
+                                onStarted: {
+                                    root.finishTextEditing(true);
+                                    root.forceActiveFocus();
+                                    root.slideDragIndex = index;
+                                    root.slideDropIndex = index;
+                                }
+                                onTargetIndexChanged: if (dragging) root.slideDropIndex = targetIndex
+                                onMoved: function(from, to) { root.moveSlide(from, to); }
+                                onFinished: {
+                                    root.slideDragIndex = -1;
+                                    root.slideDropIndex = -1;
                                 }
                             }
 
@@ -530,10 +584,11 @@ Score.ScriptUI {
                     Lbl { text: "Preset" }
                     S.SCombo {
                         Layout.fillWidth: true
-                        model: ["fill", "16:9", "4:3", "1:1", "9:16", "custom"]
-                        currentIndex: { root.stateVersion; return Math.max(0, ["fill","16:9","4:3","1:1","9:16","custom"].indexOf(root.slideState.slideFormat || "fill")); }
+                        readonly property var options: ["fill", "16:9", "4:3", "1:1", "9:16", "custom"]
+                        model: ["Match output", "16:9", "4:3", "1:1", "9:16", "Custom"]
+                        currentIndex: { root.stateVersion; return Math.max(0, options.indexOf(root.slideState.slideFormat || "fill")); }
                         onActivated: {
-                            root.slideState.slideFormat = model[currentIndex];
+                            root.slideState.slideFormat = options[currentIndex];
                             root.stateVersion++;
                             root.sendLive();
                             root.saveState("Change slide format");
@@ -637,38 +692,22 @@ Score.ScriptUI {
                         spacing: 4
 
                         // Drag handle
-                        Label {
-                            text: "\u2261"
-                            font.pixelSize: 12
-                            color: palette.windowText
+                        S.SLayerDragHandle {
+                            view: objListView
+                            index: listDel.delIndex
                             Layout.preferredWidth: 14
-
-                            MouseArea {
-                                anchors.fill: parent
-                                anchors.margins: -4
-                                cursorShape: Qt.OpenHandCursor
-                                preventStealing: true
-
-                                onPressed: function(mouse) {
-                                    root.listDragIndex = listDel.delIndex;
-                                    root.listDropIndex = listDel.delIndex;
-                                    root.selectedObj = listDel.delIndex;
-                                }
-                                onPositionChanged: function(mouse) {
-                                    if (root.listDragIndex < 0) return;
-                                    var y = mapToItem(objListView, 0, mouse.y).y;
-                                    var delegateH = listDel.height + objListView.spacing;
-                                    var targetIdx = Math.floor((y + delegateH / 2) / delegateH);
-                                    targetIdx = Math.max(0, Math.min(root.slideState.objects.length - 1, targetIdx));
-                                    root.listDropIndex = targetIdx;
-                                }
-                                onReleased: {
-                                    if (root.listDragIndex >= 0 && root.listDropIndex >= 0 && root.listDragIndex !== root.listDropIndex) {
-                                        root.moveObject(root.listDragIndex, root.listDropIndex);
-                                    }
-                                    root.listDragIndex = -1;
-                                    root.listDropIndex = -1;
-                                }
+                            onStarted: {
+                                root.finishTextEditing(true);
+                                root.forceActiveFocus();
+                                root.listDragIndex = index;
+                                root.listDropIndex = index;
+                                root.selectedObj = index;
+                            }
+                            onTargetIndexChanged: if (dragging) root.listDropIndex = targetIndex
+                            onMoved: function(from, to) { root.moveObject(from, to); }
+                            onFinished: {
+                                root.listDragIndex = -1;
+                                root.listDropIndex = -1;
                             }
                         }
 
@@ -746,9 +785,10 @@ Score.ScriptUI {
                     Lbl { text: "Type" }
                     S.SCombo {
                         Layout.fillWidth: true
-                        model: ["solid", "linearGradient", "radialGradient", "texture"]
-                        currentIndex: { root.stateVersion; return Math.max(0, ["solid","linearGradient","radialGradient","texture"].indexOf(root.slideState.bgType)); }
-                        onActivated: root.setBgPropAndSave("bgType", model[currentIndex], "Change bg type")
+                        readonly property var options: ["solid", "linearGradient", "radialGradient", "texture"]
+                        model: ["Solid", "Linear gradient", "Radial gradient", "Texture"]
+                        currentIndex: { root.stateVersion; return Math.max(0, options.indexOf(root.slideState.bgType)); }
+                        onActivated: root.setBgPropAndSave("bgType", options[currentIndex], "Change bg type")
                     }
                 }
                 BgColorRow {
@@ -897,7 +937,7 @@ Score.ScriptUI {
                     for (var i = 0; i < objs.length; i++) {
                         var url = objs[i].imageFileUrl;
                         if (url && url.length > 0) {
-                            var resolved = Score.Editor.locateFilePath(url);
+                            var resolved = SlideRender.localFileUrl(Score.Editor.locateFilePath(url));
                             objs[i]._resolvedUrl = resolved;
                             if (!isImageLoaded(resolved)) loadImage(resolved);
                         }
@@ -937,12 +977,25 @@ Score.ScriptUI {
                 anchors.fill: parent
                 z: 1
 
+                function finishMove(accept) {
+                    if (!root.isDragging || root.dragType !== "move") return;
+                    root.isDragging = false;
+                    root.dragType = "";
+                    var obj = root.curObj();
+                    if (!obj || (obj.x === root.dragOrigX && obj.y === root.dragOrigY)) return;
+                    if (accept) {
+                        root.saveState("Move object");
+                    } else {
+                        obj.x = root.dragOrigX;
+                        obj.y = root.dragOrigY;
+                        root.stateVersion++;
+                        root.sendLive();
+                    }
+                }
+
                 onPressed: function(mouse) {
                     root.forceActiveFocus();
-                    if (root.editingTextIdx >= 0) {
-                        root.editingTextIdx = -1;
-                        root.stateVersion++;
-                    }
+                    root.finishTextEditing(true);
                     var nx = (mouse.x - viewport.canvasX) / viewport.canvasW;
                     var ny = (mouse.y - viewport.canvasY) / viewport.canvasH;
                     var hitIdx = root.hitTestObject(nx, ny);
@@ -957,7 +1010,6 @@ Score.ScriptUI {
                         root.dragOrigY = o.y;
                         root.dragOrigW = o.w;
                         root.dragOrigH = o.h;
-                        root.beginUpdateState("Move object");
                     } else {
                         root.selectedObj = -1;
                         root.stateVersion++;
@@ -981,61 +1033,40 @@ Score.ScriptUI {
                     root.sendLive();
                 }
 
-                onReleased: {
-                    if (!root.isDragging) return;
-                    root.isDragging = false;
-                    root.updateState("slideState", JSON.stringify({ slides: root.slides, currentSlideIndex: root.currentSlideIndex }));
-                    root.endUpdateState();
-                    root.dragType = "";
-                }
+                onReleased: finishMove(true)
+                onCanceled: finishMove(false)
 
                 onDoubleClicked: function(mouse) {
+                    finishMove(false);
                     var nx = (mouse.x - viewport.canvasX) / viewport.canvasW;
                     var ny = (mouse.y - viewport.canvasY) / viewport.canvasH;
                     var hitIdx = root.hitTestObject(nx, ny);
                     if (hitIdx >= 0 && root.slideState.objects[hitIdx].type === "text") {
                         root.selectedObj = hitIdx;
-                        root.editingTextIdx = hitIdx;
-                        root.stateVersion++;
+                        root.beginTextEditing(hitIdx);
                     }
                 }
             }
 
-            // DropArea for image file drag-and-drop
-            DropArea {
+            S.SImageDropArea {
                 anchors.fill: parent
                 z: 2
-                keys: ["text/uri-list"]
-                onDropped: function(drop) {
-                    var validExts = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg", ".webp"];
-                    var urls = drop.urls;
-                    for (var i = 0; i < urls.length; i++) {
-                        var url = urls[i].toString();
-                        var lower = url.toLowerCase();
-                        var isImage = false;
-                        for (var e = 0; e < validExts.length; e++) {
-                            if (lower.endsWith(validExts[e])) { isImage = true; break; }
+                onFilesDropped: function(paths, x, y) {
+                    root.finishTextEditing(true);
+                    var objs = root.slideState.objects;
+                    for (var i = 0; i < paths.length; i++) {
+                        var path = paths[i];
+                        var obj = SlideRender.createObject("image", objs.length);
+                        obj.imageFileUrl = Score.Editor.relativizeFilePath(path);
+                        obj.name = path.substring(path.lastIndexOf("/") + 1);
+                        // Normalized dimensions account for the slide's aspect ratio.
+                        var sz = Util.imageSize(path);
+                        if (sz.width > 0 && sz.height > 0) {
+                            var imgAspect = sz.width / sz.height;
+                            obj.h = (obj.w / imgAspect) * viewport.effectiveRatio;
                         }
-                        if (isImage) {
-                            var objs = root.slideState.objects;
-                            var obj = SlideRender.createObject("image", objs.length);
-                            var localPath = Util.urlToLocalFile(url);
-                            obj.imageFileUrl = Score.Editor.relativizeFilePath(localPath);
-                            obj.name = url.substring(url.lastIndexOf("/") + 1);
-                            // Set aspect-ratio-correct dimensions.
-                            // w/h are normalized to slide width/height respectively,
-                            // so we must account for the slide's own aspect ratio.
-                            var sz = Util.imageSize(localPath);
-                            if (sz.width > 0 && sz.height > 0) {
-                                var imgAspect = sz.width / sz.height;
-                                var slideRatio = SlideRender.getFormatRatio(root.slideState);
-                                if (slideRatio <= 0) slideRatio = root.renderWidth / Math.max(1, root.renderHeight);
-                                if (slideRatio <= 0) slideRatio = 16 / 9;
-                                obj.h = (obj.w / imgAspect) * slideRatio;
-                            }
-                            objs.push(obj);
-                            root.selectedObj = objs.length - 1;
-                        }
+                        objs.push(obj);
+                        root.selectedObj = objs.length - 1;
                     }
                     root.stateVersion++;
                     root.sendLive();
@@ -1044,23 +1075,17 @@ Score.ScriptUI {
             }
 
             // Inline text editing overlay
-            TextArea {
+            SlideTextEditor {
                 id: inlineTextEdit
-                visible: root.editingTextIdx >= 0
                 z: 5
 
-                property var editObj: {
-                    root.stateVersion;
-                    if (root.editingTextIdx < 0 || root.editingTextIdx >= root.slideState.objects.length) return null;
-                    return root.slideState.objects[root.editingTextIdx];
-                }
+                property var editObj: { root.stateVersion; return root.editingTextObject; }
 
                 x: editObj ? editObj.x * viewport.canvasW + viewport.canvasX : 0
                 y: editObj ? editObj.y * viewport.canvasH + viewport.canvasY : 0
                 width: editObj ? editObj.w * viewport.canvasW : 100
                 height: editObj ? editObj.h * viewport.canvasH : 50
 
-                text: editObj ? (editObj.text || "") : ""
                 wrapMode: TextEdit.Wrap
                 color: editObj ? (editObj.textColor || "#ffffff") : "#ffffff"
                 font.family: editObj ? (editObj.fontFamily || "IBM Plex Sans") : "IBM Plex Sans"
@@ -1076,26 +1101,6 @@ Score.ScriptUI {
                     border.width: 2
                 }
 
-                onVisibleChanged: if (visible) forceActiveFocus()
-
-                onTextChanged: {
-                    if (root.editingTextIdx >= 0 && root.editingTextIdx < root.slideState.objects.length) {
-                        var o = root.slideState.objects[root.editingTextIdx];
-                        if (o && o.text !== text) {
-                            o.text = text;
-                            root.stateVersion++;
-                            root.sendLive();
-                        }
-                    }
-                }
-
-                onActiveFocusChanged: {
-                    if (!activeFocus && root.editingTextIdx >= 0) {
-                        root.saveState("Edit text");
-                        root.editingTextIdx = -1;
-                        root.stateVersion++;
-                    }
-                }
             }
 
             // Resize handles for selected object (8 handles: 4 corners + 4 edges)
@@ -1154,6 +1159,7 @@ Score.ScriptUI {
                         property bool active: false
 
                         onPressed: function(mouse) {
+                            root.finishTextEditing(true);
                             var o = root.selectedObj >= 0 && root.selectedObj < root.slideState.objects.length ? root.slideState.objects[root.selectedObj] : null;
                             if (!o) return;
                             active = true;
@@ -1240,14 +1246,6 @@ Score.ScriptUI {
                 width: propScroll.availableWidth
                 spacing: 0
 
-                // No selection message
-                Text {
-                    visible: { root.stateVersion; return root.selectedObj < 0 || !root.slideState.objects || root.selectedObj >= root.slideState.objects.length; }
-                    text: "Select an object to edit its properties"
-                    color: S.Theme.textMuted; font.pixelSize: S.Theme.fontMd; font.italic: true
-                    Layout.fillWidth: true; Layout.margins: 12
-                    horizontalAlignment: Text.AlignHCenter
-                }
 
                 // ======== GEOMETRY ========
                 Hdr {
@@ -1283,9 +1281,10 @@ Score.ScriptUI {
                         }
                         S.SCombo {
                             Layout.fillWidth: true
-                            model: ["solid", "linearGradient", "radialGradient"]
-                            currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, ["solid","linearGradient","radialGradient"].indexOf(o.fillType)) : 0; }
-                            onActivated: root.setObjPropAndSave("fillType", model[currentIndex], "Change fill type")
+                            readonly property var options: ["solid", "linearGradient", "radialGradient"]
+                            model: ["Solid", "Linear gradient", "Radial gradient"]
+                            currentIndex: { root.stateVersion; var o = root.curObj(); return o ? Math.max(0, options.indexOf(o.fillType)) : 0; }
+                            onActivated: root.setObjPropAndSave("fillType", options[currentIndex], "Change fill type")
                         }
                     }
                     ObjColorRow {
@@ -1350,7 +1349,18 @@ Score.ScriptUI {
                     visible: hImg.on && hImg.visible; Layout.fillWidth: true; Layout.margins: 6; spacing: 4
 
                     // File-based image source
-                    RowLayout {
+                    Item {
+                        Layout.fillWidth: true
+                        implicitHeight: imageFileRow.implicitHeight
+                        S.SImageDropArea {
+                            anchors.fill: parent
+                            onFilesDropped: function(paths, x, y) {
+                                root.replaceImage(root.slideState, root.curObj(), paths[0]);
+                            }
+                        }
+                        RowLayout {
+                            id: imageFileRow
+                            anchors.fill: parent
                         spacing: 4
                         Lbl { text: "File" }
                         Text {
@@ -1371,7 +1381,7 @@ Score.ScriptUI {
                             text: "Browse..."
                             font.pixelSize: 10
                             implicitHeight: 22
-                            onClicked: imageFileDialog.open()
+                            onClicked: root.chooseImage()
                         }
                         S.SButton {
                             text: "\u2715"
@@ -1382,13 +1392,8 @@ Score.ScriptUI {
                             onClicked: root.setObjPropAndSave("imageFileUrl", "", "Clear image file")
                         }
                     }
-
-                    FileDialog {
-                        id: imageFileDialog
-                        title: "Select Image"
-                        nameFilters: ["Image files (*.png *.jpg *.jpeg *.gif *.bmp *.svg *.webp)"]
-                        onAccepted: root.setObjPropAndSave("imageFileUrl", Score.Editor.relativizeFilePath(Util.urlToLocalFile(selectedFile.toString())), "Set image file")
                     }
+
 
                     // Inlet-based image source
                     RowLayout {
@@ -1429,16 +1434,36 @@ Score.ScriptUI {
                 }
                 ColumnLayout {
                     visible: hTxt.on && hTxt.visible; Layout.fillWidth: true; Layout.margins: 6; spacing: 4
-                    TextArea {
+                    Item {
                         Layout.fillWidth: true; Layout.preferredHeight: 60
-                        text: { root.stateVersion; var o = root.curObj(); return o ? (o.text || "") : ""; }
-                        wrapMode: TextEdit.Wrap; font.pixelSize: 12; color: "#eee"
-                        placeholderText: "Enter text..."
-                        onTextChanged: {
-                            var o = root.curObj();
-                            if (o && o.text !== text) { root.setObjProp("text", text); }
+                        clip: true
+                        Text {
+                            anchors.fill: parent
+                            anchors.margins: 6
+                            visible: !propertyTextEdit.editing
+                            text: {
+                                root.stateVersion;
+                                var o = root.curObj();
+                                return o && o.text ? o.text : "Enter text";
+                            }
+                            wrapMode: Text.Wrap
+                            font.pixelSize: 12
+                            color: "#eee"
                         }
-                        onFocusChanged: if (!focus) root.saveState("Edit text")
+                        MouseArea {
+                            anchors.fill: parent
+                            visible: !propertyTextEdit.editing
+                            cursorShape: Qt.IBeamCursor
+                            onClicked: root.beginTextEditing(root.selectedObj, propertyTextEdit)
+                        }
+                        SlideTextEditor {
+                            id: propertyTextEdit
+                            anchors.fill: parent
+                            wrapMode: TextEdit.Wrap
+                            font.pixelSize: 12
+                            color: "#eee"
+                            placeholderText: "Enter text"
+                        }
                     }
                     RowLayout {
                         spacing: 4
@@ -1509,7 +1534,7 @@ Score.ScriptUI {
     }
 
     S.SStatusBar {
-        hint: "Presentation — Ctrl+D duplicate, Ctrl+C/V copy-paste, Del removes the selected object"
+        visible: detail.length > 0
         detail: root.renderWidth > 0
                 ? (Math.round(root.renderWidth) + "×" + Math.round(root.renderHeight))
                 : ""
@@ -1519,8 +1544,8 @@ Score.ScriptUI {
 
     // Keyboard shortcuts
     Keys.onPressed: function(event) {
-        // Don't capture shortcuts while editing text inline
-        if (root.editingTextIdx >= 0) return;
+        // Let either text editor handle its own editing shortcuts.
+        if (root.editingTextObject) return;
 
         var ctrl = event.modifiers & Qt.ControlModifier;
         var shift = event.modifiers & Qt.ShiftModifier;

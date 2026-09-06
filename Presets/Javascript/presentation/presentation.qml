@@ -307,7 +307,7 @@ Script {
                                 ctx.clearRect(0, 0, width, height);
                                 var url = obj.imageFileUrl;
                                 if (url && url.length > 0) {
-                                    var resolved = Editor.locateFilePath(url);
+                                    var resolved = SlideRender.localFileUrl(Editor.locateFilePath(url));
                                     if (!isImageLoaded(resolved)) { loadImage(resolved); return; }
                                     try { ctx.drawImage(resolved, 0, 0, width, height); } catch(e) {}
                                 }
