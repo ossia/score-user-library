@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"4cf2f89f-45b6-4878-92ff-23d3cee1c67e","Effect":""},"Name":"Confirmed or coasting","Category":"Selecting","Preset":[[1,{"String":".[] | select(.state == \"confirmed\" or .state == \"coasting\")"}]]}

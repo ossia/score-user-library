@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"4cf2f89f-45b6-4878-92ff-23d3cee1c67e","Effect":""},"Name":"Commented filter","Category":"Examples","Preset":[[1,{"String":"# Keep only high-confidence items \\\n# while this comment continues\n.[] | select(.confidence >= 0.8)"}]]}

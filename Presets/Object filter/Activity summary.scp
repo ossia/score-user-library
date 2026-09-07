@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"4cf2f89f-45b6-4878-92ff-23d3cee1c67e","Effect":""},"Name":"Activity summary","Category":"Logic","Preset":[[1,{"String":"{ any_value: any, all_values: all, any_active: any(.active), all_active: all(.active), any_active_stream: any(.[]; .active), all_active_stream: all(.[]; .active), empty: isempty(.[]) }"}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"4cf2f89f-45b6-4878-92ff-23d3cee1c67e","Effect":""},"Name":"Stream windows","Category":"Selecting","Preset":[[1,{"String":"{ first_three: [limit(3; .[])], after_two: [skip(2; .[])] }"}]]}
