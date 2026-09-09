@@ -351,8 +351,8 @@ Score.ScriptUI {
     // Reusable inspector rows, built on the shared kit so this editor matches
     // the tracking-zones one without restyling anything locally.
     component PropNumber: S.SNumRow {
-        property real from: 0
-        property real to: 1
+        from: 0
+        to: 1
         defaultValue: 0
         step: 0.01
         decimals: 6
@@ -360,8 +360,8 @@ Score.ScriptUI {
 
         signal previewed(real v)
         signal committed(real v)
-        onLive: function (v) { previewed(Math.max(from, Math.min(to, v))) }
-        onEdited: function (v) { committed(Math.max(from, Math.min(to, v))) }
+        onLive: function (v) { previewed(v) }
+        onEdited: function (v) { committed(v) }
     }
     component PropCombo: S.SComboRow {
         labelWidth: 56
