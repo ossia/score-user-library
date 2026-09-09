@@ -144,6 +144,14 @@ Score.ScriptUI {
                         width: sv.availableWidth
                         spacing: S.Theme.gapSm
 
+                        Label {
+                            Layout.fillWidth: true
+                            text: "These values are the saved style. The Style inlet overrides them; automation then adds position, rotation and tracking offsets, and multiplies scale, font size and line spacing. Reset offsets to 0 and factors to 1 to retain this styling."
+                            wrapMode: Text.WordWrap
+                            color: S.Theme.textMuted
+                            font.pixelSize: S.Theme.fontSm
+                        }
+
                         // ======================== CONTENT ========================
                         S.SSection {
                             title: "Content"
