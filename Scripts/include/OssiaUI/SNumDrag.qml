@@ -2,11 +2,11 @@ import QtQuick
 import QtQuick.Window
 
 // score-style accelerated vertical scrubbing. Ctrl scales each motion delta to
-// one fifth, including when pressed or released during a drag. A plain click
-// focuses the field for typing; a double click emits reset().
+// one fifth, including when pressed or released during a drag. Right-click
+// opens text editing; left double-click emits reset without opening the editor.
 //
-// While the field has focus the overlay disables itself so text selection and
-// caret placement work normally.
+// Text editing is explicit: native window focus restoration must not turn a
+// subsequent drag or double-click into a text-selection gesture.
 MouseArea {
     id: d
 
@@ -19,7 +19,8 @@ MouseArea {
     signal reset()                    // double click
 
     anchors.fill: field
-    enabled: !field.activeFocus
+    enabled: !editing
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
     cursorShape: Qt.SizeVerCursor
     preventStealing: true
     hoverEnabled: false
@@ -29,11 +30,18 @@ MouseArea {
     property real dragHeight: 1
     property real startV: 0
     property bool moved: false
+    property bool editing: false
 
-    Timer {
-        id: focusTimer
-        interval: 220; repeat: false
-        onTriggered: { d.field.forceActiveFocus(); if (d.field.selectAll) d.field.selectAll(); }
+    Binding { target: d.field; property: "readOnly"; value: !d.editing }
+
+    Connections {
+        target: d.field
+        function onAccepted() { d.editing = false; d.field.focus = false; }
+        function onEditingFinished() { d.editing = false; }
+        function onActiveFocusChanged() {
+            if (!d.field.activeFocus)
+                Qt.callLater(function() { if (!d.field.activeFocus) d.editing = false; });
+        }
     }
 
     function current(m) {
@@ -45,18 +53,28 @@ MouseArea {
     }
 
     onPressed: function (m) {
+        if (m.button !== Qt.LeftButton) return;
         lastY = m.y; delta = 0; startV = value; moved = false;
         dragHeight = Math.max(1, Screen.desktopAvailableHeight);
     }
     onPositionChanged: function (m) {
-        if (!pressed) return;
+        if (!(pressedButtons & Qt.LeftButton)) return;
         if (m.y === lastY) return;
-        moved = true; focusTimer.stop(); dragged(current(m));
+        moved = true; dragged(current(m));
     }
     onReleased: function (m) {
-        if (moved) committed(current(m));
-        else focusTimer.restart();
+        if (m.button === Qt.RightButton) {
+            field.focus = false;
+            editing = true;
+            field.forceActiveFocus();
+            field.selectAll();
+        } else if (moved) {
+            committed(current(m));
+            moved = false;
+        }
     }
-    onDoubleClicked: function (m) { focusTimer.stop(); moved = false; reset(); }
+    onDoubleClicked: function (m) {
+        if (m.button === Qt.LeftButton) { moved = false; reset(); }
+    }
     onCanceled: moved = false
 }
