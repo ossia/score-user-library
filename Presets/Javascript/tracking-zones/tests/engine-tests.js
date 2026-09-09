@@ -448,6 +448,37 @@
     ok(!evs.some(function (e) { return e.zone === "A" && (e.type === "enter" || e.type === "occupied" || e.type === "first_in" || e.type === "count"); }), "A silenced");
     ok(evs.some(function (e) { return e.zone === "B" && e.type === "occupied"; }), "B unaffected");
   });
+  test("live dwell masks preserve telemetry and never replay a consumed threshold", function () {
+    var z = Model.makeZone("rect", 0); z.name = "Dwell"; z.dwell.loiterS = 1;
+    var doc = mkDoc([z]), eng = new ZE.Engine(), t = 0;
+    function masks(global, zone) {
+      doc.settings.events.dwell = global; doc.zones[0].events.dwell = zone;
+      eng.setDoc(JSON.parse(JSON.stringify(doc)));
+    }
+    function step(x) { return eng.update([{ src: 0, entities: [ent(1, x, 0)] }], t += 0.5); }
+    function visit(global, zone) {
+      masks(true, true);
+      eq(count(step(0).events, "enter"), 1, "new visit enters normally");
+      masks(global, zone); // live edit before crossing the threshold, without a Command inlet
+      step(0);
+      var r = step(0);
+      eq(count(r.events, "dwell"), 0, "disabled dwell event");
+      near(r.zones[0].dwell_now, 1); near(r.zones[0].per_id[0].dwell, 1);
+      near(r.entities[0].zone_data.Dwell.dwell, 1);
+      masks(true, true);
+      eq(count(step(0).events, "dwell"), 0, "re-enable does not replay muted threshold");
+      var left = step(5).events.filter(function (e) { return e.type === "exit"; });
+      eq(left.length, 1, "leave unaffected"); near(left[0].dwell, 2, 1e-6, "leave keeps dwell telemetry");
+    }
+    visit(true, false); visit(false, true); visit(false, false);
+    masks(true, true);
+    step(0); step(0);
+    eq(count(step(0).events, "dwell"), 1, "enabled visit fires");
+    masks(false, false);
+    eq(count(step(0).events, "dwell"), 0, "disable after firing");
+    masks(true, true);
+    eq(count(step(0).events, "dwell"), 0, "re-enable does not repeat emitted threshold");
+  });
   test("formatEvent formats", function () {
     var ev = { t: 1, type: "enter", zone: "Z", zone_id: "z1", id: "e1", src: 0 };
     eq(ZE.formatEvent(ev, "zone"), "Z");
