@@ -133,9 +133,9 @@ crossing after N frames on the other side, and only within the segment unless *e
   PNG/JPG/SVG plan, scaled in metres, shown in both views), zone set, **Editing locked / unlocked**,
   import / export JSON.
 * **Numeric fields** — every number field (inspector, sources, simulator) drags like score's spinboxes:
-  press and move left / right (or up / down) to change the value by its step, click to type, **double
-  click to reset to the default** (sliders too). Zone transform and shape fields update the views live
-  while dragging and commit one undo step on release.
+  drag vertically with acceleration, hold **Ctrl** for fine motion, **right-click to type**, and
+  **double-click to reset to the default** (sliders too). Zone transform and shape fields update
+  the views live while dragging and commit one undo step on release.
 * **3D navigation** — left-drag empty space to orbit, right-drag to pan, wheel to zoom.
 * **Performance readout** — the status bar shows UI fps, snapshot rate, execution tick time (total + engine),
   3D fps and the UI handler/paint costs; snapshots are dropped gracefully when the GUI cannot keep up.

@@ -353,7 +353,7 @@ Score.ScriptUI {
     component PropNumber: S.SNumRow {
         property real from: 0
         property real to: 1
-        defaultValue: from
+        defaultValue: 0
         step: 0.01
         decimals: 6
         labelWidth: 56
@@ -1856,6 +1856,7 @@ Score.ScriptUI {
             PropNumber {
                 label: "Opacity"
                 from: 0; to: 1.0
+                defaultValue: 1
                 value: propsPanel.selOpacity
                 onPreviewed: function (v) { propsPanel.setOpacity(v, true) }
                 onCommitted: function (v) { propsPanel.setOpacity(v) }
@@ -1895,6 +1896,7 @@ Score.ScriptUI {
             PropNumber {
                 label: "Gamma"
                 from: 0.5; to: 4.0; step: 0.1
+                defaultValue: 1
                 value: propsPanel.selGamma
                 onPreviewed: function (v) { propsPanel.setGamma(v, true) }
                 onCommitted: function (v) { propsPanel.setGamma(v) }
@@ -1971,6 +1973,7 @@ Score.ScriptUI {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Sx"
                 from: 0.1; to: 4.0
+                defaultValue: 1
                 value: propsPanel.selUvScale[0]
                 onPreviewed: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1], true) }
                 onCommitted: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1]) }
@@ -1980,6 +1983,7 @@ Score.ScriptUI {
                 label: "Sy"
                 from: 0.1; to: 4.0
                 value: propsPanel.selUvScale[1]
+                defaultValue: 1
                 onPreviewed: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v, true) }
                 onCommitted: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v) }
             }
