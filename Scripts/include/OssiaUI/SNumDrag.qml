@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Window
 
-// score-style accelerated vertical scrubbing. Ctrl scales each motion delta to
-// one fifth, including when pressed or released during a drag. Right-click
-// opens text editing; left double-click emits reset without opening the editor.
+// Bounded fields scrub a fraction of their range, like score's sliders;
+// unbounded fields retain spinbox acceleration. Ctrl scales motion to one fifth.
+// Right-click edits text; left double-click resets without opening the editor.
 //
 // Text editing is explicit: native window focus restoration must not turn a
 // subsequent drag or double-click into a text-selection gesture.
@@ -49,15 +49,20 @@ MouseArea {
     function current(m) {
         delta += (m.y - lastY) * ((m.modifiers & Qt.ControlModifier) ? 0.2 : 1);
         lastY = m.y;
-        // Same acceleration as DefaultGraphicsSpinboxImpl, in value units.
-        var change = -(1 + Math.abs(delta)) * delta / dragHeight;
+        var span = to - from;
+        if (span === 0) return from;
+        var ranged = isFinite(span);
+        // Match InfiniteScroller::move for a range, move_free's accelerated
+        // spinbox mapping otherwise. Small ranges must not move in raw units.
+        var change = -(ranged ? span : (1 + Math.abs(delta))) * delta / dragHeight;
         var v = startV + Number(change.toFixed(decimals));
         var bounded = Math.max(from, Math.min(to, v));
         if (bounded !== v) {
             // Hold the accumulator at the bound, as score does, so reversing
             // direction responds immediately after an overshoot.
             var k = (startV - bounded) * dragHeight;
-            delta = (k >= 0 ? 1 : -1) * (Math.sqrt(1 + 4 * Math.abs(k)) - 1) / 2;
+            delta = ranged ? k / span
+                : (k >= 0 ? 1 : -1) * (Math.sqrt(1 + 4 * Math.abs(k)) - 1) / 2;
         }
         return bounded;
     }
