@@ -95,7 +95,7 @@ Script {
                         texItem = root.texGrabUrl;
                     }
                     TextRender.paintText(ctx, width, height,
-                        root.textState, root.getInletValues(), texItem);
+                        root.renderState, root.getInletValues(), texItem);
                 }
             }
 
@@ -109,7 +109,7 @@ Script {
                 onDoubleClicked: function(mouse) {
                     if (!root.canEditText() || !textCanvas.available) return;
                     var g = TextRender.editingGeometry(textCanvas.getContext("2d"),
-                        outputRoot.width, outputRoot.height, root.textState, root.getInletValues());
+                        outputRoot.width, outputRoot.height, root.renderState, root.getInletValues());
                     var det = g.a * g.d - g.b * g.c;
                     if (Math.abs(det) < 0.000001) return;
                     var dx = mouse.x - g.x, dy = mouse.y - g.y;
@@ -117,7 +117,7 @@ Script {
                     var y = (-g.b * dx + g.a * dy) / det;
                     if (x < 0 || y < 0 || x > g.width || y > g.height) return;
                     inlineText.geometry = g;
-                    inlineText.editStyle = TextRender.mergeState({}, root.textState);
+                    inlineText.editStyle = TextRender.mergeState({}, root.renderState);
                     inlineText.begin(String(root.textState.text || ""));
                 }
             }
@@ -163,10 +163,68 @@ Script {
         }
     }
 
+    // Append ports: existing documents keep their original inlet / outlet indices.
+    // These are offsets and factors over the saved style (and then Style inlet),
+    // never replacements for it. Neutral values preserve the editor's styling.
+    FloatSlider {
+        id: positionXOffset
+        objectName: "Position X Offset"
+        min: -1; max: 1; init: 0
+    }
+    FloatSlider {
+        id: positionYOffset
+        objectName: "Position Y Offset"
+        min: -1; max: 1; init: 0
+    }
+    FloatSlider {
+        id: rotationOffset
+        objectName: "Rotation Offset"
+        min: -360; max: 360; init: 0
+    }
+    FloatSlider {
+        id: scaleXFactor
+        objectName: "Scale X Factor"
+        min: 0.1; max: 5; init: 1
+    }
+    FloatSlider {
+        id: scaleYFactor
+        objectName: "Scale Y Factor"
+        min: 0.1; max: 5; init: 1
+    }
+    FloatSlider {
+        id: fontSizeFactor
+        objectName: "Font Size Factor"
+        min: 0.1; max: 5; init: 1
+    }
+    FloatSlider {
+        id: trackingOffset
+        objectName: "Tracking Offset"
+        min: -50; max: 100; init: 0
+    }
+    FloatSlider {
+        id: lineSpacingFactor
+        objectName: "Line Spacing Factor"
+        min: 0.1; max: 4; init: 1
+    }
+
     property var textState: TextRender.defaultState()
     property var storedTextState: TextRender.defaultState()
     property var pendingCommits: []
     property int stateVersion: 0
+    readonly property var renderState: {
+        root.stateVersion; // Text edits mutate the saved-style copy in place.
+        return TextRender.applyAutomation(root.textState, {
+            posX: positionXOffset.value,
+            posY: positionYOffset.value,
+            rotation: rotationOffset.value,
+            scaleX: scaleXFactor.value,
+            scaleY: scaleYFactor.value,
+            fontSize: fontSizeFactor.value,
+            tracking: trackingOffset.value,
+            lineSpacing: lineSpacingFactor.value
+        });
+    }
+    onRenderStateChanged: textCanvas.requestPaint()
     property real lastSentW: 0
     property real lastSentH: 0
     property real prevOpacity: -1
