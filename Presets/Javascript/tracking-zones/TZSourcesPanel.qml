@@ -29,7 +29,7 @@ Item {
         validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
         onEditingFinished: { var nv = parseFloat(text); if (!isNaN(nv) && Math.abs(nv - value) > 1e-9) edited(nv); rebind(); }
         function rebind() { text = Qt.binding(function () { return U.fmt(value, decimals); }); }
-        S.SNumDrag { field: sn; value: sn.value; step: sn.decimals >= 3 ? 0.01 : (sn.decimals === 0 ? 1 : 0.1); onDragged: function (v) { sn.text = U.fmt(v, sn.decimals); } onCommitted: function (v) { sn.edited(v); sn.rebind(); } onReset: { var dv = sn.defaultValue(); if (dv !== undefined) { sn.edited(dv); sn.rebind(); } } }
+        S.SNumDrag { field: sn; value: sn.value; decimals: sn.decimals; onDragged: function (v) { sn.text = U.fmt(v, sn.decimals); } onCommitted: function (v) { sn.edited(v); sn.rebind(); } onReset: { var dv = sn.defaultValue(); if (dv !== undefined) { sn.edited(dv); sn.rebind(); } } }
     }
     component L: Label { font.pixelSize: 10; color: palette.windowText }
 

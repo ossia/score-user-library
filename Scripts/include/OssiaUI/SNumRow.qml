@@ -5,10 +5,10 @@ import "Theme.js" as Theme
 
 // label · numeric field with score's drag-to-edit behaviour.
 //
-// Press and drag the field to scrub the value, click to type, double click to
-// reset to `defaultValue`, arrow keys and the wheel step by `step`. `live` fires
-// continuously while scrubbing so the viewport can follow; `edited` fires once
-// the value is settled and is the one to make undoable.
+// Drag vertically to scrub with score's acceleration; Ctrl gives fine control.
+// Click to type, double click to reset to `defaultValue`. Arrow keys and the
+// wheel use `step` (one fifth with Ctrl). `live` previews a drag; `edited`
+// commits its final value as one undoable change.
 RowLayout {
     id: row
 
@@ -44,19 +44,19 @@ RowLayout {
                 row.edited(nv);
             rebind();
         }
-        Keys.onUpPressed: row.edited(row.value + row.step)
-        Keys.onDownPressed: row.edited(row.value - row.step)
+        Keys.onUpPressed: function (ev) { row.edited(row.value + row.step * ((ev.modifiers & Qt.ControlModifier) ? 0.2 : 1)); }
+        Keys.onDownPressed: function (ev) { row.edited(row.value - row.step * ((ev.modifiers & Qt.ControlModifier) ? 0.2 : 1)); }
         WheelHandler {
             onWheel: function (ev) {
                 if (tf.activeFocus)
-                    row.edited(row.value + (ev.angleDelta.y > 0 ? 1 : -1) * row.step);
+                    row.edited(row.value + (ev.angleDelta.y > 0 ? 1 : -1) * row.step * ((ev.modifiers & Qt.ControlModifier) ? 0.2 : 1));
             }
         }
 
         SNumDrag {
             field: tf
             value: row.value
-            step: row.step
+            decimals: row.decimals
             onDragged: function (v) { tf.text = Theme.fmt(v, row.decimals); row.live(v); }
             onCommitted: function (v) { row.edited(v); tf.rebind(); }
             onReset: {

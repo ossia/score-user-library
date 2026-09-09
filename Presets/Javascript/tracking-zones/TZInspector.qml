@@ -59,9 +59,9 @@ Rectangle {
             Keys.onUpPressed: { parent.edited(parent.value + parent.step); }
             Keys.onDownPressed: { parent.edited(parent.value - parent.step); }
             WheelHandler { onWheel: function (ev) { if (tf.activeFocus) parent.parent.edited(parent.parent.value + (ev.angleDelta.y > 0 ? 1 : -1) * parent.parent.step); } }
-            // drag left/right to change the value (click to type)
+            // Vertical scrubbing; Ctrl slows the drag.
             S.SNumDrag {
-                field: tf; value: tf.nf.value; step: tf.nf.step
+                field: tf; value: tf.nf.value; decimals: tf.nf.decimals
                 onDragged: function (v) { tf.text = U.fmt(v, tf.nf.decimals); if (tf.nf.livePath.length && insp.zn) owner.setZonePropLive(insp.zn.id, tf.nf.livePath, v); }
                 onCommitted: function (v) { tf.nf.edited(v); tf.rebind(); }
                 onReset: { var dv = tf.nf.defaultValue(); if (dv !== undefined) { tf.nf.edited(dv); tf.rebind(); } }
