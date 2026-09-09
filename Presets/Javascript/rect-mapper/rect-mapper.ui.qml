@@ -40,7 +40,7 @@ Score.ScriptUI {
         if (state && state.mapperState) {
             try {
                 var s = typeof state.mapperState === "string" ? JSON.parse(state.mapperState) : state.mapperState;
-                root.rects = s || [];
+                root.rects = ShapeData.normalizeShapes(s);
             } catch (e) {
                 root.rects = [];
             }
@@ -54,7 +54,7 @@ Score.ScriptUI {
         if (k === "mapperState") {
             try {
                 var s = typeof v === "string" ? JSON.parse(v) : v;
-                root.rects = Array.isArray(s) ? s : [];
+                root.rects = ShapeData.normalizeShapes(s);
             } catch (e) {
                 return;
             }
@@ -1895,7 +1895,7 @@ Score.ScriptUI {
             }
             PropNumber {
                 label: "Gamma"
-                from: 0.5; to: 4.0; step: 0.1
+                from: ShapeData.minBlendGamma; to: ShapeData.maxBlendGamma; step: 0.1
                 defaultValue: 1
                 value: propsPanel.selGamma
                 onPreviewed: function (v) { propsPanel.setGamma(v, true) }
@@ -1972,7 +1972,7 @@ Score.ScriptUI {
             PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Sx"
-                from: 0.1; to: 4.0
+                from: ShapeData.minUvScale; to: ShapeData.maxUvScale
                 defaultValue: 1
                 value: propsPanel.selUvScale[0]
                 onPreviewed: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1], true) }
@@ -1981,7 +1981,7 @@ Score.ScriptUI {
             PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Sy"
-                from: 0.1; to: 4.0
+                from: ShapeData.minUvScale; to: ShapeData.maxUvScale
                 value: propsPanel.selUvScale[1]
                 defaultValue: 1
                 onPreviewed: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v, true) }
