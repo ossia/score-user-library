@@ -44,6 +44,9 @@ nowhere — not on `Events`, not on the simple outlets, not in the monitors. Eac
 additionally opt out per type in its inspector (*Outputs › Events sent by this zone*): e.g. keep
 `count` events only for the one zone driving a display. The state machines always run in full, so
 counters, occupancy and the `Zones`/`Tree` outputs are unaffected by these switches.
+A dwell threshold crossed while its event is disabled is still consumed for that visit:
+re-enabling does not replay it. A new visit can fire again. Dwell durations in zone/entity
+telemetry and leave events remain available even when the `dwell` event type is disabled.
 
 ## Inputs accepted (per source)
 
