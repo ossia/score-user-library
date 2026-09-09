@@ -13,6 +13,8 @@ MouseArea {
     required property Item field      // the TextField underneath
     property real value: 0
     property int decimals: 6
+    property real from: -Infinity
+    property real to: Infinity
 
     signal dragged(real v)            // live, while dragging
     signal committed(real v)          // on release, if a drag actually happened
@@ -49,7 +51,15 @@ MouseArea {
         lastY = m.y;
         // Same acceleration as DefaultGraphicsSpinboxImpl, in value units.
         var change = -(1 + Math.abs(delta)) * delta / dragHeight;
-        return startV + Number(change.toFixed(decimals));
+        var v = startV + Number(change.toFixed(decimals));
+        var bounded = Math.max(from, Math.min(to, v));
+        if (bounded !== v) {
+            // Hold the accumulator at the bound, as score does, so reversing
+            // direction responds immediately after an overshoot.
+            var k = (startV - bounded) * dragHeight;
+            delta = (k >= 0 ? 1 : -1) * (Math.sqrt(1 + 4 * Math.abs(k)) - 1) / 2;
+        }
+        return bounded;
     }
 
     onPressed: function (m) {

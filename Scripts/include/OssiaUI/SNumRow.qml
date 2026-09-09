@@ -16,6 +16,8 @@ RowLayout {
     property real value: 0
     property real step: 0.1
     property int decimals: 2
+    property real from: -Infinity
+    property real to: Infinity
     property string suffix: ""
     property string tip: ""
     property var defaultValue: undefined
@@ -23,6 +25,13 @@ RowLayout {
 
     signal edited(real v)
     signal live(real v)
+
+    function bounded(v) { return Math.max(from, Math.min(to, v)); }
+    function stepBy(direction, modifiers) {
+        var increment = Math.max(Math.pow(10, -decimals), step * ((modifiers & Qt.ControlModifier) ? 0.2 : 1));
+        var next = bounded(value + direction * increment);
+        if (next !== value) edited(next);
+    }
 
     Layout.fillWidth: true
     spacing: Theme.gap
@@ -33,23 +42,44 @@ RowLayout {
         id: tf
         Layout.fillWidth: true
         text: Theme.fmt(row.value, row.decimals)
-        validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
+        validator: DoubleValidator {
+            bottom: row.from; top: row.to; decimals: row.decimals
+            notation: DoubleValidator.StandardNotation
+            locale: "en_US" // Match Theme.fmt's decimal point, independent of system locale.
+        }
+        property string editText: ""
+        onActiveFocusChanged: {
+            if (activeFocus) editText = text;
+            else if (!acceptableInput) rebind();
+        }
+        onTextEdited: {
+            // Like QDoubleSpinBox, allow incomplete prefixes below a positive
+            // minimum, but reject typing past the outer end of the range.
+            var nv = Number(text);
+            if (text.length && isFinite(nv)
+                && ((text[0] !== "-" && nv > row.to) || (text[0] === "-" && nv < row.from)))
+                text = editText;
+            else
+                editText = text;
+        }
 
         function rebind() {
             text = Qt.binding(function () { return Theme.fmt(row.value, row.decimals); });
         }
         onEditingFinished: {
-            var nv = parseFloat(text);
-            if (!isNaN(nv) && Math.abs(nv - row.value) > 1e-9)
-                row.edited(nv);
+            var nv = acceptableInput ? Number.fromLocaleString(Qt.locale(validator.locale), text) : NaN;
+            if (acceptableInput && isFinite(nv) && Math.abs(nv - row.value) > 1e-9)
+                row.edited(row.bounded(nv));
             rebind();
         }
-        Keys.onUpPressed: function (ev) { row.edited(row.value + row.step * ((ev.modifiers & Qt.ControlModifier) ? 0.2 : 1)); }
-        Keys.onDownPressed: function (ev) { row.edited(row.value - row.step * ((ev.modifiers & Qt.ControlModifier) ? 0.2 : 1)); }
+        Keys.onUpPressed: function (ev) { row.stepBy(1, ev.modifiers); }
+        Keys.onDownPressed: function (ev) { row.stepBy(-1, ev.modifiers); }
         WheelHandler {
             onWheel: function (ev) {
-                if (tf.activeFocus)
-                    row.edited(row.value + (ev.angleDelta.y > 0 ? 1 : -1) * row.step * ((ev.modifiers & Qt.ControlModifier) ? 0.2 : 1));
+                if (ev.angleDelta.y !== 0 && tf.activeFocus)
+                    row.stepBy(ev.angleDelta.y > 0 ? 1 : -1, ev.modifiers);
+                else
+                    ev.accepted = false;
             }
         }
 
@@ -57,10 +87,12 @@ RowLayout {
             field: tf
             value: row.value
             decimals: row.decimals
+            from: row.from
+            to: row.to
             onDragged: function (v) { tf.text = Theme.fmt(v, row.decimals); row.live(v); }
-            onCommitted: function (v) { row.edited(v); tf.rebind(); }
+            onCommitted: function (v) { row.edited(row.bounded(v)); tf.rebind(); }
             onReset: {
-                if (row.defaultValue !== undefined) { row.edited(row.defaultValue); tf.rebind(); }
+                if (row.defaultValue !== undefined) { row.edited(row.bounded(row.defaultValue)); tf.rebind(); }
             }
         }
     }
