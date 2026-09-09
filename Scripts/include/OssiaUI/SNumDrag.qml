@@ -39,9 +39,9 @@ MouseArea {
     function current(m) {
         var dx = (m.x - pressX) - (m.y - pressY);
         var n = Math.round(dx / pxPerStep);
-        var v = startV + n * step;
         var dec = Math.max(0, Math.min(6, Math.ceil(-Math.log(step) / Math.LN10)));
-        return Number(v.toFixed(dec));
+        // Round only the drag delta: typed values may be finer than `step`.
+        return startV + Number((n * step).toFixed(dec));
     }
 
     onPressed: function (m) { pressX = m.x; pressY = m.y; startV = value; moved = false; }

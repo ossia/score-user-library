@@ -41,7 +41,7 @@ Script {
         objectName: "Texture 8"
     }
 
-    IntSlider {
+    IntSpinBox {
         id: subdiv
         objectName: "Subdivisions"
         min: 4
