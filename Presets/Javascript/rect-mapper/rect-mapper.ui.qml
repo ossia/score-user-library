@@ -354,7 +354,7 @@ Score.ScriptUI {
         property real from: 0
         property real to: 1
         defaultValue: from
-        step: 0.0001
+        step: 0.01
         decimals: 6
         labelWidth: 56
 
@@ -1894,7 +1894,7 @@ Score.ScriptUI {
             }
             PropNumber {
                 label: "Gamma"
-                from: 0.5; to: 4.0; step: 0.001
+                from: 0.5; to: 4.0; step: 0.1
                 value: propsPanel.selGamma
                 onPreviewed: function (v) { propsPanel.setGamma(v, true) }
                 onCommitted: function (v) { propsPanel.setGamma(v) }
@@ -1986,7 +1986,7 @@ Score.ScriptUI {
             PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Rot"
-                from: -180; to: 180; step: 0.01
+                from: -180; to: 180; step: 1
                 value: propsPanel.selUvRotation
                 onPreviewed: function (v) { propsPanel.setUvRotation(v, true) }
                 onCommitted: function (v) { propsPanel.setUvRotation(v) }

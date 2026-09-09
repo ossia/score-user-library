@@ -1,9 +1,9 @@
 import QtQuick
+import QtQuick.Window
 
-// Drag-to-change overlay for a numeric text field, like score's own spinboxes:
-// press and drag horizontally (or vertically) to change the value by `step`
-// every `pxPerStep` pixels; a plain click focuses the field for typing (after
-// the double-click interval has passed); a double click emits reset().
+// score-style accelerated vertical scrubbing. Ctrl scales each motion delta to
+// one fifth, including when pressed or released during a drag. A plain click
+// focuses the field for typing; a double click emits reset().
 //
 // While the field has focus the overlay disables itself so text selection and
 // caret placement work normally.
@@ -12,8 +12,7 @@ MouseArea {
 
     required property Item field      // the TextField underneath
     property real value: 0
-    property real step: 0.1
-    property real pxPerStep: 4
+    property int decimals: 6
 
     signal dragged(real v)            // live, while dragging
     signal committed(real v)          // on release, if a drag actually happened
@@ -21,12 +20,13 @@ MouseArea {
 
     anchors.fill: field
     enabled: !field.activeFocus
-    cursorShape: Qt.SizeHorCursor
+    cursorShape: Qt.SizeVerCursor
     preventStealing: true
     hoverEnabled: false
 
-    property real pressX: 0
-    property real pressY: 0
+    property real lastY: 0
+    property real delta: 0
+    property real dragHeight: 1
     property real startV: 0
     property bool moved: false
 
@@ -37,17 +37,20 @@ MouseArea {
     }
 
     function current(m) {
-        var dx = (m.x - pressX) - (m.y - pressY);
-        var n = Math.round(dx / pxPerStep);
-        var dec = Math.max(0, Math.min(6, Math.ceil(-Math.log(step) / Math.LN10)));
-        // Round only the drag delta: typed values may be finer than `step`.
-        return startV + Number((n * step).toFixed(dec));
+        delta += (m.y - lastY) * ((m.modifiers & Qt.ControlModifier) ? 0.2 : 1);
+        lastY = m.y;
+        // Same acceleration as DefaultGraphicsSpinboxImpl, in value units.
+        var change = -(1 + Math.abs(delta)) * delta / dragHeight;
+        return startV + Number(change.toFixed(decimals));
     }
 
-    onPressed: function (m) { pressX = m.x; pressY = m.y; startV = value; moved = false; }
+    onPressed: function (m) {
+        lastY = m.y; delta = 0; startV = value; moved = false;
+        dragHeight = Math.max(1, Screen.desktopAvailableHeight);
+    }
     onPositionChanged: function (m) {
         if (!pressed) return;
-        if (!moved && Math.abs((m.x - pressX) - (m.y - pressY)) < 4) return;
+        if (m.y === lastY) return;
         moved = true; focusTimer.stop(); dragged(current(m));
     }
     onReleased: function (m) {

@@ -20,7 +20,7 @@ Item {
         validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
         onEditingFinished: { var nv = parseFloat(text); if (!isNaN(nv) && Math.abs(nv - value) > 1e-9) edited(nv); rebind(); }
         function rebind() { text = Qt.binding(function () { return U.fmt(value, decimals); }); }
-        S.SNumDrag { field: nb; value: nb.value; step: 0.1; onDragged: function (v) { nb.text = U.fmt(v, nb.decimals); } onCommitted: function (v) { nb.edited(v); nb.rebind(); } onReset: { if (!isNaN(nb.def)) { nb.edited(nb.def); nb.rebind(); } } }
+        S.SNumDrag { field: nb; value: nb.value; decimals: nb.decimals; onDragged: function (v) { nb.text = U.fmt(v, nb.decimals); } onCommitted: function (v) { nb.edited(v); nb.rebind(); } onReset: { if (!isNaN(nb.def)) { nb.edited(nb.def); nb.rebind(); } } }
     }
 
     RowLayout {
