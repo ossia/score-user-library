@@ -1,7 +1,46 @@
 // ShapeData.js — Shape data model utilities for the rect-mapper
 
+var minBlendGamma = 0.5;
+var maxBlendGamma = 4;
+var minUvScale = 0.1;
+var maxUvScale = 4;
+
 function cloneShape(shape) {
     return JSON.parse(JSON.stringify(shape));
+}
+
+// Match the editor's numeric ranges before values reach float shader uniforms.
+function normalizeGamma(value) {
+    if (typeof value !== "number" || !isFinite(value) || value <= 0) return 1;
+    return Math.max(minBlendGamma, Math.min(maxBlendGamma, value));
+}
+
+function normalizeUvScaleComponent(value) {
+    if (typeof value !== "number" || !isFinite(value) || value === 0) return 1;
+    var magnitude = Math.max(minUvScale, Math.min(maxUvScale, Math.abs(value)));
+    return value < 0 ? -magnitude : magnitude;
+}
+
+function normalizeShapes(shapes) {
+    if (!Array.isArray(shapes)) return [];
+    var result = shapes;
+    for (var i = 0; i < shapes.length; i++) {
+        var shape = shapes[i];
+        if (!shape || typeof shape !== "object") continue;
+        var gamma = normalizeGamma(shape.blendGamma);
+        var scale = shape.uvScale;
+        var sx = normalizeUvScaleComponent(scale && scale[0]);
+        var sy = normalizeUvScaleComponent(scale && scale[1]);
+        var sameScale = scale && scale[0] === sx && scale[1] === sy;
+        if (shape.blendGamma === gamma && sameScale) continue;
+        // Do not modify retained inlet data, or copy already-valid shapes.
+        if (result === shapes) result = shapes.slice();
+        var copy = Object.assign({}, shape);
+        copy.blendGamma = gamma;
+        if (!sameScale) copy.uvScale = [sx, sy];
+        result[i] = copy;
+    }
+    return result;
 }
 
 function verticesEqual(a, b) {
@@ -23,7 +62,8 @@ function shapesEqual(a, b) {
         || (ab.left || 0) !== (bb.left || 0) || (ab.right || 0) !== (bb.right || 0))
         return false;
 
-    if ((a.blendGamma || 1) !== (b.blendGamma || 1)) return false;
+    // Retained malformed inlet values must not trigger a new edit every tick.
+    if (normalizeGamma(a.blendGamma) !== normalizeGamma(b.blendGamma)) return false;
     if ((a.srcBlend === undefined ? 1 : a.srcBlend) !== (b.srcBlend === undefined ? 1 : b.srcBlend))
         return false;
     if ((a.dstBlend === undefined ? 7 : a.dstBlend) !== (b.dstBlend === undefined ? 7 : b.dstBlend))
@@ -51,8 +91,9 @@ function shapesEqual(a, b) {
     if ((a.uvMode || "auto") !== (b.uvMode || "auto")) return false;
     var auo = a.uvOffset || [0,0], buo = b.uvOffset || [0,0];
     if (auo[0] !== buo[0] || auo[1] !== buo[1]) return false;
-    var aus = a.uvScale || [1,1], bus = b.uvScale || [1,1];
-    if (aus[0] !== bus[0] || aus[1] !== bus[1]) return false;
+    var aus = a.uvScale, bus = b.uvScale;
+    if (normalizeUvScaleComponent(aus && aus[0]) !== normalizeUvScaleComponent(bus && bus[0])
+        || normalizeUvScaleComponent(aus && aus[1]) !== normalizeUvScaleComponent(bus && bus[1])) return false;
     if ((a.uvRotation || 0) !== (b.uvRotation || 0)) return false;
 
     return true;
