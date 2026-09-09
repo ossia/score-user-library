@@ -5,7 +5,8 @@ import "Theme.js" as Theme
 
 // label · numeric field with score's drag-to-edit behaviour.
 //
-// Drag vertically to scrub with score's acceleration; Ctrl gives fine control.
+// Bounded fields drag relative to their range; unbounded fields use spinbox
+// acceleration. Ctrl gives fine control.
 // Right-click to type, double-click to reset to `defaultValue`. Arrow keys and the
 // wheel use `step` (one fifth with Ctrl). `live` previews a drag; `edited`
 // commits its final value as one undoable change.
