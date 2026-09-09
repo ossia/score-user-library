@@ -53,15 +53,13 @@ Rectangle {
             selectByMouse: true
             ToolTip.visible: hovered && nf.tip.length > 0
             ToolTip.text: nf.tip
-            validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
-            onEditingFinished: { var nv = parseFloat(text); if (!isNaN(nv) && Math.abs(nv - parent.value) > 1e-9) parent.edited(nv); rebind(); }
             function rebind() { text = Qt.binding(function () { return U.fmt(tf.nf.value, tf.nf.decimals); }); }
             Keys.onUpPressed: { parent.edited(parent.value + parent.step); }
             Keys.onDownPressed: { parent.edited(parent.value - parent.step); }
             WheelHandler { onWheel: function (ev) { if (tf.activeFocus) parent.parent.edited(parent.parent.value + (ev.angleDelta.y > 0 ? 1 : -1) * parent.parent.step); } }
             // Vertical scrubbing; Ctrl slows the drag.
             S.SNumDrag {
-                field: tf; value: tf.nf.value; decimals: tf.nf.decimals
+                field: tf; value: tf.nf.value; decimals: tf.nf.decimals; step: tf.nf.step
                 onDragged: function (v) { tf.text = U.fmt(v, tf.nf.decimals); if (tf.nf.livePath.length && insp.zn) owner.setZonePropLive(insp.zn.id, tf.nf.livePath, v); }
                 onCommitted: function (v) { tf.nf.edited(v); tf.rebind(); }
                 onReset: { var dv = tf.nf.defaultValue(); if (dv !== undefined) { tf.nf.edited(dv); tf.rebind(); } }

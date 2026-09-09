@@ -17,8 +17,6 @@ Item {
         property real def: NaN
         implicitWidth: 52; implicitHeight: 22; font.pixelSize: 10; topPadding: 2; bottomPadding: 2; selectByMouse: true
         text: U.fmt(value, decimals)
-        validator: DoubleValidator { notation: DoubleValidator.StandardNotation }
-        onEditingFinished: { var nv = parseFloat(text); if (!isNaN(nv) && Math.abs(nv - value) > 1e-9) edited(nv); rebind(); }
         function rebind() { text = Qt.binding(function () { return U.fmt(value, decimals); }); }
         S.SNumDrag { field: nb; value: nb.value; decimals: nb.decimals; onDragged: function (v) { nb.text = U.fmt(v, nb.decimals); } onCommitted: function (v) { nb.edited(v); nb.rebind(); } onReset: { if (!isNaN(nb.def)) { nb.edited(nb.def); nb.rebind(); } } }
     }
@@ -65,11 +63,11 @@ Item {
                 RowLayout {
                     Label { text: "Bounds"; font.pixelSize: 11; Layout.preferredWidth: 44; ToolTip.visible: bh.hovered; ToolTip.text: "Walkers stay inside this rectangle (dashed in the 2D view)"; HoverHandler { id: bh } }
                     Label { text: "centre"; font.pixelSize: 10; color: palette.placeholderText }
-                    NumBox { def: 0; value: owner.simBounds.x; onEdited: function (v) { var b = owner.simBounds; b.x = v; owner.simBounds = b; owner.docVersion++; } }
-                    NumBox { def: 0; value: owner.simBounds.y; onEdited: function (v) { var b = owner.simBounds; b.y = v; owner.simBounds = b; owner.docVersion++; } }
+                    NumBox { def: 0; value: { owner.docVersion; return owner.simBounds.x; } onEdited: function (v) { var b = owner.simBounds; b.x = v; owner.simBounds = b; owner.docVersion++; } }
+                    NumBox { def: 0; value: { owner.docVersion; return owner.simBounds.y; } onEdited: function (v) { var b = owner.simBounds; b.y = v; owner.simBounds = b; owner.docVersion++; } }
                     Label { text: "size"; font.pixelSize: 10; color: palette.placeholderText }
-                    NumBox { def: 8; value: owner.simBounds.w; onEdited: function (v) { var b = owner.simBounds; b.w = Math.max(0.5, v); owner.simBounds = b; owner.docVersion++; } }
-                    NumBox { def: 6; value: owner.simBounds.h; onEdited: function (v) { var b = owner.simBounds; b.h = Math.max(0.5, v); owner.simBounds = b; owner.docVersion++; } }
+                    NumBox { def: 8; value: { owner.docVersion; return owner.simBounds.w; } onEdited: function (v) { var b = owner.simBounds; b.w = Math.max(0.5, v); owner.simBounds = b; owner.docVersion++; } }
+                    NumBox { def: 6; value: { owner.docVersion; return owner.simBounds.h; } onEdited: function (v) { var b = owner.simBounds; b.h = Math.max(0.5, v); owner.simBounds = b; owner.docVersion++; } }
                     Label { text: "m"; font.pixelSize: 10; color: palette.placeholderText }
                     Item { Layout.fillWidth: true }
                 }
