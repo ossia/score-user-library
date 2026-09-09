@@ -43,35 +43,9 @@ RowLayout {
         id: tf
         Layout.fillWidth: true
         text: Theme.fmt(row.value, row.decimals)
-        validator: DoubleValidator {
-            bottom: row.from; top: row.to; decimals: row.decimals
-            notation: DoubleValidator.StandardNotation
-            locale: "en_US" // Match Theme.fmt's decimal point, independent of system locale.
-        }
-        property string editText: ""
-        onActiveFocusChanged: {
-            if (activeFocus) editText = text;
-            else if (!acceptableInput) rebind();
-        }
-        onTextEdited: {
-            // Like QDoubleSpinBox, allow incomplete prefixes below a positive
-            // minimum, but reject typing past the outer end of the range.
-            var nv = Number(text);
-            if (text.length && isFinite(nv)
-                && ((text[0] !== "-" && nv > row.to) || (text[0] === "-" && nv < row.from)))
-                text = editText;
-            else
-                editText = text;
-        }
 
         function rebind() {
             text = Qt.binding(function () { return Theme.fmt(row.value, row.decimals); });
-        }
-        onEditingFinished: {
-            var nv = acceptableInput ? Number.fromLocaleString(Qt.locale(validator.locale), text) : NaN;
-            if (acceptableInput && isFinite(nv) && Math.abs(nv - row.value) > 1e-9)
-                row.edited(row.bounded(nv));
-            rebind();
         }
         Keys.onUpPressed: function (ev) { row.stepBy(1, ev.modifiers); }
         Keys.onDownPressed: function (ev) { row.stepBy(-1, ev.modifiers); }
@@ -88,6 +62,7 @@ RowLayout {
             field: tf
             value: row.value
             decimals: row.decimals
+            step: row.step
             from: row.from
             to: row.to
             onDragged: function (v) { tf.text = Theme.fmt(v, row.decimals); row.live(v); }

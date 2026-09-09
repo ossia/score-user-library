@@ -134,8 +134,10 @@ crossing after N frames on the other side, and only within the segment unless *e
   import / export JSON.
 * **Numeric fields** — every number field (inspector, sources, simulator) drags like score's spinboxes:
   drag vertically with acceleration, hold **Ctrl** for fine motion, **right-click to type**, and
-  **double-click to reset to the default** (sliders too). Zone transform and shape fields update
-  the views live while dragging and commit one undo step on release.
+  **double-click to reset to the default** (sliders too). Click elsewhere or press **Enter** to commit
+  and close the numeric editor; **Escape** cancels. Opening and closing without editing preserves
+  the stored precision. Zone transform and shape fields update the views live while dragging and
+  commit one undo step on release.
 * **3D navigation** — left-drag empty space to orbit, right-drag to pan, wheel to zoom.
 * **Performance readout** — the status bar shows UI fps, snapshot rate, execution tick time (total + engine),
   3D fps and the UI handler/paint costs; snapshots are dropped gracefully when the GUI cannot keep up.
