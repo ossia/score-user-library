@@ -46,14 +46,6 @@ Script {
                 id: texFillContainer
                 anchors.fill: parent
                 visible: false
-
-                Component.onCompleted: {
-                    if (texFill.item) {
-                        texFill.item.parent = texFillContainer;
-                        texFill.item.width = Qt.binding(function() { return texFillContainer.width; });
-                        texFill.item.height = Qt.binding(function() { return texFillContainer.height; });
-                    }
-                }
             }
 
             // Bridge: ShaderEffectSource mirrors the inlet's texture as a
@@ -64,21 +56,54 @@ Script {
                 sourceItem: texFill.item
                 visible: false
                 live: true
+                // The inlet item may arrive after component completion, or be
+                // replaced when its source changes.
+                function attachSource() {
+                    if (sourceItem) {
+                        sourceItem.parent = texFillContainer;
+                        sourceItem.width = Qt.binding(function() { return texFillContainer.width; });
+                        sourceItem.height = Qt.binding(function() { return texFillContainer.height; });
+                    }
+                    root.invalidateTextureGrab(true);
+                    Qt.callLater(root.grabTexture);
+                }
+                onSourceItemChanged: attachSource()
+                Component.onCompleted: attachSource()
             }
 
             Canvas {
                 id: textCanvas
                 anchors.fill: parent
                 renderStrategy: Canvas.Cooperative
+                contextType: "2d"
+
+                // A resized or recreated backing image is empty even when the
+                // text is static. Repaint from resource events, not preview UI.
+                onAvailableChanged: {
+                    root.invalidateTextureGrab(true);
+                    if (available) {
+                        requestPaint();
+                        Qt.callLater(root.grabTexture);
+                    }
+                }
+                onCanvasSizeChanged: {
+                    root.invalidateTextureGrab(false);
+                    requestPaint();
+                    Qt.callLater(root.grabTexture);
+                }
 
                 property int ver: root.stateVersion
                 onVerChanged: requestPaint()
                 property bool editing: inlineText.editing
                 onEditingChanged: requestPaint()
-                onImageLoaded: requestPaint()
+                onImageLoaded: {
+                    root.finishTextureGrab();
+                    requestPaint();
+                }
 
                 onPaint: {
                     var ctx = getContext("2d");
+                    if (!ctx) return;
                     // Keep the Canvas and its backing texture alive while the
                     // editor replaces the text; hiding it loses output resources.
                     if (editing) {
@@ -95,7 +120,7 @@ Script {
                         texItem = root.texGrabUrl;
                     }
                     TextRender.paintText(ctx, width, height,
-                        root.textState, root.getInletValues(), texItem);
+                        root.renderState, root.getInletValues(), texItem);
                 }
             }
 
@@ -109,7 +134,7 @@ Script {
                 onDoubleClicked: function(mouse) {
                     if (!root.canEditText() || !textCanvas.available) return;
                     var g = TextRender.editingGeometry(textCanvas.getContext("2d"),
-                        outputRoot.width, outputRoot.height, root.textState, root.getInletValues());
+                        outputRoot.width, outputRoot.height, root.renderState, root.getInletValues());
                     var det = g.a * g.d - g.b * g.c;
                     if (Math.abs(det) < 0.000001) return;
                     var dx = mouse.x - g.x, dy = mouse.y - g.y;
@@ -117,7 +142,7 @@ Script {
                     var y = (-g.b * dx + g.a * dy) / det;
                     if (x < 0 || y < 0 || x > g.width || y > g.height) return;
                     inlineText.geometry = g;
-                    inlineText.editStyle = TextRender.mergeState({}, root.textState);
+                    inlineText.editStyle = TextRender.mergeState({}, root.renderState);
                     inlineText.begin(String(root.textState.text || ""));
                 }
             }
@@ -163,10 +188,70 @@ Script {
         }
     }
 
+    // Append ports: existing documents keep their original inlet / outlet indices.
+    // These are offsets and factors over the saved style (and then Style inlet),
+    // never replacements for it. Neutral values preserve the editor's styling.
+    FloatSlider {
+        id: positionXOffset
+        objectName: "Position X Offset"
+        min: -1; max: 1; init: 0
+    }
+    FloatSlider {
+        id: positionYOffset
+        objectName: "Position Y Offset"
+        min: -1; max: 1; init: 0
+    }
+    FloatSlider {
+        id: rotationOffset
+        objectName: "Rotation Offset"
+        min: -360; max: 360; init: 0
+    }
+    FloatSlider {
+        id: scaleXFactor
+        objectName: "Scale X Factor"
+        min: 0.1; max: 5; init: 1
+    }
+    FloatSlider {
+        id: scaleYFactor
+        objectName: "Scale Y Factor"
+        min: 0.1; max: 5; init: 1
+    }
+    FloatSlider {
+        id: fontSizeFactor
+        objectName: "Font Size Factor"
+        min: 0.1; max: 5; init: 1
+    }
+    FloatSlider {
+        id: trackingOffset
+        objectName: "Tracking Offset"
+        min: -50; max: 100; init: 0
+    }
+    FloatSlider {
+        id: lineSpacingFactor
+        objectName: "Line Spacing Factor"
+        min: 0.1; max: 4; init: 1
+    }
+
     property var textState: TextRender.defaultState()
     property var storedTextState: TextRender.defaultState()
     property var pendingCommits: []
     property int stateVersion: 0
+    readonly property var renderState: {
+        root.stateVersion; // Text edits mutate the saved-style copy in place.
+        return TextRender.applyAutomation(root.textState, {
+            posX: positionXOffset.value,
+            posY: positionYOffset.value,
+            rotation: rotationOffset.value,
+            scaleX: scaleXFactor.value,
+            scaleY: scaleYFactor.value,
+            fontSize: fontSizeFactor.value,
+            tracking: trackingOffset.value,
+            lineSpacing: lineSpacingFactor.value
+        });
+    }
+    onRenderStateChanged: {
+        if (textCanvas) textCanvas.requestPaint();
+    }
     property real lastSentW: 0
     property real lastSentH: 0
     property real prevOpacity: -1
@@ -180,6 +265,63 @@ Script {
     property var texGrabResult: null
     property string texGrabUrl: ""
     property bool texGrabPending: false
+    property var nextTexGrabResult: null
+    property int texGrabGeneration: 0
+    readonly property bool textureFillActive: root.renderState.fillType === "texture"
+    onTextureFillActiveChanged: {
+        root.invalidateTextureGrab(true);
+        if (textureFillActive) Qt.callLater(root.grabTexture);
+    }
+
+    function invalidateTextureGrab(discardCurrent) {
+        ++root.texGrabGeneration;
+        root.texGrabPending = false;
+        if (root.nextTexGrabResult) {
+            textCanvas.unloadImage(root.nextTexGrabResult.url);
+            root.nextTexGrabResult = null;
+        }
+        if (discardCurrent) {
+            if (root.texGrabUrl) textCanvas.unloadImage(root.texGrabUrl);
+            root.texGrabUrl = "";
+            root.texGrabResult = null;
+        }
+    }
+
+    function finishTextureGrab() {
+        var next = root.nextTexGrabResult;
+        if (!next) return;
+        if (textCanvas.isImageLoaded(next.url)) {
+            var oldUrl = root.texGrabUrl;
+            root.texGrabResult = next; // Keep the image provider alive.
+            root.texGrabUrl = next.url;
+            root.nextTexGrabResult = null;
+            root.texGrabPending = false;
+            if (oldUrl && oldUrl !== root.texGrabUrl) textCanvas.unloadImage(oldUrl);
+            textCanvas.requestPaint();
+        } else if (textCanvas.isImageError(next.url)) {
+            textCanvas.unloadImage(next.url);
+            root.nextTexGrabResult = null;
+            root.texGrabPending = false;
+        }
+    }
+
+    function grabTexture() {
+        root.finishTextureGrab();
+        if (root.textState.fillType !== "texture" || !texBridge.sourceItem
+            || !textCanvas.available || texBridge.width <= 0 || texBridge.height <= 0
+            || root.texGrabPending) return;
+        var generation = root.texGrabGeneration;
+        root.texGrabPending = true;
+        // Rejection does not invoke the callback (e.g. during render target
+        // teardown). Do not leave all future captures blocked in that case.
+        var accepted = texBridge.grabToImage(function(result) {
+            if (generation !== root.texGrabGeneration) return;
+            root.nextTexGrabResult = result;
+            textCanvas.loadImage(result.url);
+            root.finishTextureGrab();
+        });
+        if (!accepted) root.texGrabPending = false;
+    }
 
     function styleOverrides() {
         try {
@@ -266,8 +408,7 @@ Script {
             (ts.scrollMode && ts.scrollMode !== "none")
             || ts.charWaveEnabled
             || ts.charAnimEnabled
-            || (writeOn.value < 1 && ts.writeOnMode === "scramble")
-            || ts.fillType === "texture";
+            || (writeOn.value < 1 && ts.writeOnMode === "scramble");
 
         if (root.needsContinuousRepaint) changed = true;
 
@@ -295,21 +436,9 @@ Script {
             } catch(e) {}
         }
 
-        // Grab texture inlet content for Canvas use.
-        // Canvas drawImage() can't render QQuickRhiItem directly,
-        // so we snapshot it via a ShaderEffectSource bridge (which is a
-        // proper QML item with an engine) to an image URL Canvas can draw.
-        if (root.textState.fillType === "texture" && texFill.item && !root.texGrabPending) {
-            root.texGrabPending = true;
-            var oldUrl = root.texGrabUrl;
-            texBridge.grabToImage(function(result) {
-                if (oldUrl) textCanvas.unloadImage(oldUrl);
-                root.texGrabResult = result; // prevent GC
-                root.texGrabUrl = result.url;
-                root.texGrabPending = false;
-                textCanvas.loadImage(result.url);
-            });
-        }
+        // Moving texture inputs still need one snapshot per execution frame.
+        // Keep the last loaded snapshot until its replacement is drawable.
+        root.grabTexture();
 
         if (changed) root.stateVersion++;
 

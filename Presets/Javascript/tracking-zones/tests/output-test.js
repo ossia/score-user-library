@@ -1,7 +1,9 @@
 // output-test.js — the simple event outlets (Enter/Leave/Dwell/Occupancy) and the Location
 // outlet through real processes and cables, including the per-zone event opt-out.
-// Phases (2 s each) for a single bare-pair entity "0" on Source 1:
-//   0: inside "Hot" (dwell loiterS 1 fires)   1: inside "Cold" (whose enter is opted out)   2: outside everything
+// A one-shot document command is followed by live editor-style mask updates while tracking.
+// Phases (2 s each): enabled Hot, zone-muted Cold, outside, global-muted Hot, outside,
+// both-muted Hot, re-enabled while inside, outside, enabled Hot, muted after firing,
+// re-enabled while inside, outside. Muted threshold crossings must not replay on re-enable.
 (function () {
   var DIR = "C:/Users/jcelerier/Documents/ossia/score/packages/default/Presets/Javascript/tracking-zones/";
   var OUT = DIR + "tests/output-test.out";
@@ -24,7 +26,7 @@
       "  function doc() {",
       "    return { version: 1, zones: [",
       "      { id: 'hot', name: 'Hot', shape: { type: 'rect', w: 2, h: 2 }, pos: [0, 0, 0], dwell: { loiterS: 1 } },",
-      "      { id: 'cold', name: 'Cold', shape: { type: 'rect', w: 2, h: 2 }, pos: [4, 0, 0], events: { enter: false } }",
+      "      { id: 'cold', name: 'Cold', shape: { type: 'rect', w: 2, h: 2 }, pos: [4, 0, 0], dwell: { loiterS: 1 }, events: { enter: false } }",
       "    ], settings: { outputs: {",
       "      enter: { enabled: true, format: 'zone' },",
       "      exit: { enabled: true, format: 'pair' },",
@@ -37,8 +39,8 @@
       "  tick: function(token, state) {",
       "    var t = token.date / 705600000; if (t0 < 0) t0 = t;",
       "    if (!sent) { sent = true; c.value = { cmd: 'doc', doc: JSON.stringify(doc()) }; }",
-      "    var k = Math.min(2, Math.floor((t - t0) / " + PHASE + "));",
-      "    var pos = k === 0 ? [0, 0] : (k === 1 ? [4, 0] : [10, 10]);",
+      "    var k = Math.min(11, Math.floor((t - t0) / " + PHASE + "));",
+      "    var pos = k === 1 ? [4, 0] : ([2, 4, 7, 11].indexOf(k) >= 0 ? [10, 10] : [0, 0]);",
       "    o.value = [pos];",
       "  }",
       "}"
@@ -51,7 +53,10 @@
       "  ValueInlet { id: din; objectName: 'dwell' }",
       "  ValueInlet { id: oin; objectName: 'occ' }",
       "  ValueInlet { id: pin; objectName: 'loc' }",
-      "  property var acc: ({ enter: [], leave: [], dwell: [], occ: [], loc: [] })",
+      "  ValueInlet { id: allin; objectName: 'events' }",
+      "  ValueInlet { id: zin; objectName: 'zones' }",
+      "  property real t0: -1",
+      "  property var acc: ({ enter: [], leave: [], dwell: [], occ: [], loc: [], events: [], telemetry: {} })",
       "  function jv(v) {",
       "    if (v === null || v === undefined) return v;",
       "    if (typeof v === 'object' && typeof v.length === 'number') { var a = []; for (var i = 0; i < v.length; i++) a.push(jv(v[i])); return a; }",
@@ -59,18 +64,52 @@
       "    return v;",
       "  }",
       "  tick: function(token, state) {",
+      "    var t = token.date / 705600000; if (t0 < 0) t0 = t;",
+      "    var phase = Math.floor((t - t0) / " + PHASE + ");",
       "    var got = false;",
-      "    var ins = [[ein, 'enter'], [lin, 'leave'], [din, 'dwell'], [oin, 'occ'], [pin, 'loc']];",
+      "    var ins = [[ein, 'enter'], [lin, 'leave'], [din, 'dwell'], [oin, 'occ'], [pin, 'loc'], [allin, 'events']];",
       "    for (var i = 0; i < ins.length; i++) {",
       "      var vs = ins[i][0].values;",
       "      if (vs && vs.length) { for (var j = 0; j < vs.length; j++) { acc[ins[i][1]].push(jv(vs[j].value)); got = true; } }",
+      "    }",
+      "    var zs = zin.value;",
+      "    if ((phase === 1 || phase === 3 || phase === 5) && zs) for (var z = 0; z < zs.length; z++) {",
+      "      if (zs[z].count === 1 && zs[z].dwell_now > 1 && zs[z].per_id[0].dwell > 1) { acc.telemetry[phase] = jv(zs[z]); got = true; }",
       "    }",
       "    if (got) Util.writeFile('" + LOG + "', JSON.stringify(acc));",
       "  }",
       "}"
     ].join("\n");
     var driver = Score.createProcess(itv, "Javascript", driverSrc);
-    var zones = Score.createProcess(itv, "Javascript", DIR + "tracking-zones.qml");
+    // Run the real process, adding only a deterministic live-update driver. The retained
+    // Command value remains the original enabled document, reproducing stale-command replay.
+    var zonesSrc = Score.readFile(DIR + "tracking-zones.qml");
+    var importDir = (DIR.charAt(0) === "/" ? "file://" : "file:///") + DIR;
+    zonesSrc = zonesSrc.replace(/import "([^"]+\.js)"/g, function (_, file) { return 'import "' + importDir + file + '"'; });
+    var liveDriver = [
+      "  property real maskTestT0: -1",
+      "  property int maskTestPhase: -1",
+      "  onLastTChanged: {",
+      "    if (maskTestT0 < 0) maskTestT0 = lastT;",
+      "    var phase = Math.floor((lastT - maskTestT0) / " + PHASE + ");",
+      "    if (phase !== maskTestPhase && doc.zones.length === 2) {",
+      "      maskTestPhase = phase;",
+      "      var live = JSON.parse(JSON.stringify(doc));",
+      "      switch (phase) {",
+      "      case 1: live.zones[1].events.dwell = false; break;",
+      "      case 3: live.settings.events.dwell = false; break;",
+      "      case 5: live.settings.events.dwell = false; live.zones[0].events.dwell = false; break;",
+      "      case 6: live.settings.events.dwell = true; live.zones[0].events.dwell = true; break;",
+      "      case 9: live.settings.events.dwell = false; break;",
+      "      case 10: live.settings.events.dwell = true; break;",
+      "      default: return;",
+      "      }",
+      "      root.uiEvent({ type: 'doc', doc: JSON.stringify(live) });",
+      "    }",
+      "  }"
+    ].join("\n");
+    zonesSrc = zonesSrc.slice(0, zonesSrc.lastIndexOf("}")) + liveDriver + "\n}";
+    var zones = Score.createProcess(itv, "Javascript", zonesSrc);
     var logger = Score.createProcess(itv, "Javascript", loggerSrc);
     Score.setName(zones, "Tracking Zones");
     Score.createCable(Score.port(driver, "o"), Score.port(zones, "Source 1"));
@@ -80,8 +119,10 @@
     Score.createCable(Score.port(zones, "Dwell"), Score.port(logger, "dwell"));
     Score.createCable(Score.port(zones, "Occupancy"), Score.port(logger, "occ"));
     Score.createCable(Score.port(zones, "Location"), Score.port(logger, "loc"));
+    Score.createCable(Score.port(zones, "Events"), Score.port(logger, "events"));
+    Score.createCable(Score.port(zones, "Zones"), Score.port(logger, "zones"));
     after(1500, function () { Score.play(); });
-    after(1500 + 3 * PHASE * 1000 + 1500, function () {
+    after(1500 + 12 * PHASE * 1000 + 1500, function () {
       Score.stop();
       try {
         var R = JSON.parse(Score.readFile(LOG));
@@ -98,8 +139,13 @@
         function hasPair(list, zone) { return list.some(function (p) { return p && p.length === 2 && p[0] === zone && String(p[1]) === "0"; }); }
         if (!hasPair(R.leave, "Hot")) f.push("no Leave [Hot, 0]");
         if (!hasPair(R.leave, "Cold")) f.push("no Leave [Cold, 0] (opt-out must only hit enter)");
-        // Dwell: loiterS 1 in Hot → map with dwell >= 1
-        if (!R.dwell.some(function (d) { return d && d.zone === "Hot" && d.type === "dwell" && d.dwell >= 0.9; })) f.push("no Dwell map for Hot");
+        // The first and the new enabled Hot visit fire once each; all muted visits are silent.
+        // Re-enabling never replays a threshold already crossed, whether muted or emitted.
+        if (R.dwell.length !== 2 || !R.dwell.every(function (d) { return d && d.zone === "Hot" && d.type === "dwell" && d.dwell >= 1; })) f.push("Dwell outlet ignored live masks or one-shot semantics: " + JSON.stringify(R.dwell));
+        var dwellEvents = [];
+        R.events.forEach(function (batch) { batch.forEach(function (ev) { if (ev.type === "dwell") dwellEvents.push(ev); }); });
+        if (dwellEvents.length !== 2 || !dwellEvents.every(function (ev) { return ev.zone === "Hot" && ev.dwell >= 1; })) f.push("Events outlet ignored live dwell masks: " + JSON.stringify(dwellEvents));
+        [1, 3, 5].forEach(function (phase) { if (!R.telemetry[phase]) f.push("dwell telemetry suppressed in muted phase " + phase); });
         // Occupancy: maps; Hot occupied then empty, Cold occupied (occupancy is not opted out)
         function occ(zone, state) { return R.occ.some(function (o) { return o && o.zone === zone && o.occupied === state; }); }
         if (!occ("Hot", true) || !occ("Hot", false)) f.push("Hot occupancy cycle missing");

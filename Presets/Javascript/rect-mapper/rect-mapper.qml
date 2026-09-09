@@ -41,7 +41,7 @@ Script {
         objectName: "Texture 8"
     }
 
-    IntSlider {
+    IntSpinBox {
         id: subdiv
         objectName: "Subdivisions"
         min: 4
@@ -378,7 +378,7 @@ Script {
         if (state && state.mapperState) {
             try {
                 var s = typeof state.mapperState === "string" ? JSON.parse(state.mapperState) : state.mapperState;
-                root.rects = s || [];
+                root.rects = ShapeData.normalizeShapes(s);
             } catch (e) {
                 root.rects = [];
             }
@@ -392,7 +392,7 @@ Script {
         if (k === "mapperState") {
             try {
                 var s = typeof v === "string" ? JSON.parse(v) : v;
-                root.rects = Array.isArray(s) ? s : [];
+                root.rects = ShapeData.normalizeShapes(s);
             } catch (e) {
                 return;
             }
@@ -403,7 +403,7 @@ Script {
     uiEvent: function (message) {
         if (!message) return;
         if (message.type === "updateRects") {
-            root.rects = message.rects || [];
+            root.rects = ShapeData.normalizeShapes(message.rects);
             root.soloIndex = (typeof message.soloIndex === 'number') ? message.soloIndex : -1;
             root.showOverlay = !!message.showOverlay;
             root.stateVersion++;
@@ -417,7 +417,7 @@ Script {
                 var data = typeof v === "string" ? JSON.parse(v) : v;
                 if (Array.isArray(data)) {
                     if (ShapeData.shapesDiffer(root.rects, data)) {
-                        root.rects = data;
+                        root.rects = ShapeData.normalizeShapes(data);
                         meshCacheData = [];
                         meshCacheKeys = [];
                         root.stateVersion++;

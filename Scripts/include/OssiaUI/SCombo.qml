@@ -22,6 +22,8 @@ ComboBox {
         font: cb.font
         color: cb.enabled ? Theme.text : Theme.textMuted
         verticalAlignment: TextInput.AlignVCenter
+        // Read-only TextInput still consumes clicks; let the combo handle them.
+        enabled: cb.editable
         readOnly: !cb.editable
         selectByMouse: cb.editable
         selectionColor: Theme.accentFill

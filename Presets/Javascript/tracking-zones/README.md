@@ -44,6 +44,9 @@ nowhere — not on `Events`, not on the simple outlets, not in the monitors. Eac
 additionally opt out per type in its inspector (*Outputs › Events sent by this zone*): e.g. keep
 `count` events only for the one zone driving a display. The state machines always run in full, so
 counters, occupancy and the `Zones`/`Tree` outputs are unaffected by these switches.
+A dwell threshold crossed while its event is disabled is still consumed for that visit:
+re-enabling does not replay it. A new visit can fire again. Dwell durations in zone/entity
+telemetry and leave events remain available even when the `dwell` event type is disabled.
 
 ## Inputs accepted (per source)
 
@@ -130,9 +133,11 @@ crossing after N frames on the other side, and only within the segment unless *e
   PNG/JPG/SVG plan, scaled in metres, shown in both views), zone set, **Editing locked / unlocked**,
   import / export JSON.
 * **Numeric fields** — every number field (inspector, sources, simulator) drags like score's spinboxes:
-  press and move left / right (or up / down) to change the value by its step, click to type, **double
-  click to reset to the default** (sliders too). Zone transform and shape fields update the views live
-  while dragging and commit one undo step on release.
+  drag vertically with acceleration, hold **Ctrl** for fine motion, **right-click to type**, and
+  **double-click to reset to the default** (sliders too). Click elsewhere or press **Enter** to commit
+  and close the numeric editor; **Escape** cancels. Opening and closing without editing preserves
+  the stored precision. Zone transform and shape fields update the views live while dragging and
+  commit one undo step on release.
 * **3D navigation** — left-drag empty space to orbit, right-drag to pan, wheel to zoom.
 * **Performance readout** — the status bar shows UI fps, snapshot rate, execution tick time (total + engine),
   3D fps and the UI handler/paint costs; snapshots are dropped gracefully when the GUI cannot keep up.

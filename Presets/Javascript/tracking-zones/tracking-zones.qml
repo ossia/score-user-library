@@ -237,9 +237,13 @@ Script {
         var t = token.date / flicksPerSecond;
         if (t < lastT) { /* transport jumped back: keep monotonic engine time */ t = lastT + (state.buffer_size / state.sample_rate); }
         lastT = t;
-        // commands
-        var cmd = lastMessage(cmdIn);
-        if (cmd !== undefined && cmd !== null) handleCommand(cmd);
+        // Commands are messages, not retained source state: replaying a previous doc command
+        // would overwrite live editor changes (including the event masks) on every tick.
+        var commands = cmdIn.values;
+        if (commands && commands.length) {
+            var cmd = commands[commands.length - 1].value;
+            if (cmd !== undefined && cmd !== null) handleCommand(cmd);
+        }
         if (bypass.value) return;
 
         var inputs = playback ? playbackInputs(t) : gatherInputs(t);
