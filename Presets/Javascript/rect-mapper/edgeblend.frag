@@ -27,7 +27,11 @@ void MAIN()
     if (blendBottom > 0.001)
         alpha *= smoothstep(0.0, blendBottom, texcoord.y);
 
-    alpha = pow(alpha, blendGamma);
+    // MSAA can evaluate the varying outside the mesh at partially covered
+    // pixels. smoothstep makes those edge weights exactly zero; keep the
+    // endpoints exact instead of passing zero through the GPU's power/log path.
+    if (alpha > 0.0 && alpha < 1.0)
+        alpha = pow(alpha, blendGamma);
     alpha *= shapeOpacity;
 
     FRAGCOLOR = vec4(tex.rgb * alpha, alpha);
