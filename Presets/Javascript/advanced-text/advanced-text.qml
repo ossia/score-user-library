@@ -92,6 +92,14 @@ Script {
                     Qt.callLater(root.grabTexture);
                 }
 
+                // canvasSize follows the item, but the signal arrives while
+                // the backing store is still the old one: the repaint above
+                // lands on a buffer that is then thrown away, and the new one
+                // comes up empty -- the text vanishes until something else
+                // asks for a paint. Ask again once the resize has settled.
+                onWidthChanged: Qt.callLater(requestPaint)
+                onHeightChanged: Qt.callLater(requestPaint)
+
                 property int ver: root.stateVersion
                 onVerChanged: requestPaint()
                 property bool editing: inlineText.editing
