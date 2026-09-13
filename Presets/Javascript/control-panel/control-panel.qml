@@ -1,6 +1,7 @@
 import Score
 import QtQuick
 import "PanelModel.js" as Model
+import "./Parts" as Parts
 
 Script {
     id: root
@@ -9,7 +10,7 @@ Script {
     ValueOutlet { id: actionOutput; objectName: "Action" }
     TextureOutlet {
         objectName: "Output"
-        item: PanelSurface {
+        item: Parts.PanelSurface {
             anchors.fill: parent
             doc: root.doc
             stateId: root.activeState

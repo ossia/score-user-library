@@ -1,7 +1,7 @@
 import QtQuick
 import Score as Score
 import OssiaUI as S
-import "PanelModel.js" as Model
+import "../PanelModel.js" as Model
 
 Item {
     id: surface
