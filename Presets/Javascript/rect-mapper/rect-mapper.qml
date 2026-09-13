@@ -264,15 +264,6 @@ Script {
         var N = root.subdivisions;
         var z = idx * 0.1;
 
-        // A resize and a fullscreen switch both pass through a moment where the
-        // view has no size. The warped paths lay out a grid across it and the
-        // aligned-UV pass divides by it, so a mesh built there is degenerate --
-        // and it would be cached under that size, for a shape that is about to
-        // be asked for again at the real one. Only the deformed shapes take
-        // those paths, which is why only they went missing.
-        if (!(w > 0) || !(h > 0))
-            return { positions: [], normals: [], uvs: [], indices: [] };
-
         var key = MeshUtils.meshCacheKey(shape, N, w, h);
         if (idx < meshCacheKeys.length && meshCacheKeys[idx] === key)
             return meshCacheData[idx];
