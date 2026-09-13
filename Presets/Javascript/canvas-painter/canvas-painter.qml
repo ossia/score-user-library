@@ -1,6 +1,7 @@
 import Score
 import QtQuick
 import "PaintModel.js" as Model
+import "./Parts" as Parts
 
 Script {
     id: root
@@ -64,7 +65,7 @@ Script {
     }
     TextureOutlet {
         objectName: "Output"
-        item: PaintView {
+        item: Parts.PaintView {
             id: output
             anchors.fill: parent
             config: {

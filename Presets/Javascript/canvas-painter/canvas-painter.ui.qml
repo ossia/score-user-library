@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import OssiaUI as S
 import "PaintModel.js" as Model
+import "./Parts" as Parts
 
 ScriptUI {
     id: root
@@ -168,7 +169,7 @@ ScriptUI {
                         anchors.fill: parent
                         anchors.margins: 10
                         spacing: 8
-                        PaintView {
+                        Parts.PaintView {
                             id: view
                             Layout.fillWidth: true
                             Layout.fillHeight: true
