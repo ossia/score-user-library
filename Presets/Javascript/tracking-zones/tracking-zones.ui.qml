@@ -6,6 +6,7 @@ import "Geometry.js" as Geom
 import "Model.js" as Model
 import "UiUtil.js" as U
 import OssiaUI as S
+import "./Parts" as Parts
 
 // Tracking Zones — editor window.
 // The document (zones / sources / settings) lives in the process state under key "tzDoc" (JSON).
@@ -442,13 +443,13 @@ Score.ScriptUI {
             anchors.margins: 4
             spacing: 4
 
-            TZToolbar { id: toolbar; owner: root; Layout.fillWidth: true }
+            Parts.TZToolbar { id: toolbar; owner: root; Layout.fillWidth: true }
 
             SplitView {
                 Layout.fillWidth: true; Layout.fillHeight: true
                 orientation: Qt.Horizontal
 
-                TZZoneList { owner: root; SplitView.preferredWidth: 210; SplitView.minimumWidth: 150 }
+                Parts.TZZoneList { owner: root; SplitView.preferredWidth: 210; SplitView.minimumWidth: 150 }
 
                 Item {
                     id: centre
@@ -457,8 +458,8 @@ Score.ScriptUI {
                     clip: true
                     property real splitRatio: 0.5
                     readonly property bool split: root.viewMode === "split"
-                    TZCanvas2D { id: canvas2d; owner: root; visible: root.viewMode !== "3d"; anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: centre.split ? Math.round(centre.width * centre.splitRatio) - 3 : centre.width }
-                    TZView3D { id: view3d; owner: root; visible: root.viewMode !== "2d"; anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom; width: centre.split ? centre.width - Math.round(centre.width * centre.splitRatio) - 3 : centre.width }
+                    Parts.TZCanvas2D { id: canvas2d; owner: root; visible: root.viewMode !== "3d"; anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom; width: centre.split ? Math.round(centre.width * centre.splitRatio) - 3 : centre.width }
+                    Parts.TZView3D { id: view3d; owner: root; visible: root.viewMode !== "2d"; anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom; width: centre.split ? centre.width - Math.round(centre.width * centre.splitRatio) - 3 : centre.width }
                     Rectangle {   // draggable divider
                         visible: centre.split; width: 6; anchors.top: parent.top; anchors.bottom: parent.bottom; x: Math.round(centre.width * centre.splitRatio) - 3
                         color: divArea.pressed ? "#c58014" : (divArea.containsMouse ? "#3a3835" : "#252930")
@@ -466,10 +467,10 @@ Score.ScriptUI {
                     }
                 }
 
-                TZInspector { owner: root; SplitView.preferredWidth: 330; SplitView.minimumWidth: 260; SplitView.maximumWidth: 420 }
+                Parts.TZInspector { owner: root; SplitView.preferredWidth: 330; SplitView.minimumWidth: 260; SplitView.maximumWidth: 420 }
             }
 
-            TZBottomPanel { id: bottom; owner: root; Layout.fillWidth: true; Layout.preferredHeight: root.bottomVisible ? root.bottomHeight : 28 }
+            Parts.TZBottomPanel { id: bottom; owner: root; Layout.fillWidth: true; Layout.preferredHeight: root.bottomVisible ? root.bottomHeight : 28 }
 
             RowLayout {
                 Layout.fillWidth: true

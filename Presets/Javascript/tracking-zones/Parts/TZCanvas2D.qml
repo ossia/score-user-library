@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
-import "Geometry.js" as Geom
-import "Model.js" as Model
-import "UiUtil.js" as U
+import "../Geometry.js" as Geom
+import "../Model.js" as Model
+import "../UiUtil.js" as U
 import OssiaUI as S
 
 // Top-down 2D editor: grid, backdrop, zones, handles, live entities, tools.

@@ -151,7 +151,7 @@ crossing after N frames on the other side, and only within the segment unless *e
   and a **transform gizmo** on the selection with Move / Rotate / Scale modes (buttons in the view, keys
   W / E / R): arrows + XY pad move, the ring rotates, cube handles scale per axis, the centre cube scales
   uniformly; dragging a zone body slides it on the floor, and edits follow the mouse live.
-  (`TZGizmo3D.qml` is reusable: any View3D + camera, emits dragMoved/dragEnded deltas.)
+  (`Parts/TZGizmo3D.qml` is reusable: any View3D + camera, emits dragMoved/dragEnded deltas.)
 * **2D handles** — every shape moves, rotates and resizes in the canvas: corner / radius handles, a
   rotation handle on all shapes, and a uniform-scale handle on point-based shapes (polygon, path, line).
 * **Inspector** — every zone property above, live read-out; with nothing selected: engine
@@ -192,7 +192,7 @@ crossing after N frames on the other side, and only within the segment unless *e
 
 ## Files
 
-`tracking-zones.qml` (execution), `tracking-zones.ui.qml` (editor), `TZ*.qml` (editor components),
+`tracking-zones.qml` (execution), `tracking-zones.ui.qml` (editor), `Parts/TZ*.qml` (editor components),
 `ZoneEngine.js` (pure evaluation core), `Geometry.js`, `Ingest.js`, `Model.js`, `UiUtil.js`,
 `examples/stage-demo.json` (importable zone document), `tests/` (engine unit tests, integration,
 UI / synthetic-input tests — run with `score.exe --script "eval(Score.readFile('…/tests/engine-tests.js'))"`).

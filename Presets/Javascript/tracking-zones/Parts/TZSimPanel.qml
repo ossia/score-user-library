@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "UiUtil.js" as U
+import "../UiUtil.js" as U
 import OssiaUI as S
 
 // Simulator (dummies, random walkers) and recorder / playback of tracking data.

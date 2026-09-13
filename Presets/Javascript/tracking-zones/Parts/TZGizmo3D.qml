@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick3D
 import QtQuick3D.Helpers
-import "UiUtil.js" as U
+import "../UiUtil.js" as U
 
 // TZGizmo3D: reusable transform gizmo for QtQuick3D with three modes, like common 3D software.
 //

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "Model.js" as Model
-import "UiUtil.js" as U
+import "../Model.js" as Model
+import "../UiUtil.js" as U
 import OssiaUI as S
 
 // Right panel: properties of the selected zone, or the global settings when nothing is selected.

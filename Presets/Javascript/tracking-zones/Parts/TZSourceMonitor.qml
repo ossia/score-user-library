@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "UiUtil.js" as U
+import "../UiUtil.js" as U
 import OssiaUI as S
 
 // Source monitor: one row per inlet showing what arrives and what the ingest made of it.
