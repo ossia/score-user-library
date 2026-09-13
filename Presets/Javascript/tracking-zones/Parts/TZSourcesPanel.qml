@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "UiUtil.js" as U
-import "Ingest.js" as Ingest
+import "../UiUtil.js" as U
+import "../Ingest.js" as Ingest
 import OssiaUI as S
 
 // Sources & calibration: one card per inlet. An inlet can carry a single source or a map of

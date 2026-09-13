@@ -1,0 +1,12 @@
+TZBottomPanel   1.0 TZBottomPanel.qml
+TZCanvas2D      1.0 TZCanvas2D.qml
+TZGizmo3D       1.0 TZGizmo3D.qml
+TZInspector     1.0 TZInspector.qml
+TZMonitorPanel  1.0 TZMonitorPanel.qml
+TZOutputPanel   1.0 TZOutputPanel.qml
+TZSimPanel      1.0 TZSimPanel.qml
+TZSourceMonitor 1.0 TZSourceMonitor.qml
+TZSourcesPanel  1.0 TZSourcesPanel.qml
+TZToolbar       1.0 TZToolbar.qml
+TZView3D        1.0 TZView3D.qml
+TZZoneList      1.0 TZZoneList.qml
