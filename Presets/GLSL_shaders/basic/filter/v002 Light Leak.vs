@@ -18,4 +18,5 @@ void main()
 
 	// rotation matrix
 	rotmat = mat2(c,s,-s,c);
+	isf_vertShaderFinish();
 }

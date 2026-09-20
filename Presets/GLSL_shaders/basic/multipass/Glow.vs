@@ -30,4 +30,5 @@ void main(void)	{
 		texOffsets[1] = clamp(vec2(isf_FragNormCoord[0], isf_FragNormCoord[1]-pixelHeight),0.0,1.0);
 		texOffsets[2] = clamp(vec2(isf_FragNormCoord[0], isf_FragNormCoord[1]+pixelHeight),0.0,1.0);
 	}
+	isf_vertShaderFinish();
 }

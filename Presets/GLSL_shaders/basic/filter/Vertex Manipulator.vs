@@ -28,4 +28,5 @@ void main()
 	}
 	gl_Position.xy = position.xy + coord.xy;
 
+	isf_vertShaderFinish();
 }
