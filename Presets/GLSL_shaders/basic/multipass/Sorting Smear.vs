@@ -21,4 +21,5 @@ void main()
 	right_coord = clamp(vec2(texc.xy + vec2(d.x , 0)),0.0,1.0);
 	above_coord = clamp(vec2(texc.xy + vec2(0,d.y)),0.0,1.0);
 	below_coord = clamp(vec2(texc.xy + vec2(0,-d.y)),0.0,1.0);
+	isf_vertShaderFinish();
 }

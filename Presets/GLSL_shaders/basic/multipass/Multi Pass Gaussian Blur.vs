@@ -95,4 +95,5 @@ void main(void)	{
 		}
 	}
 	
+	isf_vertShaderFinish();
 }

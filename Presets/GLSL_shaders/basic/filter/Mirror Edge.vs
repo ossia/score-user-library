@@ -19,4 +19,5 @@ void main()	{
 	
 	translated_coord = loc / RENDERSIZE + vec2(0.5);
 
+	isf_vertShaderFinish();
 }

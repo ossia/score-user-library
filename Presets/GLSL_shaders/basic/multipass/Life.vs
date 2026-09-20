@@ -35,4 +35,5 @@ void main()
 	righta_coord = vec2(texc.xy + vec2(1.0 , 1.0));
 	leftb_coord = vec2(texc.xy + vec2(-1.0 , -1.0));
 	rightb_coord = vec2(texc.xy + vec2(1.0 , -1.0));
+	isf_vertShaderFinish();
 }
