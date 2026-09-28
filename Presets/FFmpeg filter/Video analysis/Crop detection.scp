@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# lavfi.cropdetect.x1 ... .w, .h: where the black bars are.\ncropdetect=limit=24:round=2:reset=0"}, "Name": "Crop detection", "Preset": []}

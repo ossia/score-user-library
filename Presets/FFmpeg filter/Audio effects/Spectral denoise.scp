@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# FFT denoiser. nf is the assumed noise floor in dB and nt the noise type;\n# nf far below the actual floor leaves the noise almost untouched.\nafftdn=nr=24:nf=-20:nt=w"}, "Name": "Spectral denoise", "Preset": []}
