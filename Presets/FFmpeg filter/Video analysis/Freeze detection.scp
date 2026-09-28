@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# lavfi.freezedetect.freeze_start / .freeze_duration / .freeze_end.\nfreezedetect=n=0.003:d=2"}, "Name": "Freeze detection", "Preset": []}

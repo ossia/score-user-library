@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# EBU R128. The measurements arrive on the Metadata outlet:\n# r128.M (momentary), r128.S (short term), r128.I (integrated), r128.LRA (range).\nebur128=metadata=1"}, "Name": "Loudness meter", "Preset": []}

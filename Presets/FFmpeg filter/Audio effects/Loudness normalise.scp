@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Single-pass (dynamic) EBU R128 normalisation.\nloudnorm=I=-16:LRA=11:TP=-1.5"}, "Name": "Loudness normalise", "Preset": []}

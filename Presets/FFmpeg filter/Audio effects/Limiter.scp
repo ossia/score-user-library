@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Brick-wall limiter. alimiter normalises its output back to 0 dB unless\n# level is disabled, which would undo the ceiling this preset sets.\nalimiter=limit=0.9:attack=5:release=50:level=disabled"}, "Name": "Limiter", "Preset": []}

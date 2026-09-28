@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Retimes to a new frame rate by estimating motion. Expensive.\nminterpolate=fps=60:mi_mode=blend"}, "Name": "Motion interpolation", "Preset": []}

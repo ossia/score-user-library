@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Pulls the chroma planes apart: a cheap VHS/glitch look.\nchromashift=cbh=4:crh=-4"}, "Name": "Chroma shift", "Preset": []}

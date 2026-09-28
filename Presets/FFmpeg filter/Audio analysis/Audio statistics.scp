@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# lavfi.astats.Overall.RMS_level, .Peak_level ... on the Metadata outlet.\nastats=metadata=1:reset=1:measure_perchannel=none"}, "Name": "Audio statistics", "Preset": []}

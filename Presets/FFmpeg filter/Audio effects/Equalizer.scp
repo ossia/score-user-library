@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# One parametric band per channel. Frequency, width and gain are runtime controls.\nanequalizer=c0 f=200 w=100 g=-6 t=1|c1 f=200 w=100 g=-6 t=1"}, "Name": "Equalizer", "Preset": []}

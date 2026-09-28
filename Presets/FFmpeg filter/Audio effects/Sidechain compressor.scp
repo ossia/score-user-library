@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Two audio inputs: [main] is ducked by the level of [key].\n[main][key]sidechaincompress=threshold=0.05:ratio=8:attack=5:release=200"}, "Name": "Sidechain compressor", "Preset": []}

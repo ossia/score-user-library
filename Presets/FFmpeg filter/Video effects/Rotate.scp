@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Angle in radians, and it accepts expressions (t is the time in seconds).\nrotate=angle=0:fillcolor=none"}, "Name": "Rotate", "Preset": []}
