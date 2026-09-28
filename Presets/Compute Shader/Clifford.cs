@@ -79,13 +79,13 @@
       }
     ], 
     "PASSES": [{
-      "LOCAL_SIZE": [32, 32, 1],
+      "LOCAL_SIZE": [16, 16, 1],
       "EXECUTION_MODEL": { "TYPE": "2D_IMAGE", "TARGET": "AttractorImage" }
     },{
-      "LOCAL_SIZE": [32, 32, 1],
+      "LOCAL_SIZE": [16, 16, 1],
       "EXECUTION_MODEL": { "TYPE": "2D_IMAGE", "TARGET": "AttractorImage" }
     },{
-      "LOCAL_SIZE": [32, 32, 1],
+      "LOCAL_SIZE": [16, 16, 1],
       "EXECUTION_MODEL": { "TYPE": "2D_IMAGE", "TARGET": "AttractorImage" }
     }
     ]
