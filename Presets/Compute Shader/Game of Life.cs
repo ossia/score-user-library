@@ -114,6 +114,9 @@
   "PASSES": [{
     "LOCAL_SIZE": [16, 16, 1],
     "EXECUTION_MODEL": { "TYPE": "2D_IMAGE", "TARGET": "currentState" }
+  },{
+    "LOCAL_SIZE": [16, 16, 1],
+    "EXECUTION_MODEL": { "TYPE": "2D_IMAGE", "TARGET": "currentState" }
   }]
 }*/
 
@@ -223,73 +226,66 @@ bool applyRules(bool alive, int neighbors, int algo) {
     return false;
 }
 
+// Pass 0 computes the next generation of every cell into nextState from
+// currentState; pass 1 copies it back and draws it. Each pass is its own
+// dispatch, so every neighbour read in pass 0 sees the previous generation.
 void main() {
     ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
     ivec2 stateSize = imageSize(currentState);
     ivec2 outputSize = imageSize(outputImage);
-    
+
     if (coord.x >= stateSize.x || coord.y >= stateSize.y)
         return;
-    
-    // Initialize or reset if needed
-    if (reset || FRAMEINDEX == 0) {
-        vec4 newState = vec4(0.0);
-        
-        if (pattern == 0) { // Random
-            float rand = hash(vec2(coord), randomSeed);
-            newState.r = (rand < density) ? 1.0 : 0.0;
-        } else {
-            // Place pattern in center
-            ivec2 center = stateSize / 2;
-            newState.r = isPatternCell(coord, center, pattern) ? 1.0 : 0.0;
-        }
-        
-        imageStore(currentState, coord, newState);
-        imageStore(nextState, coord, newState);
-    }
-    else if (!pause && mod(TIME, 1.0 / speed) < TIME) {
-        // Update simulation
+
+    if (PASSINDEX == 0) {
         vec4 current = imageLoad(currentState, coord);
-        bool alive = current.r > 0.5;
-        
-        int neighbors = countNeighbors(coord, stateSize);
-        bool nextAlive = applyRules(alive, neighbors, algorithm);
-        
-        vec4 next = vec4(nextAlive ? 1.0 : 0.0);
-        
-        // Apply trail fade if enabled
-        if (trailFade > 0.0 && !nextAlive && current.g > 0.0) {
-            next.g = current.g * (1.0 - trailFade);
-            next.b = current.b * (1.0 - trailFade);
-        } else if (nextAlive) {
-            next.g = 1.0;
-            next.b = 1.0;
-        }
-        
-        imageStore(nextState, coord, next);
-        
-        // Swap states at end of frame
-        if (coord == ivec2(0, 0)) {
-            barrier();
-            // Copy nextState to currentState for next iteration
-            for (int x = 0; x < stateSize.x; x++) {
-                for (int y = 0; y < stateSize.y; y++) {
-                    ivec2 p = ivec2(x, y);
-                    imageStore(currentState, p, imageLoad(nextState, p));
-                }
+        vec4 next = current;
+
+        // Alpha marks a seeded cell: the first frame's contents are undefined.
+        if (reset || FRAMEINDEX <= 1 || current.a < 0.5) {
+            next = vec4(0.0, 0.0, 0.0, 1.0);
+            if (pattern == 0) { // Random
+                float rand = hash(vec2(coord), randomSeed);
+                next.r = (rand < density) ? 1.0 : 0.0;
+            } else {
+                // Place pattern in center
+                ivec2 center = stateSize / 2;
+                next.r = isPatternCell(coord, center, pattern) ? 1.0 : 0.0;
             }
         }
+        else if (!pause && floor(TIME * speed) != floor((TIME - TIMEDELTA) * speed)) {
+            // One generation each time TIME crosses a multiple of 1 / speed.
+            bool alive = current.r > 0.5;
+            int neighbors = countNeighbors(coord, stateSize);
+            bool nextAlive = applyRules(alive, neighbors, algorithm);
+
+            next = vec4(nextAlive ? 1.0 : 0.0, 0.0, 0.0, 1.0);
+
+            // Apply trail fade if enabled
+            if (trailFade > 0.0 && !nextAlive && current.g > 0.0) {
+                next.g = current.g * (1.0 - trailFade);
+                next.b = current.b * (1.0 - trailFade);
+            } else if (nextAlive) {
+                next.g = 1.0;
+                next.b = 1.0;
+            }
+        }
+
+        IMG_STORE(nextState, coord, next);
+        return;
     }
-    
+
+    vec4 state = imageLoad(nextState, coord);
+    IMG_STORE(currentState, coord, state);
+
     // Render to output with cell size scaling
-    vec4 state = imageLoad(currentState, coord);
     vec4 color = mix(deadColor, aliveColor, state.r);
-    
+
     // Add trail coloring if enabled
     if (trailFade > 0.0 && state.r < 0.5 && state.g > 0.0) {
         color = mix(deadColor, aliveColor * vec4(0.3, 0.5, 0.8, 1.0), state.g);
     }
-    
+
     // Write to scaled output
     int cs = int(cellSize);
     ivec2 baseCoord = coord * cs;
@@ -297,7 +293,7 @@ void main() {
         for (int dy = 0; dy < cs; dy++) {
             ivec2 outCoord = baseCoord + ivec2(dx, dy);
             if (outCoord.x < outputSize.x && outCoord.y < outputSize.y) {
-                imageStore(outputImage, outCoord, color);
+                IMG_STORE(outputImage, outCoord, color);
             }
         }
     }

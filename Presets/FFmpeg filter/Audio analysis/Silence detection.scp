@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Silence start/end on the Metadata outlet (lavfi.silence_start, lavfi.silence_end).\nsilencedetect=noise=-50dB:duration=0.5"}, "Name": "Silence detection", "Preset": []}

@@ -20,4 +20,5 @@ void main()	{
 	loc.y = r * sin(a + 2.0 * pi * angle);
 	
 	translated_coord = loc / IMG_SIZE(inputImage) + vec2(0.5);
+	isf_vertShaderFinish();
 }

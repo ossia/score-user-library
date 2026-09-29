@@ -83,4 +83,5 @@ void main()
         * scale(zoom*RENDERSIZE.x/RENDERSIZE.y, zoom, zoom)
         * position;
 
+	isf_vertShaderFinish();
 }

@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Removes banding from gradients in low-bitrate sources.\ndeband=1thr=0.02:2thr=0.02:3thr=0.02:4thr=0.02"}, "Name": "Deband", "Preset": []}

@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# A generator: no input, one video output.\ntestsrc2=size=1280x720:rate=60"}, "Name": "Test pattern", "Preset": []}

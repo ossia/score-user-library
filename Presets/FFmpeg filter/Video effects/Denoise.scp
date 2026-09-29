@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# Fast spatio-temporal denoiser, unlike nlmeans it runs in real time.\nhqdn3d=4:3:6:4.5"}, "Name": "Denoise", "Preset": []}

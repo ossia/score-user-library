@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# A generator: Conway's game of life.\nlife=size=320x240:mold=10:rate=30:ratio=0.1"}, "Name": "Game of life", "Preset": []}

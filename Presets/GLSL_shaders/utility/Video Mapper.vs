@@ -29,4 +29,5 @@ void main()
 	
 	gl_Position.xy = scale.xy * (position.xy + coord.xy + translation.xy);
 
+	isf_vertShaderFinish();
 }

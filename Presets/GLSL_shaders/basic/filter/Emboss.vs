@@ -30,4 +30,5 @@ void main()
 
 	lefta_coord = clamp(vec2(texc.xy + vec2(-d.x , d.x)),0.0,1.0);
 	rightb_coord = clamp(vec2(texc.xy + vec2(d.x , -d.x)),0.0,1.0);
+	isf_vertShaderFinish();
 }

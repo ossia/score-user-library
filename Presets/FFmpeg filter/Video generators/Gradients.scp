@@ -1,0 +1,1 @@
+{"Key": {"Uuid": "3f0a1b6e-6a6b-4d0c-9d8f-2b3c1e7a9f10", "Effect": "# A generator: two colours drifting into each other.\n# Leave c0/c1 out and the filter picks random colours at every start.\ngradients=size=1280x720:speed=0.05:rate=60:c0=0x101040:c1=0xff8000"}, "Name": "Gradients", "Preset": []}

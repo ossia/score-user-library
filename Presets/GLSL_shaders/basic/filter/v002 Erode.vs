@@ -37,4 +37,5 @@ void main()
 	texcoord5 = texcoord + vec2(-amount,  amount);
 	texcoord6 = texcoord + vec2( 0,       amount);
 	texcoord7 = texcoord + vec2( amount,  amount);
+	isf_vertShaderFinish();
 }
