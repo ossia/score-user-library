@@ -139,6 +139,14 @@ Score.ScriptUI {
                     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                     contentWidth: availableWidth
 
+                    // The vertical bar is an overlay and reserves no width of
+                    // its own, so it paints over whatever reaches the right
+                    // edge: a combo box's arrow ends up under it and cannot be
+                    // clicked. availableWidth is what the content below is
+                    // sized from, so taking the bar out of it is enough.
+                    rightPadding: ScrollBar.vertical.visible
+                                  ? ScrollBar.vertical.width : 0
+
                     ColumnLayout {
                         id: sections
                         width: sv.availableWidth

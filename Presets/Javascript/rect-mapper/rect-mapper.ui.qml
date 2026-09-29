@@ -40,7 +40,7 @@ Score.ScriptUI {
         if (state && state.mapperState) {
             try {
                 var s = typeof state.mapperState === "string" ? JSON.parse(state.mapperState) : state.mapperState;
-                root.rects = s || [];
+                root.rects = ShapeData.normalizeShapes(s);
             } catch (e) {
                 root.rects = [];
             }
@@ -54,7 +54,7 @@ Score.ScriptUI {
         if (k === "mapperState") {
             try {
                 var s = typeof v === "string" ? JSON.parse(v) : v;
-                root.rects = Array.isArray(s) ? s : [];
+                root.rects = ShapeData.normalizeShapes(s);
             } catch (e) {
                 return;
             }
@@ -350,8 +350,18 @@ Score.ScriptUI {
 
     // Reusable inspector rows, built on the shared kit so this editor matches
     // the tracking-zones one without restyling anything locally.
-    component PropSlider: S.SSliderRow {
+    component PropNumber: S.SNumRow {
+        from: 0
+        to: 1
+        defaultValue: 0
+        step: 0.01
+        decimals: 6
         labelWidth: 56
+
+        signal previewed(real v)
+        signal committed(real v)
+        onLive: function (v) { previewed(v) }
+        onEdited: function (v) { committed(v) }
     }
     component PropCombo: S.SComboRow {
         labelWidth: 56
@@ -1843,50 +1853,52 @@ Score.ScriptUI {
             }
 
             // --- Opacity ---
-            PropSlider {
+            PropNumber {
                 label: "Opacity"
-                from: 0; to: 1.0; stepSize: 0.01; decimals: 2
+                from: 0; to: 1.0
+                defaultValue: 1
                 value: propsPanel.selOpacity
-                onMoved: function (v) { propsPanel.setOpacity(v, true) }
+                onPreviewed: function (v) { propsPanel.setOpacity(v, true) }
                 onCommitted: function (v) { propsPanel.setOpacity(v) }
             }
 
             // --- Edge Blend ---
             S.SSectionLabel { text: "Edge Blend" }
 
-            PropSlider {
+            PropNumber {
                 label: "T"
-                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                from: 0; to: 0.5
                 value: propsPanel.selBlend ? propsPanel.selBlend.top : 0
-                onMoved: function (v) { propsPanel.setBlendEdge("top", v, true) }
+                onPreviewed: function (v) { propsPanel.setBlendEdge("top", v, true) }
                 onCommitted: function (v) { propsPanel.setBlendEdge("top", v) }
             }
-            PropSlider {
+            PropNumber {
                 label: "B"
-                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                from: 0; to: 0.5
                 value: propsPanel.selBlend ? propsPanel.selBlend.bottom : 0
-                onMoved: function (v) { propsPanel.setBlendEdge("bottom", v, true) }
+                onPreviewed: function (v) { propsPanel.setBlendEdge("bottom", v, true) }
                 onCommitted: function (v) { propsPanel.setBlendEdge("bottom", v) }
             }
-            PropSlider {
+            PropNumber {
                 label: "L"
-                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                from: 0; to: 0.5
                 value: propsPanel.selBlend ? propsPanel.selBlend.left : 0
-                onMoved: function (v) { propsPanel.setBlendEdge("left", v, true) }
+                onPreviewed: function (v) { propsPanel.setBlendEdge("left", v, true) }
                 onCommitted: function (v) { propsPanel.setBlendEdge("left", v) }
             }
-            PropSlider {
+            PropNumber {
                 label: "R"
-                from: 0; to: 0.5; stepSize: 0.01; decimals: 2
+                from: 0; to: 0.5
                 value: propsPanel.selBlend ? propsPanel.selBlend.right : 0
-                onMoved: function (v) { propsPanel.setBlendEdge("right", v, true) }
+                onPreviewed: function (v) { propsPanel.setBlendEdge("right", v, true) }
                 onCommitted: function (v) { propsPanel.setBlendEdge("right", v) }
             }
-            PropSlider {
+            PropNumber {
                 label: "Gamma"
-                from: 0.5; to: 4.0; stepSize: 0.1; decimals: 1
+                from: ShapeData.minBlendGamma; to: ShapeData.maxBlendGamma; step: 0.1
+                defaultValue: 1
                 value: propsPanel.selGamma
-                onMoved: function (v) { propsPanel.setGamma(v, true) }
+                onPreviewed: function (v) { propsPanel.setGamma(v, true) }
                 onCommitted: function (v) { propsPanel.setGamma(v) }
             }
 
@@ -1941,44 +1953,46 @@ Score.ScriptUI {
             }
 
             // Manual UV controls
-            PropSlider {
+            PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Ox"
-                from: -1; to: 1; stepSize: 0.01; decimals: 2
+                from: -1; to: 1
                 value: propsPanel.selUvOffset[0]
-                onMoved: function (v) { propsPanel.setUvOffset(v, propsPanel.selUvOffset[1], true) }
+                onPreviewed: function (v) { propsPanel.setUvOffset(v, propsPanel.selUvOffset[1], true) }
                 onCommitted: function (v) { propsPanel.setUvOffset(v, propsPanel.selUvOffset[1]) }
             }
-            PropSlider {
+            PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Oy"
-                from: -1; to: 1; stepSize: 0.01; decimals: 2
+                from: -1; to: 1
                 value: propsPanel.selUvOffset[1]
-                onMoved: function (v) { propsPanel.setUvOffset(propsPanel.selUvOffset[0], v, true) }
+                onPreviewed: function (v) { propsPanel.setUvOffset(propsPanel.selUvOffset[0], v, true) }
                 onCommitted: function (v) { propsPanel.setUvOffset(propsPanel.selUvOffset[0], v) }
             }
-            PropSlider {
+            PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Sx"
-                from: 0.1; to: 4.0; stepSize: 0.01; decimals: 2
+                from: ShapeData.minUvScale; to: ShapeData.maxUvScale
+                defaultValue: 1
                 value: propsPanel.selUvScale[0]
-                onMoved: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1], true) }
+                onPreviewed: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1], true) }
                 onCommitted: function (v) { propsPanel.setUvScale(v, propsPanel.selUvScale[1]) }
             }
-            PropSlider {
+            PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Sy"
-                from: 0.1; to: 4.0; stepSize: 0.01; decimals: 2
+                from: ShapeData.minUvScale; to: ShapeData.maxUvScale
                 value: propsPanel.selUvScale[1]
-                onMoved: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v, true) }
+                defaultValue: 1
+                onPreviewed: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v, true) }
                 onCommitted: function (v) { propsPanel.setUvScale(propsPanel.selUvScale[0], v) }
             }
-            PropSlider {
+            PropNumber {
                 visible: propsPanel.selUvMode === "manual"
                 label: "Rot"
-                from: -180; to: 180; stepSize: 1; decimals: 0
+                from: -180; to: 180; step: 1
                 value: propsPanel.selUvRotation
-                onMoved: function (v) { propsPanel.setUvRotation(v, true) }
+                onPreviewed: function (v) { propsPanel.setUvRotation(v, true) }
                 onCommitted: function (v) { propsPanel.setUvRotation(v) }
             }
 

@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick3D
 import QtQuick3D.Helpers
-import "Geometry.js" as Geom
-import "UiUtil.js" as U
+import "../Geometry.js" as Geom
+import "../UiUtil.js" as U
 import OssiaUI as S
 
 // 3D view: zones as translucent volumes, entities as pins, orbit camera, pick to select,

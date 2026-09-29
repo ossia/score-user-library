@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "Model.js" as Model
+import "../Model.js" as Model
 import OssiaUI as S
 
 // Top toolbar: tools, creation menu, view options, set selector, show-mode lock, import/export.

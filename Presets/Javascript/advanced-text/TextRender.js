@@ -137,6 +137,22 @@ function mergeState(base, overrides) {
     return result;
 }
 
+// The editor stores the base style; the Style inlet overrides it before this
+// stage. Automation adds normalized position / degree / pixel offsets and
+// multiplies scale / font size / line spacing without changing either source.
+function applyAutomation(state, controls) {
+    var s = mergeState(state, null);
+    s.posX = (state.posX !== undefined ? state.posX : 0.5) + controls.posX;
+    s.posY = (state.posY !== undefined ? state.posY : 0.5) + controls.posY;
+    s.rotation = (state.rotation || 0) + controls.rotation;
+    s.scaleX = (state.scaleX || 1) * controls.scaleX;
+    s.scaleY = (state.scaleY || 1) * controls.scaleY;
+    s.fontSize = (state.fontSize || 72) * controls.fontSize;
+    s.tracking = (state.tracking || 0) + controls.tracking;
+    s.lineSpacing = (state.lineSpacing || 1.3) * controls.lineSpacing;
+    return s;
+}
+
 function buildFontString(s) {
     var parts = [];
     if (s.fontStyle === "italic") parts.push("italic");

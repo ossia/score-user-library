@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import OssiaUI as S
 import "PanelModel.js" as Model
+import "./Parts" as Parts
 
 Score.ScriptUI {
     id: root
@@ -400,7 +401,7 @@ Score.ScriptUI {
                         Item { Layout.fillWidth: true }
                         S.SLabel { text: root.doc.width + " × " + root.doc.height; dim: true }
                     }
-                    PanelSurface {
+                    Parts.PanelSurface {
                         id: panelView
                         Layout.fillWidth: true; Layout.fillHeight: true
                         doc: root.doc; revision: root.revision
