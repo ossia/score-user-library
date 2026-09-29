@@ -22,11 +22,8 @@ Item {
         spacing: 3
         RowLayout {
             Layout.fillWidth: true
-            S.SCheck { text: "Source monitor"; font.bold: true; font.pixelSize: 11; checked: owner.sourceMonitorEnabled; onToggled: owner.sourceMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Off: the execution skips payload classification and raw previews (saves CPU on the audio thread)." }
-            Label {
-                Layout.fillWidth: true; wrapMode: Text.WordWrap; font.pixelSize: 10; color: palette.placeholderText
-                text: !owner.sourceMonitorEnabled ? "Disabled." : (owner.liveData ? "Live. Click a row to see the last raw payload received on that inlet." : "Transport stopped: nothing arrives on the inlets until score plays.")
-            }
+            S.SCheck { text: "Source monitor"; font.bold: true; font.pixelSize: 11; checked: owner.sourceMonitorEnabled; onToggled: owner.sourceMonitorEnabled = checked; ToolTip.visible: hovered; ToolTip.text: "Turn off to skip payload classification and raw previews, reducing processing load." }
+            Item { Layout.fillWidth: true }
         }
         // table
         Rectangle {
@@ -41,11 +38,11 @@ Item {
                     Head { text: "Inlet"; w: 110; Layout.leftMargin: 6 }
                     Head { text: "Status"; w: 90 }
                     Head { text: "Msgs/tick"; w: 60 }
-                    Head { text: "Payload"; w: 230 }
+                    Head { text: "Payload"; w: 230; ToolTip.visible: payloadHover.hovered; ToolTip.text: "Single point, flat floats, list of vectors / lists / maps, one entity map, map of entities, or map of sources."; HoverHandler { id: payloadHover } }
                     Head { text: "Parsed"; w: 50 }
                     Head { text: "In engine"; w: 60 }
                     Head { text: "Dropped (NaN)"; w: 80 }
-                    Label { text: "Entities (id @ x,y,z after calibration)"; font.pixelSize: 10; font.bold: true; color: palette.placeholderText; verticalAlignment: Text.AlignVCenter; Layout.fillWidth: true }
+                    Label { text: "Entities"; font.pixelSize: 10; font.bold: true; color: palette.placeholderText; verticalAlignment: Text.AlignVCenter; Layout.fillWidth: true; ToolTip.visible: entitiesHover.hovered; ToolTip.text: "Entity id @ x,y,z after calibration."; HoverHandler { id: entitiesHover } }
                 }
                 Repeater {
                     model: 5
@@ -60,6 +57,9 @@ Item {
                         Layout.fillWidth: true; Layout.preferredHeight: 22
                         Rectangle { anchors.fill: parent; color: panel.selectedRow === rowItem.index ? S.Theme.controlHover : (rowItem.index % 2 ? palette.alternateBase : "transparent") }
                         MouseArea { anchors.fill: parent; onClicked: panel.selectedRow = rowItem.index }
+                        ToolTip.visible: rowHover.hovered
+                        ToolTip.text: rowItem.isSim ? "Virtual entities from Simulator & recorder." : "Select to inspect this inlet's last raw payload."
+                        HoverHandler { id: rowHover }
                         RowLayout {
                             anchors.fill: parent; spacing: 8
                             Cell { text: rowItem.name + (rowItem.isSim ? "" : " (inlet " + (rowItem.index + 1) + ")"); w: 110; Layout.leftMargin: 6; font.bold: true }
@@ -84,7 +84,6 @@ Item {
             Layout.fillWidth: true
             Head { text: "Last raw payload on " + (panel.selectedRow === 4 ? "Simulation" : "inlet " + (panel.selectedRow + 1)) }
             Item { Layout.fillWidth: true }
-            Label { font.pixelSize: 10; color: palette.placeholderText; text: "Payload kinds: single point, flat floats, list of vectors / lists / maps, one entity map, map of entities, map of sources (see README)" }
         }
         ScrollView {
             Layout.fillWidth: true; Layout.fillHeight: true; clip: true
@@ -92,7 +91,7 @@ Item {
             TextArea {
                 readOnly: true; font.family: "monospace"; font.pixelSize: 10; wrapMode: TextEdit.WrapAnywhere; color: palette.text
                 background: Rectangle { color: palette.base; border.color: palette.mid; radius: 3 }
-                text: panel.selectedRow === 4 ? "(virtual entities come from the Simulator pane)" : ((panel.rows[panel.selectedRow] && panel.rows[panel.selectedRow].preview) || "(nothing received)")
+                text: panel.selectedRow === 4 ? "No raw payload." : ((panel.rows[panel.selectedRow] && panel.rows[panel.selectedRow].preview) || "No payload received.")
             }
         }
     }
