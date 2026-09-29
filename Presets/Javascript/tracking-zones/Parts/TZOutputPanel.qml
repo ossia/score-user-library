@@ -15,7 +15,6 @@ Item {
     function set(path, value, label) { owner.setSettings(path, value, label || "Output settings"); }
 
     component ColTitle: Label { font.bold: true; font.pixelSize: 11; color: palette.light }
-    component Hint: Label { font.pixelSize: 10; color: palette.placeholderText; wrapMode: Text.WordWrap; Layout.fillWidth: true }
     component OutletRow: RowLayout {
         property string name: ""
         property string key: ""
@@ -26,6 +25,8 @@ Item {
             text: parent.name; Layout.preferredWidth: 90
             checked: panel.sv("outputs." + parent.key + ".enabled", true)
             onToggled: panel.set("outputs." + parent.key + ".enabled", checked, "Event outlets")
+            ToolTip.visible: hovered
+            ToolTip.text: "Send one message per event of this type, in the chosen format."
         }
         S.SCombo {
             Layout.preferredWidth: 170; Layout.maximumWidth: 170
@@ -45,7 +46,6 @@ Item {
         ColumnLayout {
             Layout.fillHeight: true; Layout.preferredWidth: 230; spacing: 2
             ColTitle { text: "Event types" }
-            Hint { text: "Unchecked types are sent nowhere: not on the Events outlet, not on the simple outlets, not in the monitors. Zones can also opt out per type in their Outputs section." }
             GridLayout {
                 columns: 2; columnSpacing: 10; rowSpacing: 0
                 Repeater {
@@ -55,6 +55,8 @@ Item {
                         text: modelData.label
                         checked: panel.sv("events." + modelData.key, true)
                         onToggled: panel.set("events." + modelData.key, checked, "Event types")
+                        ToolTip.visible: hovered
+                        ToolTip.text: "Unchecked event types are not sent or logged. Each zone can also disable event types under Outputs."
                     }
                 }
             }
@@ -67,7 +69,6 @@ Item {
         ColumnLayout {
             Layout.fillHeight: true; Layout.preferredWidth: 300; spacing: 2
             ColTitle { text: "Event outlets" }
-            Hint { text: "Each outlet sends one message per event of its type, in the chosen format." }
             OutletRow { name: "Enter"; key: "enter" }
             OutletRow { name: "Leave"; key: "exit" }
             OutletRow { name: "Dwell"; key: "dwell" }
@@ -82,30 +83,35 @@ Item {
         ColumnLayout {
             Layout.fillHeight: true; Layout.fillWidth: true; spacing: 2
             ColTitle { text: "Location outlet" }
-            Hint { text: "Reports for each tracked entity the zone it is currently in. With overlapping zones, 'topmost' is the last one in the list order." }
             RowLayout {
                 Layout.fillWidth: true; spacing: 6
                 S.SCheck {
                     text: "Enabled"; Layout.preferredWidth: 90
                     checked: panel.sv("outputs.location.enabled", true)
                     onToggled: panel.set("outputs.location.enabled", checked, "Location outlet")
+                    ToolTip.visible: hovered
+                    ToolTip.text: "Report each entity's current zone."
                 }
                 S.SCombo {
                     Layout.preferredWidth: 170; Layout.maximumWidth: 170
                     enabled: panel.sv("outputs.location.enabled", true)
                     property var formats: ["map", "list", "zone"]
-                    model: ["Map {id: zone}", "List [[id, zone], ...]", "Single zone string"]
+                    model: ["Map {id: zone}", "List [[id, zone], ...]", "First entity's zone"]
                     currentIndex: Math.max(0, formats.indexOf(panel.sv("outputs.location.format", "map")))
                     onActivated: function (i) { panel.set("outputs.location.format", formats[i], "Location format"); }
+                    ToolTip.visible: hovered
+                    ToolTip.text: "'First entity's zone' sends the first included entity's zone name. With All zones per entity, it sends a list. If no entity is included, it sends an empty string or list."
                 }
             }
             S.SCheck {
-                text: "All zones per entity (list instead of the topmost zone)"
+                text: "All zones per entity"
                 checked: panel.sv("outputs.location.all", false)
                 onToggled: panel.set("outputs.location.all", checked, "Location outlet")
+                ToolTip.visible: hovered
+                ToolTip.text: "Send a list instead of the topmost zone. Where zones overlap, the last zone in the list is topmost."
             }
             S.SCheck {
-                text: "Only send when something changed"
+                text: "Only send when the location output changes"
                 checked: panel.sv("outputs.location.onChange", true)
                 onToggled: panel.set("outputs.location.onChange", checked, "Location outlet")
             }
@@ -114,7 +120,6 @@ Item {
                 checked: panel.sv("outputs.location.includeOutside", false)
                 onToggled: panel.set("outputs.location.includeOutside", checked, "Location outlet")
             }
-            Hint { text: "'Single zone string' is meant for the one-performer case: it sends the first entity's zone name, or an empty string when it is nowhere." }
             Item { Layout.fillHeight: true }
         }
     }
