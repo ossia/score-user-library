@@ -34,11 +34,6 @@ Item {
     ColumnLayout {
         anchors.fill: parent
         spacing: 2
-        L {
-            Layout.fillWidth: true
-            text: "One card per inlet. An inlet takes one source, or several at once as a map {name: payload} (for example a device container like local:/tracking with one child per sensor). Every source on an inlet shares the card's calibration, so group sensors of the same kind: inlet 1 camera boxes, inlet 2 centroids, inlet 3 BlackTrax..."
-            wrapMode: Text.WordWrap; color: palette.placeholderText
-        }
         ScrollView {
             Layout.fillWidth: true; Layout.fillHeight: true
             clip: true
@@ -68,7 +63,7 @@ Item {
                                     Layout.fillWidth: true
                                     S.SCheck { checked: panel.sget(card.key, "enabled", true); onToggled: owner.setSource(card.key, "enabled", checked, "Source enabled") }
                                     TextField { Layout.preferredWidth: 92; implicitHeight: 22; topPadding: 2; bottomPadding: 2; font.pixelSize: 11; font.bold: true; text: panel.sget(card.key, "name", "Source " + (card.key + 1)); selectByMouse: true; onEditingFinished: owner.setSource(card.key, "name", text, "Source name") }
-                                    L { text: "inlet " + (card.key + 1); color: palette.placeholderText }
+                                    L { text: "inlet " + (card.key + 1); color: palette.placeholderText; ToolTip.visible: inletHover.hovered; ToolTip.text: "Accepts one source or a map of sources, {name: payload}. Sources on this inlet share calibration; separate inlets allow different calibration."; HoverHandler { id: inletHover } }
                                     Rectangle { width: 8; height: 8; radius: 4; color: card.alive ? S.Theme.accent : "#555" }
                                     L { text: card.h && card.alive ? (U.fmt(card.h.fps, 0) + " Hz, " + card.h.n) : "no data"; color: palette.placeholderText; Layout.fillWidth: true; elide: Text.ElideRight }
                                 }
@@ -163,7 +158,7 @@ Item {
                                     SmallNum { path: "defaultZ"; value: panel.sget(card.key, "defaultZ", 0); onEdited: function (v) { owner.setSource(card.key, "defaultZ", v, "Default Z"); } }
                                 }
                                 RowLayout {
-                                    S.SCheck { text: "1€ smoothing"; checked: panel.sget(card.key, "smoothing.enabled", false); onToggled: owner.setSource(card.key, "smoothing.enabled", checked, "Smoothing") }
+                                    S.SCheck { text: "One Euro smoothing"; checked: panel.sget(card.key, "smoothing.enabled", false); onToggled: owner.setSource(card.key, "smoothing.enabled", checked, "Smoothing") }
                                     L { text: "cutoff" }
                                     SmallNum { path: "smoothing.minCutoff"; value: panel.sget(card.key, "smoothing.minCutoff", 1); onEdited: function (v) { owner.setSource(card.key, "smoothing.minCutoff", Math.max(0.01, v), "Smoothing"); } }
                                     L { text: "beta" }
