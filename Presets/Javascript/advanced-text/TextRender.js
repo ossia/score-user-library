@@ -1,5 +1,20 @@
 .pragma library
 
+// Qt's Canvas fills text with the odd-even rule whatever fillRule says, so
+// glyphs whose contours overlap -- the bar and stem of a t in variable fonts
+// -- get holes where they cross. Their outlines go through the current path
+// instead, which fills with the rule asked for.
+//
+// ctx.text() puts the baseline at y, where fillText would apply textBaseline:
+// with "top", the only one used here, the baseline is one ascent lower.
+var glyphAscent = 0;
+function fillGlyphs(ctx, text, x, y) {
+    ctx.beginPath();
+    ctx.text(text, x, ctx.textBaseline === "top" ? y + glyphAscent : y);
+    ctx.fillRule = Qt.WindingFill;
+    ctx.fill();
+}
+
 function defaultState() {
     return {
         text: "HELLO WORLD",
@@ -217,13 +232,13 @@ function measureLine(ctx, text, tracking) {
 function drawSegment(ctx, text, x, y, tracking, mode) {
     if (!text || text.length === 0) return;
     if (!tracking) {
-        if (mode === "fill") ctx.fillText(text, x, y);
+        if (mode === "fill") fillGlyphs(ctx, text, x, y);
         else ctx.strokeText(text, x, y);
         return;
     }
     var cx = x;
     for (var i = 0; i < text.length; i++) {
-        if (mode === "fill") ctx.fillText(text[i], cx, y);
+        if (mode === "fill") fillGlyphs(ctx, text[i], cx, y);
         else ctx.strokeText(text[i], cx, y);
         cx += ctx.measureText(text[i]).width + tracking;
     }
@@ -627,7 +642,7 @@ function paintTextTextureFill(ctx, w, h, s, inlet, texItem,
             }
 
             ctx.globalAlpha = opacity * charAlpha;
-            ctx.fillText(drawCh, c.x, c.y);
+            fillGlyphs(ctx, drawCh, c.x, c.y);
             ctx.restore();
         }
     } else {
@@ -740,7 +755,7 @@ function paintTextTextureFill(ctx, w, h, s, inlet, texItem,
                     if (prog <= 0) continue;
                     ctx.save();
                     applyCharTransforms(ctx, c, prog, woMode, s, fontSize, elapsed, chars3, ci);
-                    ctx.fillText(c.ch, c.x + sh.offsetX, c.y + sh.offsetY);
+                    fillGlyphs(ctx, c.ch, c.x + sh.offsetX, c.y + sh.offsetY);
                     ctx.restore();
                 }
             } else {
@@ -868,13 +883,19 @@ function editingGeometry(ctx, w, h, s, inlet) {
 
 // ---- Main paint function ----
 
-function paintText(ctx, w, h, state, inlet, texItem) {
+// ascentOf(family, pixelSize, bold, italic): the font's ascent in pixels, which
+// a library script cannot measure itself (see fillGlyphs).
+function paintText(ctx, w, h, state, inlet, texItem, ascentOf) {
     if (w <= 0 || h <= 0) return;
     var s = state;
     ctx.clearRect(0, 0, w, h);
 
     var layout = textLayout(ctx, w, h, s, inlet);
     if (!layout.text) return;
+    glyphAscent = ascentOf
+        ? ascentOf(s.fontFamily || "Arial", Math.max(1, layout.fontSize),
+                   s.fontWeight === "bold", s.fontStyle === "italic")
+        : 0.8 * layout.fontSize;
     var fontStr = layout.fontStr;
     ctx.textBaseline = "top";
     var tracking = layout.tracking;
@@ -1108,7 +1129,7 @@ function paintText(ctx, w, h, state, inlet, texItem) {
                     ctx.shadowOffsetX = 0;
                     ctx.shadowOffsetY = 0;
                 }
-                ctx.fillText(drawCh, c.x + sh.offsetX, c.y + sh.offsetY);
+                fillGlyphs(ctx, drawCh, c.x + sh.offsetX, c.y + sh.offsetY);
                 ctx.restore();
             }
 
@@ -1125,7 +1146,7 @@ function paintText(ctx, w, h, state, inlet, texItem) {
             // Fill
             if (s.fillEnabled !== false) {
                 ctx.fillStyle = charFill;
-                ctx.fillText(drawCh, c.x, c.y);
+                fillGlyphs(ctx, drawCh, c.x, c.y);
             }
 
             ctx.restore();
@@ -1164,7 +1185,7 @@ function paintText(ctx, w, h, state, inlet, texItem) {
                 if (blink) {
                     ctx.fillStyle = fillStyle || s.fillColor || "#fff";
                     ctx.globalAlpha = opacity;
-                    ctx.fillText(s.writeOnCursorChar || "\u258c",
+                    fillGlyphs(ctx, s.writeOnCursorChar || "\u258c",
                         cc.x + cc.w, cc.y);
                 }
             }
@@ -1310,7 +1331,7 @@ function paintText(ctx, w, h, state, inlet, texItem) {
                     var blink = (Math.floor(elapsed * 2) % 2 === 0);
                     if (blink) {
                         ctx.fillStyle = fillStyle || s.fillColor || "#fff";
-                        ctx.fillText(s.writeOnCursorChar || "\u258c",
+                        fillGlyphs(ctx, s.writeOnCursorChar || "\u258c",
                             cursorX, cursorY);
                     }
                     break;

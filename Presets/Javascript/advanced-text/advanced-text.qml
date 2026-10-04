@@ -109,6 +109,8 @@ Script {
                     requestPaint();
                 }
 
+                FontMetrics { id: glyphMetrics }
+
                 onPaint: {
                     var ctx = getContext("2d");
                     if (!ctx) return;
@@ -128,7 +130,15 @@ Script {
                         texItem = root.texGrabUrl;
                     }
                     TextRender.paintText(ctx, width, height,
-                        root.renderState, root.getInletValues(), texItem);
+                        root.renderState, root.getInletValues(), texItem,
+                        function(family, size, bold, italic) {
+                            glyphMetrics.font = Qt.font({
+                                family: family, pixelSize: Math.round(size),
+                                bold: bold, italic: italic });
+                            // strokeText offsets by the integer ascent: the
+                            // fill sits on the same row.
+                            return Math.round(glyphMetrics.ascent);
+                        });
                 }
             }
 
