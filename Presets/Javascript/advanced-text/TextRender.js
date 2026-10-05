@@ -1,12 +1,10 @@
 .pragma library
 
-// Qt's Canvas fills text with the odd-even rule whatever fillRule says, so
-// glyphs whose contours overlap -- the bar and stem of a t in variable fonts
-// -- get holes where they cross. Their outlines go through the current path
-// instead, which fills with the rule asked for.
-//
-// ctx.text() puts the baseline at y, where fillText would apply textBaseline:
-// with "top", the only one used here, the baseline is one ascent lower.
+// Qt's Canvas fillText always uses the odd-even rule, which leaves holes where
+// a glyph's contours overlap (common in variable fonts). Filling the outlines
+// as a path honours fillRule instead.
+// ctx.text() ignores textBaseline and puts the baseline at y: with "top", the
+// only one used here, the baseline is one ascent lower.
 var glyphAscent = 0;
 function fillGlyphs(ctx, text, x, y) {
     ctx.beginPath();
