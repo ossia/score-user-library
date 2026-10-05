@@ -135,8 +135,8 @@ Script {
                             glyphMetrics.font = Qt.font({
                                 family: family, pixelSize: Math.round(size),
                                 bold: bold, italic: italic });
-                            // strokeText offsets by the integer ascent: the
-                            // fill sits on the same row.
+                            // Rounded as strokeText rounds it, so that fill
+                            // and stroke line up.
                             return Math.round(glyphMetrics.ascent);
                         });
                 }
