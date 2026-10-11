@@ -53,7 +53,7 @@ float fbm(vec2 p){
 }
  
 vec3 shape(vec2 st) {
-	vec3 c;
+	vec3 c = vec3(0.);
 	float t = TIME, f = 5.;
 	for (int i = 0; i <1; i++) 
 		c[i] = (f / 3.) / abs(st.x * 8. + 
@@ -62,7 +62,7 @@ vec3 shape(vec2 st) {
 }
  
 vec3 shape2(vec2 st) {
-	vec3 c;
+	vec3 c = vec3(0.);
 	float t = TIME, f = 5.;
 	for (int i = 0; i < 1; i++) 
 		c[i] = (.05) / abs(sin((t += .1) + 2. * length(st)));

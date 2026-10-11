@@ -28,7 +28,7 @@ void main() {
     float steps = 32. + sin(TIME*0.1)*31.;
     //float steps = 64.;
     float s = TIME*01.25;
-    for (float i;i<steps;i++) {
+    for (float i = 0.;i<steps;i++) {
         float ii = i*02.102/steps;
         p = vec2(sin(s+ii),cos(s+ii))*(0.3+sin((s+ii)*8.)*0.1);
         ii = ii*ii*15.;

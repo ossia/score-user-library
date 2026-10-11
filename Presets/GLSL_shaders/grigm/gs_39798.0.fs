@@ -51,7 +51,7 @@ void main( void )
 	float CausticShape = clamp(7.-length(CausticDistortedDomain.x*20.),0.,1.);
 	float CausticPattern = CausticPatternFn(CausticDistortedDomain);
 	float CausticOnFloor = CausticPatternFn(pos)+sinn(pos.y*100.)*clamp(2.-length(pos*2.),0.,1.);
-	float Caustic;
+	float Caustic = 0.;
 	Caustic += CausticShape*CausticPattern;
 	Caustic *= (pos.y+.5)/4.;
 	//Caustic += CausticOnFloor;

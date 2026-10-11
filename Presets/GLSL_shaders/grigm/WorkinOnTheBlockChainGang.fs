@@ -99,7 +99,7 @@ bool inSize(vec2 coords)
 
 void main( void ) 
 {
-	vec3 color;
+	vec3 color = vec3(0.);
 	if (inSize(gl_FragCoord.xy)) color += getColor(gl_FragCoord.xy);
 	gl_FragColor = vec4( color, 1.0 );
 

@@ -73,7 +73,7 @@ void main()
     negColours[0] = vec3(1.2);
     negPoints[1] = vec3(0.34 + .3 * sin(TIME * 2.), 0.25 + .2 * sin(TIME* 0.1), .15);
     negColours[1] = vec3(1.);
-    vec3 rgb;
+    vec3 rgb = vec3(0.);
     
     // apply positive metaballs
     for (int i = 0; i < posnum; i++){  

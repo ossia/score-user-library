@@ -83,7 +83,7 @@ void mainImage( out vec4 O, vec2 U )
 {
     R = iResolution.xy;
     U = ( U+U - R ) / R.y;
-    O -= O;
+    O = vec4(0.);
     if ( abs(U.x)-(U.y+1.)/1.2 > 0. ) return;    // optim
     
     float t = 2.*iTime, T = 10., S=1., K = .2;

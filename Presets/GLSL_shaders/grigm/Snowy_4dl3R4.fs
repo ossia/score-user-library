@@ -134,7 +134,7 @@ void main()
 				slope=(noise*0.2)+(slope-((1.0-noise)*slope*0.1))*0.6;
 				slope=clamp(slope,0.0,1.0);
 										
-				vec2 GA;
+				vec2 GA = vec2(0.);
 				GA.x-=TIME*1.8;
 				GA.y+=TIME*0.9;
 				GA*=speed;
