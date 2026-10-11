@@ -118,9 +118,9 @@ void main()
   if (PASSINDEX == 0)
   {
     // Each thread fades its own pixel
-    vec4 col = imageLoad(AttractorImage, coord);
+    vec4 col = IMG_LOAD(AttractorImage, coord);
     col *= fadeRate;
-    imageStore(AttractorImage, coord, col);
+    IMG_STORE(AttractorImage, coord, col);
   }
   else if (PASSINDEX == 1)
   {
@@ -159,13 +159,14 @@ void main()
         float ny = (y + 3.0) / 6.0;
 
         int ix = int(nx * float(size.x));
-        int iy = int(ny * float(size.y));
+        // The attractor is plotted y-up; IMG_STORE / IMG_LOAD count rows down from the top.
+        int iy = size.y - 1 - int(ny * float(size.y));
 
         if (ix >= 0 && ix < size.x && iy >= 0 && iy < size.y)
         {
-          vec4 pixelCol = imageLoad(AttractorImage, ivec2(ix, iy));
+          vec4 pixelCol = IMG_LOAD(AttractorImage, ivec2(ix, iy));
           pixelCol.rgb += vec3(brightness);
-          imageStore(AttractorImage, ivec2(ix, iy), pixelCol);
+          IMG_STORE(AttractorImage, ivec2(ix, iy), pixelCol);
         }
       }
     }
@@ -173,9 +174,9 @@ void main()
   else if (PASSINDEX == 2)
   {
     // Final normalization for this pixel
-    vec4 finalCol = imageLoad(AttractorImage, coord);
+    vec4 finalCol = IMG_LOAD(AttractorImage, coord);
     finalCol.rgb = clamp(finalCol.rgb, 0.0, 1.0);
     finalCol.a = 1.0;
-    imageStore(AttractorImage, coord, finalCol);
+    IMG_STORE(AttractorImage, coord, finalCol);
   }
 }
