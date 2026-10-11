@@ -204,6 +204,7 @@ vec4 getPart0(float id) {
   if (id == 05.) return hypercube(2.);
   if (id == 06.) return hypercube(2.);
   if (id == 07.) return hypercube(0.);
+  return vec4(0.);
 }
 vec4 getPart1(float id) {
   if (id == 08.) return hypercube(0.);
@@ -214,6 +215,7 @@ vec4 getPart1(float id) {
   if (id == 13.) return hypercube(3.);
   if (id == 14.) return hypercube(8.);
   if (id == 15.) return hypercube(13.);
+  return vec4(0.);
 }
 vec4 getPart2(float id) {
   if (id == 16.) return hypercube(2.);
@@ -224,6 +226,7 @@ vec4 getPart2(float id) {
   if (id == 21.) return hypercube(13.);
   if (id == 22.) return hypercube(13.);
   if (id == 23.) return hypercube(9.);
+  return vec4(0.);
 }
 vec4 getPart3(float id) {
   if (id == 24.) return hypercube(1.);
@@ -234,6 +237,7 @@ vec4 getPart3(float id) {
   if (id == 29.) return hypercube(5.);
   if (id == 30.) return hypercube(5.);
   if (id == 31.) return hypercube(1.);
+  return vec4(0.);
 }
 vec4 getPart4(float id) {
   if (id == 32.) return hypercube(7.);
@@ -244,6 +248,7 @@ vec4 getPart4(float id) {
   if (id == 37.) return hypercube(12.);
   if (id == 38.) return hypercube(12.);
   if (id == 39.) return hypercube(7.);
+  return vec4(0.);
 }
 vec4 getPart5(float id) {
   if (id == 40.) return hypercube(1.);
@@ -254,6 +259,7 @@ vec4 getPart5(float id) {
   if (id == 45.) return hypercube(15.);
   if (id == 46.) return hypercube(5.);
   if (id == 47.) return hypercube(12.);
+  return vec4(0.);
 }
 vec4 getPart6(float id) {
   if (id == 48.) return hypercube(2.);
@@ -264,6 +270,7 @@ vec4 getPart6(float id) {
   if (id == 53.) return hypercube(15.);
   if (id == 54.) return hypercube(9.);
   if (id == 55.) return hypercube(12.);
+  return vec4(0.);
 }
 vec4 getPart7(float id) {
   if (id == 56.) return hypercube(0.);
@@ -274,6 +281,7 @@ vec4 getPart7(float id) {
   if (id == 61.) return hypercube(14.);
   if (id == 62.) return hypercube(4.);
   if (id == 63.) return hypercube(7.);
+  return vec4(0.);
 }
 vec4 hypercube_lines(float id)
 {

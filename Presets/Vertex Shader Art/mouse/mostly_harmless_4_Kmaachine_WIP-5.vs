@@ -100,6 +100,7 @@ float getVertex(int target){
       }
     }
   }
+  return 0.;
 }
 
 vec3 getNormal(int target){
@@ -110,6 +111,7 @@ vec3 getNormal(int target){
 
     }
   }
+  return vec3(0.);
 }
 
 #define MSET float s = sin( angle );float c = cos( angle );

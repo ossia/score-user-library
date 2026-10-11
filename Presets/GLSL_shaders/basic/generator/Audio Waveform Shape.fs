@@ -248,6 +248,7 @@ float shapeForType(vec2 st, int shape)	{
 		return heartSDF(st);
 	else if (shape == 8)
 		return raysSDF(st,6);
+	return circleSDF(st);
 }
 
 

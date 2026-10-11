@@ -70,6 +70,7 @@ float map(vec2 v, float s, vec2 z)
         v*=s;
 		return rand(vec2(floor(v.x), ceil(v.y-1.)));
     }
+    return 0.;
 }
 
 float grid2D(vec3 ro, vec3 rd, vec2 st)

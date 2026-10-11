@@ -341,6 +341,7 @@ vec3 shift(vec3 v, float offset) {
   if (offset == 2.) {
       return v.yzx;
    }
+ return vec3(0.);
 }
 
 // Step through each vertex of each icosahedron face

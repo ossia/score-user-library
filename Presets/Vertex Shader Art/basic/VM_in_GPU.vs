@@ -61,6 +61,7 @@ float getConsts(int id) {
     for (int i=0; i<256; i++) {
         if (i == id) return consts[i];
     }
+    return 0.;
 }
 
 // Stack.
@@ -70,6 +71,7 @@ float getStack(int id) {
     for (int i=0; i<MAX_STACK; i++) {
         if (i == id) return stack[i];
     }
+    return 0.;
 }
 void setStack(int id,float value) {
     for (int i=0; i<MAX_STACK; i++) {

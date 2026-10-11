@@ -86,6 +86,7 @@ float d_num(int t, vec2 position, float R)
 	getnum(7);
 	getnum(8);
 	getnum(9);
+	return 0.0;
 }
 void main( void ) {
 	vec2 position = (( isf_FragNormCoord ) - vec2(0.5,0.5)) * 5.0;
