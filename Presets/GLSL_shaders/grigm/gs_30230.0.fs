@@ -123,7 +123,7 @@ void main( void ) {
 
 	vec3 pos = ro; 
 	float dist = 0.0; 
-	float d; 
+	float d = 0.; 
 
 	dist = intersectScene(ro,rd); 
 	pos = ro+dist*rd;

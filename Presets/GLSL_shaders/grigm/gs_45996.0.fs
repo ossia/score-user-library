@@ -47,7 +47,7 @@ void mainImage( out vec4 O,  vec2 U )
 {
     U = ( U+U - R.xy ) / R.y;
     T = iTime;
-    O -= O;
+    O = vec4(0.);
     for (float i=0.; i<7.; i++)
         O.rga += line( U, P(i), P(i+1.) ) * F(9.,7.);      // yellow lines
 

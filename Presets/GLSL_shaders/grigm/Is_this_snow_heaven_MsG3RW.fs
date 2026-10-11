@@ -75,7 +75,7 @@ void main() {
     uv += 0.05*random(vec3(uv.xy,1.0));
     r = r*0.8+cross(r,vec3(0.0,1.0,0.0));
     r = r+0.2*cross(r,vec3(-1.4*sin(TIME*0.4+sin(0.7*(uv.x*0.5+0.1*TIME))),-20.0*cos(TIME*0.2),uv.y-2.0*sin(-uv.y)));
-    vec3 o;
+    vec3 o = vec3(0.);
     o.y = 14.5*TIME+sin(TIME)*2.0;
     
     

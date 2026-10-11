@@ -36,6 +36,7 @@ void main( void ) {
 	
 	int c = 5;
 	vec2 points[10];
+	for(int i = 0; i < 10; i++) points[i] = vec2(0.);
 	points[0] = mouse;
 	points[1] = vec2((1. + sin(TIME)) / 2., (1. + cos(TIME)) / 2.);
 	points[2] = vec2((1. + cos(TIME * 1.2 + 0.03)) / 2., (1. + sin(TIME * 1.35)) / 2.);

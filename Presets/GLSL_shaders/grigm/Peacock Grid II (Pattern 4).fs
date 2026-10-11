@@ -28,7 +28,7 @@ vec3 iResolution = vec3(RENDERSIZE, 1.);
 
 void mainImage( out vec4 O,  vec2 U )
 {
-  U = sin(U*SCALE/iResolution.y); O += fract( U.x*U.y + (TIME*SPEED)) -O;
+  U = sin(U*SCALE/iResolution.y); O = vec4(fract( U.x*U.y + (TIME*SPEED)));
 }
 
 void main(void) {

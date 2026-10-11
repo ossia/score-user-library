@@ -167,7 +167,7 @@ float encode(in float probability[SYMBOLS], in float set[ELEMENTS])
 	float interval[SYMBOLS];
 	for(int i = 0; i < SYMBOLS; i++)
 	{
-		interval[i] += probability[i];
+		interval[i] = probability[i];
 	}
 	
 	for(int i = 0; i < ELEMENTS; i++)

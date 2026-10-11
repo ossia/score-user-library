@@ -68,7 +68,7 @@ void mainImage( out vec4 O, vec2 U )
 {
     vec2 R = iResolution.xy;
     U = ( U+U - R ) / R.y;
-    O -= O;
+    O = vec4(0.);
     
     float t = 2.*iTime;
     U += .5*max(1.-.5*length(U),0.)

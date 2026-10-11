@@ -21,7 +21,7 @@ precision mediump float;
 #define tau 6.28
 
 vec3 shape(vec2 st) {
-	vec3 c;
+	vec3 c = vec3(0.);
 	float t = TIME, f = 1.;
 	for (int i = 0; i < 1; i++) 
 		c[i] = (f / 6.) / abs(st.x * 8. + 
@@ -30,7 +30,7 @@ vec3 shape(vec2 st) {
 }
 
 vec3 shape2(vec2 st) {
-	vec3 c;
+	vec3 c = vec3(0.);
 	float t = TIME, f = 9.;
 	for (int i = 0; i < 3; i++) 
 		c[i] = (.05) / abs(tan((t += .1) + 2. * length(st)));

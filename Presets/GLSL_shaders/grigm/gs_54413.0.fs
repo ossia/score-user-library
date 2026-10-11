@@ -36,7 +36,7 @@ float SnowLayer(vec2 uv, float scale, float ttime)
   uv.x += sin(uv.x - ttime * 0.5) / scale;
   
   uv *= scale;
-  vec2 s = floor(uv),f=fract(uv),p;
+  vec2 s = floor(uv),f=fract(uv),p = vec2(0.);
   
   float k = 3.0;
   float d = 0.0;

@@ -24,7 +24,7 @@ float snow(vec2 uv,float scale)
 {
 	float _t = TIME*2.5;
 	 uv.x+=_t/scale; 
-	uv*=scale;vec2 s=floor(uv),f=fract(uv),p;float k=40.,d;
+	uv*=scale;vec2 s=floor(uv),f=fract(uv),p=vec2(0.);float k=40.,d;
 	p=.5+.35*sin(11.*fract(sin((s+p+scale)*mat2(7,3,6,5))*5.))-f;d=length(p);k=min(d,k);
 	k=smoothstep(0.,k,sin(f.x+f.y)*0.003);
     	return k;

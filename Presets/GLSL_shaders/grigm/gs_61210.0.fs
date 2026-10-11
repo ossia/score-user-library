@@ -82,7 +82,7 @@ void mainImage( out vec4 O, vec2 U )
 {
     R = iResolution.xy;
     U = ( U+U - R ) / R.y;
-    O -= O;
+    O = vec4(0.);
     
     float t = 2.*iTime, T = 7., S=1., K = 1.;
     
