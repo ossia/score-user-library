@@ -35,7 +35,7 @@
 
 float luma(vec2 uv)
 {
-  return dot(texture(inputTex, uv).rgb, vec3(0.299, 0.587, 0.114));
+  return dot(IMG_NORM_PIXEL(inputTex, uv).rgb, vec3(0.299, 0.587, 0.114));
 }
 
 // Harris response at the given pixel using a 3x3 gradient window.
@@ -78,7 +78,7 @@ void main()
   float r = harris(pos, size);
 
   // Visualise the response.
-  imageStore(outputImage, pos, vec4(vec3(clamp(r * 8.0, 0.0, 1.0)), 1.0));
+  IMG_STORE(outputImage, pos, vec4(vec3(clamp(r * 8.0, 0.0, 1.0)), 1.0));
 
   if(r < threshold)
     return;

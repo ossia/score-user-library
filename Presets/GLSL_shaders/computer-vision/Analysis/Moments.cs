@@ -97,7 +97,7 @@ void main()
   }
 
   vec2 uv = (vec2(pos) + 0.5) / vec2(size);
-  vec3 rgb = texture(inputTex, uv).rgb;
+  vec3 rgb = IMG_NORM_PIXEL(inputTex, uv).rgb;
   float I = dot(rgb, vec3(0.299, 0.587, 0.114)); // weight in [0,1]
 
   float W = I * 255.0;
@@ -117,5 +117,5 @@ void main()
   a = uint(W * x * y * y * M3_SCALE + 0.5); p = atomicAdd(buf.m12, a); if(p + a < p) atomicAdd(buf.m12Hi, 1u);
   a = uint(W * y * y * y * M3_SCALE + 0.5); p = atomicAdd(buf.m03, a); if(p + a < p) atomicAdd(buf.m03Hi, 1u);
 
-  imageStore(outputImage, pos, vec4(vec3(I), 1.0));
+  IMG_STORE(outputImage, pos, vec4(vec3(I), 1.0));
 }
