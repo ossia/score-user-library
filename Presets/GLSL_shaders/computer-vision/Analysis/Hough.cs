@@ -57,9 +57,9 @@ void main()
     return;
 
   vec2 uv = (vec2(pos) + 0.5) / vec2(size);
-  float e = dot(texture(inputTex, uv).rgb, vec3(0.299, 0.587, 0.114));
+  float e = dot(IMG_NORM_PIXEL(inputTex, uv).rgb, vec3(0.299, 0.587, 0.114));
 
-  imageStore(outputImage, pos, vec4(vec3(e), 1.0));
+  IMG_STORE(outputImage, pos, vec4(vec3(e), 1.0));
 
   if(e < threshold)
     return;

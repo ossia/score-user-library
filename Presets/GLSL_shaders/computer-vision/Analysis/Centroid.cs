@@ -65,7 +65,7 @@ void main()
     return;
 
   vec2 uv = (vec2(pos) + 0.5) / vec2(size);
-  vec3 rgb = texture(inputTex, uv).rgb;
+  vec3 rgb = IMG_NORM_PIXEL(inputTex, uv).rgb;
   float luma = dot(rgb, vec3(0.299, 0.587, 0.114));
 
   uint w = uint(luma * W_SCALE + 0.5);
@@ -81,5 +81,5 @@ void main()
   if(pyw + yw < pyw) atomicAdd(buf.sumYWHi, 1u);
   atomicAdd(buf.count, 1u);
 
-  imageStore(outputImage, pos, vec4(vec3(luma), 1.0));
+  IMG_STORE(outputImage, pos, vec4(vec3(luma), 1.0));
 }
