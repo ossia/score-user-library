@@ -65,6 +65,7 @@ void main() {
 	//    gl_FragColor.rgb = mix( gl_FragColor.rgb, sin(TIME*vec3(10))*.5+.5, smoothstep(.03,.025,length( uv-vec2(.5)*aspect*mix(sin(TIME*vec2(.618,1.382)),sin(TIME*vec2(1.618,2.)),.3) )) );
 	    
 	    gl_FragColor.rgb = clamp(gl_FragColor.rgb,0.,1.);
+	    gl_FragColor.a = 1.0;
 	}
 	else if (PASSINDEX == 1)	{
 
