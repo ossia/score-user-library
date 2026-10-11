@@ -90,11 +90,13 @@ float getVertex(int target){
       }
     }
   }
+  return 0.;
 }
 
 vec3 getNormal(int target){
   for(int i=0;i<=MAX_NORMALS;i++)
     if(i==target) return normals[i];
+  return vec3(0.);
 }
 
 #define MSET float s = sin( angle );float c = cos( angle );

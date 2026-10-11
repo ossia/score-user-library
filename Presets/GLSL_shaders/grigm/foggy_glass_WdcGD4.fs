@@ -97,6 +97,7 @@ float depth(vec3 ro, vec3 rd, float sig, inout float min_l){
         return END;
     }
   }
+  return END;
 }
 
 void ray_mirror(inout vec3 ro, inout vec3 rd, inout float d, inout float min_l){

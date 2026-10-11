@@ -128,6 +128,7 @@ precision mediump float;
 float random (vec2 st) { 
 	if (mode == 0) 			return sin(dot(st.xy + TIME*speed, vec2(12.9898, 78.233 * 2. *multiplier))) * 40.* 1.* detail;
 	else if (mode == 1)  	return fract(sin(dot(st.xy + TIME*speed *0.0001, vec2(12.9898,78.233*2.*multiplier)))* 43758.5453123*1.* detail);
+	return 0.;
 }
 
 

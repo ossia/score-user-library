@@ -44,6 +44,7 @@ vec3 getVertex(int index) {
     if ( index == 9 ) return vec3( 0.0, -0.525731, -0.850651 );
     if ( index == 10 ) return vec3( 0.0, 0.525731, -0.850651 );
     if ( index == 11 ) return vec3( 0.0, 0.525731, 0.850651 );
+    return vec3(0.);
 }
 
 ivec3 getTriangle(int index) {
@@ -67,12 +68,14 @@ ivec3 getTriangle(int index) {
     if ( index == 17 ) return ivec3( 7, 1, 0 );
     if ( index == 18 ) return ivec3( 3, 9, 8 );
     if ( index == 19 ) return ivec3( 4, 8, 0 );
+    return ivec3(0);
 }
 
 int getVertexIndex(ivec3 triangle, int index) {
     if ( index == 0 ) return triangle[0];
     if ( index == 1 ) return triangle[1];
     if ( index == 2 ) return triangle[2];
+    return 0;
 }
 
 void main() {

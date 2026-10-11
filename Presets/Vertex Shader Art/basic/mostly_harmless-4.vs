@@ -107,6 +107,7 @@ float getVertex(int target){
 
     }
   }
+  return 0.;
 }
 
 mat4 persp(float fov, float aspect, float zNear, float zFar) {

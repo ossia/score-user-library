@@ -86,6 +86,7 @@ vec2 rect_tri(vec2 pn[3], int vnum, float nlw) {
       return (pm * ops[i]).xy;
     }
   }
+  return vec2(0.);
 }
 
 // Bevel triangle to fill joints
