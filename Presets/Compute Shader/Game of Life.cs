@@ -181,7 +181,7 @@ int countNeighbors(ivec2 coord, ivec2 size) {
             neighborCoord.x = (neighborCoord.x + size.x) % size.x;
             neighborCoord.y = (neighborCoord.y + size.y) % size.y;
             
-            vec4 state = imageLoad(currentState, neighborCoord);
+            vec4 state = IMG_LOAD(currentState, neighborCoord);
             if (state.r > 0.5) count++;
         }
     }
@@ -238,7 +238,7 @@ void main() {
         return;
 
     if (PASSINDEX == 0) {
-        vec4 current = imageLoad(currentState, coord);
+        vec4 current = IMG_LOAD(currentState, coord);
         vec4 next = current;
 
         // Alpha marks a seeded cell: the first frame's contents are undefined.
@@ -275,7 +275,7 @@ void main() {
         return;
     }
 
-    vec4 state = imageLoad(nextState, coord);
+    vec4 state = IMG_LOAD(nextState, coord);
     IMG_STORE(currentState, coord, state);
 
     // Render to output with cell size scaling

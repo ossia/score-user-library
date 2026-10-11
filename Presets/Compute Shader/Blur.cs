@@ -80,15 +80,15 @@ void main() {
         if(radius < -0.001 || radius > 0.001) 
         {
             float weight = exp(-float(i * i) / (2.0 * (sigma * sigma * radius)));
-            color += imageLoad(inputImage, sampleCoord) * weight;
+            color += IMG_LOAD(inputImage, sampleCoord) * weight;
             totalWeight += weight;
         } 
         else 
         {
-            color += imageLoad(inputImage, sampleCoord);
+            color += IMG_LOAD(inputImage, sampleCoord);
             totalWeight += 1.0;
         }
     }
     
-    imageStore(outputImage, coord, color / totalWeight);
+    IMG_STORE(outputImage, coord, color / totalWeight);
 }

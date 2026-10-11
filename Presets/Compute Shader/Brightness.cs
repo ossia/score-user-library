@@ -51,7 +51,7 @@
 void main() {
     ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
     
-    vec4 color = imageLoad(inputImage, coord);
+    vec4 color = IMG_LOAD(inputImage, coord);
     
     if (applyEffect) {
         // Apply brightness and contrast
@@ -60,5 +60,5 @@ void main() {
         color.rgb = clamp(color.rgb, 0.0, 1.0);
     }
     
-    imageStore(outputImage, coord, color);
+    IMG_STORE(outputImage, coord, color);
 }

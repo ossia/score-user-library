@@ -68,5 +68,5 @@ void main()
     
     // Write to the read-write image
     // FIXME LOAD first
-    imageStore(NoiseImage, coord, vec4(color, 1.0));
+    IMG_STORE(NoiseImage, coord, vec4(color, 1.0));
 }
