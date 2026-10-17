@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"w=Math.pow(2,t>>8&t>>13),(128/w&t)>1?w*t:-w*(t+1)"},"Name":"Triangle Wave Song","Category":"Variables and arrays","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"(sin(sin(t/10)+t/(1000-(t>>10&t>>4))))*64+128"},"Name":"Bit Crusher","Category":"Sines","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"((t*(t>>8|t>>9)&46&t>>8))^(t&t>>13|t>>6)"},"Name":"Xpansive","Category":"C","Preset":[[0,{"Int":1}],[1,{"Int":0}],[2,{"Int":8000}]]}

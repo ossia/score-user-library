@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// Add more 9s to make it slower, remove some to make it faster\n-0.99999999*t*t"},"Name":"Slowing Down","Category":"JavaScript","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

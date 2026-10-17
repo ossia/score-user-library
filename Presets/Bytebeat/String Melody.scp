@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// Characters of a string are numbers\n((Math.abs(sin(t/(\"34543\"[t>>13&3])))+sin(t/\"23432\"[t>>14&3])))*40+128"},"Name":"String Melody","Category":"Variables and arrays","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

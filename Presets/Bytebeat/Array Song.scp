@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"a=[1,1,2,3,1,1,2,3,1,1,2,4,4,4,5,5,5][(t>>12)%17],\nb=[5,4,3,2][(t>>16)%4],\n(t*b/a)%50.1+(t*b/a)%50"},"Name":"Array Song","Category":"Variables and arrays","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}
