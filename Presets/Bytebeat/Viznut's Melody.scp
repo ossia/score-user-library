@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// A string indexed by t: its characters are the notes\n(t*(\"36364689\"[t>>13&7]&15))/12&128"},"Name":"Viznut's Melody","Category":"C","Preset":[[0,{"Int":1}],[1,{"Int":0}],[2,{"Int":8000}]]}

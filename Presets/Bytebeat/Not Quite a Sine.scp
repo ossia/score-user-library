@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"s=((t>>8&t>>4)%24)+1,v=128,(t*(t>>8&t>>4))&128?sin(t/s)*v+128:-sin(t/s)*v+128"},"Name":"Not Quite a Sine","Category":"Variables and arrays","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

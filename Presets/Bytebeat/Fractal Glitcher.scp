@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"(t&((t%(t>>1&t))|t>>3^t>>4)>>7)-1"},"Name":"Fractal Glitcher","Category":"Classic","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}
