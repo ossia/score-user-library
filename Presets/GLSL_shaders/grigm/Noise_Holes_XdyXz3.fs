@@ -14,6 +14,7 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XdyXz3 by airtight.  topographical holes cut in colored paper sheets. WIP - need to clean this up a little :)\n\ninspired by http:\/\/thisisnthappiness.com\/post\/145579664629\/enter-the-void-1010    ",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" }
 
   ]
 }

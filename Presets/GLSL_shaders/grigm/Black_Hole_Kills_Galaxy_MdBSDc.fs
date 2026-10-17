@@ -19,6 +19,8 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MdBSDc by rakesh111989.  Made based on this information below: Some Black Holes Can Kill Entire Galaxies\nhttp:\/\/www.space.com\/8336-black-holes-kill-entire-galaxies.html",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" },
+        { "NAME": "iChannel1", "TYPE": "image" }
 
   ]
 }
@@ -124,7 +126,7 @@ void main()
 	//float a=SPEED*t, co=cos(a),si=sin(a); 
 	//mat2 M = mat2(co,-si,si,co);
 	// adapt stars size to display resolution
-	float ratio = .8*RENDERSIZE.y/_iChannel0_imgSize.y;
+	float ratio = .8*RENDERSIZE.y/IMG_SIZE(iChannel0).y;
 	float stars1 = IMG_NORM_PIXEL(iChannel1,mod(ratio*uv+.5,1.0)).r, // M*uv
 	      stars2 = IMG_NORM_PIXEL(iChannel0,mod(ratio*uv+.5,1.0)).r,
 		  stars = pow(1.-(1.-stars1)*(1.-stars2),5.);

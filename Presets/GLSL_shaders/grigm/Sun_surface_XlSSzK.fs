@@ -15,6 +15,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XlSSzK by Duke.  Based on Shanes' Fiery Spikeball [url]https:\/\/www.shadertoy.com\/view\/4lBXzy[\/url] (I think that his implementation is more understandable than the original :)) Relief come from Siggraph workshop by Beautypi [url]https:\/\/www.shadertoy.com\/view\/MtsSRf[\/url]",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -40,7 +44,7 @@ float pn( in vec3 p )
     p = fract(p);
     p *= p*(3.0-2.0*p);
     vec2 uv = (ip.xy+vec2(37.0,17.0)*ip.z) + p.xy;
-    uv = IMG_NORM_PIXEL(iChannel0,mod((uv+ 0.5)/256.0,1.0),-100.0).yx;
+    uv = IMG_NORM_PIXEL(iChannel0,mod((uv+ 0.5)/256.0,1.0)).yx;
     return mix( uv.x, uv.y, p.z );
 }
 

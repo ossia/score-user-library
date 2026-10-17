@@ -17,7 +17,6 @@ precision mediump float;
 #endif
  
 
-uniform float depth;
 
 #define PI 3.1415927
 #define PI2 (PI*2.0)

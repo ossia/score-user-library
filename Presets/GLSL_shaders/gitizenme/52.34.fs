@@ -77,11 +77,6 @@
 
 #define AA 1
 
-int min(int a, int b) {
-    if(a < b) return a;
-    return b;
-}
-
 #define ZERO (min(FRAMEINDEX,0))
 
 float random (in vec2 _st) {

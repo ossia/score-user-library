@@ -19,6 +19,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MdjSD3 by inferno.  just a quick test to get layered snow. Try different textures in channel1 to get large snowflakes, which looks more like a feather ;)\n\nbased on https:\/\/www.shadertoy.com\/view\/Xd2SDc",
    "INPUTS": [
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
 		{
       		"TYPE" : "image",
       		"NAME" : "inputImage"

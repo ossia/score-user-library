@@ -94,10 +94,6 @@ vec3 hreflect(vec3 pos2, vec3 dir) {
 	}
 }
 
-float sinh(float f) {
-	return (exp(f)-exp(-f))*0.5;
-}
-
 vec4 hypervec(vec3 norm, float dist) {
 	float sinh = (exp(dist)-exp(-dist))*0.5;
 	return vec4(norm*sinh, sqrt(sinh*sinh+1.0));

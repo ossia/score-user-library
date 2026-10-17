@@ -43,9 +43,9 @@ precision lowp float;
 #define zoom 0.500
 #define tile  0.85
 
-#define speed (-0.003 * cos((cos(0.02*TIME))))
+#define speed (-0.003 * cos((cos(0.02*ttime))))
  
-#define brightness (0.07 * (1.0 - 0.5*sus_sin(0.5*TIME)))
+#define brightness (0.07 * (1.0 - 0.5*sus_sin(0.5*ttime)))
 #define darkmatter 0.400
 #define distfading 0.560
 #define saturation 0.800
@@ -55,13 +55,13 @@ precision lowp float;
 
 
 
-#define cloud 0.3 * (1.5 - 0.5*sus_sin(0.5*TIME))
+#define cloud 0.3 * (1.5 - 0.5*sus_sin(0.5*ttime))
 #define pi 3.141592653589
 
-#define centralDamping pow(pow( pow(uvs.x*uvs.x,1.3) + pow(uvs.y*uvs.y,1.3), 1.0/(6.) ),1.5*((0.5 - 0.5*sus_sin(0.5*TIME))))
+#define centralDamping pow(pow( pow(uvs.x*uvs.x,1.3) + pow(uvs.y*uvs.y,1.3), 1.0/(6.) ),1.5*((0.5 - 0.5*sus_sin(0.5*ttime))))
 //#define centralDamping 1.0
 
-#define TIME (TIME-25.0)
+#define ttime (TIME-25.0)
 
 // an alternating periodic smoothstepping function
 float sus_sin(float x)
@@ -84,21 +84,21 @@ vec2 warp2(vec2 uvs)
 	float r = pow( pow(uvs.x*uvs.x,1.3) + pow(uvs.y*uvs.y,1.3), 1.0/(0.9 / length(uvs)) );
 	
 	
-	return (0.5 + 0.5*sus_sin(0.5*TIME))*uvs  +  (0.5 - 0.5*sus_sin(0.5*TIME))*vec2((0.3/pow(r,1.)), (1.*a/3.1415927));
+	return (0.5 + 0.5*sus_sin(0.5*ttime))*uvs  +  (0.5 - 0.5*sus_sin(0.5*ttime))*vec2((0.3/pow(r,1.)), (1.*a/3.1415927));
 		
 }
 
 vec2 warp(vec2 uvs)
 {
 	
-	//vec2 uvs = uv2-0.4*sin(0.7*TIME)*vec2(cos(0.4*TIME),-sin(0.4*TIME));
+	//vec2 uvs = uv2-0.4*sin(0.7*ttime)*vec2(cos(0.4*ttime),-sin(0.4*ttime));
 	
 	
 	float a = abs(atan(uvs.y,uvs.x));
 	float r = pow( pow(uvs.x*uvs.x,1.3) + pow(uvs.y*uvs.y,1.3), 1.0/(6.) );
 	
 	
-	return (0.5 + 0.5*sus_sin(0.5*TIME))*uvs  +  (0.5 - 0.5*sus_sin(0.5*TIME))*vec2((0.3/pow(r,1.)), (1.*a/3.1415927));
+	return (0.5 + 0.5*sus_sin(0.5*ttime))*uvs  +  (0.5 - 0.5*sus_sin(0.5*ttime))*vec2((0.3/pow(r,1.)), (1.*a/3.1415927));
 		
 }
 
@@ -108,14 +108,14 @@ vec2 warp3(vec2 uvs)
 	float r = pow( pow(uvs.x*uvs.x,1.3) + pow(uvs.y*uvs.y,1.3), 1.0/(6.) );
 	
 	
-	return (0.5 + 0.5*sus_sin(0.5*TIME))*uvs  +  (0.5 - 0.5*sus_sin(0.5*TIME))*vec2(uvs /pow(length(uvs),1.5));
+	return (0.5 + 0.5*sus_sin(0.5*ttime))*uvs  +  (0.5 - 0.5*sus_sin(0.5*ttime))*vec2(uvs /pow(length(uvs),1.5));
 		
 }
 
 
 float field(in vec3 p) {
 	
-	float strength = 17. + .03 * log(1.e-6 + fract(sin(TIME) * 4373.11));
+	float strength = 17. + .03 * log(1.e-6 + fract(sin(ttime) * 4373.11));
 	float accum = 0.;
 	float prev = 0.;
 	float tw = 0.;
@@ -123,7 +123,7 @@ float field(in vec3 p) {
 
 	for (int i = 0; i < 3; ++i) {
 		float mag = dot(p, p);
-		p = abs(p) / mag + vec3(-.5, -.8 + 0.1*sin(TIME*0.7 + 2.0), -1.1+0.3*cos(TIME*0.3));
+		p = abs(p) / mag + vec3(-.5, -.8 + 0.1*sin(ttime*0.7 + 2.0), -1.1+0.3*cos(ttime*0.3));
 		float w = exp(-float(i) / 7.);
 		accum += w * exp(-strength * pow(abs(mag - prev), 2.3));
 		tw += w;
@@ -139,7 +139,7 @@ void main()
    	
 	float a_xz = 0.9;
 	float a_yz = -.6;
-	float a_xy = 0.9 + TIME*0.01;
+	float a_xy = 0.9 + ttime*0.01;
 	
 	
 	mat2 rot_xz = mat2(cos(a_xz),sin(a_xz),-sin(a_xz),cos(a_xz));
@@ -169,7 +169,7 @@ void main()
 	// warp!
 	
 	
-	uvs = uvs-0.4*sin(0.7*TIME)*vec2(cos(0.4*TIME),-sin(0.4*TIME));
+	uvs = uvs-0.4*sin(0.7*ttime)*vec2(cos(0.4*ttime),-sin(0.4*ttime));
 	
 	
 	vec2 uv = warp(uvs);
@@ -183,11 +183,11 @@ void main()
                
 	
 	from.y -= 20.0;
-	from.x += transverseSpeed*(300.0)*(0.5 + 0.5*cos(0.2*TIME));
+	from.x += transverseSpeed*(300.0)*(0.5 + 0.5*cos(0.2*ttime));
 	
-	from.z += 0.003*TIME;
+	from.z += 0.003*ttime;
 	
-	dir.x += -transverseSpeed*(300.0)*(cos(0.3*TIME));
+	dir.x += -transverseSpeed*(300.0)*(cos(0.3*ttime));
 	
 	
 	dir.xy*= rot_xy;
@@ -207,7 +207,7 @@ void main()
 	 
 	
 	//zoom
-	float zooom = (TIME-3311.)*speed;
+	float zooom = (ttime-3311.)*speed;
 	from += forward* zooom;
 	float sampleShift = mod( zooom, stepsize );
 	 
@@ -291,7 +291,7 @@ void main()
 	backCol2.r *= 0.05;
 	backCol2.b = 0.5*mix(backCol2.g, backCol2.b, 0.8);
 	backCol2.g = 0.0;
-	backCol2.bg = mix(backCol2.gb, backCol2.bg, 0.5*(cos(TIME*0.01) + 1.0));
+	backCol2.bg = mix(backCol2.gb, backCol2.bg, 0.5*(cos(ttime*0.01) + 1.0));
 	
 	vec4 newCol = (forCol2 + vec4(backCol2, 1.0)) * centralDamping;
 	

@@ -143,7 +143,7 @@ void main() {
         		coord *= 1.09 - (0.1 + (remap(zoom,0.0,1.0,-0.20,0.30) * 0.5)) + sin(TIME*feedback_sin_speed)*feedback_sin_amp;
     			coord.x /= RENDERSIZE.x / RENDERSIZE.y;
         		coord = (coord + 1.0)/2.0;
-	    		col = IMG_NORM_PIXEL(RenderBufferB, coord, 0.1) + 0.01;
+	    		col = IMG_NORM_PIXEL(RenderBufferB, coord) + 0.01;
              
         		// Our buffer which has the shape
 	    		col *= IMG_NORM_PIXEL(RenderBufferA, uv2);

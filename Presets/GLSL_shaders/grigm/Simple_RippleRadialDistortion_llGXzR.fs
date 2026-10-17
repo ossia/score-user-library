@@ -58,14 +58,14 @@
 			"MIN": -1.0,
 			"MAX": 1.0
 			
-		},
+		}
 		
 	],
   "CATEGORIES" : [
     "distorionripple",
     "Automatically Converted"
   ],
-  "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/llGXzR by tkoram20.  Just Random UV distortion tests",
+  "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/llGXzR by tkoram20.  Just Random UV distortion tests"
   
 }
 */

@@ -14,6 +14,10 @@
   ],
 	"INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -45,7 +49,7 @@ mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,-s,s,c);}
 
 
 float noise( in float x ){
-	return IMG_NORM_PIXEL(iChannel0, vec2(x*.01,1.),0.0).x;
+	return IMG_NORM_PIXEL(iChannel0, vec2(x*.01,1.)).x;
 }
 
 float hash( float n ){return fract(sin(n)*43758.5453);}
@@ -60,7 +64,7 @@ float noise( in vec3 x )
     vec3 f = fract(x);
 	f = f*f*(3.0-2.0*f);
 	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec2 rg = IMG_NORM_PIXEL(iChannel0,(uv+ 0.5)/256.0,0.0).yx;
+	vec2 rg = IMG_NORM_PIXEL(iChannel0,(uv+ 0.5)/256.0).yx;
 	return mix( rg.x, rg.y, f.z );
 }
 

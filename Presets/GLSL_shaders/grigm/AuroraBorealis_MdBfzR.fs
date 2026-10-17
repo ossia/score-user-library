@@ -19,6 +19,8 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MdBfzR by albertelwin.  Northern lights shader.",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" },
+        { "NAME": "iChannel1", "TYPE": "image" }
 
   ]
 }

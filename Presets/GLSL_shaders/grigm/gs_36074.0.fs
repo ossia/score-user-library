@@ -17,7 +17,7 @@ precision mediump float;
 
 // inertia rotation --joltz0r
 
-#define TIME 0.2*TIME
+#define ttime 0.2*TIME
 
 float check(vec2 p, float size) {
 	return mod(floor(p.x * size) + floor(p.y * size),2.0);
@@ -29,7 +29,7 @@ void main( void ) {
 	p.x *= RENDERSIZE.x/RENDERSIZE.y;	
 
 	//inertia towards the edges
-	float t = sin(TIME*10. - 4.0*distance(p, vec2(0.0)))*0.5;
+	float t = sin(ttime*10. - 4.0*distance(p, vec2(0.0)))*0.5;
 	p *= mat2(cos(t), -sin(t),
 		  sin(t),  cos(t)
 	);

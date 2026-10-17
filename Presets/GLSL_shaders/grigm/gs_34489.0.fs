@@ -106,7 +106,7 @@ mat4 translate( float x, float y, float z )
                  x,   y,   z,   1.0 );
 }
 
-mat4 inverse( in mat4 m )
+mat4 inverse_( in mat4 m )
 {
     return mat4(
         m[0][0], m[1][0], m[2][0], 0.0,
@@ -137,7 +137,7 @@ void main()
     mat4 rot = rotationAxisAngle( normalize(vec3(1.0,1.0,0.0)), TIME*speed );
     mat4 tra = translate( 0.0, 1.0, 0.0 );
     mat4 txi = tra * rot;
-    mat4 txx = inverse( txi );
+    mat4 txx = inverse_( txi );
 
     // raytrace
     float tmin = 10000.0;

@@ -12,6 +12,7 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/4l2XWK by Shane.  Point lit, bump mapped, sinusoidal warp.",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" }
 
   ]
 }

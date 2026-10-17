@@ -24,6 +24,18 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/lsyXDK by Duke.  Finally I found the time to finish this shader. It is a combination of [url=https:\/\/www.shadertoy.com\/view\/MdKXzc]Supernova remnant[\/url] and [url=https:\/\/www.shadertoy.com\/view\/lsySzd]Volumetric explosion[\/url] shaders.",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel2",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -60,7 +72,7 @@ float noise( in vec3 x )
     vec3 f = fract(x);
 	f = f*f*(3.0-2.0*f);
 	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec2 rg = IMG_NORM_PIXEL(iChannel0,mod((uv+ 0.5)/256.0,1.0),-100.0).yx;
+	vec2 rg = IMG_NORM_PIXEL(iChannel0,mod((uv+ 0.5)/256.0,1.0)).yx;
 	return 1. - 0.82*mix( rg.x, rg.y, f.z );
 }
 

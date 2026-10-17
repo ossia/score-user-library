@@ -108,7 +108,8 @@
 		{
 			"NAME": "rstIncr",
 			"TYPE": "event"
-		}
+		},
+		{ "NAME": "iChannel0", "TYPE": "image" }
 	
 
   ]
@@ -141,7 +142,7 @@ void main() {
         if (lightMovePattern == 0){
         	gl_FragColor = vec4(1,1.,.9,9)+d.x-t*i;
         }else if (lightMovePattern == 1){
-        	gl_FragColor = vec4(1,1.,.9,9)+d.x-sin((t*i)+=(TIME/5.0));
+        	gl_FragColor = vec4(1,1.,.9,9)+d.x-sin(t*i+TIME/5.0);
         }else if (lightMovePattern == 2){
         	
         	

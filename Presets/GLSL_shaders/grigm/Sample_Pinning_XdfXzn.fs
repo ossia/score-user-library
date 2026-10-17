@@ -18,6 +18,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XdfXzn by huwb.  Mash up of Clouds by iq and Cloud Ten by nimitz to demonstrate sample pinning & adaptive sampling algorithms presented at siggraph 2015: http:\/\/advances.realtimerendering.com\/s2015\/index.html",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -101,7 +105,7 @@ float noise( in vec3 x )
     f = f*f*(3.0-2.0*f);
     
     vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-    vec2 rg = IMG_PIXEL( iChannel0, (uv+ 1.0)/0.0, 0.0 ).yx;
+    vec2 rg = IMG_PIXEL( iChannel0, (uv+ 1.0)/0.0).yx;
     return mix( rg.x, rg.y, f.z );
 }
 

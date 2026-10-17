@@ -38,7 +38,6 @@ precision mediump float;
 vec3 wPos;
 vec3 sunPos = vec3(1.,10.,0.);
 
-uniform vec3 cameraPos;
 
 vec3 sunDirection = normalize(sunPos);
 
@@ -138,11 +137,11 @@ float rand(int seed, float ray)
 	return mod(sin(float(seed)*363.5346+ray*674.2454)*6743.4365, 1.0);
 }
 
-vec3 SunRay(in vec2 pos, in vec2 RENDERSIZE)
+vec3 SunRay(in vec2 pos, in vec2 res)
 {	
 	float pi = 3.14159265359;
 	vec2 position = pos;
-	position.y *= RENDERSIZE.y/RENDERSIZE.x;
+	position.y *= res.y/res.x;
 	position.y += 0.33;
 	float ang = atan(position.x, position.y);
 	float dist = length(position);

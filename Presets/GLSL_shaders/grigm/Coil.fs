@@ -34,7 +34,7 @@
 			"TYPE": "float",
 			"DEFAULT": 0.8
 		},{
-			"NAME": "smooth",
+			"NAME": "smoothing",
 			"TYPE": "float",
 			"DEFAULT": 1.0
 		}, {
@@ -75,7 +75,7 @@ void main() {
 	
 	for(int i=0; i<4; i++) {
 		A = ceil(SIZE * 2. * shape1) / ceil(SIZE *  shape2) * a + pos * TWOPI;
-		b = smoothstep(1.1 - width, ((1.1 - 120. / h) - width) * smooth, 8. * abs(r - (dist * .33) * sin(A) - size + (dist * .33)));
+		b = smoothstep(1.1 - width, ((1.1 - 120. / h) - width) * smoothing, 8. * abs(r - (dist * .33) * sin(A) - size + (dist * .33)));
 		v = max(v, ( 1. + fade * cos(A) ) / 1.8 * b);				 //1// cos(A) = depth-shading
 		a += TWOPI;         										// next turn
 	}

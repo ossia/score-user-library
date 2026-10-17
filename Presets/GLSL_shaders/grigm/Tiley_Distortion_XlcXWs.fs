@@ -14,6 +14,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XlcXWs by CyanSprite.  Tile Distortion I made, just having fun honestly.\nGave four different bools to play around with.",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    }
 
   ]
 }

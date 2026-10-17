@@ -12,6 +12,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Xdl3D2 by TekF.  March through a 2D grid, offsetting stars along z for each grid cell. This is much faster than doing a loop over all stars, but creates some artefacts.",
   "INPUTS": [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
 		
 		{
 			"NAME": "OFFSET_SPEED",
@@ -69,7 +73,7 @@ vec3 ToGamma( in vec3 col )
 
 vec4 Noise( in ivec2 x )
 {
-	return IMG_NORM_PIXEL(iChannel0,mod((vec2(x)+0.5)/256.0,1.0),-100.0);
+	return IMG_NORM_PIXEL(iChannel0,mod((vec2(x)+0.5)/256.0,1.0));
 }
 
 vec4 Rand( in int x )
@@ -77,7 +81,7 @@ vec4 Rand( in int x )
 	vec2 uv;
 	uv.x = (float(x)+0.5)/256.0;
 	uv.y = (floor(uv.x)+0.5)/256.0;
-	return IMG_NORM_PIXEL(iChannel0,mod(uv,1.0),-100.0);
+	return IMG_NORM_PIXEL(iChannel0,mod(uv,1.0));
 }
 
 

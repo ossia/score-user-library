@@ -22,7 +22,7 @@
                 -1,
                 -1
             ],
-            "NAME": "position",
+            "NAME": "camPos",
             "TYPE": "point2D"
         },
         {
@@ -158,22 +158,22 @@ Surface sdScene(vec3 p) {
     // p.xy *= Rotate(rotate);
     // p.xy *= Scale(vec2(4.8 - scale));
 
-    vec3 spLeftP = p + vec3(position.x, position.y, 0);
+    vec3 spLeftP = p + vec3(camPos.x, camPos.y, 0);
     spLeftP.xy *= Rotate(rotate);
     spLeftP.xy *= Scale(vec2(3. - scale));
 
-    vec3 spRightP = p + vec3(-position.x, position.y, 0);
+    vec3 spRightP = p + vec3(-camPos.x, camPos.y, 0);
     spRightP.xy *= Rotate(-rotate);
     spRightP.xy *= Scale(vec2(3. - scale));
     
     vec3 spCenterP = p;
     spCenterP.xy *= Scale(vec2(3. - scale));
 
-    vec3 spTopP = p + vec3(position.x, -position.y, 0);
+    vec3 spTopP = p + vec3(camPos.x, -camPos.y, 0);
     spTopP.xy *= Rotate(rotate);
     spTopP.xy *= Scale(vec2(3. - scale));
 
-    vec3 spBottomP = p + vec3(-position.x, position.y, 0);
+    vec3 spBottomP = p + vec3(-camPos.x, camPos.y, 0);
     spBottomP.xy *= Rotate(rotate);
     spBottomP.xy *= Scale(vec2(3. - scale));
 
@@ -257,8 +257,8 @@ vec3 shader(vec2 uv) {
     // uv += abs(dot(sin(uv * 20. + t * 0.5), -cos(uv * 20. - t * 0.5))) * .028;
 
     vec3 ro = vec3(0, 0, 4); // ray origin that represents camera position
-    // ro.yz *= Rotate(-position.y*3.14+1.);
-    // ro.xz *= Rotate(-position.x*6.2831);
+    // ro.yz *= Rotate(-camPos.y*3.14+1.);
+    // ro.xz *= Rotate(-camPos.x*6.2831);
 
     vec3 rd = normalize(vec3(uv, -1)); // ray direction
 

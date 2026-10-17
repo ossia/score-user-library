@@ -18,7 +18,7 @@
       "NAME" : "colorize",
       "TYPE" : "bool",
       "DEFAULT": false
-    },
+    }
   ]
 }
 */

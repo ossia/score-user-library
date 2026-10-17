@@ -17,6 +17,14 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XsXyzl by chadmiral.  Brute force (i.e. slow-ass) voronoi convolution filter.\nWould be much faster with a fast NN query (like KD tree, for example)",
   "INPUTS" : [
     {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "TYPE" : "image",
       "NAME" : "inputImage"
     },
@@ -33,7 +41,7 @@
 			"NAME": "circle_mask",
 			"TYPE": "bool",
 			"DEFAULT": false
-		},
+		}
   ]
 }
 */

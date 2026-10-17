@@ -21,6 +21,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XljXWD by eddietree.  A study on gold materials",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -205,7 +209,7 @@ vec3 renderColor( vec3 ro , vec3 rd, in vec3 color, vec3 currPos )
     float rim = pow(1.0-ndotl, 2.5);
     //float specular = pow( dot( lightDir, normal ), 3.0);
 
-    vec3 reflectionColor = textureCube(iChannel0,reflect( rd, normal )).xyz;
+    vec3 reflectionColor = IMG_CUBE(iChannel0,reflect( rd, normal )).xyz;
 
     //color = vec3(0.2);
     color = reflectionColor;
@@ -270,7 +274,7 @@ void main() {
     
     // calc color
     //vec3 col = vec3(0.9);
-    vec3 col = textureCube(iChannel0,rd).xyz;
+    vec3 col = IMG_CUBE(iChannel0,rd).xyz;
     renderRayMarch( ro, rd, col );
     
     // vignette, OF COURSE

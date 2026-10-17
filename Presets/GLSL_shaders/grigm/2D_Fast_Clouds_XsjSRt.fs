@@ -19,7 +19,8 @@
     {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
-    }
+    },
+    { "NAME": "iChannel0", "TYPE": "image" }
   ]
 }
 */

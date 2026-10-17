@@ -19,6 +19,10 @@
 	],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MsdyW2 by felipunkerito.  Trying some reflections based on iq's Cubemaps, please help me get it right as it is not photoreal as it should",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    },
   
   	{
 			"NAME": "inputImage",
@@ -153,7 +157,7 @@ vec3 rend( vec3 ro, vec3 rd, float t )
     vec3 ref = reflect( rd, p );
     vec3 refN = reflect( rd, n );
     vec3 con = vec3( 1.0 );
-    vec3 cub = textureCube(iChannel0,ref).xyz;
+    vec3 cub = IMG_CUBE(iChannel0,ref).xyz;
     
     float amb = 0.5 + 0.5 * n.y;
     float dif = max( 0.0, dot( n, lig ) );
@@ -185,7 +189,7 @@ vec3 rend( vec3 ro, vec3 rd, float t )
     vec3 lig = normalize( vec3( sin( TIME ), 0.8, cos( TIME ) ) );
     vec3 ref = reflect( rd, ro + rd * t );
     vec3 col;
-    vec3 tex = textureCube(iChannel0,ref).rgb;
+    vec3 tex = IMG_CUBE(iChannel0,ref).rgb;
     
     //float rim = pow( clamp( 1.0 + dot( rd, ref ), 0.0, 1.0 ), 4.0 );
     float spe = pow( clamp( dot( ref, lig ), 0.0, 1.0 ), 16.0 );
@@ -224,7 +228,7 @@ void main() {
     
     // Time varying pixel color
     
-    vec3 tex = textureCube(iChannel0,rd).xyz;
+    vec3 tex = IMG_CUBE(iChannel0,rd).xyz;
     
     vec3 col = d < EPS ? rend( ro, rd, t ) : vec3( tex );
     // Output to screen

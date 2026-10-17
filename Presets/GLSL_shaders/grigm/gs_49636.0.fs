@@ -17,7 +17,6 @@
 
 //precision mediump float;
 
-uniform vec2 resolution1;
 
 void main(void)
 {

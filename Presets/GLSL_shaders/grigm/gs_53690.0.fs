@@ -21,7 +21,6 @@ precision mediump float;
 #endif
 
 // glslsandbox uniforms
-uniform vec4 date;
 
 // shadertoy emulation
 #define iTime TIME

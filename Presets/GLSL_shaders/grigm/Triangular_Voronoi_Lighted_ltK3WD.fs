@@ -22,6 +22,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/ltK3WD by aiekick.  based on [url=https:\/\/www.shadertoy.com\/view\/ltKGWD]Triangular Voronoi[\/url]",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    }
 
   ]
 }
@@ -31,6 +35,8 @@
 // based on Triangular Voronoi https://www.shadertoy.com/view/ltKGWD
 void main()
 {
+	vec4 f = vec4(0.);
+	vec2 g = gl_FragCoord.xy;
 	vec2 p = g /= RENDERSIZE.y / 5.; f.x=9.;
     
     float t = TIME * 0.1;
@@ -55,5 +61,6 @@ void main()
 	if ( f.x == f.z*.866 - f.w*.5) 		n = vec3(0,1,0);
 	if ( f.x == f.w) 					n = vec3(0,0,1);
 	
-    f = sqrt(textureCube(iChannel0, -n)*f.x);
+    f = sqrt(IMG_CUBE(iChannel0, -n)*f.x);
+    gl_FragColor = f;
 }

@@ -16,6 +16,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MscXRH by Shane.  A daytime version of my \"Cheap Cloud Flythrough\" example.",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
 	{
             "NAME": "flight_speed",
             "TYPE": "float",
@@ -137,7 +141,7 @@ vec3 hash33(vec3 p){
 float n3D( in vec3 p ){
     
     vec3 i = floor(p); p -= i; p *= p*(3. - 2.*p);
-	p.xy = IMG_NORM_PIXEL(iChannel0,mod((p.xy + i.xy + vec2(37, 17)*i.z + .5)/256.,1.0),-100.).yx;
+	p.xy = IMG_NORM_PIXEL(iChannel0,mod((p.xy + i.xy + vec2(37, 17)*i.z + .5)/256.,1.0)).yx;
 	return mix(p.x, p.y, p.z);
 }
 

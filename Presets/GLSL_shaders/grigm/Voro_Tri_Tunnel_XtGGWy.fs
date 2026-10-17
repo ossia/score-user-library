@@ -22,6 +22,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XtGGWy by aiekick.  Voro Tri Tunnel",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    }
 
   ]
 }
@@ -54,7 +58,7 @@ vec4 voro(vec2 uv) // https://www.shadertoy.com/view/ltK3WD
 	if ( d == cp.x*.866 - cp.y*.5) 		n = vec3(0,1,0);
 	if ( d == cp.y) 					n = vec3(0,0,1);
 	
-    return sqrt(textureCube(iChannel0, -n)*d*1.5);
+    return sqrt(IMG_CUBE(iChannel0, -n)*d*1.5);
 }
 
 void main()

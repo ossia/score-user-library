@@ -18,6 +18,14 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XtlfDn by Shane.  Moving a camera through a cloud scene. It's rendered in a surreal, stylized fashion, and utilizes a relatively cheap construction process.",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
 	{
             "NAME": "flight_speed",
             "TYPE": "float",
@@ -151,7 +159,7 @@ float n3D( in vec3 p ){
     //return texture(iChannel1, p/24., 0.25).x;
     
     vec3 i = floor(p); p -= i; p *= p*(3. - 2.*p);
-	p.xy = IMG_NORM_PIXEL(iChannel0,mod((p.xy + i.xy + vec2(37, 17)*i.z + .5)/256.,1.0),-100.).yx;
+	p.xy = IMG_NORM_PIXEL(iChannel0,mod((p.xy + i.xy + vec2(37, 17)*i.z + .5)/256.,1.0)).yx;
 	return mix(p.x, p.y, p.z);
 }
 

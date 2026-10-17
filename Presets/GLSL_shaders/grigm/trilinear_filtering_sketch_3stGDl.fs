@@ -12,6 +12,10 @@
         }
     },
     "INPUTS": [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
         {
             "NAME": "iMouse",
             "TYPE": "point2D"

@@ -15,7 +15,7 @@
 //precision highp float;
 
 
-#define TIME toverride
+#define ttime toverride
 float toverride;
 
 #define PI 3.14159265359
@@ -37,12 +37,12 @@ float map(vec3 p) {
 
     float d = 10000.0;
     for (float i = 0.0; i < 20.0; i++) {
-        p.xz *= rotate(TIME * 0.13 + 0.84);
-        p.yx *= rotate(TIME * 0.19 + 1.43);
+        p.xz *= rotate(ttime * 0.13 + 0.84);
+        p.yx *= rotate(ttime * 0.19 + 1.43);
         vec3 q = p;
         q.xy = vec2(abs(q.x), sign(q.x) * q.y);
         q -= vec3(1.0, 0.0, 0.0);
-        q.yz *= rotate(TIME * 0.45);
+        q.yz *= rotate(ttime * 0.45);
         d = min(d, box(q, vec3(0.05, 0.05, 2.0)));
     }
     return d;

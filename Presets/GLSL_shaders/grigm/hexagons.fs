@@ -82,7 +82,7 @@
   ],
   "PASSES": [
     {
-      "TARGET": "buffer",
+      "TARGET": "hexBuffer",
       "persistent": true
     },
     {}
@@ -91,16 +91,16 @@
 
 #define MAX_ITER 40
 
-vec3 filter() {
+vec3 filterPass() {
 	vec2 delta = 1. / RENDERSIZE;
 	
-	vec3 val = IMG_NORM_PIXEL(buffer, isf_FragNormCoord.xy).xyz;
+	vec3 val = IMG_NORM_PIXEL(hexBuffer, isf_FragNormCoord.xy).xyz;
 
 
-	vec3 l = IMG_NORM_PIXEL(buffer, isf_FragNormCoord.xy + vec2(0., delta.y)).xyz;
-	vec3 r = IMG_NORM_PIXEL(buffer, isf_FragNormCoord.xy - vec2(0., delta.y)).xyz;
-	vec3 u = IMG_NORM_PIXEL(buffer, isf_FragNormCoord.xy + vec2(delta.x, 0.)).xyz;
-	vec3 d = IMG_NORM_PIXEL(buffer, isf_FragNormCoord.xy - vec2(delta.x, 0.)).xyz;
+	vec3 l = IMG_NORM_PIXEL(hexBuffer, isf_FragNormCoord.xy + vec2(0., delta.y)).xyz;
+	vec3 r = IMG_NORM_PIXEL(hexBuffer, isf_FragNormCoord.xy - vec2(0., delta.y)).xyz;
+	vec3 u = IMG_NORM_PIXEL(hexBuffer, isf_FragNormCoord.xy + vec2(delta.x, 0.)).xyz;
+	vec3 d = IMG_NORM_PIXEL(hexBuffer, isf_FragNormCoord.xy - vec2(delta.x, 0.)).xyz;
 
 	vec3 n = IMG_NORM_PIXEL(noise, fract(isf_FragNormCoord.xy * 2. + TIME )).xyz - 0.5;
 	
@@ -257,7 +257,7 @@ void main() {
 			gl_FragColor = vec4(raycast(), 1.0);
 			
 		} else if (PASSINDEX == 1) {
-			gl_FragColor = vec4(filter(), 1.0);
+			gl_FragColor = vec4(filterPass(), 1.0);
 		}
 
 	

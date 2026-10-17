@@ -10,7 +10,7 @@
 			"DEFAULT": 0.5,
 			"MIN": 0.0,
 			"MAX": 3.0
-	},
+	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#35376.3"
 }

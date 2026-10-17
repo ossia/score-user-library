@@ -40,9 +40,9 @@ void main( void ) {
 	// +pk
 	float spectrum = 0.3;
 	const float lim = 128.;
-	#define TIME TIME*0.037 + pos.x*10.
+	#define ttime TIME*0.037 + pos.x*10.
 	for(float i = 0.; i < lim; i++){
-		spectrum += band(pos, 1.0*sin(TIME*0.1), 1.0*sin(TIME*i/lim))/pow(lim, 0.95);
+		spectrum += band(pos, 1.0*sin(ttime*0.1), 1.0*sin(ttime*i/lim))/pow(lim, 0.95);
 	}
 	
 	

@@ -44,9 +44,6 @@
 //int range[2], precision;
 //glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_HIGH_FLOAT, range, &precision);
 
-uniform float time;
-uniform vec2 touch;
-uniform vec2 resolution;
 
 float rand(vec2 co)
 {

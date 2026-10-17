@@ -16,11 +16,19 @@
         }
     },
     "INPUTS": [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel2",
+      "TYPE" : "image"
+    },
     
     	{
      		"NAME" : "inputImage",
       		"TYPE" : "image"
-    	},
+    	}
     	
     	
     ],

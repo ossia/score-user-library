@@ -98,7 +98,7 @@ vec3 background(vec2 uv){
 
 
 float map(vec3 p){
-    #define TIME (TIME * 1.)
+    #define ttime (TIME * 1.)
 	float h = 10e9;
     vec3 q = p;
     p.y += sin(p.z*1.)*0.3;
@@ -115,10 +115,10 @@ float map(vec3 p){
     
 	h = length(
 		//+ atan(p.y)*0.7 
-        +cos(p*1.  + cos(TIME*0.75)*0.1 )
-        +sin(p.z*0.4  + sin(TIME*0.75)*1.62 )*0.1
+        +cos(p*1.  + cos(ttime*0.75)*0.1 )
+        +sin(p.z*0.4  + sin(ttime*0.75)*1.62 )*0.1
         
-        -cos(p.y * 1. + sin(TIME)*0.02)
+        -cos(p.y * 1. + sin(ttime)*0.02)
         +cos(p.z)
 //        -.2*cos(9.*(p.z+.3*p.x-p.y))
     )-1.;

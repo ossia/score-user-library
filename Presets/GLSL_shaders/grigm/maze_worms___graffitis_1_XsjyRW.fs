@@ -30,7 +30,7 @@
 
 #define CS(a)  vec2(cos(a),sin(a))
 #define rnd(x) ( 2.* fract(456.68*sin(1e4*x+mod(DATE.w,100.))) -1.) // NB: mod(t,1.) for less packed pattern
-#define T(U) textureLod(BufferA, (U)/R, 0.)
+#define T(U) IMG_PIXEL(BufferA, (U))
 const float r = 1.5, N = 100., da = .5; // width , number of worms , turn angle at hit
 
 void main() {
@@ -39,7 +39,7 @@ void main() {
 
 	    vec2 R = RENDERSIZE.xy;
 	    
-	    if (T(R).x==0.) { gl_FragCoord.xy = abs(gl_FragCoord.xy/R*2.-1.); gl_FragColor  = vec4(max(gl_FragCoord.x,gl_FragCoord.y)>1.-r/R.y); gl_FragColor.w=0.; return; }
+	    if (T(R).x==0.) { vec2 U = abs(gl_FragCoord.xy/R*2.-1.); gl_FragColor  = vec4(max(U.x,U.y)>1.-r/R.y); gl_FragColor.w=0.; return; }
 	
 	    if (gl_FragCoord.y==.5 && T(gl_FragCoord.xy).w==0.) {                           // initialize heads state: P, a, t
 	        gl_FragColor = vec4( R/2. + R/2.4* vec2(rnd(gl_FragCoord.x),rnd(gl_FragCoord.x+.1)) , 3.14 * rnd(gl_FragCoord.x+.2), 1);

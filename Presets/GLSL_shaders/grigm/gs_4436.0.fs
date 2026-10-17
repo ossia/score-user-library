@@ -46,7 +46,7 @@
 		"MIN": 0.000000,
 		"MAX": 0.000005
 		
-	},
+	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#4436.0"
 }

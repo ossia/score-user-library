@@ -12,6 +12,7 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Xds3zB by maqflp.  just moon, stars & sky. ",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" }
 
   ]
 }

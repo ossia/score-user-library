@@ -21,6 +21,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/lljSDW by eddietree.  same as other, but applying a cubemap",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -263,10 +267,10 @@ void renderColor( vec3 ro , vec3 rd, inout vec3 color, vec3 currPos )
     float rim = pow(1.0-ndotl, 6.0);
     float rim_distorted = pow(1.0-ndotl_distorted, 6.0);
 
-	color = textureCube(iChannel0,refract( rd, normal, 0.85 )).xyz;
+	color = IMG_CUBE(iChannel0,refract( rd, normal, 0.85 )).xyz;
     color = mix( color, normal*0.5+vec3(0.5), rim_distorted+0.1 );
     //color += rim;
-    color += textureCube(iChannel0,reflect( rd, normal )).xyz * rim + vec3(rim*0.6);
+    color += IMG_CUBE(iChannel0,reflect( rd, normal )).xyz * rim + vec3(rim*0.6);
     //color = normal;
 
     // refracted ray-march into the inside area
@@ -329,7 +333,7 @@ void main() {
     // calc color
     //vec3 col = vec3(0.9);
     
-    vec3 col = textureCube(iChannel0,rd).xyz;
+    vec3 col = IMG_CUBE(iChannel0,rd).xyz;
     
     renderRayMarch( ro, rd, col );
     

@@ -128,12 +128,12 @@ float map(vec3 p)
 
 float march(in vec3 ro, in vec3 rd)
 {
-	float precision = 0.001;
-    float h = precision * 2.0;
+	float eps_prec = 0.001;
+    float h = eps_prec * 2.0;
     float d = 0.;
     for( int i=0; i<ITERATIONS; i++ )
     {
-        if( abs(h) < precision || d > MAX_DIST ) break;
+        if( abs(h) < eps_prec || d > MAX_DIST ) break;
         d += h;
 	    float res = map(ro + rd * d);
         h = res;

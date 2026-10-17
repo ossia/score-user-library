@@ -120,10 +120,10 @@ float abspow(float b, float e) {
 	return pow(b, e);
 }
 
-float middleSquareY(float TIME) {
+float middleSquareY(float time_) {
 	float pulseRatio = 0.3;
 
-	float phase = mod(TIME, PERIOD);
+	float phase = mod(time_, PERIOD);
 	float pulseWidth = pulseRatio * PERIOD;
 
 	if (phase > pulseWidth) {
@@ -133,10 +133,10 @@ float middleSquareY(float TIME) {
 	return abspow(cos(phase * PI / pulseWidth), 0.5);
 }
 
-float outerSquareX(float TIME) {
+float outerSquareX(float time_) {
 	float moveRatio = 0.3;
 	
-	float phase = mod(TIME, PERIOD);
+	float phase = mod(time_, PERIOD);
 	float moveTime = moveRatio * PERIOD;
 
 	if (phase > moveTime) {

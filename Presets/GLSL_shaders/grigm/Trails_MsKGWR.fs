@@ -12,6 +12,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MsKGWR by iq.  Doodle",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
 	{
 		"NAME": "speed",
 		"TYPE": "float",

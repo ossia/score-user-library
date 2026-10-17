@@ -32,7 +32,7 @@ precision mediump float;
 
 // --------[ Original ShaderToy begins here ]---------- //
 #define RAYMARCH_ITERATIONS 60.0
-#define TIME (iTime * 0.4)
+#define ttime (iTime * 0.4)
 #define LINE_LENGTH 1.0
 #define LINE_SPACE 1.0
 #define LINE_WIDTH 0.007
@@ -185,13 +185,13 @@ vec3 rayMarch(vec3 rayOrigin, vec3 rayDirection, out vec3 color)
  
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);
-	vec3 cameraCenter = vec3(0.0, 0.0, -TIME * 10.0);
+	vec3 cameraCenter = vec3(0.0, 0.0, -ttime * 10.0);
     cameraCenter -= spaceBounding(cameraCenter);
     vec3 cameraAngle = vec3(0.0, 0.0, 0.0);
     
-    vec3 prevCameraCenter = vec3(0.0, 0.0, -(TIME - 0.01) * 10.0);
+    vec3 prevCameraCenter = vec3(0.0, 0.0, -(ttime - 0.01) * 10.0);
     prevCameraCenter -= spaceBounding(prevCameraCenter);
-    vec3 nextCameraCenter = vec3(0.0, 0.0, -(TIME + 0.4) * 10.0);
+    vec3 nextCameraCenter = vec3(0.0, 0.0, -(ttime + 0.4) * 10.0);
     nextCameraCenter -= spaceBounding(nextCameraCenter);
     
     vec3 velocityVector = -normalize(nextCameraCenter - prevCameraCenter);
@@ -213,8 +213,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     
     float fog = sqrt(smoothstep(FOG_DISTANCE, 0.0, distance(cameraCenter, hitPoint)));
     
-    vec3 ambient = mix(SECOND_COLOR, FIRST_COLOR, pow(sin(TIME) * 0.5 + 0.5, 2.0) * 0.6);
-    ambient *= sqrt((sin(TIME) + sin(TIME * 3.0)) * 0.25 + 1.0);
+    vec3 ambient = mix(SECOND_COLOR, FIRST_COLOR, pow(sin(ttime) * 0.5 + 0.5, 2.0) * 0.6);
+    ambient *= sqrt((sin(ttime) + sin(ttime * 3.0)) * 0.25 + 1.0);
     vec3 bloom = smoothstep(-0.0, 15.0, color);
     
     color = color * vision * 0.07 * fog + bloom + ambient * 0.3;

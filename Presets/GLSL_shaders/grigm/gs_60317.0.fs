@@ -66,9 +66,9 @@ void get_tile_colour(in vec2 tile_id, out vec3 tile_hsv)
     tile_hsv.y = 1.0;
     // value
     float modTime = mod(iTime, 100.0);
-    float TIME = floor(modTime * 2.0);
-    float level = step(lit_tile_threshold, hash31(vec3(tile_id, TIME)));
-    float lastLevel = step(lit_tile_threshold, hash31(vec3(tile_id, TIME - 1.0)));
+    float ttime = floor(modTime * 2.0);
+    float level = step(lit_tile_threshold, hash31(vec3(tile_id, ttime)));
+    float lastLevel = step(lit_tile_threshold, hash31(vec3(tile_id, ttime - 1.0)));
     level = max(level, lastLevel * (1.0 - fract(modTime * 2.0) * 1.5));
     tile_hsv.z = level;
 }

@@ -17,7 +17,8 @@
     {
       "TYPE" : "image",
       "NAME" : "inputImage"
-    }
+    },
+    { "NAME": "iChannel1", "TYPE": "image" }
   ]
 }
 */

@@ -222,9 +222,9 @@ void main() {
 
 	
 
-	float filter = smoothcircle( uv_distorted, 0.15, 48.);
+	float filt = smoothcircle( uv_distorted, 0.15, 48.);
 
-	uv_distorted = complex_mul(((uv_distorted - 0.5)*mix(2., 12., filter)), mousePolar) + offset;
+	uv_distorted = complex_mul(((uv_distorted - 0.5)*mix(2., 12., filt)), mousePolar) + offset;
 
 	
 

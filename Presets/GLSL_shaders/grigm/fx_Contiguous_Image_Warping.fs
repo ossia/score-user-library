@@ -13,6 +13,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/wlj3DK by TimoKinnunen.  Testing image warping controlled by a grid of movable points.",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
   		{
      		"NAME" : "inputImage",
       		"TYPE" : "image"
@@ -47,7 +51,7 @@
 		{
      		"NAME" : "animate_distortion",
       		"TYPE" : "bool",
-      		"DEFAULT": true,
+      		"DEFAULT": true
     	},
     	
     	
@@ -75,7 +79,7 @@
 	    {
     		"NAME" : "showGrid",
       		"TYPE" : "bool",
-      		"DEFAULT": false,
+      		"DEFAULT": false
     	}
   ]
 }
@@ -109,7 +113,7 @@ vec2 hash2(vec2 p)
        //vec2 o = fract(vec2((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y));
     
        // Texture-based
-       vec2 o = IMG_NORM_PIXEL(iChannel0,mod((p+0.5)/256.0,1.0),-100.0).xy;
+       vec2 o = IMG_NORM_PIXEL(iChannel0,mod((p+0.5)/256.0,1.0)).xy;
     
     if(animate_distortion){
        o = 0.5 + dist_grid_sin_move_speed*sin( TIME + o* dist_grid_sin_amp );

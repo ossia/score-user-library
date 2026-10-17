@@ -135,7 +135,7 @@
 			"NAME": "backIsAlpha",
 			"TYPE": "bool",
 			"DEFAULT": false
-		},
+		}
 		
 		
 		

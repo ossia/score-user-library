@@ -12,7 +12,7 @@
     { "NAME": "softness",   "TYPE": "float", "DEFAULT": 0.05, "MIN": 0.0, "MAX": 0.5 },
     { "NAME": "satGuard",   "TYPE": "float", "DEFAULT": 0.15, "MIN": 0.0, "MAX": 1.0 },
     {
-      "NAME": "output",
+      "NAME": "outputMode",
       "TYPE": "long",
       "DEFAULT": 0,
       "VALUES": [0, 1, 2],
@@ -58,11 +58,11 @@ void main()
 
   float match = h * s * v;
 
-  if(output == 0)
+  if(outputMode == 0)
   {
     gl_FragColor = vec4(vec3(match), 1.0);
   }
-  else if(output == 1)
+  else if(outputMode == 1)
   {
     // Cut matched pixels (green-screen removal).
     gl_FragColor = vec4(src.rgb, src.a * (1.0 - match));

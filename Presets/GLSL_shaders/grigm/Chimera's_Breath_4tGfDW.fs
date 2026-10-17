@@ -71,6 +71,7 @@
 //Recommended values between 0.03 and 0.2
 //higher values simulate lower viscosity fluids (think billowing smoke)
 #define VORTICITY_AMOUNT 0.11
+#define MOUSE4 vec4(iMouse, 2., 2.)
 
 float mag2(vec2 p){return dot(p,p);}
 vec2 point1(float t) {
@@ -87,11 +88,11 @@ vec4 solveFluid(sampler2D smp, vec2 uv, vec2 w, float time, vec3 mouse, vec3 las
 	const float K = 0.2;
 	const float v = 0.55;
     
-    vec4 data = textureLod(smp, uv, 0.0);
-    vec4 tr = textureLod(smp, uv + vec2(w.x , 0), 0.0);
-    vec4 tl = textureLod(smp, uv - vec2(w.x , 0), 0.0);
-    vec4 tu = textureLod(smp, uv + vec2(0 , w.y), 0.0);
-    vec4 td = textureLod(smp, uv - vec2(0 , w.y), 0.0);
+    vec4 data = IMG_NORM_PIXEL(smp, uv);
+    vec4 tr = IMG_NORM_PIXEL(smp, uv + vec2(w.x , 0));
+    vec4 tl = IMG_NORM_PIXEL(smp, uv - vec2(w.x , 0));
+    vec4 tu = IMG_NORM_PIXEL(smp, uv + vec2(0 , w.y));
+    vec4 td = IMG_NORM_PIXEL(smp, uv - vec2(0 , w.y));
     
     vec3 dx = (tr.xyz - tl.xyz)*0.5;
     vec3 dy = (tu.xyz - td.xyz)*0.5;
@@ -100,7 +101,7 @@ vec4 solveFluid(sampler2D smp, vec2 uv, vec2 w, float time, vec3 mouse, vec3 las
     data.z -= dt*dot(vec3(densDif, dx.x + dy.y) ,data.xyz); //density
     vec2 laplacian = tu.xy + td.xy + tr.xy + tl.xy - 4.0*data.xy;
     vec2 viscForce = vec2(v)*laplacian;
-    data.xyw = textureLod(smp, uv - dt*data.xy*w, 0.).xyw; //advection
+    data.xyw = IMG_NORM_PIXEL(smp, uv - dt*data.xy*w).xyw; //advection
     
     vec2 newForce = vec2(0);
     #ifndef MOUSE_ONLY
@@ -143,28 +144,6 @@ vec4 solveFluid(sampler2D smp, vec2 uv, vec2 w, float time, vec3 mouse, vec3 las
 float length2(vec2 p){return dot(p,p);}
 mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
 
-//Chimera's Breath
-//by nimitz 2018 (twitter: @stormoid)
-
-//see "Common" tab for fluid simulation code
-
-float length2(vec2 p){return dot(p,p);}
-mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
-
-//Chimera's Breath
-//by nimitz 2018 (twitter: @stormoid)
-
-//see "Common" tab for fluid simulation code
-
-float length2(vec2 p){return dot(p,p);}
-mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
-
-//Chimera's Breath
-//by nimitz 2018 (twitter: @stormoid)
-
-//see "Common" tab for fluid simulation code
-
-mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
 
 //shader incoming relating to this palette
 vec3 getPalette(float x, vec3 c1, vec3 c2, vec3 p1, vec3 p2)
@@ -224,8 +203,8 @@ void main() {
 	    vec2 uv = isf_FragNormCoord;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
-	    vec4 lastMouse = texelFetch(BufferC, ivec2(0,0), 0);
-	    vec4 data = solveFluid(BufferC, uv, w, TIME, iMouse.xyz, lastMouse.xyz);
+	    vec4 lastMouse = IMG_PIXEL(BufferC, vec2(0.5));
+	    vec4 data = solveFluid(BufferC, uv, w, TIME, MOUSE4.xyz, lastMouse.xyz);
 	    
 	    if (FRAMEINDEX < 20)
 	    {
@@ -233,7 +212,7 @@ void main() {
 	    }
 	    
 	    if (gl_FragCoord.y < 1.)
-	        data = iMouse;
+	        data = MOUSE4;
 	    
 	    gl_FragColor = data;
 	    
@@ -244,8 +223,8 @@ void main() {
 	    vec2 uv = isf_FragNormCoord;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
-	    vec4 lastMouse = texelFetch(BufferA, ivec2(0,0), 0);
-	    vec4 data = solveFluid(BufferA, uv, w, TIME, iMouse.xyz, lastMouse.xyz);
+	    vec4 lastMouse = IMG_PIXEL(BufferA, vec2(0.5));
+	    vec4 data = solveFluid(BufferA, uv, w, TIME, MOUSE4.xyz, lastMouse.xyz);
 	    
 	    if (FRAMEINDEX < 20)
 	    {
@@ -253,7 +232,7 @@ void main() {
 	    }
 	    
 	    if (gl_FragCoord.y < 1.)
-	        data = iMouse;
+	        data = MOUSE4;
 	    
 	    gl_FragColor = data;
 	    
@@ -264,8 +243,8 @@ void main() {
 	    vec2 uv = isf_FragNormCoord;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
-	    vec4 lastMouse = texelFetch(BufferB, ivec2(0,0), 0);
-	    vec4 data = solveFluid(BufferB, uv, w, TIME, iMouse.xyz, lastMouse.xyz);
+	    vec4 lastMouse = IMG_PIXEL(BufferB, vec2(0.5));
+	    vec4 data = solveFluid(BufferB, uv, w, TIME, MOUSE4.xyz, lastMouse.xyz);
 	    
 	    if (FRAMEINDEX < 20)
 	    {
@@ -273,7 +252,7 @@ void main() {
 	    }
 	    
 	    if (gl_FragCoord.y < 1.)
-	        data = iMouse;
+	        data = MOUSE4;
 	    
 	    gl_FragColor = data;
 	    
@@ -285,13 +264,13 @@ void main() {
 	    vec2 mo = iMouse.xy / RENDERSIZE.xy;
 	    vec2 w = 1.0/RENDERSIZE.xy;
 	    
-	    vec2 velo = textureLod(BufferA, uv, 0.).xy;
-	    vec4 col = textureLod(BufferD, uv - dt*velo*w*3., 0.); //advection
+	    vec2 velo = IMG_NORM_PIXEL(BufferA, uv).xy;
+	    vec4 col = IMG_NORM_PIXEL(BufferD, uv - dt*velo*w*3.); //advection
 	    if (gl_FragCoord.y < 1. && gl_FragCoord.x < 1.)
 	        col = vec4(0);
-	    vec4 lastMouse = texelFetch(BufferD, ivec2(0,0), 0).xyzw;
+	    vec4 lastMouse = IMG_PIXEL(BufferD, vec2(0.5)).xyzw;
 	    
-	    if (iMouse.z > 1. && lastMouse.z > 1.)
+	    if (MOUSE4.z > 1. && lastMouse.z > 1.)
 	    {
 	        float str = smoothstep(-.5,1.,length(mo - lastMouse.xy/RENDERSIZE.xy));   
 	        col += str*0.0009/(pow(length(uv - mo),1.7)+0.002)*pal2(-TIME*0.7);
@@ -312,7 +291,7 @@ void main() {
 	    col = max(col - (0.0001 + col*0.004)*.5, 0.); //decay
 	    
 	    if (gl_FragCoord.y < 1. && gl_FragCoord.x < 1.)
-	        col = iMouse;
+	        col = MOUSE4;
 	
 	    gl_FragColor = col;
 	    
@@ -320,7 +299,7 @@ void main() {
 	else if (PASSINDEX == 5)	{
 
 
-	    vec4 col = textureLod(BufferD, isf_FragNormCoord, 0.);
+	    vec4 col = IMG_NORM_PIXEL(BufferD, isf_FragNormCoord);
 	    if (gl_FragCoord.y < 1. || gl_FragCoord.y >= (RENDERSIZE.y-1.))
 	        col = vec4(0);
 	    gl_FragColor = col;

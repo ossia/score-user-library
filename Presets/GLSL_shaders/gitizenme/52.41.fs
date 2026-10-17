@@ -36,7 +36,7 @@
             "LABEL": "length",
             "MAX": 6.28,
             "MIN": 0,
-            "NAME": "length",
+            "NAME": "len",
             "TYPE": "float"
         },
         {
@@ -71,7 +71,7 @@
 #define SCALE scale // = 0.5;
 #define SPEED speed // = 0.25;
 #define INTENSITY intensity // = 20.0;
-#define LENGTH length // = 0.5;
+#define LENGTH len // = 0.5;
 #define RADIUS radius // = 0.020;
 #define FADING fading // = 0.125;
 #define GLOW glow // = 4.0;

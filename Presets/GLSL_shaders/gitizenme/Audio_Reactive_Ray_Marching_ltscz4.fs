@@ -27,7 +27,9 @@
         {
             "NAME": "iMouse",
             "TYPE": "point2D"
-        }
+        },
+        { "NAME": "iChannel0", "TYPE": "cubemap" },
+        { "NAME": "iChannel1", "TYPE": "image" }
     ]
 }
 
@@ -46,7 +48,7 @@ vec3 effect(vec2 g)
     g /= 200.;
     g.x -= t * .015;
 	g.y += sin(g.x * 46.5 + t) * .12;
-	vec3 c = textureLod(iChannel1, g, 4.*(sin(t)*.5+.5)).rgb;
+	vec3 c = IMG_NORM_PIXEL(iChannel1, mod(g, 1.0)).rgb;
 	c = smoothstep(c+.5, c, vec3(.71));
     return c;
 }
@@ -143,8 +145,8 @@ void main() {
     float marchPrecision = 0.5; // ray marching tolerance precision
     
     /////////////////////////////////////////////////////////
-    if ( iMouse.z>0.) cam_e = iMouse.x/RENDERSIZE.x * 10.; // mouse x axis 
-    if ( iMouse.z>0.) cam_d = iMouse.y/RENDERSIZE.y * 50.; // mouse y axis 
+    if ( iMouse.x > 0.) cam_e = iMouse.x/RENDERSIZE.x * 10.; // mouse x axis 
+    if ( iMouse.x > 0.) cam_d = iMouse.y/RENDERSIZE.y * 50.; // mouse y axis 
     /////////////////////////////////////////////////////////
     
 	vec2 uv = isf_FragNormCoord * 2. -1.;
@@ -179,9 +181,9 @@ void main() {
 		vec3 n = calcNormal(p, 0.1);
 		b=li;
 		ray = reflect(rd, n);
-		cubeRay = textureCube(iChannel0,ray).rgb  * refl_i ;
+		cubeRay = IMG_CUBE(iChannel0,ray).rgb  * refl_i ;
 		ray = refract(ray, n, refr_a);
-		cubeRay += textureCube(iChannel0,ray).rgb * refr_i;
+		cubeRay += IMG_CUBE(iChannel0,ray).rgb * refr_i;
 		col = cubeRay+pow(b,15.); 
             
             // lighting        
@@ -207,9 +209,9 @@ void main() {
 	}
 	else
 	{
-		col = textureCube(iChannel0,rd).rgb;
+		col = IMG_CUBE(iChannel0,rd).rgb;
 	}
     //col *= dstef;
     
-	gl_FragColor.rgb = col;
+	gl_FragColor = vec4(col, 1.0);
 }

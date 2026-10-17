@@ -87,7 +87,7 @@
     {
       "NAME" : "displayMoon",
       "TYPE" : "bool",
-      "DEFAULT" : 1,
+      "DEFAULT" : 1
     },
     {
       "NAME" : "moonSize",

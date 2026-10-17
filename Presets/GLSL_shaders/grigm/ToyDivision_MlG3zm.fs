@@ -10,6 +10,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MlG3zm by seani.  Tried to recreate the classic Joy Division album art.\n\nhttps:\/\/en.wikipedia.org\/wiki\/Unknown_Pleasures",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    }
 
   ]
 }
@@ -81,7 +85,7 @@ void main()
         for(float i = 0.0; i < 60.0; i++)
         {
             //generate waveform from audio fft and perlin noise
-            waveY = 2.5*texture2D(iChannel0, vec2(i/50.0, 0.25)).x;
+            waveY = 2.5*IMG_NORM_PIXEL(iChannel0, vec2(i/50.0, 0.25)).x;
             waveY = waveY*pNoise(vec2(uv.x + TIME/5.0, y), 3)/2.0;
 
             //apply window function

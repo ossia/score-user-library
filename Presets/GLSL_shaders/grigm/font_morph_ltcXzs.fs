@@ -14,6 +14,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/ltcXzs by FabriceNeyret2.  trying the new font texture https:\/\/www.shadertoy.com\/view\/llcXRl",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    }
 
   ]
 }

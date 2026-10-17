@@ -86,7 +86,7 @@
 #define PI 3.1415925359
 #define MAX_STEPS 100// Mar Raymarching steps
 #define MAX_DIST 100.// Max Raymarching distance
-#define SURF_DIST.001// Surface Distance
+#define SURF_DIST .001// Surface Distance
  
 // const vec4 GroundColor = vec4(1.0, 1.0, 1.0, 1.0);
 //const vec4 GroundColor = vec4(1.0, 1.0, 1.0, 1.0);

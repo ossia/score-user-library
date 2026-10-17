@@ -5,7 +5,20 @@
     "GLSLSandbox"
   ],
   "INPUTS" : [
-
+    {
+      "NAME" : "bin0",
+      "TYPE" : "float",
+      "DEFAULT" : 0.0,
+      "MIN" : 0.0,
+      "MAX" : 1.0
+    },
+    {
+      "NAME" : "bin1",
+      "TYPE" : "float",
+      "DEFAULT" : 0.0,
+      "MIN" : 0.0,
+      "MAX" : 1.0
+    }
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#51640.0"
 }
@@ -36,9 +49,6 @@ precision highp float;
 #endif
 
 
-uniform float bin0;
-uniform float bin1;
-uniform float bin2;
 
 #define FISH_EYE
 //#define FAKE_AO

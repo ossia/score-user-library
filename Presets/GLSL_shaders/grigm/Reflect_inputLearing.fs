@@ -28,7 +28,8 @@
     {
       "NAME" : "iChannel1",
       "TYPE" : "audio"
-    }
+    },
+    { "NAME": "iChannel0", "TYPE": "cubemap" }
   ]
 }
 */
@@ -38,7 +39,6 @@
 #define STEPS 1028
 #define FAR 1000.0
 
-uniform samplerCube cubeMap;
 
 float hash( float n )
 {
@@ -155,7 +155,7 @@ vec3 rend( vec3 ro, vec3 rd, float t )
     vec3 ref = reflect( rd, p );
     vec3 refN = reflect( rd, n );
     vec3 con = vec3( 1.0 );
-    vec3 cub = textureCube(iChannel0,ref).xyz;
+    vec3 cub = IMG_CUBE(iChannel0,ref).xyz;
     
     float amb = 0.5 + 0.5 * n.y;
     float dif = max( 0.0, dot( n, lig ) );
@@ -186,10 +186,10 @@ vec3 rend( vec3 ro, vec3 rd, float t )
     vec3 n = normalize( grad( ro + rd * t ) );
     vec3 lig = normalize( vec3( sin( TIME ), 0.8, cos( TIME ) ) );
     vec3 ref = reflect( rd, ro + rd * t );
-    vec3 col;
+    vec3 col = vec3( 0.0 );
     
         
-    vec3 tex = textureCube(iChannel0,ref).rgb;
+    vec3 tex = IMG_CUBE(iChannel0,ref).rgb;
     
     //float rim = pow( clamp( 1.0 + dot( rd, ref ), 0.0, 1.0 ), 4.0 );
     float spe = pow( clamp( dot( ref, lig ), 0.0, 1.0 ), 16.0 );
@@ -228,7 +228,7 @@ void main() {
     
     // Time varying pixel color
     
-    vec3 tex = textureCube(iChannel0,rd).xyz;
+    vec3 tex = IMG_CUBE(iChannel0,rd).xyz;
    	vec3 col;
    	vec4 colA;
    	if(d<EPS){

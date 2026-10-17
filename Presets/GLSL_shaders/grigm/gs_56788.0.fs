@@ -28,7 +28,7 @@ float iTime = 0.0;
 const vec4 iMouse = vec4(0.0);
 
 // Protect glslsandbox uniform names
-#define TIME        stemu_time
+#define ttime        stemu_time
 
 // --------[ Original ShaderToy begins here ]---------- //
 
@@ -60,11 +60,11 @@ mat3 calcLookAtMatrix(in vec3 camPosition, in vec3 camTarget, in float roll) {
   return mat3(uu, vv, ww);
 }
 
-float fbm1x(float x, float TIME){
+float fbm1x(float x, float ttime){
 	float amplitude = 1.;
     float frequency = 1.;
     float y = sin(x * frequency);
-    float t = 0.01*(-TIME * 130.0);
+    float t = 0.01*(-ttime * 130.0);
     y += sin(x*frequency*2.1 + t)*4.5;
     y += sin(x*frequency*1.72 + t*1.121)*4.0;
     y += sin(x*frequency*2.221 + t*0.437)*5.0;
@@ -179,14 +179,14 @@ float smin1(float a, float b, float k){
 }
 
 vec2 uv = vec2(0.);
-float TIME = 0.;
+float ttime = 0.;
 #define LAYERS_CNT 14.
 int layer(){
-    return int(floor(mod(abs(uv.x*.25 - TIME - uv.y*.5), LAYERS_CNT)));
+    return int(floor(mod(abs(uv.x*.25 - ttime - uv.y*.5), LAYERS_CNT)));
 }
 
 float stripe(){
-    return smoothstep(.4975, .495, distance(fract(uv.x*.25 - TIME - uv.y*.5), .5));
+    return smoothstep(.4975, .495, distance(fract(uv.x*.25 - ttime - uv.y*.5), .5));
 }
 
 #define MIN_DIST 0.
@@ -211,8 +211,8 @@ float scene(vec3 p){
     mp.y -= 1.62999;
     if(layer() >= 2){
         float yFactor = p.y;
-        float TIME = iTime * 2.;
-        mp.xz -= vec2(fbm1x(yFactor, TIME), fbm1x(yFactor + 78.233, TIME))
+        float ttime = iTime * 2.;
+        mp.xz -= vec2(fbm1x(yFactor, ttime), fbm1x(yFactor + 78.233, ttime))
                * smoothstep(0., 3., yFactor);
         
     }
@@ -296,7 +296,7 @@ vec3 makeClr(vec2 fragCoord){
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);
     uv = fragCoord/iResolution.xy;
-    TIME = iTime;
+    ttime = iTime;
     fragColor = vec4(0.);
     for(int y = 0; y < AA; ++y)
         for(int x = 0; x < AA; ++x){
@@ -309,7 +309,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 }
 // --------[ Original ShaderToy ends here ]---------- //
 
-#undef TIME
+#undef ttime
 
 void main(void)
 {

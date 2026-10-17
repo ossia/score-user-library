@@ -32,7 +32,7 @@
       "MAX" : 64.0,
       "DEFAULT" : 8.0,
       "MIN" : 4.0
-    },
+    }
 
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#16542.0"

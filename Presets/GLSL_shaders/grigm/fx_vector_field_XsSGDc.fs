@@ -12,6 +12,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XsSGDc by FabriceNeyret2.  the noise color is interpreted as a vector.\nF: toggle flow or gradient field\nC: toggle curves or stick vectors\nA: iterated offset along the field",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
   	{
      	"NAME" : "inputImage",
       	"TYPE" : "image"
@@ -71,7 +75,7 @@
       		"MAX" : 1,
       		"DEFAULT" : 0.5,
       		"MIN" : 0.0
-    	},
+    	}
     	
   ],
   "ISFVSN" : "2"

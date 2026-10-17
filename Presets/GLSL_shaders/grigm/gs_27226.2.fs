@@ -179,9 +179,9 @@ void main( void ) {
 	if(colors.x>0.1 || colors.y>0.1 || colors.z>0.1 ){
 		alpha = 1.0;
 	}
-	vec4 smooth = smoothstep( 0.1, 1.5, abs(vec4(colors, alpha )));
+	vec4 smoothing = smoothstep( 0.1, 1.5, abs(vec4(colors, alpha )));
 	
 	
-	gl_FragColor = smooth;
+	gl_FragColor = smoothing;
 
 }

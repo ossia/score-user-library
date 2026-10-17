@@ -47,7 +47,7 @@
       "DEFAULT" : 1.00,
       "MIN" : 0.0,
       "MAX" : 10.0
-    },
+    }
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#2867.0"
 }
@@ -59,7 +59,6 @@ precision highp float;
 #endif
 //anony_gt
 //mod @ToBSn
-uniform vec2 reyboard;
 
 
 float thing(vec2 pos) 

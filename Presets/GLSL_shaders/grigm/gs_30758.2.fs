@@ -53,7 +53,7 @@
 	{
 		"NAME": "COS_DEFORM",
 		"TYPE": "bool",
-		"DEFAULT": false,
+		"DEFAULT": false
 	},
 	{
 			"NAME": "COS_DEFORM_SPEED",

@@ -208,8 +208,8 @@ void main() {
 	offset =  - complex_mul(offset, mousePolar) +TIME*0.0;
 	vec2 uv_distorted = uv;
 	
-	float filter = smoothcircle( uv_distorted, 0.15, 48.);
-	uv_distorted = complex_mul(((uv_distorted - 0.5)*mix(2., 12., filter)), mousePolar) + offset;
+	float filt = smoothcircle( uv_distorted, 0.15, 48.);
+	uv_distorted = complex_mul(((uv_distorted - 0.5)*mix(2., 12., filt)), mousePolar) + offset;
 	
 	vec2 position = uv_distorted;//isf_FragNormCoord;
 	

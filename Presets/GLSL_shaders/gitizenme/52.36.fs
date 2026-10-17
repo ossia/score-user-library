@@ -104,11 +104,6 @@
 
 #define AA 1
 
-int min(int a, int b) {
-    if(a < b) return a;
-    return b;
-}
-
 #define ZERO (min(FRAMEINDEX,0))
 float bpm = 140.;
 float bbpm = 4.;  // beats per measure
@@ -177,11 +172,6 @@ mat2 rotate(float a) {
     float s = sin(a);
     float c = cos(a);
     return mat2(c, -s, s, c);
-}
-
-mat2 scale(vec2 scale){
-    return mat2(scale.x,0.0,
-                0.0,scale.y);
 }
 
 

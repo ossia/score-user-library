@@ -83,9 +83,6 @@ vec3 hnormalizet(vec3 v){//normalization of "time like" vectors.
 }*/
 /////////////////////////////////////////////////
 
-int sign(int v){
-	if(v<0) return -1; else if(v==0)return 0;else return 1;
-}
 
 void init() {
 	spaceType=float(sign(qParam*rParam+pParam*rParam+pParam*qParam-pParam*qParam*rParam));//1./pParam+1./qParam+1./rParam-1.;

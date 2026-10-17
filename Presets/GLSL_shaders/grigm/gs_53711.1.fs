@@ -35,7 +35,6 @@ precision mediump float;
 
 #define PHI (sqrt(5.)*0.5 + 0.5)
 #define PI 3.14159265
-#define t TIME
 
 
 // HG_SDF
@@ -429,7 +428,7 @@ mat3 calcLookAtMatrix( in vec3 ro, in vec3 ta, in float roll )
     return mat3( uu, vv, ww );
 }
 
-void doCamera(out vec3 camPos, out vec3 camTar, in float TIME, in vec2 mouse) 
+void doCamera(out vec3 camPos, out vec3 camTar, in float time_, in vec2 mouse) 
 {
 	vec2 m 	= mouse;
 	float y = m.y += 0.00001;

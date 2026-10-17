@@ -11,6 +11,11 @@
         {
             "NAME": "iMouse",
             "TYPE": "point2D"
+        },
+        {
+            "NAME": "showVorticity",
+            "TYPE": "bool",
+            "DEFAULT": false
         }
     ],
     "PASSES": [
@@ -46,6 +51,9 @@
 
 //voronoi particle tracking 
 
+#define size RENDERSIZE.xy
+#define SAMPLE(a, p, s) IMG_NORM_PIXEL((a), (p)/s)
+
 void Check(inout vec4 U, vec2 pos, vec2 dx)
 {
     vec4 Unb = SAMPLE(BufferA, pos+dx, size);
@@ -57,14 +65,6 @@ void Check(inout vec4 U, vec2 pos, vec2 dx)
         U = Unb; //copy the particle info
     }
 }
-
-vec4 B(vec2 pos)
-{
-   return 5.*SAMPLE(BufferD, pos, size);
-}
-
-#define size RENDERSIZE.xy
-#define SAMPLE(a, p, s) texture((a), (p)/s)
 
 float gauss(vec2 x, float r)
 {
@@ -90,11 +90,15 @@ float gauss(vec2 x, float r)
 #define minimal_density 0.02
 
 const float radius = 2.0;
+
+// each original shadertoy buffer had its own B(): pick it by pass
 vec4 B(vec2 pos)
 {
-   return SAMPLE(BufferD, pos, size);
+    if (PASSINDEX == 0) return 5.*SAMPLE(BufferD, pos, size);
+    if (PASSINDEX == 2) return SAMPLE(BufferB, pos, size);
+    if (PASSINDEX == 3) return SAMPLE(BufferC, pos, size);
+    return SAMPLE(BufferD, pos, size);
 }
-
 
 const vec2 damp = vec2(0.000,0.01);
 const vec2 ampl = vec2(0.1,1.);
@@ -109,99 +113,12 @@ vec4 sample_blured(vec2 uv, float radius, float gamma)
 {
     vec4 pix = vec4(0.);
     float norm = 0.001;
+    float imax = (PASSINDEX == 5) ? 10. : 5.;
     //weighted integration over mipmap levels
-    for(float i = 0.; i < 5.; i += 0.5)
+    for(float i = 0.; i < imax; i += 0.5)
     {
         float k = weight(i, log2(1. + radius), gamma);
-        pix += k*IMG_NORM_PIXEL(BufferA,mod(uv,1.0),i); 
-        norm += k;
-    }
-    //nomalize
-    return pix/norm;
-}
-
-//voronoi interpolation
-vec4 voronopolation(vec2 pos, float radius)
-{
-    vec4 particle_param = SAMPLE(BufferA, pos, size);
-    float dist = length(mod(pos-particle_param.xy+size*0.5,size) - size*0.5);
-    //blur the voronoi texture with a radius proportional to the closest particle distance
-    return sample_blured(pos/size,radius*dist,0.25);
-}
-
-vec2 V(vec2 pos)
-{
-    return voronopolation(pos, 1.).zw;
-}
-
-vec4 B(vec2 pos)
-{
-   return SAMPLE(BufferB, pos, size);
-}
-
-
-const vec2 damp = vec2(0.000,0.01);
-const vec2 ampl = vec2(0.1,1.);
-
-float weight(float t, float log2radius, float gamma)
-{
-    return exp(-gamma*pow(log2radius-t,2.));
-}
-
-//mipmap blur https://www.shadertoy.com/view/WsVGWV
-vec4 sample_blured(vec2 uv, float radius, float gamma)
-{
-    vec4 pix = vec4(0.);
-    float norm = 0.001;
-    //weighted integration over mipmap levels
-    for(float i = 0.; i < 5.; i += 0.5)
-    {
-        float k = weight(i, log2(1. + radius), gamma);
-        pix += k*IMG_NORM_PIXEL(BufferA,mod(uv,1.0),i); 
-        norm += k;
-    }
-    //nomalize
-    return pix/norm;
-}
-
-//voronoi interpolation
-vec4 voronopolation(vec2 pos, float radius)
-{
-    vec4 particle_param = SAMPLE(BufferA, pos, size);
-    float dist = length(mod(pos-particle_param.xy+size*0.5,size) - size*0.5);
-    //blur the voronoi texture with a radius proportional to the closest particle distance
-    return sample_blured(pos/size,radius*dist,0.25);
-}
-
-vec2 V(vec2 pos)
-{
-    return voronopolation(pos, 1.).zw;
-}
-
-vec4 B(vec2 pos)
-{
-   return SAMPLE(BufferC, pos, size);
-}
-
-
-const vec2 damp = vec2(0.000,0.01);
-const vec2 ampl = vec2(0.1,1.);
-
-float weight(float t, float log2radius, float gamma)
-{
-    return exp(-gamma*pow(log2radius-t,2.));
-}
-
-//mipmap blur https://www.shadertoy.com/view/WsVGWV
-vec4 sample_blured(vec2 uv, float radius, float gamma)
-{
-    vec4 pix = vec4(0.);
-    float norm = 0.001;
-    //weighted integration over mipmap levels
-    for(float i = 0.; i < 5.; i += 0.5)
-    {
-        float k = weight(i, log2(1. + radius), gamma);
-        pix += k*IMG_NORM_PIXEL(BufferA,mod(uv,1.0),i); 
+        pix += k*IMG_NORM_PIXEL(BufferA,mod(uv,1.0)); 
         norm += k;
     }
     //nomalize
@@ -225,54 +142,11 @@ vec2 V(vec2 pos)
 // Fork of "Lava blaster" by michael0884. https://shadertoy.com/view/WdtXzs
 // 2019-11-05 21:20:41
 
-const int KEY_UP = 38;
-const int KEY_DOWN  = 40;
-
-float weight(float t, float log2radius, float gamma)
-{
-    return exp(-gamma*pow(log2radius-t,2.));
-}
-
-//mipmap blur https://www.shadertoy.com/view/WsVGWV
-vec4 sample_blured(vec2 uv, float radius, float gamma)
-{
-    vec4 pix = vec4(0.);
-    float norm = 0.001;
-    //weighted integration over mipmap levels
-    for(float i = 0.; i < 10.; i += 0.5)
-    {
-        float k = weight(i, log2(1. + radius), gamma);
-        pix += k*IMG_NORM_PIXEL(BufferA,mod(uv,1.0),i); 
-        norm += k;
-    }
-    //nomalize
-    return pix/norm;
-}
-
-//voronoi interpolation
-vec4 voronopolation(vec2 pos, float radius)
-{
-    vec4 particle_param = SAMPLE(BufferA, pos, size);
-    float dist = length(mod(pos-particle_param.xy+size*0.5,size) - size*0.5);
-    //blur the voronoi texture with a radius proportional to the closest particle distance
-    return sample_blured(pos/size,radius*dist,0.25);
-}
-
-vec4 B(vec2 pos)
-{
-   return SAMPLE(BufferD, pos, size);
-}
-
 //density and velocity
 vec3 pdensity(vec2 pos)
 {
    vec4 particle_param = SAMPLE(BufferA, pos, size);
    return vec3(particle_param.zw,gauss(pos - particle_param.xy, 0.7*radius));
-}
-
-vec2 V(vec2 pos)
-{
-    return voronopolation(pos, 1.).zw;
 }
 
 void main() {
@@ -314,7 +188,7 @@ void main() {
 	
 	    vec2 pressure = vec2(B(ppos+vec2(1,0)).z - B(ppos+vec2(-1,0)).z, B(ppos+vec2(0,1)).z - B(ppos+vec2(0,-1)).z);
 	    //mouse interaction
-	    if(iMouse.z>0.)
+	    if(iMouse.x>0.)
 	    {
 	        float k = gauss(ppos-iMouse.xy, 25.);
 	        gl_FragColor.zw = gl_FragColor.zw*(1.-k) + k*0.2*vec2(cos(0.02*TIME*dt), sin(0.02*TIME*dt));
@@ -383,7 +257,7 @@ void main() {
 	   vec4 blur = SAMPLE(BufferD, gl_FragCoord.xy, size);
 	    float vorticity = V(gl_FragCoord.xy+vec2(1,0)).y-V(gl_FragCoord.xy-vec2(1,0)).y-V(gl_FragCoord.xy+vec2(0,1)).x+V(gl_FragCoord.xy-vec2(0,1)).x;
 	   //gl_FragColor = vec4(SAMPLE(iChannel2, gl_FragCoord.xy, size).xyz  + 0.8*vec3(0.4,0.6,0.9)*vorticity,1.0);
-	    if(texelFetch( iChannel2, ivec2(KEY_UP,2), 0 ).x < 0.5)
+	    if(!showVorticity)
 	    {
 	        if(mod(TIME,3.) < 1.5)
 	        {

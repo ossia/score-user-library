@@ -117,7 +117,7 @@ vec3 raymarch( in vec3 ro, vec3 rd, vec2 tminmax )
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);
-	float TIME = iTime;
+	float time_ = iTime;
     vec2 q = fragCoord.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0 * q;
     p.x *= iResolution.x/iResolution.y;
@@ -129,7 +129,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
     vec3 ro = zoom*vec3(4.);
     ro.yz*=rot(m.y);
-    ro.xz*=rot(m.x+ 0.1*TIME);
+    ro.xz*=rot(m.x+ 0.1*time_);
     vec3 ta = vec3( 0.0 , 0.0, 0.0 );
     vec3 ww = normalize( ta - ro );
     vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );

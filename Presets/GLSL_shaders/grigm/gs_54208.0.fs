@@ -27,8 +27,8 @@ float iTime;
 vec3  iResolution;
 
 // Protect glslsandbox uniform names
-#define TIME        stemu_time
-#define RENDERSIZE  stemu_resolution
+#define ttime        stemu_time
+#define rsize_  stemu_resolution
 
 // --------[ Original ShaderToy begins here ]---------- //
 // "Tetrominos" by Kali
@@ -200,7 +200,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 	spd*=.3;
 #endif
 	
-	float ti=(iTime+5./spd)*spd*(1.+iTime*acceleration); //get TIME 
+	float ti=(iTime+5./spd)*spd*(1.+iTime*acceleration); //get ttime 
 	float t=abs(55.-mod(ti,110.)); // make forward/backward cycles
 
 #ifdef scroll
@@ -229,8 +229,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 }
 // --------[ Original ShaderToy ends here ]---------- //
 
-#undef TIME
-#undef RENDERSIZE
+#undef ttime
+#undef rsize_
 
 void main(void)
 {

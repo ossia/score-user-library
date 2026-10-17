@@ -12,6 +12,7 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XdfSz7 by Pitzik4.  Just a quick little shader I made when I was bored. I think it looks pretty good.",
   "INPUTS" : [
+        { "NAME": "iChannel1", "TYPE": "image" }
 
   ]
 }

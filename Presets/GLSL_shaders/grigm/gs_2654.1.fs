@@ -40,7 +40,7 @@
 			"DEFAULT":1.0,
 			"MIN": 0.0,
 			"MAX": 3.0
-		},
+		}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#2654.1"
 }
@@ -63,11 +63,11 @@ precision mediump float;
 }*/
 vec4 f(vec2 x) {
 	float d = 1.0;
-	float TIME = TIME;
+	float time_ = TIME;
 	for(int i = 0; i < int(iter); ++i) {
-		vec2 foo = vec2(sin(TIME*sinSpeed), cos(TIME*cosSpeed));
+		vec2 foo = vec2(sin(time_*sinSpeed), cos(time_*cosSpeed));
 		d *= length(foo * sizeInv - x);
-		TIME += sinCosTimeincr;
+		time_ += sinCosTimeincr;
 	}
 	return vec4(d);
 }

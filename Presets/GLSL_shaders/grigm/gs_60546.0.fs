@@ -8,9 +8,9 @@
 	{
             "NAME": "enable_stars",
             "TYPE": "bool",
-           "DEFAULT": 0,
+           "DEFAULT": 0
             
-          },
+          }
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#60546.0"
 }

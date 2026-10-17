@@ -39,9 +39,9 @@ uniform vec2
 	
 	;
 
-vec2 position(float TIME){
-	TIME /= 10.0;
-	return vec2((sin(TIME)-sin(TIME*3.0))/2.0, (sin(TIME+22.0)-cos(TIME*3.0))/5.0 );
+vec2 position(float time_){
+	time_ /= 10.0;
+	return vec2((sin(time_)-sin(time_*3.0))/2.0, (sin(time_+22.0)-cos(time_*3.0))/5.0 );
 }
 
 void main( void ) {

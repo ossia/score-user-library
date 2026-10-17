@@ -76,7 +76,7 @@
         5,
         6
        ]
-    },
+    }
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#36074.0"
 }
@@ -90,7 +90,7 @@ precision mediump float;
 
 // inertia rotation --joltz0r
 
-#define TIME 0.2*TIME
+#define ttime 0.2*TIME
 
 
 void main( void ) {
@@ -119,7 +119,7 @@ void main( void ) {
 
 
 	//inertia towards the edges
-	float t = sin((TIME*deform_speed)*10. - deform_freq*distance(p, vec2(0.0)))*deform_amp;
+	float t = sin((ttime*deform_speed)*10. - deform_freq*distance(p, vec2(0.0)))*deform_amp;
 	
 	if(distant_type==0){
 		p *= mat2(cos(t), -sin(t), sin(t),  cos(t));

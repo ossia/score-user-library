@@ -215,11 +215,11 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     
     //-----------------------------------------------------
     
-    float TIME = iTime;
-    float an = 0.3*TIME - 7.0*m.x;
-    float sec = mod(TIME,1.);
+    float time_ = iTime;
+    float an = 0.3*time_ - 7.0*m.x;
+    float sec = mod(time_,1.);
     
-    float spI = floor(mod(TIME,float(SPH)));
+    float spI = floor(mod(time_,float(SPH)));
 
     //-----------------------------------------------------
     for( int i=0; i<SPH; i++ )

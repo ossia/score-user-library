@@ -13,6 +13,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/4tlBz8 by demofox.  Unpacking tiny clouds to better understand it, and to get rid of the texture read\ntiny clouds: https:\/\/www.shadertoy.com\/view\/lsBfDz\n\nA blog post explaining \"tiny clouds\" is here:\nhttps:\/\/blog.demofox.org\/2017\/11\/26\/dissecting-tiny-clouds\/",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    }
 
   ]
 }

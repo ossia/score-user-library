@@ -49,7 +49,8 @@
 			"MIN": 0.0,
 			"MAX": 5.0,
 			"DEFAULT": 1.0
-		}
+		},
+	{ "NAME": "iChannel0", "TYPE": "image" }
   ]
 }
 */

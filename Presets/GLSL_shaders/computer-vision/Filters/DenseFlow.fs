@@ -7,7 +7,7 @@
     { "NAME": "inputImage", "TYPE": "image" },
     { "NAME": "prev",       "TYPE": "image" },
     { "NAME": "scale",      "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 4.0 },
-    { "NAME": "smooth",     "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 1.0 }
+    { "NAME": "smoothing",     "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 1.0 }
   ]
 }*/
 
@@ -38,7 +38,7 @@ void main()
 
   // Light smoothing toward the neighbourhood-average flow encoded in prev's RG (if present).
   vec2 prevFlow = IMG_NORM_PIXEL(prev, uv).rg * 2.0 - 1.0;
-  flow = mix(flow, prevFlow, smooth * 0.5);
+  flow = mix(flow, prevFlow, smoothing * 0.5);
 
   flow *= scale;
 

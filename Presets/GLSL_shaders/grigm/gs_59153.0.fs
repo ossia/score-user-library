@@ -22,10 +22,10 @@ precision mediump float;
 
 // glslsandbox uniforms
 
-#define TIME (0.1*TIME+2.*length(vv_FragNormCoord))
+#define ttime (0.1*TIME+2.*length(vv_FragNormCoord))
 
 // shadertoy emulation
-#define iTime TIME
+#define iTime ttime
 #define iResolution RENDERSIZE
 
 // Emulate some GLSL ES 3.x

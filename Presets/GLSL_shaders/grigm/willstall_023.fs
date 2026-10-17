@@ -29,7 +29,7 @@
     {
       "TARGET" : "Buffer1",
       "PERSISTENT" : true
-    },
+    }
   ]
 	
 	
@@ -50,7 +50,6 @@
 #define HALF_PI 1.57079632675
 #define TWO_PI 6.283185307
 
-uniform vec2 u_mouse;
 
 
 
@@ -88,14 +87,14 @@ vec2 center(vec2 st)
     // st = center( st );
 
     // vars
-    vec3 buffer,color;
+    vec3 buffer_,color;
     vec3 sdf = vec3( 0.0, 0.0, 0.0 );
 
     if (PASSINDEX == 0)	{
     
         st = center( st );
        
-		buffer = IMG_NORM_PIXEL(Buffer1, st).rgb;
+		buffer_ = IMG_NORM_PIXEL(Buffer1, st).rgb;
 		
 					
         vec2 pos = vec2(0.5);
@@ -121,27 +120,27 @@ vec2 center(vec2 st)
     
     	vec3 buffer_1 = IMG_NORM_PIXEL(Buffer1, st).rgb;
         
-        buffer = IMG_NORM_PIXEL(Buffer0, st).rgb;
+        buffer_ = IMG_NORM_PIXEL(Buffer0, st).rgb;
         
-        // buffer *= 0.999999;
-        //color = mix(buffer_1,buffer,buffer*.003);        
+        // buffer_ *= 0.999999;
+        //color = mix(buffer_1,buffer_,buffer_*.003);        
         //float f = mod(120.0,60.0);
         
-        color = mix(buffer,buffer_1, (1.0-buffer)*0.9);
+        color = mix(buffer_,buffer_1, (1.0-buffer_)*0.9);
 
         // color = vec3((1.0/u_fps));
-        // (1.0-buffer)*4000000.9999999);
-            // (1.0-buffer)*(1.0-mod(u_time,.075)* (1.0-mod(u_fps,60.0)) ));
+        // (1.0-buffer_)*4000000.9999999);
+            // (1.0-buffer_)*(1.0-mod(u_time,.075)* (1.0-mod(u_fps,60.0)) ));
         gl_FragColor = vec4(color, 1.0);
     
     }else{
     
         
-		buffer =  IMG_NORM_PIXEL(Buffer0, st).rgb;
+		buffer_ =  IMG_NORM_PIXEL(Buffer0, st).rgb;
         color = vec3(0.07);
-        color = mix(color,vec3(1.0),buffer.y);
-        // color = vec3(length(buffer));
-        // color = mix(color,buffer,0.3);
+        color = mix(color,vec3(1.0),buffer_.y);
+        // color = vec3(length(buffer_));
+        // color = mix(color,buffer_,0.3);
         gl_FragColor = vec4(color, 0.0);
     
     }

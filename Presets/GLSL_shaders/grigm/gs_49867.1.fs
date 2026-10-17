@@ -90,19 +90,19 @@ MapResult map_cube(vec3 position)
 	
 	
 	float sphere = length(position) - 1.2;
-	float TIME = TIME - position.y;
+	float time_ = TIME - position.y;
 
 	
 	float c = 10.0;
 	
 	
-	position = (rotationMatrix(vec3(0,0,1), TIME) * vec4(position, 1.0)).xyz;
+	position = (rotationMatrix(vec3(0,0,1), time_) * vec4(position, 1.0)).xyz;
 	
 	
-	position = (rotationMatrix(vec3(0,1,0), TIME) * vec4(position, 1.0)).xyz;
+	position = (rotationMatrix(vec3(0,1,0), time_) * vec4(position, 1.0)).xyz;
 	float cube = length(max(abs(position) - vec3(0.5), 0.0)) - 0.1;
 	
-	position = (rotationMatrix(vec3(1,0,0), TIME) * vec4(position, 1.0)).xyz;
+	position = (rotationMatrix(vec3(1,0,0), time_) * vec4(position, 1.0)).xyz;
 	
 	
 	vec2 q = vec2(length(position.xz) - 2.5, position.y);

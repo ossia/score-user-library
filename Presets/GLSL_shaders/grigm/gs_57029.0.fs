@@ -72,10 +72,10 @@ vec3 look (vec3 eye, vec3 target, vec2 anchor, float fov) {
     return normalize(forward * fov + right * anchor.x + up * anchor.y);
 }
 
-float geometry (vec3 pos, float TIME) {
+float geometry (vec3 pos, float time_) {
     float a = 1.0;
     float scene = 1.;
-    float t = TIME * .5;
+    float t = time_ * .5;
     float ft = smoothstep(0.,.9,pow(fract(t),.7));
     t = floor(t)+ft;
     float w = sin(ft*3.1415);
@@ -90,11 +90,11 @@ float geometry (vec3 pos, float TIME) {
     return scene;
 }
 
-float raymarch ( vec3 eye, vec3 ray, float TIME, out float total ) {
+float raymarch ( vec3 eye, vec3 ray, float time_, out float total ) {
     total = 0.0;
     const int count = 10;
     for (int index = count; index > 0; --index) {
-        float dist = geometry(eye+ray*total,TIME);
+        float dist = geometry(eye+ray*total,time_);
         total += dist;
         if (dist < 0.001 * total)
             return float(index)/float(count);
@@ -122,8 +122,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     fragColor = vec4(0);
     for (float index = motion_frames; index > 0.; --index) {
         float dither = random(ray.xy+fract(iTime+index));
-        float TIME = iTime+(dither+index)/10./motion_frames;
-        fragColor += vec4(raymarch(eye, ray, TIME,total))/motion_frames;
+        float time_ = iTime+(dither+index)/10./motion_frames;
+        fragColor += vec4(raymarch(eye, ray, time_,total))/motion_frames;
     }
     fragColor = vec4(pow(fragColor.r, .3));
     

@@ -329,7 +329,7 @@ vec4 ScrollText(vec2 xuv)
 
 vec4 Plasma(vec2 uv )
 {
-	float TIME=iTime*1.0;
+	float time_=iTime*1.0;
 	uv = (uv-0.0)*6.0;
     vec2 uv0=uv;
 	float i0=1.0;
@@ -339,18 +339,18 @@ vec4 Plasma(vec2 uv )
 	for(int s=0;s<7;s++)
 	{
 		vec2 r;
-		r=vec2(cos(uv.y*i0-i4+TIME/i1),sin(uv.x*i0-i4+TIME/i1))/i2;
+		r=vec2(cos(uv.y*i0-i4+time_/i1),sin(uv.x*i0-i4+time_/i1))/i2;
         r+=vec2(-r.y,r.x)*0.3;
 		uv.xy+=r;
         
 		i0*=1.93;
 		i1*=1.15;
 		i2*=1.7;
-		i4+=0.05+0.1*TIME*i1;
+		i4+=0.05+0.1*time_*i1;
 	}
-    float r=sin(uv.x-TIME)*0.5+0.5;
-    float b=sin(uv.y+TIME)*0.5+0.5;
-    float g=sin((uv.x+uv.y+sin(TIME*0.5))*0.5)*0.5+0.5;
+    float r=sin(uv.x-time_)*0.5+0.5;
+    float b=sin(uv.y+time_)*0.5+0.5;
+    float g=sin((uv.x+uv.y+sin(time_*0.5))*0.5)*0.5+0.5;
 	return vec4(r,g,b,1.0);
 }
 

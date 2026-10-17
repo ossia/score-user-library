@@ -23,7 +23,7 @@ float unosc()
 }
 
 
-float smoothHouse( vec2 p, float h, float smooth )
+float smoothHouse( vec2 p, float h, float smoothing )
 {
     vec2 q;
 
@@ -34,7 +34,7 @@ float smoothHouse( vec2 p, float h, float smooth )
     float d = dot(q, vec2(rf, 1.0));
 	
 	float shade = max(d, q.y)-h;
-	shade = smoothstep(0.0+smooth, 0.0-smooth, shade);
+	shade = smoothstep(0.0+smoothing, 0.0-smoothing, shade);
     return shade;
 }
 

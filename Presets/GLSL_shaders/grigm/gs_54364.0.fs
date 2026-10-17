@@ -31,8 +31,8 @@ float hash(float x) {
 }
 
 void main(void) {
-    vec2 RENDERSIZE = vec2 (500.0);
-    vec2 uv = (gl_FragCoord.xy * 2.0 - RENDERSIZE) / min(RENDERSIZE.x, RENDERSIZE.y);
+    vec2 res_ = vec2 (500.0);
+    vec2 uv = (gl_FragCoord.xy * 2.0 - res_) / min(res_.x, res_.y);
     vec3 c = vec3(0.6, 0.7, 0.8);
 
     float a = 0.5;
@@ -40,13 +40,13 @@ float t = (-1.+3.*cos(TIME*0.25+cos(TIME*0.0789)*0.1+uv.x*0.01)) / 8. * 3.14;
 	
     float si = sin(a +t);
     float co = cos(a + t);
-	float TIME = TIME + 1.*si*sin(co*3.14);
+	float time_ = TIME + 1.*si*sin(co*3.14);
 
     uv *= mat2(co, -si, si, co);
 //    uv *= length(uv + vec2(0.,4.9)) * .3 + 1.;
 
     float v = 1.0 - sin(hash(floor(uv.x * 100.0)) * 2.0);
-    float b = clamp(abs(sin(20. * TIME * .75 * v + uv.y * (5.0 / (2.0 + v)))) - .95, 0., 1.) * 20.;
+    float b = clamp(abs(sin(20. * time_ * .75 * v + uv.y * (5.0 / (2.0 + v)))) - .95, 0., 1.) * 20.;
     c *= v * b;
     gl_FragColor = vec4(c, 1.0);
 

@@ -16,6 +16,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MlfXWH by vgs.  Everyone needs to do at least one raymarched terrain in shadertoy, right? :)",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
 	{
 		"NAME": "speed",
 		"TYPE": "float",
@@ -91,10 +95,10 @@ vec3 noise(vec2 p) {
     vec2 df = noiseP*f*f*(f*(f-2.0)+1.0);
     f = f*f*f*(f*(f*6.-15.)+10.);
     
-    float a = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(0.5, 0.5))/256.,1.0),-100.0).r;
-    float b = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(1.5, 0.5))/256.,1.0),-100.0).r;
-    float c = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(0.5, 1.5))/256.,1.0),-100.0).r;
-    float d = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(1.5, 1.5))/256.,1.0),-100.0).r;
+    float a = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(0.5, 0.5))/256.,1.0)).r;
+    float b = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(1.5, 0.5))/256.,1.0)).r;
+    float c = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(0.5, 1.5))/256.,1.0)).r;
+    float d = IMG_NORM_PIXEL(iChannel0,mod((i+vec2(1.5, 1.5))/256.,1.0)).r;
     
     float k = a-b-c+d;
     float n = mix(mix(a, b, f.x), mix(c, d, f.x), f.y);

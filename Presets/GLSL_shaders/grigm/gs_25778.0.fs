@@ -42,7 +42,7 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main( void ) {
-	float TIME = 0.0;	
+	float time_ = 0.0;	
 	
 	vec2 position = vv_FragNormCoord * SCALE;
 	vec2 realPos = ( isf_FragNormCoord) - 0.5;
@@ -56,7 +56,7 @@ void main( void ) {
 	bright = pow(bright, 1.);
 	//bright *= step(length(position), 1.);
 	
-	vec3 color = hsv2rgb(vec3((floor(position.x + 0.5) + TIME)/SCALE, 1., 1.)) * bright;
+	vec3 color = hsv2rgb(vec3((floor(position.x + 0.5) + time_)/SCALE, 1., 1.)) * bright;
 	
 	vec3 heif = normalize(light + vec3(0., 0., 1.));
 	
@@ -64,6 +64,6 @@ void main( void ) {
 	
 	color += spec;
 
-	gl_FragColor = vec4( vec3( color.r, color.b * 0.5, sin( color.b + TIME / 3.0 ) * 0.75 ), 1.0 );
+	gl_FragColor = vec4( vec3( color.r, color.b * 0.5, sin( color.b + time_ / 3.0 ) * 0.75 ), 1.0 );
 
 }

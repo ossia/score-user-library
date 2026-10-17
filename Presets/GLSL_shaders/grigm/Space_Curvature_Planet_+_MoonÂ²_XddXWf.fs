@@ -24,6 +24,14 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XddXWf by aiekick.  Space Curvature Planet + Moon + Moon of Moon ^^ but what is the name of a moon of moon ?? :)\nbased on [url=https:\/\/www.shadertoy.com\/view\/llj3Rz][NV15] Space Curvature[\/url] by iq\n\nthe modified lines are marked with \/\/# at the end on the line",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -38,9 +46,9 @@
 
 vec3 fancyCube( sampler2D sam, in vec3 d, in float s, in float b )
 {
-    vec3 colx = texture2D( sam, 0.5 + s*d.yz/d.x, b ).xyz;
-    vec3 coly = texture2D( sam, 0.5 + s*d.zx/d.y, b ).xyz;
-    vec3 colz = texture2D( sam, 0.5 + s*d.xy/d.z, b ).xyz;
+    vec3 colx = IMG_NORM_PIXEL( sam, 0.5 + s*d.yz/d.x).xyz;
+    vec3 coly = IMG_NORM_PIXEL( sam, 0.5 + s*d.zx/d.y).xyz;
+    vec3 colz = IMG_NORM_PIXEL( sam, 0.5 + s*d.xy/d.z).xyz;
     
     vec3 n = d*d;
     

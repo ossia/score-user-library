@@ -29,9 +29,9 @@
 		{
 			"NAME": "colorize",
 			"TYPE": "bool",
-			"DEFAULT": false,
+			"DEFAULT": false
 			
-		},
+		}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#49151.0"
 }

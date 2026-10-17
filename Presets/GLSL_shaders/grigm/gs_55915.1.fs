@@ -28,13 +28,13 @@ const vec3 WALL_SIZE = vec3(10.0, 5.0, 10.0) * GRID_SPACING + 0.5 * GRID_SPACING
 #define LIGHT_BLUE vec3(0.05, 0.3, 1.2)
 #define LIGHT_ORANGE vec3(1.2, 0.15, 0.05)
 
-float timeToBeat(float TIME) {
-    return TIME / 60.0 * BPM;
+float timeToBeat(float time_) {
+    return time_ / 60.0 * BPM;
 }
 
 // 1 bar = 4 beat
-float timeToBar(float TIME) {
-    return timeToBeat(TIME * 0.25);
+float timeToBar(float time_) {
+    return timeToBeat(time_ * 0.25);
 }
 
 float random(float x){

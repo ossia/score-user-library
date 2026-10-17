@@ -86,7 +86,7 @@
 		
 	{
 		"NAME": "COS_DEFORM",
-		"TYPE": "bool",
+		"TYPE": "bool"
 	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#53580.2"

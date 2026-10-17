@@ -48,12 +48,12 @@ void main( void ) {
 
 	vec2 pos = 0.5*(2.0*gl_FragCoord.xy - RENDERSIZE.xy)/min(RENDERSIZE.x, RENDERSIZE.y);
 	
-	float TIME = cos(3.-TIME/16.+dot(pos,pos)/17.)*11. - (1.+cos(TIME/5.43210))*dot(pos,pos)/5.-0.05/(0.1+dot(pos,pos));
-	mat2 rot = mat2(cos(TIME),-sin(TIME), 
-			sin(TIME), cos(TIME));
+	float time_ = cos(3.-TIME/16.+dot(pos,pos)/17.)*11. - (1.+cos(TIME/5.43210))*dot(pos,pos)/5.-0.05/(0.1+dot(pos,pos));
+	mat2 rot = mat2(cos(time_),-sin(time_), 
+			sin(time_), cos(time_));
         pos *= rot;
 	
-	float zoom = 1.0/(mod(TIME, 1.0)+1.0)*3.0-1.0;
+	float zoom = 1.0/(mod(time_, 1.0)+1.0)*3.0-1.0;
 	pos *= zoom;
         
 	vec2 invpos = vec2(pos.x, -pos.y);

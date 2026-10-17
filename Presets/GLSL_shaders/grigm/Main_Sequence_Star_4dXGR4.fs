@@ -46,7 +46,9 @@
 		"DEFAULT": 0.5,
 		"MIN": 0.0,
 		"MAX": 1
-    }     
+    },
+    { "NAME": "AudioWaveformImage", "TYPE": "audio" },
+       { "NAME": "iChannel0", "TYPE": "image" }     
   ]
 }
 */

@@ -25,4 +25,6 @@
         B = a >  .5 ? k++, B : C;        \
     z = cos( TIME + vec4(11,9,7,1)*k ) / sin(TIME-a*.6+k)
 void main() {
-
+    gl_FragColor = vec4(0.);
+    mainImage(gl_FragColor, gl_FragCoord.xy);
+}

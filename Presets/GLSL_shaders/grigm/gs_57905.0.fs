@@ -71,13 +71,13 @@ float rect(vec2 uv, vec2 p, vec2 d, float a) {
         smoothstep(0., -eps, uv.y - p.y - d.y);
 }
 
-vec4 ghost(vec2 uv, float TIME) {
-    float a = .4 * cos(TIME * 1.1 + rand(10.));
-    float speed = 5. * cos(TIME + rand(10.));
-    float radius = .3 * cos(TIME * .8 + rand(10.));
-    float size = 1. + .1 * cos(TIME * 1.2 + rand(10.));
-    float eye = cos(TIME * .75 + rand(10.));
-    vec3 col = 0.5 + 0.5 * cos(TIME + vec3(0, 2, 4));
+vec4 ghost(vec2 uv, float time_) {
+    float a = .4 * cos(time_ * 1.1 + rand(10.));
+    float speed = 5. * cos(time_ + rand(10.));
+    float radius = .3 * cos(time_ * .8 + rand(10.));
+    float size = 1. + .1 * cos(time_ * 1.2 + rand(10.));
+    float eye = cos(time_ * .75 + rand(10.));
+    vec3 col = 0.5 + 0.5 * cos(time_ + vec3(0, 2, 4));
     if (debug)
     {
         radius = 0.;
@@ -86,8 +86,8 @@ vec4 ghost(vec2 uv, float TIME) {
         eye = 1.;
     }
     vec2 p = vec2(
-        cos(TIME * .9 + speed + rand(10.)) * ratio, 
-        sin(TIME * .9 + speed + rand(10.))
+        cos(time_ * .9 + speed + rand(10.)) * ratio, 
+        sin(time_ * .9 + speed + rand(10.))
     ) * radius;
     uv = place(uv, p + vec2(0., .05), size, a);
     

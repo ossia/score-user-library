@@ -51,7 +51,7 @@
 		"NAME": "square",
 		"TYPE": "bool",
 		"DEFAULT": 1
-	},
+	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#39890.0"
 }

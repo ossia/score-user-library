@@ -40,13 +40,8 @@
 
 #define SAMPLES 34
 
-uniform float u_float;
-uniform vec2 u_vec2;
-uniform vec3 u_vec3;
-uniform vec4 u_vec4;
 
 //uniform vec2 u_resolution;
-uniform vec2 u_mouse;
 //uniform float u_time;
 
 //uniform sampler2D u_texture_5;

@@ -12,6 +12,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/wdVXz3 by mahalis.  Project for Nodevember day 24, “Nebula”.",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
 		{
 		"NAME": "speed",
 		"TYPE": "float",

@@ -12,6 +12,7 @@
         }
     },
     "INPUTS": [
+        { "NAME": "iChannel0", "TYPE": "image" }
     ],
     "PASSES": [
         {

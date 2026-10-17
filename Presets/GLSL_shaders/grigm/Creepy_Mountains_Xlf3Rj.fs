@@ -13,6 +13,7 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Xlf3Rj by Kali.  A random tree generator, some birds (or bats... or something with wings), sine\/noise waves for the terrains, a bit of fog, and finally kind of a volumetric light effect.",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" }
 
   ]
 }

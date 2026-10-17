@@ -20,7 +20,7 @@
     {
     		"NAME" : "show_bueffer_a",
       		"TYPE" : "bool",
-      		"DEFAULT": false,
+      		"DEFAULT": false
     },
     {
       "NAME" : "reset",

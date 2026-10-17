@@ -54,8 +54,6 @@ precision mediump float;
 #endif
 
 
-uniform sampler2D tex0;
-uniform sampler2D tex1;
 /// mr Iq shader toool ;
 vec4 s(vec2 px,float z)
 {

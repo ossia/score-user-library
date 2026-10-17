@@ -136,7 +136,7 @@ float hashmix(float x0, float x1, float interp)
 	return mix(x0,x1,interp);
 }
 
-float noise(float p) // 1D noise
+float noise1d(float p) // 1D noise
 {
 	float pm = mod(p,1.0);
 	float pd = p-pm;
@@ -161,7 +161,7 @@ vec3 rotate_x(vec3 v, float angle)
 		+.0, +sa, +ca);
 }
 
-float max3(float a, float b, float c)//returns the maximum of 3 values
+float max3f(float a, float b, float c)//returns the maximum of 3 values
 {
 	return max(a,max(b,c));
 }
@@ -175,7 +175,7 @@ float dist(vec3 p)//distance function
 	for (int i=0 ;i<object_count; i++)
 	{
 		vec3 np = p+bpos[i];
-		float shape0 = max3(abs(np.x),abs(np.y),abs(np.z))-1.0;
+		float shape0 = max3f(abs(np.x),abs(np.y),abs(np.z))-1.0;
 		float shape1 = length(np)-1.0;
 		nd = shape0+(shape1-shape0)*2.0;
 		d = mix(d,nd,smoothstep(-1.0,+1.0,d-nd));
@@ -214,7 +214,7 @@ vec3 background(vec3 d)//render background
 	float t=iTime*0.5*light_speed_modifier;
 	float qq = dot(d,light)*.5+.5;
 	float bgl = qq;
-	float q = (bgl+noise(bgl*6.0+t)*.85+noise(bgl*12.0+t)*.85);
+	float q = (bgl+noise1d(bgl*6.0+t)*.85+noise1d(bgl*12.0+t)*.85);
 	q+= pow(qq,32.0)*2.0;
 	vec3 sky = vec3(0.1,0.4,0.6)*q;
     vec3 hsv_sky = rgb2hsv(sky);

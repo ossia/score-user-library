@@ -13,8 +13,18 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/3d3GRB by FabriceNeyret2.  SPACE: switch   mode 0: radial gradient between still & rotating texture.   mode 1: 50-50.\nMouse.y : sharpness of transition.",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
+    },
+    {
+      "NAME" : "mode_5050",
+      "LABEL" : "Mode 50-50 (was SPACE key)",
+      "TYPE" : "bool",
+      "DEFAULT" : false
     }
   ]
 }
@@ -29,7 +39,7 @@
 #define T(u) ( 2.* IMG_NORM_PIXEL(iChannel0,mod((u)/1e3,1.0)).r -1. )
 #define B(T) ( 1. - abs( T ) )
 #define R (RENDERSIZE.xy)
-#define keyToggle(a)  ( texelFetch(iChannel3,ivec2(a,2),0).x > 0.)
+#define keyToggle(a)  ( mode_5050 )
 #define hue(v)  ( .6 + .6 * cos( 6.3*(v)  + vec4(0,23,21,0)  ) )
 
 float N(vec2 u0, vec2 u1) { // smart blend of 2 perlin noise 
@@ -57,10 +67,10 @@ float N(vec2 u0, vec2 u1) { // smart blend of 2 perlin noise
 void main() {
 
     //if (floor(gl_FragCoord.y)==floor(R.y/2.)) { gl_FragColor=vec4(1,0,0,0); return; }
-	gl_FragCoord.xy = (gl_FragCoord.xy-.5*R)/R.y;
+	vec2 U = (gl_FragCoord.xy-.5*R)/R.y;
     float T = .5*TIME;
     float e = iMouse.y > 0. ? .5*iMouse.y/R.y: .2,                  // tunes transition
-          v = N(gl_FragCoord.xy, gl_FragCoord.xy*rot(T)+10.);
+          v = N(U, U*rot(T)+10.);
     gl_FragColor = hue(.7*smoothstep(.7-e,.7+e,v));
   //gl_FragColor = vec4( pow(smoothstep(.7-e,.7+e, v ),1./2.2) );  // antialiasing + to SRGB
 }                                               // .7 because of interp ( otherwise .5 )

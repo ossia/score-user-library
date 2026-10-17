@@ -12,6 +12,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MdSGW1 by kig.  Tinkering with a lightning effect. A particle seeks out a random path from cloud to ground, then the ground fills the path with electric fury...",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    }
 
   ]
 }
@@ -27,7 +31,7 @@ void main() {
 	vec2 uv = gl_FragCoord.xy;
 	vec3 col = vec3(0.0);
 	for (int i=0; i<100; i++) {
-		vec4 tex = IMG_NORM_PIXEL(iChannel0,mod(vec2(float(i)/256.0, TIME),1.0),-100.0);
+		vec4 tex = IMG_NORM_PIXEL(iChannel0,mod(vec2(float(i)/256.0, TIME),1.0));
 		vec2 tgt = vec2(RENDERSIZE.x/2.0, RENDERSIZE.y*0.1)-o;
 		vec2 seek = normalize(tgt)*(16.0/(length(tgt)+1.0));
 		d = normalize(seek+vec2(1.5, -1.0)*(vec2(-0.5, 0.0)+tex.gb));

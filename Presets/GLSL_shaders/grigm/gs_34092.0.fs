@@ -37,7 +37,7 @@
 				"cos",
 				"sin",
 				"floor",
-				"fract",
+				"fract"
 			],
 			"DEFAULT": 8
 		},

@@ -18,7 +18,6 @@ precision mediump float;
 
 // rakesh@picovico.com : www.picovico.com
 
-uniform vec2 mous;
 
 const float fRadius = 0.2;
 

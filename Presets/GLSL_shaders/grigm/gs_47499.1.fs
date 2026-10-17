@@ -41,7 +41,7 @@ const vec3 iMouse = vec3(0.);
 // --------[ Original ShaderToy begins here ]---------- //
 #define detail 5
 #define steps 40
-#define TIME iTime*0.5
+#define ttime iTime*0.5
 
 //draw octree grid
 //#define drawgrid
@@ -86,7 +86,7 @@ void mainImage( out vec4 fragColor,  vec2 fragCoord )
     vec2 uv = (fragCoord.xy * 2.0 - iResolution.xy) /iResolution.y;
     float size = 1.0;
     
-    vec3 ro = vec3(0.5+sin(TIME)*0.4,0.5+cos(TIME)*0.4,TIME);
+    vec3 ro = vec3(0.5+sin(ttime)*0.4,0.5+cos(ttime)*0.4,ttime);
     vec3 rd = normalize(vec3(uv,1.0));
     
     //if the mouse is in the bottom left corner, don't rotate the camera
@@ -187,7 +187,7 @@ void mainImage( out vec4 fragColor,  vec2 fragCoord )
 }
 // --------[ Original ShaderToy ends here ]---------- //
 
-#undef TIME
+#undef ttime
 
 void main(void)
 {

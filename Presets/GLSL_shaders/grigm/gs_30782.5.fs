@@ -23,7 +23,7 @@
 			"NAME": "bg",
 			"TYPE": "bool",
 			"DEFAULT": 1.0
-		},
+		}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#30782.5"
 }

@@ -17,6 +17,14 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/4dBXzW by darkhus.  interact with mouse",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }

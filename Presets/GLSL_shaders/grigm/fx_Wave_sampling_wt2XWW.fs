@@ -25,7 +25,7 @@
       		"MAX" : 30.0,
       		"DEFAULT" : 10.0,
       		"MIN" : 0.0
-    	},
+    	}
     
   	],
     "IMPORTED": {

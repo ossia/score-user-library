@@ -18,7 +18,6 @@ precision mediump float;
 
 #extension GL_OES_standard_derivatives : enable
 
-uniform vec2 surfaceSize;
 
 // visualization of gradation with dither pattern created by bayer-matrix
 

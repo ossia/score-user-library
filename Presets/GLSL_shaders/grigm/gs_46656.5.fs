@@ -29,7 +29,6 @@ precision highp float;
 
 #extension GL_OES_standard_derivatives : enable
 
-uniform vec2 surfaceSize;
 
 #define SP (vv_FragNormCoord.xy)
 #define M (mouse.xy)

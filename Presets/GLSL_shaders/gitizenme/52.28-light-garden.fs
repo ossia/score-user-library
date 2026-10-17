@@ -38,11 +38,11 @@
 #define RHO 1.57079632679
 
 // State loading
-#define getPosition() texelFetch(iChannel0, ivec2(0), 0).xyz
-#define keyUpPressed() bool(texelFetch(iChannel1, ivec2(38, 0), 0).x)
-#define keyDownPressed() bool(texelFetch(iChannel1, ivec2(40, 0), 0).x)
-#define keyRightPressed() bool(texelFetch(iChannel1, ivec2(39, 0), 0).x)
-#define keyLeftPressed() bool(texelFetch(iChannel1, ivec2(37, 0), 0).x)
+#define getPosition() IMG_PIXEL(BufferA, vec2(0.5)).xyz
+#define keyUpPressed() false // no keyboard input in ISF
+#define keyDownPressed() false // no keyboard input in ISF
+#define keyRightPressed() false // no keyboard input in ISF
+#define keyLeftPressed() false // no keyboard input in ISF
 
 // Camera matrix
 mat3 getCamera(in vec2 viewDir) {
@@ -78,11 +78,11 @@ void main() {
 	if (PASSINDEX == 0)	{
 	}
 	else if (PASSINDEX == 1)	{
-	    gl_FragColor = vec4(0.0, 50.0, 50.0, 0.0);
-	    if (FRAMEINDEX > 0) {
+	    gl_FragColor = vec4(0.0, 50.0, 50.0, 1.0);
+	    if (FRAMEINDEX > 0 && IMG_PIXEL(BufferA, vec2(0.5)).w > 0.5) {
 	        ivec2 addr = ivec2(gl_FragCoord.xy);
 	        if (addr == ivec2(0)) {
-	            gl_FragColor = vec4(getPosition(), 0.0);
+	            gl_FragColor = vec4(getPosition(), 1.0);
 	
 	            vec2 viewDir = (iMouse.xy - 0.5 * RENDERSIZE.xy) / RENDERSIZE.y * PI;
 	            mat3 cam = getCamera(viewDir);
@@ -98,7 +98,7 @@ void main() {
 	    vec2 center = 0.5 * RENDERSIZE.xy;
 	    vec2 uv = (gl_FragCoord.xy - center) / RENDERSIZE.y;
 	    float time = TIME * 2.0;
-	    gl_FragColor = vec4(0.0);
+	    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	
 	    // Camera ray
 	    vec2 viewDir = ivec2(iMouse.xy) == ivec2(0) ? vec2(0.0, -0.6) : (iMouse.xy - center) / RENDERSIZE.y * PI;

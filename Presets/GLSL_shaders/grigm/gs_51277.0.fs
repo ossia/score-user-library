@@ -34,13 +34,13 @@ float atan2(in float y, in float x) {
     return x == 0.0 ? sign(y) * PI / 2.0 : atan(y, x);
 }
 
-bool belongs(float TIME, vec2 uv, float near, float far) {
-    near += sin(uv.x - TIME * 8.0) / 50.0;
-    far += cos(uv.y - TIME * 8.0) / 50.0;
+bool belongs(float time_, vec2 uv, float near, float far) {
+    near += sin(uv.x - time_ * 8.0) / 50.0;
+    far += cos(uv.y - time_ * 8.0) / 50.0;
     vec2 center = vec2(0.5, 0.5);
     vec2 xy = uv - center;
     float dist = distance(xy, vec2(0.0, 0.0));
-    float angle = mod(atan2(xy.y, xy.x) + TIME * 2.5 + sin(TIME * 4.0) / 1.0, PI * 2.0);
+    float angle = mod(atan2(xy.y, xy.x) + time_ * 2.5 + sin(time_ * 4.0) / 1.0, PI * 2.0);
     float oddity = mod(angle / (2.0 * PI) * sections * 2.0, 2.0);
     if (dist > near && dist < far && floor(mod(oddity, 2.0)) == 0.0) {
         return true;
@@ -53,9 +53,9 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);
     vec2 UV = fragCoord/iResolution.yy;
     UV.x -= (iResolution.x / iResolution.y - 1.0) / 2.0;
-    float TIME = iTime;
+    float time_ = iTime;
 
-    if (belongs(TIME, UV, 0.2, 0.25) || belongs(TIME + 0.5, UV, 0.3, 0.35) || belongs(TIME + 1.0, UV, 0.4, 0.45)) {
+    if (belongs(time_, UV, 0.2, 0.25) || belongs(time_ + 0.5, UV, 0.3, 0.35) || belongs(time_ + 1.0, UV, 0.4, 0.45)) {
         fragColor = vec4(1.0, 1.0, 1.0, 1.0);
     } else {
         fragColor = vec4(0.0, 0.0, 0.0, 0.0);

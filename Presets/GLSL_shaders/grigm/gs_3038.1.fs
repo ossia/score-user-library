@@ -30,7 +30,7 @@ precision mediump float;
 // Added mouse position in main loop
 
 
-uniform vec2 surfaceSize;
+#define surfaceSize vec2(RENDERSIZE.x/RENDERSIZE.y, 1.0)
 
 void main( void ) {
 

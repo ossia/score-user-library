@@ -27,7 +27,7 @@ precision mediump float;
 #define iResolution RENDERSIZE
 
 // Emulate some GLSL ES 3.x
-mat4 mat4x3(vec3 a, vec3 b, vec3 c, vec3 d)
+mat4 mat4from3(vec3 a, vec3 b, vec3 c, vec3 d)
 {
     return mat4(a.x, a.y, a.z, 0,
                 b.x, b.y, b.z, 0,
@@ -103,8 +103,8 @@ vec4 bccNoiseDerivativesPart(vec3 X) {
     vec4 extrapolations = vec4(dot(d1, g1), dot(d2, g2), dot(d3, g3), dot(d4, g4));
     
     // Derivatives of the noise
-    vec4 derivative = -8.0 * mat4x3(d1, d2, d3, d4) * (aa * a * extrapolations)
-        + mat4x3(g1, g2, g3, g4) * aaaa;
+    vec4 derivative = -8.0 * mat4from3(d1, d2, d3, d4) * (aa * a * extrapolations)
+        + mat4from3(g1, g2, g3, g4) * aaaa;
     
     // Return it all as a vec4
     return vec4(derivative.xyz, dot(aaaa, extrapolations));

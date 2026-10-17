@@ -15,7 +15,9 @@
         {
             "NAME": "iMouse",
             "TYPE": "point2D"
-        }
+        },
+        { "NAME": "iChannel0", "TYPE": "image" },
+        { "NAME": "iChannel1", "TYPE": "image" }
     ],
     "PASSES": [
         {
@@ -52,7 +54,6 @@ const float SRGB_GAMMA = 1.0 / 2.2;
 
 #define PI 3.14159265359
 
-const float SRGB_GAMMA = 1.0 / 2.2;
 
 mat2 rot = mat2(cos(GOLDEN_ANGLE), sin(GOLDEN_ANGLE), -sin(GOLDEN_ANGLE), cos(GOLDEN_ANGLE));
 
@@ -139,7 +140,7 @@ void main() {
 	    //Day-night cycle
 	    float dayNightCycle = sin(TIME / 5.0) / 2.0 + 0.5;
 	    
-	    if (iMouse.z > 0.0) {
+	    if (iMouse.x > 0.) {
 	     	dayNightCycle = 1.0 - iMouse.y / RENDERSIZE.y;
 	    }
 	    
@@ -196,7 +197,7 @@ void main() {
 	    //calculate the blur radius we want
 		float blurRadius = 1.6 - 1.6*cos(mod(TIME*.10 +.25, 3.0) * 6.283); 
 	    
-	    if (iMouse.z > 0.0) {
+	    if (iMouse.x > 0.) {
 	     	blurRadius = iMouse.x / RENDERSIZE.x ;   
 	    	blurRadius *= 4.0 ;//* (RENDERSIZE.x / 512.0);
 	    }

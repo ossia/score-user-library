@@ -18,7 +18,6 @@ precision mediump float;
 
 #extension GL_OES_standard_derivatives : enable
 
-uniform sampler2D tex;
 
 
 vec3 rotatey(in vec3 p, float ang) { return vec3(p.x*cos(ang)-p.z*sin(ang),p.y,p.x*sin(ang)+p.z*cos(ang)); }

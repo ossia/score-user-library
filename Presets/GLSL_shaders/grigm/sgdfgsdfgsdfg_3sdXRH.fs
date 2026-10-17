@@ -12,6 +12,12 @@
     {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
+    },
+    {
+      "NAME" : "mouseDown",
+      "LABEL" : "Jitter (was mouse down)",
+      "TYPE" : "bool",
+      "DEFAULT" : false
     }
   ]
 }
@@ -48,7 +54,7 @@ void main() {
     u += iMouse.xy / RENDERSIZE.xy * 10.0;
     u.y+=TIME*0.5;
     
-    if(iMouse.z > 0.0){
+    if(mouseDown){
      float angle = 0.0;
      float rad = rand(uv*2.5)*0.9;
       u.x += sin(angle)*rad;

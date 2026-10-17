@@ -127,12 +127,12 @@ float volumetricFog(vec3 v, float noiseMod)
 }
 
 
-vec3 nearPlanePoint(vec2 v, float TIME)
+vec3 nearPlanePoint(vec2 v, float time_)
 {
- 	return vec3(v.x, NEAR_PLANE * (1.0 + sin(TIME * 0.2) * 0.4), v.y);   
+ 	return vec3(v.x, NEAR_PLANE * (1.0 + sin(time_ * 0.2) * 0.4), v.y);   
 }
 
-vec3 fogMarch(vec3 rayStart, vec3 rayDirection, float TIME, float disMod)
+vec3 fogMarch(vec3 rayStart, vec3 rayDirection, float time_, float disMod)
 {
     float stepLength = RENDER_DISTANCE / float(RAYS_COUNT);
  	vec3 fog = vec3(0.0);   
@@ -169,18 +169,18 @@ float getBeat()
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);
-    float TIME = iTime;
+    float time_ = iTime;
     float musicVolume = getBeat();
     vec2 res = iResolution.xy;
     vec2 uv = (2.0 * fragCoord - res) / res.x;
     
     //Random camera movement
-    vec3 cameraCenter = vec3(sin(TIME * CAMERA_SPEED) * 10.0, TIME * CAMERA_SPEED * 10.0, cos(TIME * 0.78 * CAMERA_SPEED + 2.14) * 10.0);
+    vec3 cameraCenter = vec3(sin(time_ * CAMERA_SPEED) * 10.0, time_ * CAMERA_SPEED * 10.0, cos(time_ * 0.78 * CAMERA_SPEED + 2.14) * 10.0);
     
     //Creating random rotation matrix for camera
-    float angleY = sin(TIME * CAMERA_ROTATION_SPEED * 2.0);
-    float angleX = cos(TIME * 0.712 * CAMERA_ROTATION_SPEED);
-    float angleZ = sin(TIME * 1.779 * CAMERA_ROTATION_SPEED);
+    float angleY = sin(time_ * CAMERA_ROTATION_SPEED * 2.0);
+    float angleX = cos(time_ * 0.712 * CAMERA_ROTATION_SPEED);
+    float angleZ = sin(time_ * 1.779 * CAMERA_ROTATION_SPEED);
     mat3 rotation =   mat3(1, 0, 			0,
                            0, sin(angleX),  cos(angleX),
                            0, -cos(angleX), sin(angleX))
@@ -191,13 +191,13 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
                            0, 			 1, 0,
                            -cos(angleY), 0, sin(angleY));
     
-    vec3 rayDirection = rotation * normalize(nearPlanePoint(uv, TIME));
+    vec3 rayDirection = rotation * normalize(nearPlanePoint(uv, time_));
     vec3 rayStart = rayDirection * 0.2 + cameraCenter;	//Ray start with little clipping
     
     //Thanks to adx for jittering tip, looks and works really better with this line:
     rayStart += rayDirection * (hash(vec3(uv + 4.0, fract(iTime) + 2.0)) - 0.5) * JITTERING;
     
-    vec3 fog = fogMarch(rayStart, rayDirection, TIME, musicVolume);
+    vec3 fog = fogMarch(rayStart, rayDirection, time_, musicVolume);
     
     //postprocess
     fog *= 2.5 * BRIGHTNESS;

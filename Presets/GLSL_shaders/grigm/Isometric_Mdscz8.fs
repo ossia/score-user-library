@@ -14,6 +14,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Mdscz8 by MacroMachines.  isometric based on https:\/\/www.shadertoy.com\/view\/Md2XRd by fizzle",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -28,7 +32,7 @@ float m(vec2 p)
     return step(cos(
         1.4257*(IMG_NORM_PIXEL(iChannel0, 
                           floor(z*p*.1)
-                          /64.,-32.).
+                          /64.).
                 r >.5 ? p.y : p.x)),
                 .17);
 }
@@ -50,4 +54,5 @@ void main() {
                         m(c-z[1])+(g < f ? 
                                    f*(.75-s) : 
                                    g*(.5+s)));
+	gl_FragColor.a = 1.0;
 }

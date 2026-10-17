@@ -75,7 +75,7 @@
 #define PI 3.1415925359
 #define MAX_STEPS 100// Mar Raymarching steps
 #define MAX_DIST 100.// Max Raymarching distance
-#define SURF_DIST.01// Surface Distance
+#define SURF_DIST .01// Surface Distance
  
 vec3 difColor = vec3(1.0, 1.0, 1.0); // Diffuse Color
  

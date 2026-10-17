@@ -192,11 +192,11 @@ void main( void ) {
 	vec2 uv = isf_FragNormCoord;
     uv = uv * 2.0 - 1.0;
     uv.x *= RENDERSIZE.x / RENDERSIZE.y;    
-    float TIME = TIME * 0.3 + mouse.x*0.01;
+    float time_ = TIME * 0.3 + mouse.x*0.01;
         
     // ray
-    vec3 ang = vec3(sin(TIME*3.0)*0.1,sin(TIME)*0.2+0.3,TIME);    
-    vec3 ori = vec3(0.0,3.5,TIME*5.0);
+    vec3 ang = vec3(sin(time_*3.0)*0.1,sin(time_)*0.2+0.3,time_);    
+    vec3 ori = vec3(0.0,3.5,time_*5.0);
     vec3 dir = normalize(vec3(uv.xy,-2.0)); dir.z += length(uv) * 0.15;
     dir = normalize(dir) * fromEuler(ang);
     

@@ -20,7 +20,7 @@
 		"MAX": 2
 	},
 	{
-		"NAME": "pow",
+		"NAME": "power",
 		"TYPE": "float",
 		"DEFAULT": 0.1,
 		"MIN": 0.005,
@@ -92,7 +92,7 @@ void mainImage( out vec4 f, vec2 g )
      
     g /= f.y;
     
-    float d = pow(abs(powAbs - max(abs(g.x),abs(g.y))), pow);
+    float d = pow(abs(powAbs - max(abs(g.x),abs(g.y))), power);
         
     g += d;
     

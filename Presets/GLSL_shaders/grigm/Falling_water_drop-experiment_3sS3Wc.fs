@@ -29,6 +29,10 @@
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "cubemap"
+    },
     
     {
             "NAME": "Beat",
@@ -49,7 +53,7 @@
     {
             "NAME": "AUTO_CAMERA_ROTATION",
             "TYPE": "bool",
-            "DEFAULT": false,
+            "DEFAULT": false
             
     },
     
@@ -117,7 +121,7 @@
       "NAME": "showBackground",
       "TYPE": "bool",
       "DEFAULT": 0
-    },
+    }
   ]
 }
 */
@@ -134,7 +138,7 @@
 //#define DISTORTION_DENSITY 3.0
 //#define EFFECT_SPEED 40.0
 
-#define TIME (TIME * 0.2)
+#define ttime (TIME * 0.2)
 
 
 
@@ -218,11 +222,11 @@ float dropMarchInside(vec3 rayStart, vec3 rayDirection, float beat, inout vec3 r
     
  	for (int i = 0; i < RAY_STEPS_COUNT * 1 && abs(dropDist) < 50.0; i++)
     {
-        dropDist = -dropDistance(point, TIME, beat);
+        dropDist = -dropDistance(point, ttime, beat);
         point += rayDirection * dropDist * 0.3;
     }
     
-    resultNormal = -getDropNormal(point, TIME, beat);  
+    resultNormal = -getDropNormal(point, ttime, beat);  
     resultPoint = point;
     
     return dropDist;
@@ -235,11 +239,11 @@ float dropMarch(vec3 rayStart, vec3 rayDirection, float beat, inout vec3 resultP
     
  	for (int i = 0; i < RAY_STEPS_COUNT && abs(dropDist) < 50.0; i++)
     {
-        dropDist = dropDistance(point, TIME, beat);
+        dropDist = dropDistance(point, ttime, beat);
         point += rayDirection * dropDist * 0.3;
     }
     
-    resultNormal = getDropNormal(point, TIME, beat);  
+    resultNormal = getDropNormal(point, ttime, beat);  
     resultPoint = point;
     
     return dropDist;
@@ -277,9 +281,9 @@ void main() {
     beat *= beat;
     beat = smoothstep(0.35, 0.6, beat) * 2.0;
     
-    float angleY = -mouse.x * 3.0 * PI + sin(TIME * CAMERA_ROTATION_SPEED * 0.2) * 5.0;
-    float angleX = -mouse.y * PI * 0.4 + PI * 0.5 + cos(TIME * CAMERA_ROTATION_SPEED * 0.97) * 0.1 - 0.6;
-    float angleZ = PI * 0.5 + 0. * 0.2; //PI * 0.5 + sin(TIME * CAMERA_ROTATION_SPEED * 0.5 * 0.891) * 0.2;
+    float angleY = -mouse.x * 3.0 * PI + sin(ttime * CAMERA_ROTATION_SPEED * 0.2) * 5.0;
+    float angleX = -mouse.y * PI * 0.4 + PI * 0.5 + cos(ttime * CAMERA_ROTATION_SPEED * 0.97) * 0.1 - 0.6;
+    float angleZ = PI * 0.5 + 0. * 0.2; //PI * 0.5 + sin(ttime * CAMERA_ROTATION_SPEED * 0.5 * 0.891) * 0.2;
    
     mat3 rotation =   mat3(sin(angleY),  0, cos(angleY),
                            0, 			 1, 0,
@@ -290,9 +294,9 @@ void main() {
         			* mat3(sin(angleZ),  cos(angleZ), 0,
                            -cos(angleZ), sin(angleZ), 0,
                            0, 			 0, 		  1);
-    vec3 cameraCenter = rotation * vec3(sin(TIME * 0.3) * 1.0, sin(TIME * 0.6) * 1.0, 5.0 + cos(TIME * 0.9));
+    vec3 cameraCenter = rotation * vec3(sin(ttime * 0.3) * 1.0, sin(ttime * 0.6) * 1.0, 5.0 + cos(ttime * 0.9));
     
-    vec3 rayDirection = normalize(rotation * vec3(uv.x, uv.y, -NEAR_PLANE + sin(TIME * 1.0) * 0.2 * (1.0 + beat * 0.15)));
+    vec3 rayDirection = normalize(rotation * vec3(uv.x, uv.y, -NEAR_PLANE + sin(ttime * 1.0) * 0.2 * (1.0 + beat * 0.15)));
 	if(!AUTO_CAMERA_ROTATION){
 		cameraCenter = rotation * vec3(sin(0. * 0.3) * 1.0, sin(0. * 0.6) * 1.0, 5.0 + cos(0. * 0.9));
 		rayDirection = normalize(rotation * vec3(uv.x, uv.y, -NEAR_PLANE + sin(0.0 * 1.0) * 0.2 * (1.0 + beat * 0.15)));
@@ -331,12 +335,12 @@ void main() {
         {
             //Environment reflections on surface
             vec3 reflectVec = reflect(rayDirection, resultNormal);
-            vec3 reflections = textureCube(iChannel1,reflectVec).rgb * smoothstep(0.4, 0.0, abs(dist)) * REFLECTIONS;
+            vec3 reflections = IMG_CUBE(iChannel1,reflectVec).rgb * smoothstep(0.4, 0.0, abs(dist)) * REFLECTIONS;
             reflections = reflections * (1.0 - dot(-rayDirection, resultNormal));
             col += reflections * drop * (1.0 + beat);
             
             //Spherical lighting
-            vec3 sphereLight = textureCube(iChannel1,resultNormal).rgb;
+            vec3 sphereLight = IMG_CUBE(iChannel1,resultNormal).rgb;
             col += sphereLight * DROP_BRIGHTNESS * drop * (1.0 + beat);
             al = 1.0;
  
@@ -348,16 +352,16 @@ void main() {
             dist = dropMarchInside(resultPoint + offsetVec, rayDirection, beat, resultPoint, resultNormal);
             rayDirection = mix(rayDirection, refract(rayDirection, resultNormal, REFRACTIVE_INDEX), drop); 
         }
-        col += textureCube(iChannel1,rayDirection).rgb * drop;
+        col += IMG_CUBE(iChannel1,rayDirection).rgb * drop;
         //al = 1.0;
         if(showBackground){
-        	col += textureCube(iChannel1,rayStartDirection).rgb * (1.0 - drop);
+        	col += IMG_CUBE(iChannel1,rayStartDirection).rgb * (1.0 - drop);
         	al = 1.0;
         }
     }
     if(showBackground){
         
-     col = textureCube(iChannel1,rayDirection).rgb;// * 0.0;
+     col = IMG_CUBE(iChannel1,rayDirection).rgb;// * 0.0;
      al = 1.0;
     }
     //Some postprocess

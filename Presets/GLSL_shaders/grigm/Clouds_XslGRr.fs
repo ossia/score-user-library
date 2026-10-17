@@ -19,6 +19,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XslGRr by iq.  Raymarching some fbm (you can move the mouse around). This is my first shader in the \"one shader a week for a year\" challenge that I have committed to.",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -40,7 +44,7 @@ float noise( in vec3 x )
     
 #if 1
 	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-    vec2 rg = IMG_NORM_PIXEL( iChannel0, (uv+ 0.5)/256.0, 0. ).yx;
+    vec2 rg = IMG_NORM_PIXEL( iChannel0, (uv+ 0.5)/256.0).yx;
 #else
     ivec3 q = ivec3(p);
 	ivec2 uv = q.xy + ivec2(37,17)*q.z;

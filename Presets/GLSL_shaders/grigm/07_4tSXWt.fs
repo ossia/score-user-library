@@ -24,6 +24,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/4tSXWt by yiwenl.  07",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "cubemap"
+    }
 
   ]
 }
@@ -93,7 +97,7 @@ vec3 envLight(vec3 normal, vec3 dir) {
 	vec3 eye = -dir;
 	vec3 r = reflect( eye, normal );
     float m = 2. * sqrt( pow( r.x, 2. ) + pow( r.y, 2. ) + pow( r.z + 1., 2. ) );
-    vec3 color = textureCube( iChannel1, r ).rrr;
+    vec3 color = IMG_CUBE( iChannel1, r ).rrr;
     return color;
 }
 

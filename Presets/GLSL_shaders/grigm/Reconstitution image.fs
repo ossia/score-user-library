@@ -65,9 +65,9 @@ float starttime (vec2 p){			// Détermine le temps de départ de la case contena
 	return t0 / 4. ;
 }
 
-vec2 positions_max (vec2 case){		// Détermine les ordonnées inférieure et supérieure de la case d'entrée en fonction du temps
-	float t0 = starttime(case) ;
-	float sup = bornesup(case) ;
+vec2 positions_max (vec2 cell){		// Détermine les ordonnées inférieure et supérieure de la case d'entrée en fonction du temps
+	float t0 = starttime(cell) ;
+	float sup = bornesup(cell) ;
 	float inf = sup - pas ;
 	float pos_sup = sup ;					// Après l'arrivée
 	float pos_inf  = inf ;
@@ -81,77 +81,77 @@ vec2 positions_max (vec2 case){		// Détermine les ordonnées inférieure et sup
 
 vec2 courant (vec2 p){				// Détermine la case devant être affichée sur le pixel en entrée
 	vec2 increment = vec2(0.,0.) ;
-	vec2 case = p - increment ;				// Increment nul donc il s'agit de la case contenant le pixel d'entrée
-	vec2 position = positions_max(case) ;
+	vec2 cell = p - increment ;				// Increment nul donc il s'agit de la case contenant le pixel d'entrée
+	vec2 position = positions_max(cell) ;
 	
 	if (p.y < position.x || p.y > position.y){		// Si la case ne recouvre pas le pixel d'entrée, on considère la case suivante (celle du dessous)
 		increment.y = increment.y + pas ;
-		case = p - increment ;
-		position = positions_max(case) ;
+		cell = p - increment ;
+		position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		if (p.y < position.x || p.y > position.y){
 			increment.y = increment.y + pas ;
-			case = p - increment ;
-			position = positions_max(case) ;
+			cell = p - increment ;
+			position = positions_max(cell) ;
 		}
 		}
 		}
@@ -170,7 +170,7 @@ vec2 courant (vec2 p){				// Détermine la case devant être affichée sur le pi
 		}
 	}
 	
-	return case ;							// La fonction retourne la case recouvrant le pixel d'entrée
+	return cell ;							// La fonction retourne la case recouvrant le pixel d'entrée
 }
 
 void main() {

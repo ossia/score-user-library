@@ -27,9 +27,9 @@ float circles(vec2 coord)
     vec2 center = floor(coord / width + 0.5) * width;
     float dist = distance(coord, center);
 
-    float TIME = TIME * 0.9;
+    float time_ = TIME * 0.9;
     float phase = dot(center, vec2(1.647346, 7.323874));
-    float radius = width * (0.3 + sin(TIME + phase) * 0.16);
+    float radius = width * (0.3 + sin(time_ + phase) * 0.16);
 
     return dist - radius;
 }
@@ -40,12 +40,12 @@ float line(vec2 coord, float seed)
     float bound = dot(RENDERSIZE.xy, abs(dir));
 
     float speed = fract(seed * 4785.9433) * 0.3 + 0.3;
-    float TIME = fract(TIME * speed);
+    float time_ = fract(TIME * speed);
 
-    float phase = TIME * (fract(seed * 438.454) * 3.3 + 3.3);
+    float phase = time_ * (fract(seed * 438.454) * 3.3 + 3.3);
     float width = bound * 0.02 * (sin(phase) + 1.0);
 
-    float dist = dot(coord, dir) + (TIME - 0.5) * bound;
+    float dist = dot(coord, dir) + (time_ - 0.5) * bound;
     return abs(dist) - width;
 }
 

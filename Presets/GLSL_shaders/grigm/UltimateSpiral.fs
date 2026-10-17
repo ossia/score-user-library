@@ -47,7 +47,7 @@
             "MAX": 256
         },
          {
-            "NAME": "smooth",
+            "NAME": "smoothing",
             "TYPE": "float",
            "DEFAULT": 0.05,
             "MIN": 0.0,
@@ -78,16 +78,16 @@ mat2 rotate (float fi) {
 	return mat2 (-sfi, cfi, cfi, sfi);	
 }
 
-vec4 spiral (vec2 uv, float TIME) {
+vec4 spiral (vec2 uv, float t) {
 	float fi = length (uv) * density;
 	float g = atan (uv.y, uv.x);
-	uv *= rotate (TIME*speed);
+	uv *= rotate (t*speed);
 	uv *= sin (g*floor(sectors));
 	uv *= rotate (fi);
 	
 	
 	return mix (vec4 (0.99), vec4 (0.0), min (
-		step (smooth, uv.x), 
+		step (smoothing, uv.x), 
 		cell (vanishingpoint, fi/shape, uv.y)));
 }
 	

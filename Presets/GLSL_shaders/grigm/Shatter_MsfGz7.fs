@@ -26,6 +26,14 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MsfGz7 by simesgreen.  more messing about with convex objects. this time, voronoi decomposition of a cube!",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "cubemap"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     },
@@ -119,7 +127,7 @@
       "MAX" : 50.0,
       "DEFAULT" : 5.0,
       "MIN" : 0
-    },
+    }
     
     
 
@@ -252,7 +260,7 @@ vec3 shade(vec3 pos, vec3 n, vec3 eyePos, vec3 c)
 	
 	// reflection
 	vec3 R = reflect(-v, n);
-	vec3 Rcol = textureCube(iChannel1,R).xyz;
+	vec3 Rcol = IMG_CUBE(iChannel1,R).xyz;
 	//Rcol *= 1.0 + smoothstep(0.5, 1.0, R.x)*2.0;
 	
 	// refraction
@@ -262,16 +270,16 @@ vec3 shade(vec3 pos, vec3 n, vec3 eyePos, vec3 c)
 #if 0
 	vec3 T = normalize(-v + n*0.1);
 	//vec3 T = refract(-v, n, eta);
-	vec3 Tcol = textureCube(iChannel1,T).xyz;
+	vec3 Tcol = IMG_CUBE(iChannel1,T).xyz;
 #else
 	// dispersion
 	vec3 T = refract(-v, n, eta);
 	vec3 Tcol;
-	Tcol.r = textureCube(iChannel1,T).r;
+	Tcol.r = IMG_CUBE(iChannel1,T).r;
 	T = refract(-v, n, eta + 0.01);
-	Tcol.g = textureCube(iChannel1,T).g;	
+	Tcol.g = IMG_CUBE(iChannel1,T).g;	
 	T = refract(-v, n, eta + 0.02);
-	Tcol.b = textureCube(iChannel1,T).b;	
+	Tcol.b = IMG_CUBE(iChannel1,T).b;	
 #endif
 	
     float f = fresnel(n, v, 0.2);
@@ -305,7 +313,7 @@ vec3 background(vec3 rd)
 	if(back==0){
 		return mix(vec3(0.0), vec3(0.0, 0.0, 0.0), rd.y);
 	}else if(back==1){
-		return textureCube(iChannel1,rd).xyz;
+		return IMG_CUBE(iChannel1,rd).xyz;
 	}else if(back==2){
 		return mix(vec3(1.0), vec3(0.0, 0.25, 1.0), rd.y);
 	}

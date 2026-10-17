@@ -35,7 +35,7 @@ struct raymarch_result_t {
 };
 	
 raymarch_result_t raymarch(vec3 origin, vec3 dir);
-mat4 inverse(mat4 m);
+mat4 inverse_(mat4 m);
 
 float sdPlane(vec3 p, vec4 n)
 {
@@ -50,7 +50,7 @@ float sdBox( vec3 p, vec3 b )
 
 vec3 opTx( vec3 p, mat4 m )
 {
-    vec3 q = (inverse(m) * vec4(p, 1.0)).xyz;
+    vec3 q = (inverse_(m) * vec4(p, 1.0)).xyz;
     return q;
 }
 
@@ -195,7 +195,7 @@ void main( void ) {
 	gl_FragColor = vec4(render(position), 1.0);
 }
 
-mat4 inverse(mat4 m) {
+mat4 inverse_(mat4 m) {
   float
       a00 = m[0][0], a01 = m[0][1], a02 = m[0][2], a03 = m[0][3],
       a10 = m[1][0], a11 = m[1][1], a12 = m[1][2], a13 = m[1][3],

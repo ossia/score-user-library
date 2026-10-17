@@ -24,6 +24,14 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/llSBRD by mmerchante.  Currently building a soulstone, but thought this crystal looks nice enough :)",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    }
 
   ]
 }
@@ -498,7 +506,7 @@ vec3 Render(Camera camera, Intersection isect, vec2 uv)
         float specular = pow(max(0.0, dot(H, normal)), tx.r * 5.0 + c * 25.0);        
         
         vec3 R = reflect(camera.direction, normal);
-        vec3 refl = textureCube(iChannel0,R).rgb ;
+        vec3 refl = IMG_CUBE(iChannel0,R).rgb ;
                 
         vec3 glow = mix(vec3(1.0, .15, .15), vec3(1.0, .45, .15), (isect.density) * .05) * (isect.density) * .04;        
         glow *= smoothstep(.5, 1.0, c) * 1.5 + 1.0;

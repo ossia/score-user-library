@@ -15,6 +15,14 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/XttSzf by Quinchilion.  My take on the XY oscilloscope.",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    }
 
   ]
 }
@@ -59,8 +67,8 @@ vec2 getPoint(float x) {
     float left = x * Alignment;
     float right = fract(x - ReturnTuning / Alignment) * Alignment;
     
-    float pointX = texture2D(iChannel0,vec2(left, 1.0)).x;
-    float pointY = texture2D(iChannel0,vec2(right, 1.0)).x;
+    float pointX = IMG_NORM_PIXEL(iChannel0,vec2(left, 1.0)).x;
+    float pointY = IMG_NORM_PIXEL(iChannel0,vec2(right, 1.0)).x;
 
     return vec2(pointX, pointY);
 }

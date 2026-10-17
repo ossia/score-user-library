@@ -70,7 +70,7 @@
         2,
         3
        ]
-    },
+    }
 		
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#49438.0"

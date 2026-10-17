@@ -20,6 +20,10 @@
         }
     },
     "INPUTS": [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    },
         {
             "NAME": "iMouse",
             "TYPE": "point2D"
@@ -156,7 +160,7 @@ vec3 render(in vec2 fragCoord){
             t += .0075;
         }
         color += fresCol * dt;
-        color += pow(textureCube(iChannel0,reflect(worldDir, nrm)).rgb, vec3(4.)) * .1;
+        color += pow(IMG_CUBE(iChannel0,reflect(worldDir, nrm)).rgb, vec3(4.)) * .1;
     }
     return color;
 }
@@ -166,7 +170,7 @@ void main() {
 	if (PASSINDEX == 0)	{
 	}
 	else if (PASSINDEX == 1)	{
-	    gl_FragColor -= gl_FragColor;
+	    gl_FragColor = vec4(0., 0., 0., 1.);
 	    for(int y = 0; y < AA; ++y)
 	        for(int x = 0; x < AA; ++x){
 	            gl_FragColor.rgb += clamp(render(gl_FragCoord.xy + vec2(x, y) / float(AA)), 0., 1.);

@@ -33,11 +33,10 @@
 
 // https://www.shadertoy.com/view/XtVGDz
 
-#define buffer iChannel0
+#define fftBuffer BufferA
 #define sound  iChannel1
 #define soundRes IMG_SIZE(iChannel1)
 #define step 1.0/RENDERSIZE.y
-#define inputSound iChannel0
 #define fftWidth 		1.0		
 #define fftMinBass 		0.00196 	// 1.0/512.0
 
@@ -150,11 +149,11 @@ float fftB(float f){
 #define PI (3.14159265359)
 #define TWOPI (3.14159265359*2.0)
 
-#define sound iChannel0
+#define soundHist BufferA
 #define to01(x) clamp(x,0.0,1.0)
 
 vec4 fft(float freq,float time){
-    return texture(sound,vec2(freq,time));
+    return IMG_NORM_PIXEL(soundHist,vec2(freq,time));
 }
 
 
@@ -356,49 +355,8 @@ vec3 barycentricCoordinate(vec2 P,Pinwheel T)
 #define EQUERRE_CENTER(T) ((T.A+T.B+T.C)/3.0)
         
 
-void main() {
-	if (PASSINDEX == 0)	{
-
-
-	    vec2 uv = isf_FragNormCoord;
-	
-	   	// black by default
-	    gl_FragColor = vec4(0.0,0.0,0.0,1.0);
-	
-	     // FRAMEINDEX == 0 => Reset
-	    if( FRAMEINDEX != 0 ){
-	        // store current fft
-	        if( gl_FragCoord.y <= 1.0 ){
-	            
-	            float freq = uv.x;
-	            float i1,i2,i3;
-	
-	            i1 = fftR(freq);
-	            i2 = fftG(freq);
-	            i3 = fftB(freq);
-		
-	            gl_FragColor.rgb = vec3(i1,i2,i3);
-	            gl_FragColor.rgb = mix(texture(buffer,vec2(uv.x,uv.y - step)).rgb,gl_FragColor.rgb,fftSmoothTime);
-	
-	            #if render
-	            //vec3 mean = mix(gl_FragColor.rgb,texture(buffer,vec2(uv.x,uv.y - step)).rgb,fftSmoothTime);
-	            
-	            /*if( length(mean) > length(gl_FragColor.rgb) ){
-	               gl_FragColor.rgb = mean.rgb; 
-	            }
-	            */
-	            //gl_FragColor.rgb = max(gl_FragColor.rgb,mean.rgb);
-	            #endif
-	            //gl_FragColor.rgb = vec3(0.0);
-	            gl_FragColor.a = texture(sound,vec2(freq,1.0)).x;
-	            
-	        // store previous fft
-	        } else if( gl_FragCoord.y < RENDERSIZE.y - 1.0 ) {
-	            gl_FragColor=texture(buffer,vec2(uv.x,uv.y - step));
-	        }
-	    }
-	}
-	else if (PASSINDEX == 1)	{
+void mainImage2(out vec4 fragColor_, in vec2 uv)
+{
 
 
 	    float tWholeMusic = TIME/378.;
@@ -520,10 +478,10 @@ void main() {
 	        *mix(.8,1.5,tWholeMusic)
 	        *vec3(1.,.8,.7)
 	    );
-	}
-
+	fragColor_ = gl_FragColor;
 }
 
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     //float tWholeMusic = TIME/378.;
     
@@ -563,4 +521,54 @@ void main() {
     
     mainImage2( fgCout, newUV );
     fragColor.b = fgCout.b;
+}
+
+void main() {
+	if (PASSINDEX == 0)	{
+
+
+	    vec2 uv = isf_FragNormCoord;
+	
+	   	// black by default
+	    gl_FragColor = vec4(0.0,0.0,0.0,1.0);
+	
+	     // FRAMEINDEX == 0 => Reset
+	    if( FRAMEINDEX != 0 ){
+	        // store current fft
+	        if( gl_FragCoord.y <= 1.0 ){
+	            
+	            float freq = uv.x;
+	            float i1,i2,i3;
+	
+	            i1 = fftR(freq);
+	            i2 = fftG(freq);
+	            i3 = fftB(freq);
+		
+	            gl_FragColor.rgb = vec3(i1,i2,i3);
+	            gl_FragColor.rgb = mix(IMG_NORM_PIXEL(fftBuffer,vec2(uv.x,uv.y - step)).rgb,gl_FragColor.rgb,fftSmoothTime);
+	
+	            #if render
+	            //vec3 mean = mix(gl_FragColor.rgb,IMG_NORM_PIXEL(fftBuffer,vec2(uv.x,uv.y - step)).rgb,fftSmoothTime);
+	            
+	            /*if( length(mean) > length(gl_FragColor.rgb) ){
+	               gl_FragColor.rgb = mean.rgb; 
+	            }
+	            */
+	            //gl_FragColor.rgb = max(gl_FragColor.rgb,mean.rgb);
+	            #endif
+	            //gl_FragColor.rgb = vec3(0.0);
+	            gl_FragColor.a = texture(sound,vec2(freq,1.0)).x;
+	            
+	        // store previous fft
+	        } else if( gl_FragCoord.y < RENDERSIZE.y - 1.0 ) {
+	            gl_FragColor=IMG_NORM_PIXEL(fftBuffer,vec2(uv.x,uv.y - step));
+	        }
+	    }
+	}
+	else if (PASSINDEX == 1)	{
+	    vec4 c = vec4(0.0);
+	    mainImage(c, gl_FragCoord.xy);
+	    gl_FragColor = c;
+	}
+
 }

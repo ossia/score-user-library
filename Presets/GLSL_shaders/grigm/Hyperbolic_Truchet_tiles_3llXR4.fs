@@ -12,6 +12,12 @@
     {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
+    },
+    {
+      "NAME" : "mouseDown",
+      "LABEL" : "B&W coloring (was LMB down)",
+      "TYPE" : "bool",
+      "DEFAULT" : false
     }
   ]
 }
@@ -318,7 +324,7 @@ void main() {
     
     const float diam = 2.0;
         
-    float kAlt = step(0.1, max(iMouse.z, iMouse.w));
+    float kAlt = mouseDown ? 1.0 : 0.0;
     float rmax = max(RENDERSIZE.x, RENDERSIZE.y);
     float rmin = min(RENDERSIZE.x, RENDERSIZE.y);
     float csize = (rmin * 0.98);

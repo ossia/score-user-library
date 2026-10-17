@@ -164,8 +164,8 @@ void main() {
 	vec2 uv_distorted = uv;
 
 	for (float i = 0.0; i < iter; i++){
-		float filter = smoothcircle(uv_distorted, radius, sharpness);
-		uv_distorted = torus_mirror(0.5 + complex_mul(((uv_distorted - 0.5)*mix(2., 16., filter)), mousePolar) + offset);
+		float filt = smoothcircle(uv_distorted, radius, sharpness);
+		uv_distorted = torus_mirror(0.5 + complex_mul(((uv_distorted - 0.5)*mix(2., 16., filt)), mousePolar) + offset);
 	}
 
 

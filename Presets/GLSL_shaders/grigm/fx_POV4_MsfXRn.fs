@@ -32,7 +32,7 @@
     {
      		"TYPE" : "image",
       		"NAME" : "inputImage"
-    	},
+    	}
   ]
 }
 */

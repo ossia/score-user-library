@@ -31,15 +31,15 @@ void main( void ) {
 	vec2 position = (gl_FragCoord.xy * 2. - RENDERSIZE) / RENDERSIZE.y * width * .5;
 	vec3 col = vec3(.5);
 
-	float TIME = TIME * 1.8;
+	float time_ = TIME * 1.8;
 	
-	float tt = mod(floor(TIME / 2.), 2.);
+	float tt = mod(floor(time_ / 2.), 2.);
 	position.x += (tt - .5) * width;
 	
-	float t = fract(TIME) * fract(TIME) * (3. - 2. * fract(TIME));
+	float t = fract(time_) * fract(time_) * (3. - 2. * fract(time_));
 	
 	position = mix(position, transform(position), t);
-	if (mod(TIME, 2.) >= 1.) position = transform(position);
+	if (mod(time_, 2.) >= 1.) position = transform(position);
 	
 	if (mod(floor(position.x) + floor(position.y) + tt, 2.) < .5) {
 		col *= 0.;

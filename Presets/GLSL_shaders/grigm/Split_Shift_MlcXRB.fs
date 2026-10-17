@@ -69,7 +69,7 @@ void main()
     	offset = 1. * sin((TIME*speed)-ofset);
     }
 
-	vec4 col0 = IMG_NORM_PIXEL(inputImage,mod(uv + vec2(offset, offset),1.0),-10.);
+	vec4 col0 = IMG_NORM_PIXEL(inputImage,mod(uv + vec2(offset, offset),1.0));
     
     vec4 col1 = vec4(smoothstep(0.,0.015, abs(t1 - 1.*band)));
     vec4 col2 = vec4(smoothstep(0.,0.015, abs(t1 + 0.*band)));
@@ -121,7 +121,7 @@ void main()
     
     // ☆ Benefited by hornet's advice, Thanks very much!
     // ------------------
-    vec4 col0 = IMG_NORM_PIXEL(iChannel0,mod(uv+offset,1.0),-10.0);
+    vec4 col0 = IMG_NORM_PIXEL(iChannel0,mod(uv+offset,1.0));
     // ------------------
     
     vec4 col1 = vec4(smoothstep(0.,0.015, abs(t1 + 1.*band)/RENDERSIZE.x));

@@ -14,14 +14,14 @@
             "MAX": 10.0
           },
 		{	
-            "NAME": "fract",
+            "NAME": "fractAmt",
             "TYPE": "float",
            "DEFAULT": 20.00,
             "MIN": 1.0,
             "MAX": 80.0
           },
           {	
-            "NAME": "sin",
+            "NAME": "sinAmt",
             "TYPE": "float",
            "DEFAULT": 4.00,
             "MIN": 1.0,
@@ -38,7 +38,7 @@
             "NAME": "enable_circ",
             "TYPE": "bool",
            	"DEFAULT": 0
-          },
+          }
 
 
   ],
@@ -71,17 +71,17 @@ void main( void ) {
 	
 	
 	
-    float a =   fract(float(int(fract))*p.y)/d;
-    float b =   fract(float(int(fract))*p.y)/d;
-    float c =   fract(float(int(fract))*p.y)/d;
+    float a =   fract(float(int(fractAmt))*p.y)/d;
+    float b =   fract(float(int(fractAmt))*p.y)/d;
+    float c =   fract(float(int(fractAmt))*p.y)/d;
     	
   
    	 
    	 
     
-	 gl_FragColor = vec4((p.y*a)*abs(sin(sin*p.y+(TIME*speed)*1.)),
-			     		(p.y*b)*abs(sin(sin*p.y+(TIME*speed)*2.)),
-			     		(p.y*c)*abs(sin(sin*p.y+(TIME*speed)*3.)),1.0)*2.;
+	 gl_FragColor = vec4((p.y*a)*abs(sin(sinAmt*p.y+(TIME*speed)*1.)),
+			     		(p.y*b)*abs(sin(sinAmt*p.y+(TIME*speed)*2.)),
+			     		(p.y*c)*abs(sin(sinAmt*p.y+(TIME*speed)*3.)),1.0)*2.;
 	 
 
 }

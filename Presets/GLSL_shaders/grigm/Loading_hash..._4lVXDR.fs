@@ -194,7 +194,7 @@ vec3 accountForDirectionalLight(vec3 p, vec3 n, DirectionalLight l)
 vec3 radiance(Ray r)
 {
     vec3 accum = vec3(0.);
-    vec3 filter = vec3(1.);
+    vec3 filt = vec3(1.);
 
     for (int i = 0; i <= MAX_BOUNCES; ++i)
     {
@@ -210,16 +210,16 @@ vec3 radiance(Ray r)
             vec3 incoming = vec3(0.);
             incoming += accountForDirectionalLight(hitPos, hit.n, sunLight);
 
-            accum += (1. - f) * filter * hit.m.c * incoming;
+            accum += (1. - f) * filt * hit.m.c * incoming;
 
             // Specular: next bounce
-            filter *= f;
+            filt *= f;
             vec3 d = reflect(r.d, hit.n);
             r = Ray(r.o + hit.t * r.d + epsilon * d, d);
         }
         else
         {
-            accum += filter * skyColor(r.d);
+            accum += filt * skyColor(r.d);
             break;
         }
     }

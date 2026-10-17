@@ -25,14 +25,14 @@
 	{
 		"NAME": "mono_color",
 		"TYPE": "bool",
-		"DEFAULT": false,
+		"DEFAULT": false
 				
 	},
 	
   	{
 		"NAME": "blur_enable",
 		"TYPE": "bool",
-		"DEFAULT": true,
+		"DEFAULT": true
 				
 	},
   	{
@@ -129,7 +129,7 @@
 		"MIN": 0.00,
 		"MAX": 0.6
 		
-	},
+	}
 	
 
   ],

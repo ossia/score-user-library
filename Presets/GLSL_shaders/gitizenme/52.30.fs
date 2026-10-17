@@ -21,7 +21,7 @@
                 -1,
                 -1
             ],
-            "NAME": "position",
+            "NAME": "camPos",
             "TYPE": "point2D"
         },
         {
@@ -246,8 +246,8 @@ vec3 Scene(vec2 uv) {
     uv += sin(uv * 20. + t) * .04;
     
     vec3 ro = vec3(0, 0, -.03);
-    ro.yz *= Rotate(-position.y*3.14+1.);
-    ro.xz *= Rotate(-position.x*6.2831);
+    ro.yz *= Rotate(-camPos.y*3.14+1.);
+    ro.xz *= Rotate(-camPos.x*6.2831);
     
     vec3 lookat = vec3(0,0,0);
     vec3 rd = GetRayDir(uv, ro, lookat, .8);

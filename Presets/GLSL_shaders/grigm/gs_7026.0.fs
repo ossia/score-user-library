@@ -237,10 +237,10 @@ vec3 calcNormal( in vec3 pos, float t )
     return normalize(nor);
 }
 
-vec3 camPath( float TIME )
+vec3 camPath( float ttime )
 {
-    vec2 p = 600.0*vec2( cos(1.4+0.37*TIME*0.1), 
-                         cos(3.2+0.31*TIME*0.1) );
+    vec2 p = 600.0*vec2( cos(1.4+0.37*ttime*0.1), 
+                         cos(3.2+0.31*ttime*0.1) );
 
 	return vec3( p.x, 0.0, p.y );
 }
@@ -251,18 +251,18 @@ void main(void)
 
 	vec2 s = xy*vec2(1.75,1.0);
 
-    float TIME = TIME*.15;
+    float ttime = TIME*.15;
 
 	vec3 light1 = normalize( vec3(  0.4, 0.22,  0.6 ) );
 	vec3 light2 = vec3( -0.707, 0.000, -0.707 );
 
 
-	vec3 campos = camPath( TIME );
-	vec3 camtar = camPath( TIME + 3.0*10.0 );
+	vec3 campos = camPath( ttime );
+	vec3 camtar = camPath( ttime + 3.0*10.0 );
 	campos.y = terrain( campos.xz ) + 15.0;
 	camtar.y = campos.y*0.5;
 
-	float roll = 0.1*cos(0.1*TIME);
+	float roll = 0.1*cos(0.1*ttime);
 	vec3 cw = normalize(camtar-campos);
 	vec3 cp = vec3(sin(roll), cos(roll),0.0);
 	vec3 cu = normalize(cross(cw,cp));

@@ -30,7 +30,7 @@ float;
 
 #extension GL_OES_standard_derivatives : enable
 
-uniform vec2 surfaceSize;
+#define surfaceSize vec2(RENDERSIZE.x/RENDERSIZE.y, 1.0)
 
 void main( void ) {
 	

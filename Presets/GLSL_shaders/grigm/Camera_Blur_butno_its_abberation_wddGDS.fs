@@ -35,6 +35,10 @@
     }
   ],
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    }
 
   ]
 }
@@ -237,7 +241,7 @@ vec3 render(vec2 uv){
     while (count < Nmax){
         //hits background
         if (d > END - ep){
-            col += textureCube(iChannel0,ro).xyz * scale;
+            col += IMG_CUBE(iChannel0,ro).xyz * scale;
             col += pow(clamp(abs(1./min_l)*0.05, 0., 1.), 2.) * scale;
             break;
         }
@@ -272,77 +276,6 @@ vec3 render(vec2 uv){
 }
 
 
-
-const float END = 20.;
-const float ep = 0.001;
-
-mat2 rot(float a){
-	return mat2(cos(a), -sin(a), sin(a), cos(a));
-}
-
-float smin(float a, float b, float k){
-	float f = clamp(0.5 + 0.5 * ((a - b) / k), 0., 1.);
-    return (1. - f) * a + f  * b - f * (1. - f) * k;
-}
-
-float cube(vec3 p, float b, float r){
-    vec3 d = abs(p) - b;
-    return length(max(d,0.0)) - r + min(max(d.x,max(d.y,d.z)),0.0);
-}
-
-float sphere(vec3 p, float r){
- 	return length(p) - r;  
-}
-
-float plane( vec3 p, vec4 n )
-{
-  	return dot(p,n.xyz) + n.w;
-}
-
-float light(vec3 p){
-    vec3 move = 1.5*vec3(cos(TIME)*sin(TIME), sin(TIME)*sin(TIME), cos(TIME));
-    vec3 p_ = p - move; p_.xy *= rot(TIME * 3.); p_.zy *= rot(TIME * 2.);
-	return min(cube(p_, .17, 0.), sphere(p + move, .2)); 
-}
-
-float obj(vec3 p){
-    vec3 pos = p;
-    pos.xy *= rot(TIME * .3);
-    float cube1 = cube(pos, 1., 0.);
-    pos = p;
-    pos.zy *= rot(TIME * .4);
-    float cube2 = cube(pos, 1., 0.);
-    pos = p;
-    pos.zx *= rot(TIME * .7);
-    float cube3 = cube(pos, 1., 0.);
-	return max(max(cube1, cube2), cube3);   
-}
-
-float mirror(vec3 p){
-    
-    return cube(p + vec3(0., 3.2, 0.), 2., 0.);
-}
-
-float SDscene(vec3 p){
-   
-	float obj = obj(p);
-    float mirror = mirror(p);
-    float light = light(p);
-    float d = min(min(obj, mirror), light);
-    
-    return d;
-}
-
-vec3 SDnormal(vec3 p){
-    
-    //Calculates the normal vector of SDscene
-    
-    return normalize(vec3(
-    SDscene(vec3(p.x+ep,p.y,p.z))-SDscene(vec3(p.x-ep,p.y,p.z)),
-    SDscene(vec3(p.x,p.y+ep,p.z))-SDscene(vec3(p.x,p.y-ep,p.z)),
-    SDscene(vec3(p.x,p.y,p.z+ep))-SDscene(vec3(p.x,p.y,p.z-ep))
-    ));
-}
 
 float depth(vec3 ro, vec3 rd){
     

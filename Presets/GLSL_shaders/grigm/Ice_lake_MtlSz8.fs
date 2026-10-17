@@ -26,7 +26,6 @@
 */
 
 
-#define time TIME
 float rand(float n)
 {
  	return fract(abs(sin(n*5.3357))*256.75+0.325);   

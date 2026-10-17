@@ -69,8 +69,8 @@ void main() {
 
 
     R = RENDERSIZE.xy;
-    gl_FragCoord.xy = ( gl_FragCoord.xy+gl_FragCoord.xy - R ) / R.y;
-    gl_FragColor -= gl_FragColor;
+    vec2 U = ( gl_FragCoord.xy+gl_FragCoord.xy - R ) / R.y;
+    gl_FragColor = vec4(0.);
     
     float t = 2.*TIME, T=20., S=1.;
     
@@ -81,10 +81,10 @@ void main() {
     for (T=0.; T<=21.; T += 3.) {               // try +1.
         Y = vec2(0,(T/11.-1.)*.8);
         _P = P0(t);
-        if (abs(gl_FragCoord.xy-Y).y < .2)                    // optim
+        if (abs(U-Y).y < .2)                    // optim
             for (float s=0.; s<1.; s+=.01) {
                 P = mix( P0(t-T*s), P1(t-T*(1.-s)), s ); 
-                gl_FragColor += line(gl_FragCoord.xy-Y,_P,P);
+                gl_FragColor += line(U-Y,_P,P);
                 _P = P;
             }
     }

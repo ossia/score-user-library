@@ -20,6 +20,7 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/4dl3z7 by frankenburgh.  Some 'naked' trees in a dark, foggy moonshine with flickering stars... Sorry, trees are only 2d objects and 'hard' coded. Some DOF at front-trees.",
   "INPUTS" : [
+        { "NAME": "iChannel0", "TYPE": "image" }
 
   ]
 }

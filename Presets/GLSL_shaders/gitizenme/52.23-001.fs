@@ -208,7 +208,6 @@ void main() {
         vec3(lenX, lenY, lenZ) + vec3(1.0,0.4,1.0) * scale
         );
 
-    vec4 w = opElongate( q, vec3(0.2,0.0,0.3) );
 
     vec3 lig = normalize( vec3(lightX,lightY,lightZ) );
     vec3 col = vec3(0.0);

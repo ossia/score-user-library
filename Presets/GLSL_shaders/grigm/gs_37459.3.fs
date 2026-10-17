@@ -63,7 +63,7 @@ float DoLife(float life, float neighborlife, float food, float poison) {
 void main( void ) {
 	vec4 here = px(0,0);
 	gl_FragColor.a = 1.0;
-	vec4 buffer = IMG_NORM_PIXEL(backbuffer,mod(isf_FragNormCoord *,1.0)); 
+	vec4 buf = IMG_NORM_PIXEL(backbuffer,mod(isf_FragNormCoord,1.0)); 
 	if (here.a > 0.0) {
 	
 		if ((mod(TIME, 0.3) > 1.0/60.0) && (mouse.y < 0.1)) {
@@ -81,7 +81,7 @@ void main( void ) {
 		here.r = DoLife(here.r, sum.r, sum.g, sum.b);
 		here.g = DoLife(here.g, sum.g, sum.b, sum.r);
 		here.b = DoLife(here.b, sum.b, sum.r, sum.g);
-		gl_FragColor.rgb = mix(here.rgb, buffer.rgb, .49);
+		gl_FragColor.rgb = mix(here.rgb, buf.rgb, .49);
 	} else {
 		vec2 pos = gl_FragCoord.xy - RENDERSIZE.xy * 0.5;
 		if (length(pos) < 40.0) {

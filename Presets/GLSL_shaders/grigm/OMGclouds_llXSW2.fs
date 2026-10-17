@@ -21,6 +21,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/llXSW2 by OMGparticles.  My first contribution to ShaderToy after following the tutorial at SIGGRAPH 2015. Most of this shader code is taken directly from iq's \"Clouds\" (shadertoy.com\/view\/XslGRr). I just added some turbulence\/movement in the clouds, and a day\/night cycle.",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     }
@@ -57,7 +61,7 @@ float noise( in vec3 x )
     vec3 f = fract(x);
 	f = f*f*f*(3.0-2.0*f);
 	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec4 rg = IMG_NORM_PIXEL(iChannel0,mod((uv+ 0.5)/256.0,1.0),-100.0);
+	vec4 rg = IMG_NORM_PIXEL(iChannel0,mod((uv+ 0.5)/256.0,1.0));
 	return (-1.0+2.0*mix( rg.g, rg.r, f.z ));
 }
 

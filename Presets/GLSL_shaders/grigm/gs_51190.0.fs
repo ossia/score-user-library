@@ -17,7 +17,7 @@
       "TYPE" : "float",
       "DEFAULT" : 7.0,
       "MIN" : 0.0,
-      "MAX" : 20.0,
+      "MAX" : 20.0
       
     }
   ],

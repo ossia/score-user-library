@@ -25,12 +25,12 @@ precision mediump float;
 #define PITCH .005
 #define CORRECTION 960.
 
-#define TIME sin(TIME+gl_FragCoord.y/400.)
+#define ttime sin(TIME+gl_FragCoord.y/400.)
 
 void main(void){
 	vec2 p=floor(gl_FragCoord.xy*PITCH*CORRECTION)/CORRECTION;
 	gl_FragColor=vec4(vec3(clamp(
-		step(mod(cos(p.x-TIME)+cos(p.y+TIME)    ,.5),.25)*step(mod(p.x-TIME,0.1),1.5)-
-		step(mod(cos(p.x+TIME)+cos(p.y*TIME)+.25,.5),.25)*step(mod(p.y+TIME,.1),1.5),
-		0.,sin((TIME-gl_FragCoord.x/10.)*100.))),1);
+		step(mod(cos(p.x-ttime)+cos(p.y+ttime)    ,.5),.25)*step(mod(p.x-ttime,0.1),1.5)-
+		step(mod(cos(p.x+ttime)+cos(p.y*ttime)+.25,.5),.25)*step(mod(p.y+ttime,.1),1.5),
+		0.,sin((ttime-gl_FragCoord.x/10.)*100.))),1);
 }

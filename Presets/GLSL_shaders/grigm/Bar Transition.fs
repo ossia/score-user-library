@@ -109,7 +109,7 @@ void main() {
     c = IMG_NORM_PIXEL(from, p);
   } else {
     p = isf_FragNormCoord;
-    c = texture2D(to, p);
+    c = IMG_NORM_PIXEL(to, p);
   }
 
   // Finally, apply the color

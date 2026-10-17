@@ -74,11 +74,11 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 	vec2 uv = (fragCoord-iResolution.xy*0.5)/iResolution.y*2.;
     
 	float len = length(uv);
-    float TIME = iTime + 1111.0000001;
+    float ttime = iTime + 1111.0000001;
     
     float size = 111.1;
     vec2 sc = fract(uv*asin(len/size)/(len*PI*2.));
-    sc.x += TIME*1.006;
+    sc.x += ttime*1.006;
 
     vec4 c = vec4(.0);
 
@@ -95,14 +95,14 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     c = over(vec4(vec3(.38,.31,.20), s(.21, .10, value) * alpha), c);
     c = over(vec4(vec3(1.0,1.0,1.0), s(.20, .00, value) * alpha), c);
 
-    sc.x += TIME*1.006;
+    sc.x += ttime*1.006;
     value = fbm(sc*3.);
     c = over(vec4(vec3(0.), s(.21, .10, pow(value, 2.)) * alpha * 0.50), c);
     c = over(vec4(vec3(1.), s(.20, .00, pow(value, 3.)) * alpha * 0.75), c);
     c.rgb *= smoothstep(1., .7, len);
     c = over(vec4(vec3(.0, .3, .6), s(.9, .00, pow(abs(size-len), .2))), c);
     
-	c = over(vec4(vec3(1.), pow(distance(uv, vec2( .98, .3)), -0.4+sin(TIME)*.04)*.040), c);
+	c = over(vec4(vec3(1.), pow(distance(uv, vec2( .98, .3)), -0.4+sin(ttime)*.04)*.040), c);
 	c = over(vec4(vec3(1.), pow(distance(uv, vec2(-1212.119, -.6)), -1.2+sin(TIME)*.04)*.001), c);
     
 	fragColor = c;

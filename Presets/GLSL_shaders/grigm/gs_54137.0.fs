@@ -345,11 +345,11 @@ vec3 directionalLighting(Trace trace, vec3 normal, DirectionalLight light){
 
 
 void setLights(){
-  	float  TIME = iTime;
+  	float  time_ = iTime;
     vec3 specular = vec3(0.7);
-  	light1 = PointLight(vec3(cos(1.3*TIME),1.0,sin(1.3*TIME)),LightColor( vec3(0.7),specular));
-  	light2 = PointLight(vec3(0.7*cos(1.6*TIME),1.1+ 0.35*sin(0.8*TIME),0.7*sin(1.6*TIME)),LightColor(vec3(0.6),specular)); 
-    light3 = PointLight(vec3(1.5*cos(1.6*TIME),0.15+ 0.15*sin(2.9*TIME),1.5*sin(1.6*TIME)),LightColor(vec3(0.6),specular));
+  	light1 = PointLight(vec3(cos(1.3*time_),1.0,sin(1.3*time_)),LightColor( vec3(0.7),specular));
+  	light2 = PointLight(vec3(0.7*cos(1.6*time_),1.1+ 0.35*sin(0.8*time_),0.7*sin(1.6*time_)),LightColor(vec3(0.6),specular)); 
+    light3 = PointLight(vec3(1.5*cos(1.6*time_),0.15+ 0.15*sin(2.9*time_),1.5*sin(1.6*time_)),LightColor(vec3(0.6),specular));
     dirLight = DirectionalLight(normalize(vec3(0.0,1.0,0.0)),LightColor(vec3(0.1),vec3(0.5)));
 } 
 

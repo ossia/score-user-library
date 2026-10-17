@@ -116,12 +116,12 @@ void main() {
 	float t=mod(1./4.*scl*TIME,1.)*1./scl2;
 	l=mod(l+t*scl2,1.);
 	vec2 ps=L2C(l)+vec2(.5*scl);
-	gl_FragColor = IMG_NORM_PIXEL(inputImage,mod(ps,1.0),-1.);
+	gl_FragColor = IMG_NORM_PIXEL(inputImage,mod(ps,1.0));
 #else
 	//shows the texture along the Hilbert curve
 	uv=floor(uv/scl)*scl;
 	float l=uv.x*scl+uv.y;
 	vec2 ps=L2C(l)+vec2(.5*scl);
-	gl_FragColor = IMG_NORM_PIXEL(iChannel0,mod(ps,1.0),-1.);
+	gl_FragColor = IMG_NORM_PIXEL(iChannel0,mod(ps,1.0));
 #endif
 }

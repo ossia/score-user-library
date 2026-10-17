@@ -28,7 +28,7 @@
 			"MIN": 0.1,
 			"MAX": 5.0
 			
-		},
+		}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#47788.2"
 }

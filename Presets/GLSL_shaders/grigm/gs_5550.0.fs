@@ -44,9 +44,9 @@ vec2 Distort(vec2 p)
     return 0.5 * (p + 1.0);
 }
 
-vec3 shader( vec2 p, vec2 RENDERSIZE ) {
+vec3 shader( vec2 p, vec2 res_ ) {
 
-	vec2 pos = ( p / RENDERSIZE.xy );
+	vec2 pos = ( p / res_.xy );
 
 	vec3 color = vec3(0.0);
 	

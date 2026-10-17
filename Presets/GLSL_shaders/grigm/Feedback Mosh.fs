@@ -52,15 +52,15 @@
 */
 
 
-varying vec2 left_coord;
-varying vec2 right_coord;
-varying vec2 above_coord;
-varying vec2 below_coord;
+in vec2 left_coord;
+in vec2 right_coord;
+in vec2 above_coord;
+in vec2 below_coord;
 
-varying vec2 lefta_coord;
-varying vec2 righta_coord;
-varying vec2 leftb_coord;
-varying vec2 rightb_coord;
+in vec2 lefta_coord;
+in vec2 righta_coord;
+in vec2 leftb_coord;
+in vec2 rightb_coord;
 
 
 //	based on v002 Optical Flow which is itself a port of Andrew Bensons HS Flow implementation on the GPU.

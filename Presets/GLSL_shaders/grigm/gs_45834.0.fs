@@ -24,9 +24,9 @@ precision mediump float;
 		
 		vec2 uv = (isf_FragNormCoord)-.5;
 	
-		float TIME = -TIME * .1 + ((.25+.05*sin(TIME*.1))/(length(uv.xy)+.07))* 2.2;
-		float si = sin(TIME);
-		float co = cos(TIME);
+		float time_ = -TIME * .1 + ((.25+.05*sin(TIME*.1))/(length(uv.xy)+.07))* 2.2;
+		float si = sin(time_);
+		float co = cos(time_);
 		mat2 ma = mat2(co, si, -si, co);
 	
 		float c = 0.0;
@@ -38,13 +38,13 @@ precision mediump float;
 			float s = float(i) * .035;
 			vec3 p = s * vec3(uv, 0.0);
 			p.xy *= ma;
-			p += vec3(.22,.3, s-1.5-sin(TIME*.13)*.1);
+			p += vec3(.22,.3, s-1.5-sin(time_*.13)*.1);
 			for (int i = 0; i < 4; i++)
 			{
 				p = abs(p) / dot(p,p) - 0.659;
 			}
-			v1 += dot(p,p)*.0015 * (1.8+sin(length(uv.xy*13.0)+.5-TIME*.2));
-			v2 += dot(p,p)*.0015 * (1.5+sin(length(uv.xy*13.5)+2.2-TIME*.3));
+			v1 += dot(p,p)*.0015 * (1.8+sin(length(uv.xy*13.0)+.5-time_*.2));
+			v2 += dot(p,p)*.0015 * (1.5+sin(length(uv.xy*13.5)+2.2-time_*.3));
 			c = length(p.xy*.5) * .35;
 		}
 		

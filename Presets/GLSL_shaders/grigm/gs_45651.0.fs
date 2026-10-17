@@ -74,8 +74,8 @@ float iTime;
 vec3  iResolution;
 
 // Protect glslsandbox uniform names
-#define TIME        stemu_time
-#define RENDERSIZE  stemu_resolution
+#define ttime        stemu_time
+#define rsize_  stemu_resolution
 
 // --------[ Original ShaderToy begins here ]---------- //
 // a variant of https://www.shadertoy.com/view/Xs33RH
@@ -123,8 +123,8 @@ void mainImage(out vec4 o, in vec2 u)
 /**/
 // --------[ Original ShaderToy ends here ]---------- //
 
-#undef TIME
-#undef RENDERSIZE
+#undef ttime
+#undef rsize_
 
 void main(void)
 {

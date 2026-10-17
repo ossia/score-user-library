@@ -22,7 +22,6 @@
 precision mediump float;
 #endif
 
-uniform vec2 reyboard;
 
 const float PI = 3.1415926535;
 const float TWOPI = PI*2.0;

@@ -32,7 +32,7 @@ struct AABB
 };
 struct Intersection
 {
-	float TIME;
+	float time_;
 	vec3 normal;
 	float aabb_edge;
 };
@@ -68,9 +68,9 @@ bool intersectionAABB(AABB aabb, Ray r, inout Intersection isect)
 		}		
 	}
 	
-	if(tmax>=tmin && tmin < isect.TIME)
+	if(tmax>=tmin && tmin < isect.time_)
 	{
-		isect.TIME = tmin;
+		isect.time_ = tmin;
 		vec3 lp = r.orign + r.direction * tmin;
 		vec3 cen = (aabb.low + aabb.high)/2.0;
 		vec3 hw = -(aabb.low - aabb.high)/2.0;
@@ -142,7 +142,7 @@ float fresnel(float costh, float f0)
 void main( void ) {
 
 	Intersection isect;
-	isect.TIME = 100000.0;
+	isect.time_ = 100000.0;
 	
 	vec2 tx = ( isf_FragNormCoord )*2.0-vec2(1.0);
 	vec2 noise = 0.01*vec2(sin(tx.x*20.0+TIME*15.0), sin(tx.y*6.0+TIME*10.0));
@@ -165,7 +165,7 @@ void main( void ) {
 		float fres = fresnel(dot(-r.direction, isect.normal), 0.3);
 		vec3 rfl = reflect(-r.direction, isect.normal);
 		vec3 rfr = refract(-r.direction, isect.normal, 1.0/1.33);
-		float l = isect.TIME;
+		float l = isect.time_;
 		outcol = /*vec3(pow(isect.aabb_edge/1.5, 5.0)) +*/  exp(-l*l*0.01)*(fres * envmap(rfl)  + (1.0-fres) * envmap(rfr)) ;//vec3(1,0,0);
 	}
 	//outcol = vec3(noise,1);

@@ -67,8 +67,8 @@ vec3 hash3( float n ) { return fract(sin(vec3(n,n+1.0,n+2.0))*43758.5453123); }
 vec4 hash4( float n ) { return fract(sin(vec4(n,n+1.0,n+2.0,n+3.0))*43758.5453123); }
 
 const float speed = 8.0;
-vec2 getPosition( float TIME, vec4 id ) { return vec2(       0.9*sin((speed*(0.75+0.5*id.z))*TIME+20.0*id.x),        0.75*cos(speed*(0.75+0.5*id.w)*TIME+20.0*id.y) ); }
-vec2 getVelocity( float TIME, vec4 id ) { return vec2( speed*0.9*cos((speed*(0.75+0.5*id.z))*TIME+20.0*id.x), -speed*0.75*sin(speed*(0.75+0.5*id.w)*TIME+20.0*id.y) ); }
+vec2 getPosition( float time_, vec4 id ) { return vec2(       0.9*sin((speed*(0.75+0.5*id.z))*time_+20.0*id.x),        0.75*cos(speed*(0.75+0.5*id.w)*time_+20.0*id.y) ); }
+vec2 getVelocity( float time_, vec4 id ) { return vec2( speed*0.9*cos((speed*(0.75+0.5*id.z))*time_+20.0*id.x), -speed*0.75*sin(speed*(0.75+0.5*id.w)*time_+20.0*id.y) ); }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 { fragColor = vec4(0., 0., 0., 1.);

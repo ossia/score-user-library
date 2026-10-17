@@ -148,14 +148,14 @@ float pattern(in vec2 p) {
     return fbm( p + 4.0*r ,oc,l,g);    
 }
 
-float pattern2( in vec2 p, out vec2 q, out vec2 r , in float TIME)
+float pattern2( in vec2 p, out vec2 q, out vec2 r , in float time_)
 {
     float l = 2.3;
     float g = 0.4;
     int oc = 10; 
     
-    q.x = fbm( p + vec2(TIME,TIME),oc,l,g);
-    q.y = fbm( p + vec2(5.2*TIME,1.3*TIME) ,oc,l,g);
+    q.x = fbm( p + vec2(time_,time_),oc,l,g);
+    q.y = fbm( p + vec2(5.2*time_,1.3*time_) ,oc,l,g);
     
     r.x = fbm( p + 4.0*q + vec2(1.7,9.2),oc,l,g );
     r.y = fbm( p + 4.0*q + vec2(8.3,2.8) ,oc,l,g);

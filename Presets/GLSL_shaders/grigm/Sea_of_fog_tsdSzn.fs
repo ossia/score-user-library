@@ -54,7 +54,7 @@
 
 
 //Misc
-#define TIME (TIME * TIMESCALE)
+#define ttime (TIME * TIMESCALE)
 
 //Useful functions
 float hash12(vec2 x)   
@@ -99,7 +99,7 @@ float noise12(vec2 uv)
 
 vec3 colorFromUV(vec2 uv, float shift)
 {
- 	return 0.7 + 0.3*cos(TIME * 0.2 + uv.xyx * 0.1 + vec3(0,2,4) + pow(shift, 4.0)); //XD
+ 	return 0.7 + 0.3*cos(ttime * 0.2 + uv.xyx * 0.1 + vec3(0,2,4) + pow(shift, 4.0)); //XD
 }
 
 vec3 fancyLayer(vec2 uv, float cut)
@@ -108,12 +108,12 @@ vec3 fancyLayer(vec2 uv, float cut)
 
     for (float i = DISTORTION_BASE_ITERATION; i <= DISTORTION_BASE_ITERATION + DISTORTION_ITERATIONS; i++)
     {
-     	uv.x += STRENGTH * sin(uv.y * pow(DISTORTION_POW, i) + TIME * DISTORTION_SPEED + i * 0.18) / pow(DISTORTION_POW, i);
-        uv.y += STRENGTH * sin(uv.x * pow(DISTORTION_POW, i) + TIME * DISTORTION_SPEED + i * 0.21) / pow(DISTORTION_POW, i);
+     	uv.x += STRENGTH * sin(uv.y * pow(DISTORTION_POW, i) + ttime * DISTORTION_SPEED + i * 0.18) / pow(DISTORTION_POW, i);
+        uv.y += STRENGTH * sin(uv.x * pow(DISTORTION_POW, i) + ttime * DISTORTION_SPEED + i * 0.21) / pow(DISTORTION_POW, i);
     }
     
-    float fancyness = noise12(uv * 10.0 + TIME * 0.1 * 5.0);
-    float noise = noise12(uv * 2.0 + TIME * 0.5 + 21.0);
+    float fancyness = noise12(uv * 10.0 + ttime * 0.1 * 5.0);
+    float noise = noise12(uv * 2.0 + ttime * 0.5 + 21.0);
     
     vec3 col = colorFromUV(uv, noise);
     
@@ -123,7 +123,7 @@ vec3 fancyLayer(vec2 uv, float cut)
 
 vec3 uvToCastPlane(vec2 uv)
 {
- 	return vec3(uv.x, uv.y, -1.0 + sin(TIME * 0.2) * 0.2);   
+ 	return vec3(uv.x, uv.y, -1.0 + sin(ttime * 0.2) * 0.2);   
 }
 
 //xy - plane uv
@@ -145,7 +145,7 @@ void main() {
 	    vec2 uv = (2.0 * gl_FragCoord.xy - RENDERSIZE.xy) / RENDERSIZE.x;
 	    
 	    //Camera rotation and position
-	    vec3 angle = vec3(-0.42 + cos(TIME * 0.3) * 0.08, sin(TIME * 0.2) * 0.5, cos(TIME * 0.21) * 0.1);
+	    vec3 angle = vec3(-0.42 + cos(ttime * 0.3) * 0.08, sin(ttime * 0.2) * 0.5, cos(ttime * 0.21) * 0.1);
 	    mat3x3 rotationMatrix = mat3x3(cos(angle.z), -sin(angle.z), 0.0,
 	                                  sin(angle.z), cos(angle.z), 0.0,
 	                                  0.0, 0.0, 1.0)
@@ -156,7 +156,7 @@ void main() {
 	                                  0.0, 1.0, 0.0,
 	                                  sin(angle.y), 0.0, cos(angle.y));
 	    
-	    vec3 cameraShift = vec3(0.0, sin(TIME * 0.24) * 0.12 - 0.36, TIME * 1.3);
+	    vec3 cameraShift = vec3(0.0, sin(ttime * 0.24) * 0.12 - 0.36, ttime * 1.3);
 	    
 	    //Creating ray
 	    vec3 rayOrigin = vec3(0.0, 0.0, 0.0) + cameraShift;

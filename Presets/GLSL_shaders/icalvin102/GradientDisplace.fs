@@ -22,7 +22,7 @@
       "MIN" : 0
     },
     {
-      "NAME" : "smooth",
+      "NAME" : "smoothing",
       "TYPE" : "bool"
     }
   ],
@@ -43,7 +43,7 @@ void main()	{
 	vec3 gy = IMG_NORM_PIXEL(displace, uv + e.yz).rgb - IMG_NORM_PIXEL(displace, uv - e.yz).rgb;
 	//gx /= 2.0*e.x;
 	//gy /= 2.0*e.y;
-	if(smooth){
+	if(smoothing){
 		vec3 strength = IMG_NORM_PIXEL(displace, uv).rgb;
 		gx *= strength;
 		gy *= strength;

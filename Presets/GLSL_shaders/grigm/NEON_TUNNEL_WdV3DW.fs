@@ -82,7 +82,7 @@
 		"NAME": "mix_draw_triang",
 		"TYPE": "bool",
 		"DEFAULT": true
-	},
+	}
 	
 	
 	

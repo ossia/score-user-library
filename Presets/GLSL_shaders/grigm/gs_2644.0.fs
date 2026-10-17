@@ -52,7 +52,7 @@
       "MAX" : 2.0,
       "DEFAULT" : 1.0,
       "MIN" : 1.0
-    },
+    }
   ],
   "ISFVSN" : "2"
 }
@@ -75,11 +75,11 @@ precision mediump float;
 }*/
 vec4 f(vec2 x) {
 	float d = 1.0;
-	float TIME = TIME;
+	float time_ = TIME;
 	for(int i = 0; i < int(iter); ++i) {
-		vec2 foo = vec2(sin((TIME*speed)*2.5), cos((TIME*speed)*1.5));
+		vec2 foo = vec2(sin((time_*speed)*2.5), cos((time_*speed)*1.5));
 		d *= length(foo * item_dist - x);
-		TIME += (10.0*time_incr);
+		time_ += (10.0*time_incr);
 	}
 	return vec4(d);
 }

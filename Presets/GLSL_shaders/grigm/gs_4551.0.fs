@@ -38,12 +38,12 @@ float point(vec2 p, vec2 p2)
 	return pow(1.0 / (distance(p, p2)) * 0.02, 0.75);	
 }
 
-float bokeh(vec2 p, float r, float smooth)
+float bokeh(vec2 p, float r, float smoothing)
 {
 	vec2 q = abs(p);
 	float d = dot(q, vec2(0.866024,  0.5));
 	float s = max(d, q.y) - r;
-	return smoothstep(smooth, -smooth, s);
+	return smoothstep(smoothing, -smoothing, s);
 }
 vec3 adjust(vec3 color) {
 	return color*color;

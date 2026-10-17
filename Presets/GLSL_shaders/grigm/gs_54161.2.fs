@@ -49,18 +49,18 @@ mat2 rot(float angle)
 
 vec4 sd2d(vec2 p, float o)
 {
-    float TIME = 0.2*o+0.6*iTime;
+    float time_ = 0.2*o+0.6*iTime;
  	float s =0.5;
     p*= s;
     float RADIUS =(1.+sin(iTime));
     int i;
     vec3 col = vec3(0.);
-    p = p*rot(-0.4*TIME);// twist
+    p = p*rot(-0.4*time_);// twist
 
     for (int ii = 0; ii<NIFS; ii++)
     {        
         if (p.x<0.) {p.x = -p.x;col.r++;}
-		p = p*rot(0.9*sin(TIME));
+		p = p*rot(0.9*sin(time_));
         if (p.y<0.) {p.y = -p.y;col.g++; }
         if (p.x-p.y<0.){ p.xy = p.yx;col.b++;}        
       	p = p*SCALE-TRANSLATE;

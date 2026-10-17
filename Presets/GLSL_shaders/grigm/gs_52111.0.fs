@@ -94,17 +94,17 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 	
 	vec2 uv = p*vec2(iResolution.x/iResolution.y,1.0);
 	
-    vec2 TIME = iTime * speed * vec2(0);
+    vec2 time_ = iTime * speed * vec2(0);
     float q = fbm(uv * cloudscale * 0.5);
     
     //ridged noise shape
 	float r = 0.0;
 	uv *= cloudscale;
-    uv -= q - TIME;
+    uv -= q - time_;
     float weight = 0.8;
     for (int i=0; i<8; i++){
 		r += abs(weight*noise( uv ));
-        uv = m*uv + TIME;
+        uv = m*uv + time_;
 		weight *= 0.7;
     }
     
@@ -112,11 +112,11 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 	float f = 0.0;
     uv = p*vec2(iResolution.x/iResolution.y,1.0);
 	uv *= cloudscale;
-    uv -= q - TIME;
+    uv -= q - time_;
     weight = 0.7;
     for (int i=0; i<8; i++){
 		f += weight*noise( uv );
-        uv = m*uv + TIME;
+        uv = m*uv + time_;
 		weight *= 0.6;
     }
     
@@ -124,27 +124,27 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     
     //noise colour
     float c = 0.0;
-    TIME *= 2.;
+    time_ *= 2.;
     uv = p*vec2(iResolution.x/iResolution.y,1.0);
 	uv *= cloudscale*2.0;
-    uv -= q - TIME;
+    uv -= q - time_;
     weight = 0.4;
     for (int i=0; i<7; i++){
 		c += weight*noise( uv );
-        uv = m*uv + TIME;
+        uv = m*uv + time_;
 		weight *= 0.6;
     }
     
     //noise ridge colour
     float c1 = 0.0;
-    TIME *= 3./2.;
+    time_ *= 3./2.;
     uv = p*vec2(iResolution.x/iResolution.y,1.0);
 	uv *= cloudscale*3.0;
-    uv -= q - TIME;
+    uv -= q - time_;
     weight = 0.4;
     for (int i=0; i<7; i++){
 		c1 += abs(weight*noise( uv ));
-        uv = m*uv + TIME;
+        uv = m*uv + time_;
 		weight *= 0.6;
     }
 	

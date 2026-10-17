@@ -11,6 +11,10 @@
         {
             "NAME": "iMouse",
             "TYPE": "point2D"
+        },
+        {
+            "NAME": "reset",
+            "TYPE": "event"
         }
     ],
     "PASSES": [
@@ -83,7 +87,7 @@ vec4 solu(in vec2 fragCoord, in vec2 uv) {
 void main() {
 	if (PASSINDEX == 0)	{
 	    vec2 uv = isf_FragNormCoord;
-	    if(FRAMEINDEX <= 1 || iMouse.z > 0.) {
+	    if(FRAMEINDEX <= 1 || reset) {
 	        bool alive = fract(sin(gl_FragCoord.x) * cos(gl_FragCoord.y) * 43758.5453123) < .22;
 	        gl_FragColor = vec4(0., 0., 0., float(alive));
 	    } else {

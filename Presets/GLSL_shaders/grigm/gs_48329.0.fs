@@ -17,7 +17,7 @@ precision highp float;
 #endif
 
 
-#define TIME (TIME + 100.0)
+#define ttime (TIME + 100.0)
 #define PI 3.14159265358979323846
 
 float box(vec2 _st, vec2 _size, float _smoothEdges){
@@ -44,7 +44,7 @@ vec2 rotate2D(vec2 _st, float _angle, vec2 shift){
 void main(void){
 	vec2 v = (gl_FragCoord.x - RENDERSIZE/2.0) / min(RENDERSIZE.y,RENDERSIZE.x) * 5.0;
 	vec2 vv = v; vec2 vvv = v;
-	float tm = TIME*0.15;
+	float tm = ttime*0.15;
 	vec2 mspt = (vec2(
 			sin(tm)+cos(tm*0.2)+sin(tm*0.5)+cos(tm*-0.4)+sin(tm*1.3),
 			cos(tm)+sin(tm*0.1)+cos(tm*0.8)+sin(tm*-1.1)+cos(tm*1.5)

@@ -12,6 +12,10 @@
         }
     },
     "INPUTS": [
+    {
+      "NAME" : "iChannel1",
+      "TYPE" : "image"
+    },
    		 {
             "NAME": "reset",
             "TYPE": "event"
@@ -110,7 +114,7 @@
       "DEFAULT" : 1.0,
       "MAX" : 10.0,
       "MIN" : 0.0
-    },
+    }
     	
      
 

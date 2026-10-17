@@ -21,6 +21,10 @@
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/ldySDh by jolle.  Metablobs but of water droplets instead of metal. A bit derivative but some interesting shading.\n\nUse camera to look around. You can change number of multiplesamples (default 3).",
   "INPUTS" : [
     {
+      "NAME" : "iChannel0",
+      "TYPE" : "cubemap"
+    },
+    {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
     },
@@ -29,7 +33,7 @@
       "NAME": "showBackground",
       "TYPE": "bool",
       "DEFAULT": 1
-    },
+    }
   ]
 }
 */
@@ -65,8 +69,8 @@ float fresnel(float n1, float n2, float cos_theta)
 
 vec4 background(vec3 d)
 {
-	return textureCube(iChannel0,d);
-    //return IMG_NORM_PIXEL(iChannel0, d, 0.0);
+	return IMG_CUBE(iChannel0,d);
+    //return IMG_NORM_PIXEL(iChannel0, d);
 }
 
 float f(vec3 p)

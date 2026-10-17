@@ -16,6 +16,10 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/tdj3W3 by anemolo.  Really cool,  but seems like a lot of code for such a simple transition. \nGenerating the noise outside of the shader instead on every pixel is probably better. But I don't think a pre-gen image will work because I need to add iTime for it to move :s",
   "INPUTS" : [
+    {
+      "NAME" : "iChannel0",
+      "TYPE" : "image"
+    },
 	{
      		"NAME" : "inputImage",
       		"TYPE" : "image"

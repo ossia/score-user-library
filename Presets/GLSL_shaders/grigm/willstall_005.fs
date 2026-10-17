@@ -38,10 +38,6 @@
 #define HALF_PI 1.57079632675
 #define TWO_PI 6.283185307
 
-uniform float u_float;
-uniform vec2 u_vec2;
-uniform vec3 u_vec3;
-uniform vec4 u_vec4;
 
 
 

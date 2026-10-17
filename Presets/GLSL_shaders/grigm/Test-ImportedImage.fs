@@ -9,6 +9,10 @@
 		{
 			"NAME": "inputImage",
 			"TYPE": "image"
+		},
+		{
+			"NAME": "blendImage",
+			"TYPE": "image"
 		}
 	],
 	"IMPORTED": {

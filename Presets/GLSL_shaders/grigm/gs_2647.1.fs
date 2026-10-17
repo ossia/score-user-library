@@ -9,7 +9,7 @@
       "NAME" : "color_invert",
       "TYPE" : "bool",
       "DEFAULT" : 1
-    },
+    }
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#2647.1"
 }
@@ -32,11 +32,11 @@ precision mediump float;
 }*/
 vec4 f(vec2 x) {
 	float d = 1.0;
-	float TIME = TIME;
+	float time_ = TIME;
 	for(int i = 0; i < 23; ++i) {
-		vec2 foo = vec2(sin(TIME*2.5), cos(TIME*1.5));
+		vec2 foo = vec2(sin(time_*2.5), cos(time_*1.5));
 		d *= length(foo * 0.8 - x);
-		TIME += 10.0;
+		time_ += 10.0;
 	}
 	return vec4(d);
 }

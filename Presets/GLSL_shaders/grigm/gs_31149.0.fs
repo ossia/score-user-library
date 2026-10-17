@@ -27,12 +27,10 @@
 precision highp float;
 #endif
 
-varying vec2 surfaceSize;
 
 vec3   iResolution = vec3(RENDERSIZE, 1.0);
 float  iGlobalTime = TIME;
 vec4   iMouse = vec4(mouse, 0.0, 1.0);
-uniform sampler2D iChannel0,iChannel1,bb;
 
 // srtuss, 2015
 // volumetric cloud tunnel, a single light source, lightning and something that is supposed

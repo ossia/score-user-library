@@ -35,7 +35,7 @@
 precision highp float;
 #endif
 
-uniform vec2 surfaceSize;
+#define surfaceSize vec2(RENDERSIZE.x/RENDERSIZE.y, 1.0)
 
 
 

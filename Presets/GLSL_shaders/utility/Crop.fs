@@ -70,9 +70,9 @@ void main() {
 
     if (mode == 0) {
         // Center + size mode
-        vec2 half = vec2(width, height) * 0.5;
-        rectMin = center - half;
-        rectMax = center + half;
+        vec2 halfSize = vec2(width, height) * 0.5;
+        rectMin = center - halfSize;
+        rectMax = center + halfSize;
     } else {
         // Corners mode (topLeft, bottomRight)
         rectMin = topLeft;

@@ -55,7 +55,7 @@ float height(float x,  float y) {
 	if ( tex_space.x < 0.0 || tex_space.x >1.0 || tex_space.y < 0.0 || tex_space.y > 1.0 )
 		return 0.0;
 		
-	return texture2D(heightmap, tex_space).r *j ;
+	return IMG_NORM_PIXEL(heightmap, tex_space).r *j ;
 }
 
 float sdBox( vec3 p, vec3 b ){

@@ -23,6 +23,18 @@
         {
             "NAME": "iMouse",
             "TYPE": "point2D"
+        },
+        {
+            "NAME": "iChannel1",
+            "TYPE": "image"
+        },
+        {
+            "NAME": "iChannel1_2",
+            "TYPE": "image"
+        },
+        {
+            "NAME": "iChannel2",
+            "TYPE": "image"
         }
     ],
     "PASSES": [
@@ -54,14 +66,14 @@
 #define didYOUeatALLthatACID 1.09729
 #define feedback 0.45
 
-#define rate 1.5
-#define push_RGB 1.09
-#define billow 2.10
-#define push_RGB2 2.9209
-#define startFrame 10
-#define leak 1.90
-#define scale 1.201
-#define didYOUeatALLthatACID 1.19729
+#define rate_B 1.5
+#define push_RGB_B 1.09
+#define billow_B 2.10
+#define push_RGB2_B 2.9209
+#define startFrame_B 10
+#define leak_B 1.90
+#define scale_B 1.201
+#define didYOUeatALLthatACID_B 1.19729
 #define feedback 0.45
 
 void main() {
@@ -115,27 +127,27 @@ void main() {
 	    
 	    if ( fract(TIME*0.2)>0.5 ) {gl_FragColor /= flow0 ;}
 	    
-	    if ( FRAMEINDEX < startFrame ) {gl_FragColor = IMG_NORM_PIXEL(iChannel1_2,mod(uv,1.0));} 
+	    if ( FRAMEINDEX < startFrame_B ) {gl_FragColor = IMG_NORM_PIXEL(iChannel1_2,mod(uv,1.0));} 
 	    
 	    else {
 	        
 	        vec2 vUv = isf_FragNormCoord;
-	        vec2 texel = rate / RENDERSIZE.xy;
-	        vec3 uv = IMG_NORM_PIXEL(BufferA,mod(vUv*(1.0 + leak * 0.005),1.0)).xyz;
+	        vec2 texel = rate_B / RENDERSIZE.xy;
+	        vec3 uv = IMG_NORM_PIXEL(BufferA,mod(vUv*(1.0 + leak_B * 0.005),1.0)).xyz;
 	        
-	        float gt = mod(TIME*vUv.x*vUv.y, billow * 6.1415)*scale;
+	        float gt = mod(TIME*vUv.x*vUv.y, billow_B * 6.1415)*scale_B;
 	        
 	        vec2 d1 = vec2(uv.x * vec2(texel.x*cos(gt * uv.z), texel.y*sin(gt*uv.y)));
 	        vec2 d2 = vec2(uv.y * vec2(texel.x*cos(gt * uv.x), texel.y*sin(gt*uv.y)));
 	        vec2 d3 = vec2(uv.z * vec2(texel.x*cos(gt * uv.y), texel.y*sin(gt*uv.y)));
 	        
-	        float bright = (uv.x+uv.y+uv.z)/ push_RGB + push_RGB2;
+	        float bright = (uv.x+uv.y+uv.z)/ push_RGB_B + push_RGB2_B;
 	        
 	        float r = IMG_NORM_PIXEL(BufferA,mod(vUv+ d1 * bright,1.0)).x;
 	        float g = IMG_NORM_PIXEL(BufferA,mod(vUv+ d2 * bright,1.0)).y;
 	        float b = IMG_NORM_PIXEL(BufferA,mod(vUv+ d3 * bright,1.0)).z;
 	        
-	        vec3 uvMix = mix(uv, vec3(r,g,b), didYOUeatALLthatACID);
+	        vec3 uvMix = mix(uv, vec3(r,g,b), didYOUeatALLthatACID_B);
 	        
 	        vec3 orig = IMG_NORM_PIXEL(iChannel1_2,mod(vUv,1.0)).xyz;
 	        

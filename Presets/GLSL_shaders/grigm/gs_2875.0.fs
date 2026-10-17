@@ -16,7 +16,6 @@
 precision highp float;
 #endif
 
-uniform vec2 reyboard;
 
 
 float thing(vec2 pos) 

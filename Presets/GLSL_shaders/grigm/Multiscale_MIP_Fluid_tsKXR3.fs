@@ -44,342 +44,13 @@
 */
 
 
-#define TURBULENCE_SAMPLER iChannel3
-#define CONFINEMENT_SAMPLER iChannel2
-#define POISSON_SAMPLER iChannel1
-#define VELOCITY_SAMPLER iChannel0
-
-#define V(d) texture(TURBULENCE_SAMPLER, fract(uv+(d+0.))).xy
-
-vec2 gaussian_turbulence(vec2 uv) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    vec4 t = vec4(texel, -texel.y, 0);
-
-    vec2 d =    V( t.ww); vec2 d_n =  V( t.wy); vec2 d_e =  V( t.xw);
-    vec2 d_s =  V( t.wz); vec2 d_w =  V(-t.xw); vec2 d_nw = V(-t.xz);
-    vec2 d_sw = V(-t.xy); vec2 d_ne = V( t.xy); vec2 d_se = V( t.xz);
-    
-    return 0.25 * d + 0.125 * (d_e + d_w + d_n + d_s) + 0.0625 * (d_ne + d_nw + d_se + d_sw);
-}
-
-#define C(d) texture(CONFINEMENT_SAMPLER, fract(uv+(d+0.))).xy
-
-vec2 gaussian_confinement(vec2 uv) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    vec4 t = vec4(texel, -texel.y, 0);
-
-    vec2 d =    C( t.ww); vec2 d_n =  C( t.wy); vec2 d_e =  C( t.xw);
-    vec2 d_s =  C( t.wz); vec2 d_w =  C(-t.xw); vec2 d_nw = C(-t.xz);
-    vec2 d_sw = C(-t.xy); vec2 d_ne = C( t.xy); vec2 d_se = C( t.xz);
-    
-    return 0.25 * d + 0.125 * (d_e + d_w + d_n + d_s) + 0.0625 * (d_ne + d_nw + d_se + d_sw);
-}
-
-#define D(d) texture(POISSON_SAMPLER, fract(uv+d)).x
-
-vec2 diff(vec2 uv) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    vec4 t = vec4(texel, -texel.y, 0);
-
-    float d =    D( t.ww); float d_n =  D( t.wy); float d_e =  D( t.xw);
-    float d_s =  D( t.wz); float d_w =  D(-t.xw); float d_nw = D(-t.xz);
-    float d_sw = D(-t.xy); float d_ne = D( t.xy); float d_se = D( t.xz);
-    
-    return vec2(
-        0.5 * (d_e - d_w) + 0.25 * (d_ne - d_nw + d_se - d_sw),
-        0.5 * (d_n - d_s) + 0.25 * (d_ne + d_nw - d_se - d_sw)
-    );
-}
-
-#define N(d) texture(VELOCITY_SAMPLER, fract(uv+(d+0.)))
-
-vec4 gaussian_velocity(vec2 uv) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    vec4 t = vec4(texel, -texel.y, 0);
-
-    vec4 d =    N( t.ww); vec4 d_n =  N( t.wy); vec4 d_e =  N( t.xw);
-    vec4 d_s =  N( t.wz); vec4 d_w =  N(-t.xw); vec4 d_nw = N(-t.xz);
-    vec4 d_sw = N(-t.xy); vec4 d_ne = N( t.xy); vec4 d_se = N( t.xz);
-    
-    return 0.25 * d + 0.125 * (d_e + d_w + d_n + d_s) + 0.0625 * (d_ne + d_nw + d_se + d_sw);
-}
-
-vec2 vector_laplacian(vec2 uv) {
-    const float _K0 = -20.0/6.0, _K1 = 4.0/6.0, _K2 = 1.0/6.0;
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    vec4 t = vec4(texel, -texel.y, 0);
-
-    vec4 d =    N( t.ww); vec4 d_n =  N( t.wy); vec4 d_e =  N( t.xw);
-    vec4 d_s =  N( t.wz); vec4 d_w =  N(-t.xw); vec4 d_nw = N(-t.xz);
-    vec4 d_sw = N(-t.xy); vec4 d_ne = N( t.xy); vec4 d_se = N( t.xz);
-    
-    return (_K0 * d + _K1 * (d_e + d_w + d_n + d_s) + _K2 * (d_ne + d_nw + d_se + d_sw)).xy;
-}
-
-    
-
-
-#define TURB_CH xy
-#define TURB_SAMPLER iChannel0
-#define DEGREE TURBULENCE_SCALES
-
-#define D(d) textureLod(TURB_SAMPLER, fract(uv+d), mip).TURB_CH
-
-void tex(vec2 uv, inout mat3 mx, inout mat3 my, int degree) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    float stride = float(1 << degree);
-    float mip = float(degree);
-    vec4 t = stride * vec4(texel, -texel.y, 0);
-
-    vec2 d =    D( t.ww); vec2 d_n =  D( t.wy); vec2 d_e =  D( t.xw);
-    vec2 d_s =  D( t.wz); vec2 d_w =  D(-t.xw); vec2 d_nw = D(-t.xz);
-    vec2 d_sw = D(-t.xy); vec2 d_ne = D( t.xy); vec2 d_se = D( t.xz);
-    
-    mx =  mat3(d_nw.x, d_n.x, d_ne.x,
-               d_w.x,  d.x,   d_e.x,
-               d_sw.x, d_s.x, d_se.x);
-    
-    my =  mat3(d_nw.y, d_n.y, d_ne.y,
-               d_w.y,  d.y,   d_e.y,
-               d_sw.y, d_s.y, d_se.y);
-}
-
-float reduce(mat3 a, mat3 b) {
-    mat3 p = matrixCompMult(a, b);
-    return p[0][0] + p[0][1] + p[0][2] +
-           p[1][0] + p[1][1] + p[1][2] +
-           p[2][0] + p[2][1] + p[2][2];
-}
-
-void turbulence(vec2 fragCoord, inout vec2 turb, inout float curl)
-{
-	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
-     
-    mat3 turb_xx = (2.0 - TURB_ISOTROPY) * mat3(
-        0.125,  0.25, 0.125,
-       -0.25,  -0.5, -0.25,
-        0.125,  0.25, 0.125
-    );
-
-    mat3 turb_yy = (2.0 - TURB_ISOTROPY) * mat3(
-        0.125, -0.25, 0.125,
-        0.25,  -0.5,  0.25,
-        0.125, -0.25, 0.125
-    );
-
-    mat3 turb_xy = TURB_ISOTROPY * mat3(
-       0.25, 0.0, -0.25,  
-       0.0,  0.0,  0.0,
-      -0.25, 0.0,  0.25
-    );
-    
-    const float norm = 8.8 / (4.0 + 8.0 * CURL_ISOTROPY);  // 8.8 takes the isotropy as 0.6
-    float c0 = CURL_ISOTROPY;
-    
-    mat3 curl_x = mat3(
-        c0,   1.0,  c0,
-        0.0,  0.0,  0.0,
-       -c0,  -1.0, -c0
-    );
-
-    mat3 curl_y = mat3(
-        c0, 0.0, -c0,
-       1.0, 0.0, -1.0,
-        c0, 0.0, -c0
-    );
-    
-    mat3 mx, my;
-    vec2 v = vec2(0);
-    float turb_wc, curl_wc = 0.0;
-    curl = 0.0;
-    for (int i = 0; i < DEGREE; i++) {
-        tex(uv, mx, my, i);
-        float turb_w = TURB_W_FUNCTION;
-        float curl_w = CURL_W_FUNCTION;
-    	v += turb_w * vec2(reduce(turb_xx, mx) + reduce(turb_xy, my), reduce(turb_yy, my) + reduce(turb_xy, mx));
-        curl += curl_w * (reduce(curl_x, mx) + reduce(curl_y, my));
-        turb_wc += turb_w;
-        curl_wc += curl_w;
-    }
-
-    turb = float(DEGREE) * v / turb_wc;
-    curl = norm * curl / curl_wc;
-}
-
-#define CURL_CH w
-#define CURL_SAMPLER iChannel0
-#define DEGREE VORTICITY_SCALES
-
-#define CURL(d) textureLod(CURL_SAMPLER, fract(uv+(d+0.0)), mip).CURL_CH
-#define D(d) abs(textureLod(CURL_SAMPLER, fract(uv+d), mip).CURL_CH)
-
-void tex(vec2 uv, inout mat3 mc, inout float curl, int degree) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    float stride = float(1 << degree);
-    float mip = float(degree);
-    vec4 t = stride * vec4(texel, -texel.y, 0);
-
-    float d =    D( t.ww); float d_n =  D( t.wy); float d_e =  D( t.xw);
-    float d_s =  D( t.wz); float d_w =  D(-t.xw); float d_nw = D(-t.xz);
-    float d_sw = D(-t.xy); float d_ne = D( t.xy); float d_se = D( t.xz);
-    
-    mc =  mat3(d_nw, d_n, d_ne,
-               d_w,  d,   d_e,
-               d_sw, d_s, d_se);
-    
-    curl = CURL();
-    
-}
-
-float reduce(mat3 a, mat3 b) {
-    mat3 p = matrixCompMult(a, b);
-    return p[0][0] + p[0][1] + p[0][2] +
-           p[1][0] + p[1][1] + p[1][2] +
-           p[2][0] + p[2][1] + p[2][2];
-}
-
-vec2 confinement(vec2 fragCoord)
-{
-	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
-    
-    float k0 = CONF_ISOTROPY;
-    float k1 = 1.0 - 2.0*(CONF_ISOTROPY);
-
-    mat3 conf_x = mat3(
-       -k0, -k1, -k0,
-        0.0, 0.0, 0.0,
-        k0,  k1,  k0
-    );
-
-    mat3 conf_y = mat3(
-       -k0,  0.0,  k0,
-       -k1,  0.0,  k1,
-       -k0,  0.0,  k0
-    );
-    
-    mat3 mc;
-    vec2 v = vec2(0);
-    float curl;
-    
-    float cacc = 0.0;
-    vec2 nacc = vec2(0);
-    float wc = 0.0;
-    for (int i = 0; i < DEGREE; i++) {
-        tex(uv, mc, curl, i);
-        float w = CONF_W_FUNCTION;
-        vec2 n = w * normz(vec2(reduce(conf_x, mc), reduce(conf_y, mc)));
-        v += curl * n;
-        cacc += curl;
-        nacc += n;
-        wc += w;
-    }
-
-    #ifdef PREMULTIPLY_CURL
-        return v / wc;
-    #else
-    	return nacc * cacc / wc;
-    #endif
-
-}
-
-#define VORT_CH xy
-#define VORT_SAMPLER iChannel0
-#define POIS_SAMPLER iChannel1
-#define POIS_CH x
-#define DEGREE POISSON_SCALES
-
-#define D(d) textureLod(VORT_SAMPLER, fract(uv+d), mip).VORT_CH
-#define P(d) textureLod(POIS_SAMPLER, fract(uv+d), mip).POIS_CH
-
-float laplacian_poisson(vec2 fragCoord) {
-    const float _K0 = -20.0/6.0, _K1 = 4.0/6.0, _K2 = 1.0/6.0;
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    vec2 uv = fragCoord * texel;
-    vec4 t = vec4(texel, -texel.y, 0);
-    float mip = 0.0;
-
-    float p =    P( t.ww); float p_n =  P( t.wy); float p_e =  P( t.xw);
-    float p_s =  P( t.wz); float p_w =  P(-t.xw); float p_nw = P(-t.xz);
-    float p_sw = P(-t.xy); float p_ne = P( t.xy); float p_se = P( t.xz);
-    
-    return _K0 * p + _K1 * (p_e + p_w + p_n + p_s) + _K2 * (p_ne + p_nw + p_se + p_sw);
-}
-
-void tex(vec2 uv, inout mat3 mx, inout mat3 my, inout mat3 mp, int degree) {
-    vec2 texel = 1.0/RENDERSIZE.xy;
-    float stride = float(1 << degree);
-    float mip = float(degree);
-    vec4 t = stride * vec4(texel, -texel.y, 0);
-
-    vec2 d =    D( t.ww); vec2 d_n =  D( t.wy); vec2 d_e =  D( t.xw);
-    vec2 d_s =  D( t.wz); vec2 d_w =  D(-t.xw); vec2 d_nw = D(-t.xz);
-    vec2 d_sw = D(-t.xy); vec2 d_ne = D( t.xy); vec2 d_se = D( t.xz);
-    
-    float p =    P( t.ww); float p_n =  P( t.wy); float p_e =  P( t.xw);
-    float p_s =  P( t.wz); float p_w =  P(-t.xw); float p_nw = P(-t.xz);
-    float p_sw = P(-t.xy); float p_ne = P( t.xy); float p_se = P( t.xz);
-    
-    mx =  mat3(d_nw.x, d_n.x, d_ne.x,
-               d_w.x,  d.x,   d_e.x,
-               d_sw.x, d_s.x, d_se.x);
-    
-    my =  mat3(d_nw.y, d_n.y, d_ne.y,
-               d_w.y,  d.y,   d_e.y,
-               d_sw.y, d_s.y, d_se.y);
-    
-    mp =  mat3(p_nw, p_n, p_ne,
-               p_w,  p,   p_e,
-               p_sw, p_s, p_se);
-}
-
-float reduce(mat3 a, mat3 b) {
-    mat3 p = matrixCompMult(a, b);
-    return p[0][0] + p[0][1] + p[0][2] +
-           p[1][0] + p[1][1] + p[1][2] +
-           p[2][0] + p[2][1] + p[2][2];
-}
-
-vec2 pois(vec2 fragCoord)
-{
-	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
-    
-    float k0 = POIS_ISOTROPY;
-    float k1 = 1.0 - 2.0*(POIS_ISOTROPY);
-    
-    mat3 pois_x = mat3(
-        k0,  0.0, -k0,
-        k1,  0.0, -k1,
-        k0,  0.0, -k0
-    );
-     
-    mat3 pois_y = mat3(
-       -k0,  -k1,  -k0,
-        0.0,  0.0,  0.0,
-        k0,   k1,   k0
-    );
-
-    mat3 gauss = mat3(
-       0.0625, 0.125, 0.0625,  
-       0.125,  0.25,  0.125,
-       0.0625, 0.125, 0.0625
-    );
-    
-    mat3 mx, my, mp;
-    vec2 v = vec2(0);
-    
-    float wc = 0.0;
-    for (int i = 0; i < DEGREE; i++) {
-        tex(uv, mx, my, mp, i);
-        float w = POIS_W_FUNCTION;
-        wc += w;
-    	v += w * vec2(reduce(pois_x, mx) + reduce(pois_y, my), reduce(gauss, mp));
-    }
-
-    return v / wc;
-
-}
-
-#define V(d) textureLod(VORT_SAMPLER, fract(uv+d), mip).zw
+// ISF pass targets are sampled with a Y fix-up so that reads match isf_FragCoord / isf_FragNormCoord
+#if defined(QSHADER_SPIRV)
+#define FLUID_UV(uv) vec2((uv).x, 1.0 - (uv).y)
+#else
+#define FLUID_UV(uv) (uv)
+#endif
+#define TEXLOD(s, uv, m) textureLod(s, FLUID_UV(uv), m)
 
 /*
 	Number of scales to use in computation of each value. Lowering these will change the 
@@ -573,9 +244,9 @@ float ggx(vec3 n, vec3 v, vec3 l, float rough, float f0){
 
 // Modified from Shane's Bumped Sinusoidal Warp shadertoy here:
 // https://www.shadertoy.com/view/4l2XWK
-vec3 light(vec2 uv, float BUMP, float SRC_DIST, vec2 dxy, float TIME, inout vec3 avd) {
+vec3 light(vec2 uv, float BUMP, float SRC_DIST, vec2 dxy, float t, inout vec3 avd) {
     vec3 sp = vec3(uv-0.5, 0);
-    vec3 light = vec3(cos(TIME/2.0)*0.5, sin(TIME/2.0)*0.5, -SRC_DIST);
+    vec3 light = vec3(cos(t/2.0)*0.5, sin(t/2.0)*0.5, -SRC_DIST);
     vec3 ld = light - sp;
     float lDist = max(length(ld), 0.001);
     ld /= lDist;
@@ -606,13 +277,342 @@ vec3 hash3( uint n )
 }
 
 // a simple modification for this shader to get a vec4
-vec4 rand4( vec2 fragCoord, vec2 RENDERSIZE, int FRAMEINDEX ) {
+vec4 rand4( vec2 fragCoord, vec2 res, int frame ) {
     uvec2 p = uvec2(fragCoord);
-    uvec2 r = uvec2(RENDERSIZE);
-    uint c = p.x + r.x*p.y + r.x*r.y*uint(FRAMEINDEX);
+    uvec2 r = uvec2(res);
+    uint c = p.x + r.x*p.y + r.x*r.y*uint(frame);
 	return vec4(hash3(c),hash1(c + 75132895U));   
 }
 // End IQ's integer hash
+
+#define TURBULENCE_SAMPLER BufferB
+#define CONFINEMENT_SAMPLER BufferC
+#define POISSON_SAMPLER BufferD
+#define VELOCITY_SAMPLER BufferA
+
+#define V(d) IMG_NORM_PIXEL(TURBULENCE_SAMPLER, fract(uv+(d+0.))).xy
+
+vec2 gaussian_turbulence(vec2 uv) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    vec4 t = vec4(texel, -texel.y, 0);
+
+    vec2 d =    V( t.ww); vec2 d_n =  V( t.wy); vec2 d_e =  V( t.xw);
+    vec2 d_s =  V( t.wz); vec2 d_w =  V(-t.xw); vec2 d_nw = V(-t.xz);
+    vec2 d_sw = V(-t.xy); vec2 d_ne = V( t.xy); vec2 d_se = V( t.xz);
+    
+    return 0.25 * d + 0.125 * (d_e + d_w + d_n + d_s) + 0.0625 * (d_ne + d_nw + d_se + d_sw);
+}
+
+#define C(d) IMG_NORM_PIXEL(CONFINEMENT_SAMPLER, fract(uv+(d+0.))).xy
+
+vec2 gaussian_confinement(vec2 uv) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    vec4 t = vec4(texel, -texel.y, 0);
+
+    vec2 d =    C( t.ww); vec2 d_n =  C( t.wy); vec2 d_e =  C( t.xw);
+    vec2 d_s =  C( t.wz); vec2 d_w =  C(-t.xw); vec2 d_nw = C(-t.xz);
+    vec2 d_sw = C(-t.xy); vec2 d_ne = C( t.xy); vec2 d_se = C( t.xz);
+    
+    return 0.25 * d + 0.125 * (d_e + d_w + d_n + d_s) + 0.0625 * (d_ne + d_nw + d_se + d_sw);
+}
+
+#define D(d) IMG_NORM_PIXEL(POISSON_SAMPLER, fract(uv+d)).x
+
+vec2 diff(vec2 uv) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    vec4 t = vec4(texel, -texel.y, 0);
+
+    float d =    D( t.ww); float d_n =  D( t.wy); float d_e =  D( t.xw);
+    float d_s =  D( t.wz); float d_w =  D(-t.xw); float d_nw = D(-t.xz);
+    float d_sw = D(-t.xy); float d_ne = D( t.xy); float d_se = D( t.xz);
+    
+    return vec2(
+        0.5 * (d_e - d_w) + 0.25 * (d_ne - d_nw + d_se - d_sw),
+        0.5 * (d_n - d_s) + 0.25 * (d_ne + d_nw - d_se - d_sw)
+    );
+}
+
+#define N(d) IMG_NORM_PIXEL(VELOCITY_SAMPLER, fract(uv+(d+0.)))
+
+vec4 gaussian_velocity(vec2 uv) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    vec4 t = vec4(texel, -texel.y, 0);
+
+    vec4 d =    N( t.ww); vec4 d_n =  N( t.wy); vec4 d_e =  N( t.xw);
+    vec4 d_s =  N( t.wz); vec4 d_w =  N(-t.xw); vec4 d_nw = N(-t.xz);
+    vec4 d_sw = N(-t.xy); vec4 d_ne = N( t.xy); vec4 d_se = N( t.xz);
+    
+    return 0.25 * d + 0.125 * (d_e + d_w + d_n + d_s) + 0.0625 * (d_ne + d_nw + d_se + d_sw);
+}
+
+vec2 vector_laplacian(vec2 uv) {
+    const float _K0 = -20.0/6.0, _K1 = 4.0/6.0, _K2 = 1.0/6.0;
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    vec4 t = vec4(texel, -texel.y, 0);
+
+    vec4 d =    N( t.ww); vec4 d_n =  N( t.wy); vec4 d_e =  N( t.xw);
+    vec4 d_s =  N( t.wz); vec4 d_w =  N(-t.xw); vec4 d_nw = N(-t.xz);
+    vec4 d_sw = N(-t.xy); vec4 d_ne = N( t.xy); vec4 d_se = N( t.xz);
+    
+    return (_K0 * d + _K1 * (d_e + d_w + d_n + d_s) + _K2 * (d_ne + d_nw + d_se + d_sw)).xy;
+}
+
+    
+
+
+#define TURB_CH xy
+#define TURB_SAMPLER BufferA
+#define DEGREE TURBULENCE_SCALES
+
+#undef D
+#define D(d) TEXLOD(TURB_SAMPLER, fract(uv+d), mip).TURB_CH
+
+void tex(vec2 uv, inout mat3 mx, inout mat3 my, int degree) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    float stride = float(1 << degree);
+    float mip = float(degree);
+    vec4 t = stride * vec4(texel, -texel.y, 0);
+
+    vec2 d =    D( t.ww); vec2 d_n =  D( t.wy); vec2 d_e =  D( t.xw);
+    vec2 d_s =  D( t.wz); vec2 d_w =  D(-t.xw); vec2 d_nw = D(-t.xz);
+    vec2 d_sw = D(-t.xy); vec2 d_ne = D( t.xy); vec2 d_se = D( t.xz);
+    
+    mx =  mat3(d_nw.x, d_n.x, d_ne.x,
+               d_w.x,  d.x,   d_e.x,
+               d_sw.x, d_s.x, d_se.x);
+    
+    my =  mat3(d_nw.y, d_n.y, d_ne.y,
+               d_w.y,  d.y,   d_e.y,
+               d_sw.y, d_s.y, d_se.y);
+}
+
+float reduce(mat3 a, mat3 b) {
+    mat3 p = matrixCompMult(a, b);
+    return p[0][0] + p[0][1] + p[0][2] +
+           p[1][0] + p[1][1] + p[1][2] +
+           p[2][0] + p[2][1] + p[2][2];
+}
+
+void turbulence(vec2 fragCoord, inout vec2 turb, inout float curl)
+{
+	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
+     
+    mat3 turb_xx = (2.0 - TURB_ISOTROPY) * mat3(
+        0.125,  0.25, 0.125,
+       -0.25,  -0.5, -0.25,
+        0.125,  0.25, 0.125
+    );
+
+    mat3 turb_yy = (2.0 - TURB_ISOTROPY) * mat3(
+        0.125, -0.25, 0.125,
+        0.25,  -0.5,  0.25,
+        0.125, -0.25, 0.125
+    );
+
+    mat3 turb_xy = TURB_ISOTROPY * mat3(
+       0.25, 0.0, -0.25,  
+       0.0,  0.0,  0.0,
+      -0.25, 0.0,  0.25
+    );
+    
+    const float norm = 8.8 / (4.0 + 8.0 * CURL_ISOTROPY);  // 8.8 takes the isotropy as 0.6
+    float c0 = CURL_ISOTROPY;
+    
+    mat3 curl_x = mat3(
+        c0,   1.0,  c0,
+        0.0,  0.0,  0.0,
+       -c0,  -1.0, -c0
+    );
+
+    mat3 curl_y = mat3(
+        c0, 0.0, -c0,
+       1.0, 0.0, -1.0,
+        c0, 0.0, -c0
+    );
+    
+    mat3 mx, my;
+    vec2 v = vec2(0);
+    float turb_wc = 0.0, curl_wc = 0.0;
+    curl = 0.0;
+    for (int i = 0; i < DEGREE; i++) {
+        tex(uv, mx, my, i);
+        float turb_w = TURB_W_FUNCTION;
+        float curl_w = CURL_W_FUNCTION;
+    	v += turb_w * vec2(reduce(turb_xx, mx) + reduce(turb_xy, my), reduce(turb_yy, my) + reduce(turb_xy, mx));
+        curl += curl_w * (reduce(curl_x, mx) + reduce(curl_y, my));
+        turb_wc += turb_w;
+        curl_wc += curl_w;
+    }
+
+    turb = float(DEGREE) * v / turb_wc;
+    curl = norm * curl / curl_wc;
+}
+
+#define CURL_CH w
+#define CURL_SAMPLER BufferB
+#undef DEGREE
+#define DEGREE VORTICITY_SCALES
+
+#define CURL(d) TEXLOD(CURL_SAMPLER, fract(uv+(d+0.0)), mip).CURL_CH
+#undef D
+#define D(d) abs(TEXLOD(CURL_SAMPLER, fract(uv+d), mip).CURL_CH)
+
+void tex(vec2 uv, inout mat3 mc, inout float curl, int degree) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    float stride = float(1 << degree);
+    float mip = float(degree);
+    vec4 t = stride * vec4(texel, -texel.y, 0);
+
+    float d =    D( t.ww); float d_n =  D( t.wy); float d_e =  D( t.xw);
+    float d_s =  D( t.wz); float d_w =  D(-t.xw); float d_nw = D(-t.xz);
+    float d_sw = D(-t.xy); float d_ne = D( t.xy); float d_se = D( t.xz);
+    
+    mc =  mat3(d_nw, d_n, d_ne,
+               d_w,  d,   d_e,
+               d_sw, d_s, d_se);
+    
+    curl = CURL(0.0);
+    
+}
+
+vec2 confinement(vec2 fragCoord)
+{
+	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
+    
+    float k0 = CONF_ISOTROPY;
+    float k1 = 1.0 - 2.0*(CONF_ISOTROPY);
+
+    mat3 conf_x = mat3(
+       -k0, -k1, -k0,
+        0.0, 0.0, 0.0,
+        k0,  k1,  k0
+    );
+
+    mat3 conf_y = mat3(
+       -k0,  0.0,  k0,
+       -k1,  0.0,  k1,
+       -k0,  0.0,  k0
+    );
+    
+    mat3 mc;
+    vec2 v = vec2(0);
+    float curl;
+    
+    float cacc = 0.0;
+    vec2 nacc = vec2(0);
+    float wc = 0.0;
+    for (int i = 0; i < DEGREE; i++) {
+        tex(uv, mc, curl, i);
+        float w = CONF_W_FUNCTION;
+        vec2 n = w * normz(vec2(reduce(conf_x, mc), reduce(conf_y, mc)));
+        v += curl * n;
+        cacc += curl;
+        nacc += n;
+        wc += w;
+    }
+
+    #ifdef PREMULTIPLY_CURL
+        return v / wc;
+    #else
+    	return nacc * cacc / wc;
+    #endif
+
+}
+
+#define VORT_CH xy
+#define VORT_SAMPLER BufferA
+#define POIS_SAMPLER BufferD
+#define POIS_CH x
+#undef DEGREE
+#define DEGREE POISSON_SCALES
+
+#undef D
+#define D(d) TEXLOD(VORT_SAMPLER, fract(uv+d), mip).VORT_CH
+#define P(d) TEXLOD(POIS_SAMPLER, fract(uv+d), mip).POIS_CH
+
+float laplacian_poisson(vec2 fragCoord) {
+    const float _K0 = -20.0/6.0, _K1 = 4.0/6.0, _K2 = 1.0/6.0;
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    vec2 uv = fragCoord * texel;
+    vec4 t = vec4(texel, -texel.y, 0);
+    float mip = 0.0;
+
+    float p =    P( t.ww); float p_n =  P( t.wy); float p_e =  P( t.xw);
+    float p_s =  P( t.wz); float p_w =  P(-t.xw); float p_nw = P(-t.xz);
+    float p_sw = P(-t.xy); float p_ne = P( t.xy); float p_se = P( t.xz);
+    
+    return _K0 * p + _K1 * (p_e + p_w + p_n + p_s) + _K2 * (p_ne + p_nw + p_se + p_sw);
+}
+
+void tex(vec2 uv, inout mat3 mx, inout mat3 my, inout mat3 mp, int degree) {
+    vec2 texel = 1.0/RENDERSIZE.xy;
+    float stride = float(1 << degree);
+    float mip = float(degree);
+    vec4 t = stride * vec4(texel, -texel.y, 0);
+
+    vec2 d =    D( t.ww); vec2 d_n =  D( t.wy); vec2 d_e =  D( t.xw);
+    vec2 d_s =  D( t.wz); vec2 d_w =  D(-t.xw); vec2 d_nw = D(-t.xz);
+    vec2 d_sw = D(-t.xy); vec2 d_ne = D( t.xy); vec2 d_se = D( t.xz);
+    
+    float p =    P( t.ww); float p_n =  P( t.wy); float p_e =  P( t.xw);
+    float p_s =  P( t.wz); float p_w =  P(-t.xw); float p_nw = P(-t.xz);
+    float p_sw = P(-t.xy); float p_ne = P( t.xy); float p_se = P( t.xz);
+    
+    mx =  mat3(d_nw.x, d_n.x, d_ne.x,
+               d_w.x,  d.x,   d_e.x,
+               d_sw.x, d_s.x, d_se.x);
+    
+    my =  mat3(d_nw.y, d_n.y, d_ne.y,
+               d_w.y,  d.y,   d_e.y,
+               d_sw.y, d_s.y, d_se.y);
+    
+    mp =  mat3(p_nw, p_n, p_ne,
+               p_w,  p,   p_e,
+               p_sw, p_s, p_se);
+}
+
+vec2 pois(vec2 fragCoord)
+{
+	vec2 uv = fragCoord.xy / RENDERSIZE.xy;
+    
+    float k0 = POIS_ISOTROPY;
+    float k1 = 1.0 - 2.0*(POIS_ISOTROPY);
+    
+    mat3 pois_x = mat3(
+        k0,  0.0, -k0,
+        k1,  0.0, -k1,
+        k0,  0.0, -k0
+    );
+     
+    mat3 pois_y = mat3(
+       -k0,  -k1,  -k0,
+        0.0,  0.0,  0.0,
+        k0,   k1,   k0
+    );
+
+    mat3 gauss = mat3(
+       0.0625, 0.125, 0.0625,  
+       0.125,  0.25,  0.125,
+       0.0625, 0.125, 0.0625
+    );
+    
+    mat3 mx, my, mp;
+    vec2 v = vec2(0);
+    
+    float wc = 0.0;
+    for (int i = 0; i < DEGREE; i++) {
+        tex(uv, mx, my, mp, i);
+        float w = POIS_W_FUNCTION;
+        wc += w;
+    	v += w * vec2(reduce(pois_x, mx) + reduce(pois_y, my), reduce(gauss, mp));
+    }
+
+    return v / wc;
+
+}
+
+#define VP(d) TEXLOD(VORT_SAMPLER, fract(uv+d), mip).zw
+
 /* 
 	Created by Cornus Ammonis (2019)
 	Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
@@ -683,7 +683,8 @@ vec4 rand4( vec2 fragCoord, vec2 RENDERSIZE, int FRAMEINDEX ) {
 
 #define BUMP 3200.0
 
-#define D(d) -textureLod(BufferD, fract(uv+(d+0.0)), mip).w
+#undef D
+#define D(d) -TEXLOD(BufferD, fract(uv+(d+0.0)), mip).w
 
 vec2 diff(vec2 uv, float mip) {
     vec2 texel = 1.0/RENDERSIZE.xy;
@@ -711,9 +712,9 @@ void main() {
 	    vec2 tx = 1.0/RENDERSIZE.xy;
 	
 	    
-	    vec2 turb, confine, div, delta_v, offset, lapl = vec2(0);
+	    vec2 turb = vec2(0), confine = vec2(0), div = vec2(0), delta_v = vec2(0), offset = vec2(0), lapl = vec2(0);
 	    vec4 vel, adv = vec4(0);
-	    vec4 init = N();
+	    vec4 init = N(0.0);
 	
 	    #ifdef RECALCULATE_OFFSET
 	        for (int i = 0; i < ADVECTION_STEPS; i++) {
@@ -753,19 +754,19 @@ void main() {
 	        #ifdef BLUR_TURBULENCE
 	        turb = gaussian_turbulence(uv);
 	        #else
-	        turb = V();
+	        turb = V(0.0);
 	        #endif
 	
 	        #ifdef BLUR_CONFINEMENT
 	        confine = gaussian_confinement(uv);
 	        #else
-	        confine = C();
+	        confine = C(0.0);
 	        #endif
 	
 	        #ifdef BLUR_VELOCITY
 	        vel = gaussian_velocity(uv);
 	        #else
-	        vel = N();
+	        vel = N(0.0);
 	        #endif
 	    
 	    	offset = - ADVECTION_SCALE * (ADVECTION_VELOCITY * vel.xy + ADVECTION_TURBULENCE * turb - ADVECTION_CONFINEMENT * confine + ADVECTION_DIVERGENCE * div);
@@ -812,8 +813,8 @@ void main() {
 	    
 	    gl_FragColor = mix(adv + vec4(VELOCITY_SCALE * (delta_v + pump), offset), init, UPDATE_SMOOTHING);
 	    
-	    if (iMouse.z > 0.0) {
-	        vec4 mouseUV = iMouse / RENDERSIZE.xyxy;
+	    if (iMouse.x > 0.0) {
+	        vec4 mouseUV = vec4(iMouse, iMouse) / RENDERSIZE.xyxy;
 	        vec2 delta = normz(mouseUV.zw - mouseUV.xy);
 	        vec2 md = (mouseUV.xy - uv) * vec2(1.0,tx.x/tx.y);
 	        float amp = exp(max(-12.0,-dot(md,md)/MOUSE_RADIUS));
@@ -849,7 +850,7 @@ void main() {
 	        float mip = 0.0;
 	        vec2 tx = 1.0 / RENDERSIZE.xy;
 	        vec2 uv = gl_FragCoord.xy * tx;
-	        float prev = P(0.0002 * PRESSURE_ADVECTION * tx * V(vec2(0)));
+	        float prev = P(0.0002 * PRESSURE_ADVECTION * tx * VP(vec2(0)));
 	        gl_FragColor = vec4(mix(p.x + p.y, prev + PRESSURE_LAPLACIAN * laplacian_poisson(gl_FragCoord.xy), PRESSURE_UPDATE_SMOOTHING));
 	    #else
 	    	gl_FragColor = vec4(p.x + p.y);
@@ -863,8 +864,8 @@ void main() {
 	    vec2 uv = isf_FragNormCoord;
 	
 	    vec2 dxy = vec2(0);
-	    float occ, mip = 0.0;
-	    float d   = D();
+	    float occ = 0.0, mip = 0.0;
+	    float d   = D(0.0);
 	    
 	    // blur the gradient to reduce appearance of artifacts,
 	    // and do cheap occlusion with mipmaps
@@ -872,7 +873,7 @@ void main() {
 	    #define ODIST 2.0
 	    for(mip = 1.0; mip <= STEPS; mip += 1.0) {	 
 	        dxy += (1.0/pow(2.0,mip)) * diff(uv, mip-1.0);	
-	    	occ += softclamp(-ODIST, ODIST, d - D(),1.0)/(pow(1.5,mip));
+	    	occ += softclamp(-ODIST, ODIST, d - D(0.0),1.0)/(pow(1.5,mip));
 	    }
 	    dxy /= float(STEPS);
 	    

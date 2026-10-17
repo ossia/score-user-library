@@ -31,7 +31,7 @@ vec3  iResolution = vec3(0.0);
 #define R(p, m) mod(p, m) - m / 2.
 #define ID(p, m) floor(p / m) 
 
-#define TIME mod(iTime, 76.)
+#define ttime mod(iTime, 76.)
 
 mat3 Rotate(vec3 angles)
 {
@@ -116,9 +116,9 @@ float spiral(vec3 p) {
     repid1 = mod(repid1, 10.);
           
     //Spiral rotation effect
-    p = Rotate(vec3(spiralRot * sin(po.x - p.x + TIME * PI / 4.), 0, 0)) * p;
+    p = Rotate(vec3(spiralRot * sin(po.x - p.x + ttime * PI / 4.), 0, 0)) * p;
     //spiral noise effect
-    p.z += mix(0., noise(p.xy * 100.) * 0.3, clamp(TIME - spiralNoise, 0., 1.));
+    p.z += mix(0., noise(p.xy * 100.) * 0.3, clamp(ttime - spiralNoise, 0., 1.));
     return sdBox(p, vec3(.03, .45, .02)) - 0.002;
 }
 
@@ -142,25 +142,25 @@ void camera(inout vec3 p) {
     vec3 p2 = Rotate(vec3(0, PI / 2., 0.)) * p;
     vec3 p3 = Rotate(vec3(0, PI / 3., 0.)) * p;
     p2.y -= 0.30;// - 0.25;
- 	p2.x += (TIME - 15.) * 1.;
-    p3.x += TIME - 15.;
+ 	p2.x += (ttime - 15.) * 1.;
+    p3.x += ttime - 15.;
     
     spiralNoise = 40.;
     
-    if (TIME < 8.) {
+    if (ttime < 8.) {
     	p = p2; 
-    } else if (TIME < 20.) {
+    } else if (ttime < 20.) {
      	p = p1;   
-    } else if (TIME < 28.) {
+    } else if (ttime < 28.) {
      	spiralRot =  2.;
         p = p2;
-    } else if (TIME < 36.) {
+    } else if (ttime < 36.) {
         spiralRot = 2.;
      	p = p1;   
-    } else if (TIME < 56.){
+    } else if (ttime < 56.){
         spiralRot = 2.;
      	p = p2;   
-    } else if (TIME < 64.) {
+    } else if (ttime < 64.) {
      	p = p3;   
     } else {
      	p = p2;   
@@ -291,8 +291,8 @@ vec3 scene1(vec3 o, vec3 r) {
     } else if (t.y == 3.) {
         float add = 1./8. - 1./8.;
 	  
-      //float x = clamp(floor(4. * TIME), 0., 8. * floor(TIME / 2.));
-      float x = floor(TIME * 4. - add) * mod(floor(TIME - add), 2.);  
+      //float x = clamp(floor(4. * ttime), 0., 8. * floor(ttime / 2.));
+      float x = floor(ttime * 4. - add) * mod(floor(ttime - add), 2.);  
       col = mod(repid2 - x, 4.) == 0. ? vec3(1, .5, 0) : vec3(1, 1, 1);  
     } else if (t.y == 4.) {
      	//scene 2 spiral
@@ -326,14 +326,14 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     vec3 o = vec3(0, 0, -1.8);
     vec3 r = normalize(vec3(uv, 2));
     
-    vec3 col = mix(scene1(o, r), vec3(0), clamp((TIME - 75.), 0., 1.));
+    vec3 col = mix(scene1(o, r), vec3(0), clamp((ttime - 75.), 0., 1.));
 
     // Output to screen
     fragColor = vec4(col ,1.0);
 }
 // --------[ Original ShaderToy ends here ]---------- //
 
-#undef TIME
+#undef ttime
 
 void main(void)
 {
