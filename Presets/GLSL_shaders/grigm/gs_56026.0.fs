@@ -23,8 +23,8 @@ precision mediump float;
 // glslsandbox uniforms
 
 // shadertoy emulation
-#define iTime length(vv_FragNormCoord)
-//dot(vv_FragNormCoord,vv_FragNormCoord)
+#define iTime length(isf_FragNormCoord)
+//dot(isf_FragNormCoord,isf_FragNormCoord)
 #define iResolution RENDERSIZE
 
 // --------[ Original ShaderToy begins here ]---------- //

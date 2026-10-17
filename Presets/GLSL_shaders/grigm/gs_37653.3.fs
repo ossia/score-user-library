@@ -60,7 +60,7 @@ void main( void ) {
 	
 	vec2 p=(gl_FragCoord.xy*2.-RENDERSIZE.xy)/min(RENDERSIZE.x,RENDERSIZE.y); 
 	
-	//vec2 p = vv_FragNormCoord;
+	//vec2 p = isf_FragNormCoord;
 
 	vec3 color = vec3(0.0);
 	

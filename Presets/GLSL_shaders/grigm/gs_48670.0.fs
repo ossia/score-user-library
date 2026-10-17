@@ -53,7 +53,7 @@ float udRoundBox( vec3 p, vec3 b, float r )
 #define MAX_ITER 32
 void main( void ) {
 
-	vec2 p = vv_FragNormCoord*4.0;
+	vec2 p = isf_FragNormCoord*4.0;
 	vec2 i = p;
 	float c = 0.0;
 	float inten = 1.0;

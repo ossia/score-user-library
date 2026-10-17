@@ -57,7 +57,7 @@ float bump(float w, float center, float x)
 
 void main() {
 	
-	vec2 pos = vv_FragNormCoord.xy;
+	vec2 pos = isf_FragNormCoord.xy;
 //	;
 	
 	vec3 color = vec3(0.0,0.5,0.1);

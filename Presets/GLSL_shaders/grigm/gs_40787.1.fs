@@ -221,6 +221,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord, vec2 iResolution )
 
 void main( void ) {
 
-	mainImage( gl_FragColor, .5-vv_FragNormCoord, vec2(1.) );
+	mainImage( gl_FragColor, .5-isf_FragNormCoord, vec2(1.) );
 
 }

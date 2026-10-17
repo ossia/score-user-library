@@ -69,7 +69,7 @@ void main() {
 	vec4 out_color = color1;
 	
 	//	convert to polar coordinates
-	vec2 loc = vec2(vv_FragNormCoord[0],vv_FragNormCoord[1]);
+	vec2 loc = vec2(isf_FragNormCoord[0],isf_FragNormCoord[1]);
 	loc.y = (loc.y - 0.5) * RENDERSIZE.y / RENDERSIZE.x + 0.5;
 	float r = 2.0 * count * distance(vec2(0.5,0.5), loc) + width;
 	float theta = atan ((loc.y-0.5),(loc.x-0.5));

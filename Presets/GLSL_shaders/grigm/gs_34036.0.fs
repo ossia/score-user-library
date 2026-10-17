@@ -23,7 +23,7 @@ precision mediump float;
 
 #extension GL_OES_standard_derivatives : enable
 
-//#define p vv_FragNormCoord
+//#define p isf_FragNormCoord
 
 #define stepped(x, n) (floor(x*n)/n)
 

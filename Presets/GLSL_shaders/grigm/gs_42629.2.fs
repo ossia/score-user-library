@@ -29,10 +29,10 @@
 precision mediump float;
 #endif
 
-//vec2 vv_FragNormCoord = vec2 (1024.,128.);
+//vec2 isf_FragNormCoord = vec2 (1024.,128.);
 #define MAX_ITER 8
 void main( void ) {
-	vec2 p = vv_FragNormCoord*3.0- vec2(15.0);
+	vec2 p = isf_FragNormCoord*3.0- vec2(15.0);
 	vec2 i = p;
 	float c = 1.0;
 	float inten = .05;

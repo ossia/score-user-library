@@ -89,7 +89,7 @@ void main(void) {
 	
 	 vec2 st = (2.0 * gl_FragCoord.xy - RENDERSIZE) / min(RENDERSIZE.x, RENDERSIZE.y);
 	
-    //vec2 st = vv_FragNormCoord;
+    //vec2 st = isf_FragNormCoord;
     float dp = dot(st,st);
     float fdp = fract(dp);
     toverride = fdp;

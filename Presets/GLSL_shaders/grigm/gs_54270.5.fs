@@ -42,7 +42,7 @@ float triangularRand(vec2 n){
 
 void main( void ) {
 
-	vec2 p = vv_FragNormCoord;
+	vec2 p = isf_FragNormCoord;
 	vec2 m = p;
 	
 	vec2 position = p;

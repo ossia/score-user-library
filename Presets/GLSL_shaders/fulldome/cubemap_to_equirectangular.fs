@@ -81,7 +81,7 @@ vec4 getCellInfoForFace(int faceID, int atlasLayoutType, float cellW_norm, float
 }
 
 void main() {
-    vec2 equirectUV = vv_FragNormCoord;
+    vec2 equirectUV = isf_FragNormCoord;
     float lon = (equirectUV.x - 0.5) * TWO_PI;
     float lat = (equirectUV.y - 0.5) * PI;
 

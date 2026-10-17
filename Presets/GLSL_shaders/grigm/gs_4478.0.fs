@@ -8,9 +8,6 @@
   "INPUTS" : [
 
   ],
-  "PERSISTENT_BUFFERS" : [
-    "bb"
-  ],
   "PASSES" : [
     {
       "TARGET" : "bb",

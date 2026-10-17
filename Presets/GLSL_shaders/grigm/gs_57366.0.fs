@@ -34,10 +34,10 @@ float;
 
 void main( void ) {
 	
-	vec2 uv = abs(mix(vv_FragNormCoord,isf_FragNormCoord,(cos(TIME)*0.5+0.5)));
+	vec2 uv = abs(mix(isf_FragNormCoord,isf_FragNormCoord,(cos(TIME)*0.5+0.5)));
 	uv -= mouse;
 
-	float t = (abs(fract((surfaceSize.x*surfaceSize.y * mouse.x + mouse.y)+(dot(vv_FragNormCoord,vv_FragNormCoord)))));
+	float t = (abs(fract((surfaceSize.x*surfaceSize.y * mouse.x + mouse.y)+(dot(isf_FragNormCoord,isf_FragNormCoord)))));
 	
 	gl_FragColor = vec4( (vec3( t * (uv * (t*2.0-1.0) + uv), t )), 1.0 );
 

@@ -60,7 +60,7 @@ float check(vec2 p) {
 
 void main( void ) {
 
-	vec2 p = vv_FragNormCoord*4.0;
+	vec2 p = isf_FragNormCoord*4.0;
 	vec2 i = p;
 	vec2 it = i;
 	float c = 0.0;

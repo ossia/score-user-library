@@ -76,7 +76,7 @@ vec3 getGas(vec2 p){
 
 void main( void ) {
 
-	vec2 position = ( vv_FragNormCoord);
+	vec2 position = ( isf_FragNormCoord);
 	
 	vec2 p = vec2(position.x+position.y,position.x-position.y);
 	float dist;

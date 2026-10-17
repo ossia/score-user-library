@@ -151,7 +151,7 @@ void main()
 	
      	//vec2 uv2 = 2. * isf_FragNormCoord - 1.;
 	
-	vec2 uv2 = vv_FragNormCoord;
+	vec2 uv2 = isf_FragNormCoord;
 	vec2 uvs = uv2;// * RENDERSIZE.xy / max(RENDERSIZE.x, RENDERSIZE.y);
 	
 	

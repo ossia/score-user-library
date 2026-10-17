@@ -31,6 +31,6 @@ precision mediump float;
 
 
 void main( void ) {
-	vec2 i = floor(vv_FragNormCoord.xy * 20.0);
+	vec2 i = floor(isf_FragNormCoord.xy * 20.0);
 	gl_FragColor = vec4(mod(i.x * i.y,1.0 + mouse.x));
 }

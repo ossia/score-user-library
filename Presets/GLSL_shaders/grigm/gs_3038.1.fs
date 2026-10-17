@@ -37,7 +37,7 @@ void main( void ) {
 	vec2 position = ( isf_FragNormCoord )-0.5;
 	//position.x*=RENDERSIZE.x/RENDERSIZE.y;
 	position*=surfaceSize;
-	position+=vv_FragNormCoord;
+	position+=isf_FragNormCoord;
 	
 	float x,x0,y,y0;
 	x=x0=position.x;

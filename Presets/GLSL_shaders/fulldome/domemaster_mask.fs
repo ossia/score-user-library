@@ -20,7 +20,7 @@
 
 void main() {
     // 1. Normalize and center the fragment coordinates to [-1, 1]
-    vec2 p_centered = (vv_FragNormCoord - 0.5) * 2.0;
+    vec2 p_centered = (isf_FragNormCoord - 0.5) * 2.0;
 
     // 2. Correct for aspect ratio to keep math perfectly circular
     float screen_aspect = RENDERSIZE.x / RENDERSIZE.y;

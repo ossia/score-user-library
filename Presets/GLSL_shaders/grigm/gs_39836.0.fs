@@ -99,7 +99,7 @@ vec3 nrm(vec3 p) {
 
 void main( void )
 {
-    vec2 pos = (vv_FragNormCoord)*twpi;//(sin(t*pi)+2.0);
+    vec2 pos = (isf_FragNormCoord)*twpi;//(sin(t*pi)+2.0);
     float ang = (sin(t*lnpi)*pi)+(distance(sAxis,wAxis)+distance(qAxis,sAxis)+distance(wAxis,qAxis));
     camPos = e*(camPos * cos(ang) + cross(qAxis, camPos) * sin(ang) + qAxis * dot(qAxis, camPos) * (1.0 - cos(ang)));
    

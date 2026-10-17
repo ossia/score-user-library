@@ -7,12 +7,10 @@
   "INPUTS" : [
 
   ],
-  "PERSISTENT_BUFFERS" : [
-    "backbuffer"
-  ],
   "PASSES" : [
     {
-      "TARGET" : "backbuffer"
+      "TARGET" : "backbuffer",
+      "PERSISTENT" : true
     }
   ]
 }
@@ -36,7 +34,7 @@ vec3 star(vec2 uv,float scale,float seed){
 }
 
 void main(void){
-	//vec2 sp = (vv_FragNormCoord*0.5+0.5)*1.0-0.5;
+	//vec2 sp = (isf_FragNormCoord*0.5+0.5)*1.0-0.5;
 	
 	vec2 sp=(gl_FragCoord.xy*2.-RENDERSIZE.xy)/min(RENDERSIZE.x,RENDERSIZE.y); 
 	

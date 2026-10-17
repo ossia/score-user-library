@@ -30,7 +30,7 @@
 
 void main() {
 	
-	vec2		loc = vec2(vv_FragNormCoord[1], vv_FragNormCoord[0]);
+	vec2		loc = vec2(isf_FragNormCoord[1], isf_FragNormCoord[0]);
 	
 	vec2		rawSize = IMG_SIZE(waveImage);
 	float		channel = 0.5;

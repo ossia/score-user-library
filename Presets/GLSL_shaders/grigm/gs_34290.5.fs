@@ -51,12 +51,10 @@
 		}
 
   ],
-  "PERSISTENT_BUFFERS" : [
-    "backbuffer"
-  ],
   "PASSES" : [
     {
-      "TARGET" : "backbuffer"
+      "TARGET" : "backbuffer",
+      "PERSISTENT" : true
     }
   ]
 }

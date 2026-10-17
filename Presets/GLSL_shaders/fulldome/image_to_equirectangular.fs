@@ -35,7 +35,7 @@ vec3 rotate_vector_around_axis(vec3 v, vec3 k, float angle) {
 void main() {
     // equirectUV.x (longitude): 0.0 (-180 deg) to 1.0 (+180 deg)
     // equirectUV.y (latitude):  0.0 (-90 deg) to 1.0 (+90 deg)
-    vec2 equirectUV = vv_FragNormCoord;
+    vec2 equirectUV = isf_FragNormCoord;
 
     // 1. Convert current equirectangular UV to a 3D direction vector (P_target_world)
     float lon_rad_target = (equirectUV.x - 0.5) * TWO_PI;  // Range: -PI to PI

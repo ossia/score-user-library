@@ -19,7 +19,7 @@ precision mediump float;
 
 void main( void ) {
 	/*
-	vec2 position = vv_FragNormCoord * 2.0;
+	vec2 position = isf_FragNormCoord * 2.0;
 	
 	*/
 	

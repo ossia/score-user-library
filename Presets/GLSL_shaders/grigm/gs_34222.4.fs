@@ -164,7 +164,7 @@ vec3 sfin(vec3 v)
 void main( void )
 {	
 	vec2 pos=(gl_FragCoord.xy*2.-RENDERSIZE.xy)/min(RENDERSIZE.x,RENDERSIZE.y);
-	//vec2 pos = (vv_FragNormCoord*e)*(sin(t*pi)+2.0);
+	//vec2 pos = (isf_FragNormCoord*e)*(sin(t*pi)+2.0);
 	float ang = (sin(t*lnpi)*pi)+(distance(sAxis,wAxis)+distance(qAxis,sAxis)+distance(wAxis,qAxis));
 	camPos = (camPos * cos(ang) + cross(qAxis, camPos) * sin(ang) + qAxis * dot(qAxis, camPos) * (1.0 - cos(ang)));
 	

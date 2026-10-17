@@ -98,7 +98,7 @@ vec3 color(vec3 space){
 void main( void )
 {
 	float t = ((rcpi*TIME+pipi)/pipi)+ptpi;
-	vec2 pos = vv_FragNormCoord;
+	vec2 pos = isf_FragNormCoord;
     	vec3 camPos = (vec3(cos(t*(-trpi)), sin(t*(rcpi)), cos(t*(-prpi))));
 	vec3 camTarget = normalize(vec3(cos(t*(-lgpi)), cos(t*(rcpi)), sin(t*(-prpi))))*pi;
 	vec3 camDir = normalize(camTarget-camPos);

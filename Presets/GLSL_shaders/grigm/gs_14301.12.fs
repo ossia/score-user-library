@@ -89,7 +89,7 @@ vec3 smoot(vec3 v)
 void main( void )
 {
 	float t = ((TIME+pipi)/pipi)+pipi;
-	vec2 pos = vv_FragNormCoord;
+	vec2 pos = isf_FragNormCoord;
     	vec3 camPos = (vec3(cos(t*hfpi-lgpi)*pi, sin(t*hfpi-rcpi)*pi, cos(t*hfpi-cupi)*pi));
     	vec3 camTarget = normalize(vec3(cos(t*sqpi-lgpi), cos(t*sqpi-rcpi), sin(t*sqpi-cupi)))*pi;
 	

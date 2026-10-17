@@ -42,7 +42,7 @@ float fbm(vec2 p){
 }
 
 void main() {
-	vec2 p = fbm(vv_FragNormCoord) * 3.000 - vec2(15.0, 8.4);
+	vec2 p = fbm(isf_FragNormCoord) * 3.000 - vec2(15.0, 8.4);
 	vec2 i = p;
 	float c = 1.1;
 	float inten = .05;

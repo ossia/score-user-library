@@ -35,7 +35,7 @@ float rand( float n )
     return fract(n);
 }
 void main( void ) {
-	vec2 sp = vv_FragNormCoord;//vec2(.4, .7);
+	vec2 sp = isf_FragNormCoord;//vec2(.4, .7);
 	vec2 p = sp*6.0 - vec2(125.0);
 	vec2 i = p;
 	float c = 1.0;

@@ -53,7 +53,7 @@ vec2 rotateUV(vec2 uv, int rotationType) {
 
 void main() {
     // Normalized coordinates for the current fragment across the entire output texture [0,1]
-    vec2 p_norm_output = vv_FragNormCoord;
+    vec2 p_norm_output = isf_FragNormCoord;
     // Initialize to transparent black. This will be the color for empty cells
     // or if no face is explicitly mapped to the current fragment.
     vec4 out_color = vec4(0.0, 0.0, 0.0, 0.0);

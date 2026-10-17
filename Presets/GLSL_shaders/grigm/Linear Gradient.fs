@@ -43,10 +43,10 @@
 void main() {
 	float mixOffset = offset * 2.0 - 1.0;
 	if (vertical)	{
-		mixOffset = mixOffset + vv_FragNormCoord[1];
+		mixOffset = mixOffset + isf_FragNormCoord[1];
 	}
 	else	{
-		mixOffset = mixOffset + vv_FragNormCoord[0];
+		mixOffset = mixOffset + isf_FragNormCoord[0];
 	}
 	
 	if (mixOffset > 1.0)	{

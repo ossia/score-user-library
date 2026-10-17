@@ -209,7 +209,7 @@ void main()	{
 		maxWidth = minWidth;
 	
 	vec4		result = vec4(0.0);
-	vec2		thisPoint = vv_FragNormCoord;
+	vec2		thisPoint = isf_FragNormCoord;
 	vec3		colorHSL;
 	vec2		pt1, pt2;
 	float		baseHue = rand(vec2(floor(lineCount), 1.0));

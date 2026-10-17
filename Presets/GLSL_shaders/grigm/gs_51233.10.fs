@@ -19,9 +19,6 @@
       ]
     }
   ],
-  "PERSISTENT_BUFFERS" : [
-    "backbuffer"
-  ],
   "PASSES" : [
     {
       "TARGET" : "backbuffer",

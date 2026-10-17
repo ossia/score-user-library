@@ -36,7 +36,7 @@ void main()
     U.x *= RENDERSIZE.x / RENDERSIZE.y;
     
     
-    //vec2 U = (1. - 0.4 * mouse.x) * vv_FragNormCoord;
+    //vec2 U = (1. - 0.4 * mouse.x) * isf_FragNormCoord;
     vec3 ht = smoothstep(0., 2., .25 - dot(U* x_val, U* x_val)) * vec3(U* x_val, -1),
          n = 100. * normalize(ht - vec3(0, -.15 * fract(.0005 * TIME), .65)), 
          p = n;

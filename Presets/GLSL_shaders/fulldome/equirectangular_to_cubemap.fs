@@ -53,7 +53,7 @@ vec2 rotateUV(vec2 uv, int rotationType) {
 
 void main() {
     // 1. Determine which face and the local UV on that face this fragment corresponds to.
-    vec2 atlasUV = vv_FragNormCoord;
+    vec2 atlasUV = isf_FragNormCoord;
 
     float cell_w_norm, cell_h_norm;
     if (layoutType == 0) { // Horizontal Strip (6w x 1h)

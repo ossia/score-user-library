@@ -147,7 +147,7 @@ float outerSquareX(float time_) {
 }
 
 void main( void ) {
-	vec2 pos = vv_FragNormCoord * 3.0;
+	vec2 pos = isf_FragNormCoord * 3.0;
 	vec4 color = vec4(1.0);
 
 	color -= subColorSquare(Square(vec2(0.0), vec2(outerSquareX(TIME), 1.0)), pos, vec4(.0, .0, .3, 0.));

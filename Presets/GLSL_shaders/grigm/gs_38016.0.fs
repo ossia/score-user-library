@@ -59,7 +59,7 @@ precision mediump float;
 
 //const float lw = 0.05;
 void main( void ) {
-	//vec2 p = 3.*vv_FragNormCoord;
+	//vec2 p = 3.*isf_FragNormCoord;
 	
 	vec2 p=((gl_FragCoord.xy*2.-RENDERSIZE.xy)/min(RENDERSIZE.x,RENDERSIZE.y)*scale); 
 	

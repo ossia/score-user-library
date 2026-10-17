@@ -32,8 +32,8 @@ vec3 getColor(float phase);
 
 #define stripes 1.
 #define k 4.
-#define sx vv_FragNormCoord.x
-#define sy vv_FragNormCoord.y
+#define sx isf_FragNormCoord.x
+#define sy isf_FragNormCoord.y
 
 float PI = 4.*atan(1.);
 

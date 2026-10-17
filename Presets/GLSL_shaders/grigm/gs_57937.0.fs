@@ -40,10 +40,10 @@ float bayer( int iter, vec2 rc )
 
 void main( void )
 {
-	vec2 position = vv_FragNormCoord;
+	vec2 position = isf_FragNormCoord;
 	vec2 m = vec2(1.,0);
 
-	float alpha = fract(dot(vv_FragNormCoord,vv_FragNormCoord)+TIME);
+	float alpha = fract(dot(isf_FragNormCoord,isf_FragNormCoord)+TIME);
 	float threshold = bayer( int(mix(1.0, 5.0, 1.0-m.y)), gl_FragCoord.xy-vec2(0.5) );
 	float p = step(threshold, alpha);
 	

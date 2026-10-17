@@ -30,7 +30,7 @@ precision highp float;
 #extension GL_OES_standard_derivatives : enable
 
 
-#define SP (vv_FragNormCoord.xy)
+#define SP (isf_FragNormCoord.xy)
 #define M (mouse.xy)
 #define I (M * 2.0 - 1.0)
 #define F (gl_FragCoord.xy)

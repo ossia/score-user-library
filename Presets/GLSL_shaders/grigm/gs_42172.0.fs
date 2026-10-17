@@ -18,7 +18,7 @@ precision mediump float;
 
 
 void main(){
-	vec2 pos = vv_FragNormCoord;
+	vec2 pos = isf_FragNormCoord;
 
 	const float pi = 3.14159;
 	const float n = 16.0;

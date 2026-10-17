@@ -69,7 +69,7 @@ const float tau = 6.28318530718;
 vec2 pattern() {
 	float s = sin(tau * rotation);
 	float c = cos(tau * rotation);
-	vec2 tex = vv_FragNormCoord * RENDERSIZE;
+	vec2 tex = isf_FragNormCoord * RENDERSIZE;
 	float scale_x = 1.0 / max(size_w,0.001);
 	float scale_y = 1.0 / max(size_h,0.001);
 	vec2 point = vec2( (c * tex.x - s * tex.y)*scale_x, (s * tex.x + c * tex.y) * scale_y );

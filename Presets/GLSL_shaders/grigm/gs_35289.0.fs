@@ -22,7 +22,7 @@ void main( void ) {
 
 	gl_FragColor = vec4( 1.0 );
 	
-	vec2 Z = 8.*vv_FragNormCoord;
+	vec2 Z = 8.*isf_FragNormCoord;
 	float ph = 0.;
 	vec2 dZ = vec2(0.);
 	float width = 2.;
@@ -30,7 +30,7 @@ void main( void ) {
 		if(-Z.y - abs(Z.x) > 0. && Z.y > -width) gl_FragColor = vec4(1,0,0,1);
 		width /= (2.-pow(i, 0.5));
 		dZ = vec2(0.,0.)+10.*(vec2(0.5, sin(TIME*1.1)*0.5+0.5)-.5);
-		ph = sign(vv_FragNormCoord.x)*3.14159/4.;
+		ph = sign(isf_FragNormCoord.x)*3.14159/4.;
 		Z += dZ;
 		Z *= mat2(cos(ph), sin(ph), -sin(ph), cos(ph));
 	}

@@ -45,7 +45,7 @@ mat3 makeRotationMatrix(vec3 euler_angles) {
 
 void main() {
     // --- Calculations performed for every fragment ---
-    vec2 p_centered = (vv_FragNormCoord - 0.5) * 2.0;
+    vec2 p_centered = (isf_FragNormCoord - 0.5) * 2.0;
 
     // Correct for aspect ratio
     float screen_aspect = RENDERSIZE.x / RENDERSIZE.y;

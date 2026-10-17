@@ -29,7 +29,7 @@ float obj_udRoundBox(vec3 p) { // ray marching objects
  
 vec4 spuke(vec4 pos)
 {
-	vec2 p   =((pos.z+vv_FragNormCoord*pi)+(sin((((length(sin(vv_FragNormCoord*(pos.xy)+TIME*pi)))+(cos((vv_FragNormCoord-TIME*pi)/pi)))))*vv_FragNormCoord))+pos.xy*pos.z; 
+	vec2 p   =((pos.z+isf_FragNormCoord*pi)+(sin((((length(sin(isf_FragNormCoord*(pos.xy)+TIME*pi)))+(cos((isf_FragNormCoord-TIME*pi)/pi)))))*isf_FragNormCoord))+pos.xy*pos.z; 
 	vec3 col = vec3( 0.0, 0.0, 0.0 );
 	float ca = 0.0;
 	for( int j = 1; j < 14; j++ )

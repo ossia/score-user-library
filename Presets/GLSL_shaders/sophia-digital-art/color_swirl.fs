@@ -32,7 +32,7 @@ vec3 hsv(in float h, in float s, in float v) {
 
 void main( void ) {
 
-	vec3 p = vec3(vv_FragNormCoord, 0.0)*2.0;
+	vec3 p = vec3(isf_FragNormCoord, 0.0)*2.0;
 	vec4 color = vec4(0);
 	float m = 1.0;
 	float t = TIME*0.1;

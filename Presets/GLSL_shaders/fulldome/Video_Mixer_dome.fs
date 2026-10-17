@@ -365,12 +365,12 @@ vec3 blendMode(int mode, vec3 base, vec3 blend, float opacity) {
 }
 
 void main() {
-    vec2 sample_uv = vv_FragNormCoord;
+    vec2 sample_uv = isf_FragNormCoord;
     bool out_of_bounds = false;
 
     // Aspect Ratio Correction Logic
     if (keep_1_1_aspect) {
-        vec2 p_centered = (vv_FragNormCoord - 0.5) * 2.0;
+        vec2 p_centered = (isf_FragNormCoord - 0.5) * 2.0;
         float screen_aspect = RENDERSIZE.x / RENDERSIZE.y;
         
         if (screen_aspect > 1.0) { p_centered.x *= screen_aspect; }

@@ -28,7 +28,7 @@ vec2 cmul(const vec2 c1, const vec2 c2)
 }
 
 void main( void ) {
-	vec2 p = vv_FragNormCoord*4.0 + vec2(0.0, -1.0);
+	vec2 p = isf_FragNormCoord*4.0 + vec2(0.0, -1.0);
 	vec2 z = vec2(0.7, -0.7);
 	float d = 99.0;
 	for (int i = 0; i < 10; i++) {

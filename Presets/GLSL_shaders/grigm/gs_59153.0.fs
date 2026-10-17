@@ -22,7 +22,7 @@ precision mediump float;
 
 // glslsandbox uniforms
 
-#define ttime (0.1*TIME+2.*length(vv_FragNormCoord))
+#define ttime (0.1*TIME+2.*length(isf_FragNormCoord))
 
 // shadertoy emulation
 #define iTime ttime

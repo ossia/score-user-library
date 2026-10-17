@@ -55,7 +55,7 @@ mat3 makeRotationMatrix(vec3 a) // a = (yaw, pitch, roll)
 
 void main()
 {
-    vec2 p_norm_screen = vv_FragNormCoord; // Normalized screen coords [0,1]
+    vec2 p_norm_screen = isf_FragNormCoord; // Normalized screen coords [0,1]
     vec2 p_centered = (p_norm_screen - 0.5) * 2.0; // Centered screen coords [-1,1]
 
     // ADDED: Apply horizontal flip if toggled

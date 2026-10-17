@@ -56,7 +56,7 @@ void main()
 	
 	vec4 result		= vec4(0., 0., 0., 1.);
 	
-	result 			+= partition_noise((vv_FragNormCoord.xy+0.5) * 5.);
+	result 			+= partition_noise((isf_FragNormCoord.xy+0.5) * 5.);
 	
 	
 	gl_FragColor = result;

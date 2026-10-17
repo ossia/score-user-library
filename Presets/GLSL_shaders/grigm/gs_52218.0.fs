@@ -66,7 +66,7 @@ float char(vec2 st, float n){
 }
 
 void main(){
-    vec2 st = vv_FragNormCoord;
+    vec2 st = isf_FragNormCoord;
 	
     float dp = dot(st,st); if ( dp < 0.125 ) dp = 1.0; st /= dp;
 

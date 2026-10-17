@@ -242,7 +242,7 @@ float crazy(vec3 p){
 
 void main( void ) {
 
-	vec2 position = ( vv_FragNormCoord ) * 2.0;
+	vec2 position = ( isf_FragNormCoord ) * 2.0;
 
 
 	gl_FragColor = vec4(crazy(vec3(position, TIME* 0.8)));

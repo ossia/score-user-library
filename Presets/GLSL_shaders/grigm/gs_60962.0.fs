@@ -31,7 +31,7 @@ vec2 rand22 (vec2 n) {
 
 void main( void ) {
 
-	vec2 position = vv_FragNormCoord;//isf_FragNormCoord;
+	vec2 position = isf_FragNormCoord;//isf_FragNormCoord;
 	
 	vec2 sPos = vec2(0.0, 0.100);
 	vec3 color = vec3(0.10);
@@ -41,7 +41,7 @@ void main( void ) {
 	float sPosI = 0.5;
 	float sPosIy = 0.0;
 	
-	vec2 randPos = rand22(vv_FragNormCoord.xy) * 2.0 - 1.0;
+	vec2 randPos = rand22(isf_FragNormCoord.xy) * 2.0 - 1.0;
 	
 	for (int i = 0; i < n; ++i) {
 		

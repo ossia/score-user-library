@@ -7,12 +7,10 @@
   "INPUTS" : [
 
   ],
-  "PERSISTENT_BUFFERS" : [
-    "backbuffer"
-  ],
   "PASSES" : [
     {
-      "TARGET" : "backbuffer"
+      "TARGET" : "backbuffer",
+      "PERSISTENT" : true
     }
   ]
 }
@@ -27,7 +25,7 @@ precision mediump float;
 
 
 
-//#define p vv_FragNormCoord
+//#define p isf_FragNormCoord
 
 #define stepped(x, n) (floor(x*n)/n)
 

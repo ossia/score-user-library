@@ -126,5 +126,5 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     vec2 uv = fragCoord.xy / iResolution.xy;
     uv = uv * 2.0 - 1.0;
     uv.x *= iResolution.x / iResolution.y;
-    fragColor = drawScene(vv_FragNormCoord/cos(TIME/8.+5.*dot(vv_FragNormCoord, vv_FragNormCoord) + pow(length(vv_FragNormCoord), -0.33)));
+    fragColor = drawScene(isf_FragNormCoord/cos(TIME/8.+5.*dot(isf_FragNormCoord, isf_FragNormCoord) + pow(length(isf_FragNormCoord), -0.33)));
 }

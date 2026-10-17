@@ -100,7 +100,7 @@ vec4 black(vec2 v, float t){
 }
 
 void main( void ) {
-	vec2 p = vv_FragNormCoord*4.;
+	vec2 p = isf_FragNormCoord*4.;
 	
 	gl_FragColor = white(p, TIME);
 	if(gl_FragCoord.x < RENDERSIZE.x * mouse.x) gl_FragColor = black(p, TIME);

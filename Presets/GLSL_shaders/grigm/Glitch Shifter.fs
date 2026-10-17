@@ -115,8 +115,8 @@ void main()
 	bool shifted = false;
 	float currentTime = (auto_time) ? TIME : manual_time;
 	
-	xy.x = vv_FragNormCoord[0];
-	xy.y = vv_FragNormCoord[1];
+	xy.x = isf_FragNormCoord[0];
+	xy.y = isf_FragNormCoord[1];
 	
 	//	quantize the xy to the glitch_amount size
 	//xy = floor(xy / glitch_size) * glitch_size;

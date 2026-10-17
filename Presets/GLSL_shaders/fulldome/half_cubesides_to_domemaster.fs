@@ -61,7 +61,7 @@ vec2 flipUV(vec2 uv) {
 
 void main() {
     // --- Center and aspect ratio correction ---
-    vec2 p_centered = (vv_FragNormCoord - 0.5) * 2.0;
+    vec2 p_centered = (isf_FragNormCoord - 0.5) * 2.0;
     float screen_aspect = RENDERSIZE.x / RENDERSIZE.y;
     if (screen_aspect > 1.0) { p_centered.x *= screen_aspect; }
     else { p_centered.y /= screen_aspect; }
