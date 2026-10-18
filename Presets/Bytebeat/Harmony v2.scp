@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"w=[1,2,3,4,3,4,1][(t>>13)%7]*t,(w%50.01+w%40.1+w%30.1+w%60.01)"},"Name":"Harmony v2","Category":"Variables and arrays","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

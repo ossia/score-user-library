@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"sin(t/(t>>8&t&t>>13))>0?128:64"},"Name":"Square Conditions","Category":"Conditions","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

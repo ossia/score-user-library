@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// t>>8&t as a sine wave, without clipping\nsin(t/10)*(((t>>8&t)%256)/2)+128"},"Name":"Sine Fractal","Category":"Sines","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

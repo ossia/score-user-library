@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"w=2*PI*55*t/48000,\n[tanh(3*sin(w)+sin(w*3.01))*0.4, tanh(3*sin(w*1.004)+sin(w*2.99))*0.4]"},"Name":"Detuned Drone","Category":"Floatbeat","Preset":[[0,{"Int":0}],[1,{"Int":2}],[2,{"Int":48000}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// Replace 30 with another number to get a new song\nr=sin(t>>12)*30,w=sin(t/(r%5))+sin(t/(r%6)),w*64+128"},"Name":"Random Song","Category":"Variables and arrays","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

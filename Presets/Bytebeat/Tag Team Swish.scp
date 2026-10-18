@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// Each line is a formula: they play together\n(((t>>8)+(t>>16&t))&t>>2)*t\n(((t>>8)+(t>>16&t))&t>>3)*t"},"Name":"Tag Team Swish","Category":"Mixes","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}
