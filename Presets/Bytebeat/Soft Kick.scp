@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"p=t%24000,\nsin(2*PI*50*p/48000+12*exp(-p/1200))*exp(-p/9000)*0.8"},"Name":"Soft Kick","Category":"Floatbeat","Preset":[[0,{"Int":0}],[1,{"Int":2}],[2,{"Int":48000}]]}

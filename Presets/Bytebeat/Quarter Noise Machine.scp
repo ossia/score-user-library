@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"(t&(t>>15+(t>>8&t)))*t"},"Name":"Quarter Noise Machine","Category":"Classic","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"// A pulse wave whose duty cycle follows a slow cosine\n(t%256)>(cos(t/40000)*128+128)?0:128"},"Name":"Duty Cycle","Category":"Conditions","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}

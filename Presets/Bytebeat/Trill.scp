@@ -1,0 +1,1 @@
+{"Key":{"Uuid":"608beeb7-e5c2-40a5-bd1a-aa7aec80f864","Effect":"sin(sin(t/100)-t/((2+(t>>10&t>>12)%9)))*64+128"},"Name":"Trill","Category":"Sines","Preset":[[0,{"Int":0}],[1,{"Int":0}],[2,{"Int":8000}]]}
