@@ -7,7 +7,7 @@
     "3D-FILTER",
     "COMPOSITE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     { "NAME": "t0", "TYPE": "texture", "DIMENSIONS": 3, "LABEL": "Volume 0" },
     { "NAME": "t1", "TYPE": "texture", "DIMENSIONS": 3, "LABEL": "Volume 1" },
     { "NAME": "t2", "TYPE": "texture", "DIMENSIONS": 3, "LABEL": "Volume 2" },
@@ -23,9 +23,7 @@
       "VALUES": [0, 1, 2, 3, 4, 5, 6, 7],
       "LABELS": ["0", "1", "2", "3", "4", "5", "6", "7"],
       "LABEL": "Index"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

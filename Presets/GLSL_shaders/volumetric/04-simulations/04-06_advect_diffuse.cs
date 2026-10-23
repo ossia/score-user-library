@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SIMULATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "axis",
       "TYPE": "point3D",
@@ -83,9 +83,7 @@
       "MIN": 0.001,
       "MAX": 0.1,
       "LABEL": "Timestep"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "state",
       "TYPE": "image",

@@ -7,7 +7,7 @@
     "3D-FILTER",
     "FEEDBACK-LIKE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "prev",
       "TYPE": "texture",
@@ -33,9 +33,7 @@
       "TYPE": "bool",
       "DEFAULT": false,
       "LABEL": "Signed velocity (else 0.5 + v/2)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

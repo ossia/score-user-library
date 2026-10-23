@@ -7,7 +7,7 @@
     "3D-FILTER",
     "MORPHOLOGY"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -29,9 +29,7 @@
       "MIN": 0.001,
       "MAX": 0.5,
       "LABEL": "Shell width"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

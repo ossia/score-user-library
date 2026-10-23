@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SDF"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "period",
       "TYPE": "float",
@@ -47,9 +47,7 @@
       "MIN": 0.0,
       "MAX": 4.0,
       "LABEL": "Copies each side (Z)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

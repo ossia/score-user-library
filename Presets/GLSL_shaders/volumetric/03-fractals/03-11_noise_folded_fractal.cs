@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "FRACTAL"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "iters",
       "TYPE": "long",
@@ -23,9 +23,7 @@
       "MIN": 0.0,
       "MAX": 2.0,
       "LABEL": "Speed"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

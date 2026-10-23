@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "PROJECTION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "inputImage",
       "TYPE": "texture",
@@ -20,9 +20,7 @@
       "MIN": 0.1,
       "MAX": 1.5,
       "LABEL": "Height scale"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

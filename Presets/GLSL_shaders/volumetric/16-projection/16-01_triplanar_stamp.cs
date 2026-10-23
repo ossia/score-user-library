@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "PROJECTION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "inputImage",
       "TYPE": "texture",
@@ -20,9 +20,7 @@
       "MIN": 1.0,
       "MAX": 16.0,
       "LABEL": "Blend sharpness"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

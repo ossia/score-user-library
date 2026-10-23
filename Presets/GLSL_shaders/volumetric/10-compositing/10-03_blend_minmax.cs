@@ -7,7 +7,7 @@
     "3D-FILTER",
     "COMPOSITE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "A",
       "TYPE": "texture",
@@ -25,9 +25,7 @@
       "TYPE": "bool",
       "DEFAULT": false,
       "LABEL": "Min (else max)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

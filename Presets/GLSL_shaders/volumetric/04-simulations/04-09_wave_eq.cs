@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SIMULATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "c",
       "TYPE": "float",
@@ -69,9 +69,7 @@
       "NAME": "clear",
       "TYPE": "event",
       "LABEL": "Clear"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "state",
       "TYPE": "image",

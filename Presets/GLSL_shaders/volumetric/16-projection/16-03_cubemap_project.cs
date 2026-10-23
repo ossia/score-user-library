@@ -7,14 +7,12 @@
     "3D-GENERATOR",
     "PROJECTION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "inputImage",
       "TYPE": "texture",
       "LABEL": "2D cross (4x3 tiles)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "AUDIO"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "fft",
       "TYPE": "audioFFT",
@@ -37,9 +37,7 @@
       "MIN": 0.0,
       "MAX": 8.0,
       "LABEL": "Audio gain"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

@@ -7,7 +7,7 @@
     "3D-FILTER",
     "STYLIZE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -21,9 +21,7 @@
       "MIN": 1.0,
       "MAX": 32.0,
       "LABEL": "Cell scale"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

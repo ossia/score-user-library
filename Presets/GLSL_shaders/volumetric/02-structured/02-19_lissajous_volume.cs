@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "a",
       "TYPE": "float",
@@ -39,9 +39,7 @@
       "MIN": 0.01,
       "MAX": 0.3,
       "LABEL": "Tube radius"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

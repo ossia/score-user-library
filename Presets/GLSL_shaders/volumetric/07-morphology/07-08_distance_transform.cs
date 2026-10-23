@@ -7,7 +7,7 @@
     "3D-FILTER",
     "MORPHOLOGY"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "seedVol",
       "TYPE": "texture",
@@ -29,9 +29,7 @@
       "MIN": 0.1,
       "MAX": 4.0,
       "LABEL": "Step size"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

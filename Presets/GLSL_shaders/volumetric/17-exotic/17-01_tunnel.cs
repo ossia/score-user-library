@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "EXOTIC"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "speed",
       "TYPE": "float",
@@ -31,9 +31,7 @@
       "MIN": 1.0,
       "MAX": 32.0,
       "LABEL": "Radial freq"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

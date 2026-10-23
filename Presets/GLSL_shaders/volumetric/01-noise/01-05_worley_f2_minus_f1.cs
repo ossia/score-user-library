@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "NOISE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scale",
       "TYPE": "float",
@@ -31,9 +31,7 @@
       "MIN": 0.5,
       "MAX": 8.0,
       "LABEL": "Edge sharpness"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

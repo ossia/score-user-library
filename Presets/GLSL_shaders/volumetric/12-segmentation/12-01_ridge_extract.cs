@@ -7,7 +7,7 @@
     "3D-FILTER",
     "SEGMENTATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -29,9 +29,7 @@
       "MIN": 0.5,
       "MAX": 4.0,
       "LABEL": "Scale (voxels)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

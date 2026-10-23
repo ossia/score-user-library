@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SDF"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "shape",
       "TYPE": "long",
@@ -39,9 +39,7 @@
       "MIN": 0.1,
       "MAX": 0.8,
       "LABEL": "Size"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

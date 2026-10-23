@@ -7,7 +7,7 @@
     "3D-FILTER",
     "STYLIZE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -21,9 +21,7 @@
       "MIN": 4.0,
       "MAX": 128.0,
       "LABEL": "Dots / side"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

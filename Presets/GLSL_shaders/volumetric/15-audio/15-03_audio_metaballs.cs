@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "AUDIO"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "fft",
       "TYPE": "audioFFT",
@@ -45,9 +45,7 @@
       "MIN": 0.2,
       "MAX": 3.0,
       "LABEL": "Iso threshold"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

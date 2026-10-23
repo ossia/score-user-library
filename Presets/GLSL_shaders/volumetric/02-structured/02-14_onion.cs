@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "rings",
       "TYPE": "float",
@@ -23,9 +23,7 @@
       "MIN": 0.0,
       "MAX": 8.0,
       "LABEL": "Pulse speed"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

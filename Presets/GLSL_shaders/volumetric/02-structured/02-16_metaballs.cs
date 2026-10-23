@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "radius",
       "TYPE": "float",
@@ -31,9 +31,7 @@
       "MIN": 0.1,
       "MAX": 3.0,
       "LABEL": "Iso threshold"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

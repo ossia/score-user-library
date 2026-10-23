@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "EXOTIC"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "shift",
       "TYPE": "long",
@@ -23,9 +23,7 @@
       "MIN": 0.0,
       "MAX": 8.0,
       "LABEL": "Speed"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

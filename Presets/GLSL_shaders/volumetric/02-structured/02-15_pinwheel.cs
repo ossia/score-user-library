@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "azimuth",
       "TYPE": "float",
@@ -31,9 +31,7 @@
       "MIN": 0.0,
       "MAX": 8.0,
       "LABEL": "Spin"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

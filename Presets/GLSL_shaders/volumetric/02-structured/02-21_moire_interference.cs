@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "baseFreq",
       "TYPE": "float",
@@ -31,9 +31,7 @@
       "MIN": 0.0,
       "MAX": 90.0,
       "LABEL": "Rotation (deg)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

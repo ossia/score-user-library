@@ -7,7 +7,7 @@
     "3D-FILTER",
     "FEEDBACK-LIKE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "prev",
       "TYPE": "texture",
@@ -27,9 +27,7 @@
       "MIN": 0.0,
       "MAX": 8.0,
       "LABEL": "Difference gain"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",
