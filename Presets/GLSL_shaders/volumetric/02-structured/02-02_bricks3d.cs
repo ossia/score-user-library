@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scaleX",
       "TYPE": "float",
@@ -39,9 +39,7 @@
       "MIN": 0.0,
       "MAX": 0.3,
       "LABEL": "Mortar"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

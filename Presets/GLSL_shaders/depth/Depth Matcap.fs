@@ -12,7 +12,7 @@
     },
 
     "INPUTS": [
-        { "NAME": "inputImage", "TYPE": "image", "DEPTH": true, "LABEL": "Scene color + depth" },
+        { "NAME": "inputImage", "TYPE": "image", "IS_DEPTH": true, "LABEL": "Scene color + depth" },
         { "NAME": "matcapImage", "TYPE": "image", "LABEL": "Matcap texture (square, sphere-shaped content)" },
         { "NAME": "camera", "TYPE": "uniform", "LABEL": "Camera matrices",
             "LAYOUT": [

@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "EXOTIC"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "bpm",
       "TYPE": "float",
@@ -34,9 +34,7 @@
         1.0
       ],
       "LABEL": "Color"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "FRACTAL"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "power",
       "TYPE": "float",
@@ -39,9 +39,7 @@
       "MIN": 0.0,
       "MAX": 2.0,
       "LABEL": "Power drift"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

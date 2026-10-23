@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "axis",
       "TYPE": "point3d",
@@ -41,9 +41,7 @@
       "TYPE": "bool",
       "DEFAULT": false,
       "LABEL": "Sine (else square)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

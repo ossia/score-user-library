@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SIMULATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "current",
       "TYPE": "texture",
@@ -62,9 +62,7 @@
       "NAME": "clear",
       "TYPE": "event",
       "LABEL": "Clear"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "state",
       "TYPE": "image",

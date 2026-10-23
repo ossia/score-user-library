@@ -7,7 +7,7 @@
     "3D-FILTER",
     "FEEDBACK-LIKE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "prev",
       "TYPE": "texture",
@@ -45,9 +45,7 @@
       "MIN": 0.0,
       "MAX": 1.0,
       "LABEL": "Decay"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

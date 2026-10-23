@@ -7,7 +7,7 @@
     "3D-FILTER",
     "WARP"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -37,9 +37,7 @@
       "MIN": -8.0,
       "MAX": 8.0,
       "LABEL": "Speed"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

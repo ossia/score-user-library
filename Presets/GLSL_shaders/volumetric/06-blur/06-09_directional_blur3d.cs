@@ -7,7 +7,7 @@
     "3D-FILTER",
     "BLUR"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -41,9 +41,7 @@
       "MIN": 0.5,
       "MAX": 20.0,
       "LABEL": "Length (voxels each side)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

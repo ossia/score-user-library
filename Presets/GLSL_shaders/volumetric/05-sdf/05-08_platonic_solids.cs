@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SDF"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "solid",
       "TYPE": "long",
@@ -43,9 +43,7 @@
       "MIN": 0.001,
       "MAX": 0.2,
       "LABEL": "Edge softness"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

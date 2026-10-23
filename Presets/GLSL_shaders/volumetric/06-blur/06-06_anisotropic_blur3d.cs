@@ -7,7 +7,7 @@
     "3D-FILTER",
     "BLUR"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -33,9 +33,7 @@
         4
       ],
       "LABEL": "Sigma XYZ"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

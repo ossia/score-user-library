@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "EXOTIC"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "iters",
       "TYPE": "long",
@@ -35,9 +35,7 @@
         1.0
       ],
       "LABEL": "Bias"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

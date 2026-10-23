@@ -7,7 +7,7 @@
     "3D-FILTER",
     "COMPOSITE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "A",
       "TYPE": "texture",
@@ -37,9 +37,7 @@
         "Burn"
       ],
       "LABEL": "Mode"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "NOISE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scale",
       "TYPE": "float",
@@ -39,9 +39,7 @@
       "MIN": 0.0,
       "MAX": 2.0,
       "LABEL": "Drift"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

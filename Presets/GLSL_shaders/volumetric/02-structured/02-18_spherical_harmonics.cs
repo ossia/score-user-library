@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "l1",
       "TYPE": "long",
@@ -23,9 +23,7 @@
       "MIN": -6,
       "MAX": 6,
       "LABEL": "Order m"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

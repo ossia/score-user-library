@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "pWind",
       "TYPE": "long",
@@ -39,9 +39,7 @@
       "MIN": 0.02,
       "MAX": 0.3,
       "LABEL": "Tube radius"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

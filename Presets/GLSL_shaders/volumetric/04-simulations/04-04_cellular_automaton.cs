@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SIMULATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "rule",
       "TYPE": "long",
@@ -96,9 +96,7 @@
       "NAME": "seed",
       "TYPE": "event",
       "LABEL": "Re-seed"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "state",
       "TYPE": "image",

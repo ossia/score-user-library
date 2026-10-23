@@ -7,7 +7,7 @@
     "3D-FILTER",
     "SYMMETRY"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -31,9 +31,7 @@
       "TYPE": "bool",
       "DEFAULT": false,
       "LABEL": "Mirror Z"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

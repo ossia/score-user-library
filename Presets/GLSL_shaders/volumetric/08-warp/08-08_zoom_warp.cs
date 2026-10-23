@@ -7,7 +7,7 @@
     "3D-FILTER",
     "WARP"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -29,9 +29,7 @@
       "MIN": -3.14,
       "MAX": 3.14,
       "LABEL": "Rot Y (rad)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

@@ -12,7 +12,7 @@
     },
 
     "INPUTS": [
-        { "NAME": "inputImage", "TYPE": "image", "DEPTH": true, "LABEL": "Scene color + depth" },
+        { "NAME": "inputImage", "TYPE": "image", "IS_DEPTH": true, "LABEL": "Scene color + depth" },
         { "NAME": "mode", "TYPE": "long", "LABEL": "Operation",
           "VALUES": [0, 1], "LABELS": ["Dilate (near-fattens)", "Erode (near-thins)"], "DEFAULT": 0 },
         { "NAME": "radius", "TYPE": "float", "LABEL": "Radius (pixels)",

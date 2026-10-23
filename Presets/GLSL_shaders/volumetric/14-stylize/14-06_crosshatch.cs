@@ -7,7 +7,7 @@
     "3D-FILTER",
     "STYLIZE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -43,9 +43,7 @@
         1.0
       ],
       "LABEL": "Paper"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

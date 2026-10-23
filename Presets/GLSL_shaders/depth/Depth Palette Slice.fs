@@ -12,7 +12,7 @@
     },
 
     "INPUTS": [
-        { "NAME": "inputImage", "TYPE": "image", "DEPTH": true, "LABEL": "Scene color + depth" },
+        { "NAME": "inputImage", "TYPE": "image", "IS_DEPTH": true, "LABEL": "Scene color + depth" },
         { "NAME": "paletteImage", "TYPE": "image", "LABEL": "Palette (U = depth, V = 0..1 optional banding)" },
         { "NAME": "camera", "TYPE": "uniform", "LABEL": "Camera matrices",
             "LAYOUT": [

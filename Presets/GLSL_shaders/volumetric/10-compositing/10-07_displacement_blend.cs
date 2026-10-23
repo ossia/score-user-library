@@ -7,7 +7,7 @@
     "3D-FILTER",
     "COMPOSITE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "A",
       "TYPE": "texture",
@@ -41,9 +41,7 @@
       "MIN": 0.0,
       "MAX": 0.5,
       "LABEL": "Softness"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

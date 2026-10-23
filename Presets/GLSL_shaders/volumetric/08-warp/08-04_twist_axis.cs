@@ -7,7 +7,7 @@
     "3D-FILTER",
     "WARP"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -37,9 +37,7 @@
         "Z"
       ],
       "LABEL": "Axis"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

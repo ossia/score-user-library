@@ -7,7 +7,7 @@
     "3D-FILTER",
     "WARP"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -29,9 +29,7 @@
       "MIN": -1.0,
       "MAX": 1.0,
       "LABEL": "Shear Z by Y"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

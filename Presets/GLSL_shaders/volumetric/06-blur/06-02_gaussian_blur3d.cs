@@ -7,7 +7,7 @@
     "3D-FILTER",
     "BLUR"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -21,9 +21,7 @@
       "MIN": 0.5,
       "MAX": 6.0,
       "LABEL": "Sigma"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "blurTmp1",
       "TYPE": "image",

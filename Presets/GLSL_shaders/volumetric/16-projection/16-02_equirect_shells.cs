@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "PROJECTION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "inputImage",
       "TYPE": "texture",
@@ -28,9 +28,7 @@
       "MIN": 0.01,
       "MAX": 0.5,
       "LABEL": "Shell thickness"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

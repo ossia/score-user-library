@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scale",
       "TYPE": "float",
@@ -15,9 +15,7 @@
       "MIN": 1.0,
       "MAX": 64.0,
       "LABEL": "Cells per side"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

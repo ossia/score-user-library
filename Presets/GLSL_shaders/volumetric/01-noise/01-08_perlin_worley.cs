@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "NOISE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scale",
       "TYPE": "float",
@@ -31,9 +31,7 @@
       "MIN": 0.0,
       "MAX": 1.0,
       "LABEL": "Perlin blend"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

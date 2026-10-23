@@ -7,7 +7,7 @@
     "3D-FILTER",
     "COLOR"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -79,9 +79,7 @@
         1.0
       ],
       "LABEL": "Z+"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

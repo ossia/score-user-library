@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "STRUCTURED"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scale",
       "TYPE": "float",
@@ -23,9 +23,7 @@
       "MIN": 0.1,
       "MAX": 0.6,
       "LABEL": "Radius"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

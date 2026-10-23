@@ -7,7 +7,7 @@
     "3D-FILTER",
     "COMPOSITE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "A",
       "TYPE": "texture",
@@ -19,9 +19,7 @@
       "TYPE": "texture",
       "DIMENSIONS": 3,
       "LABEL": "B (below)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

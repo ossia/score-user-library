@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "EXOTIC"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "scale",
       "TYPE": "float",
@@ -23,9 +23,7 @@
       "MIN": 0.02,
       "MAX": 0.45,
       "LABEL": "Pipe radius"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

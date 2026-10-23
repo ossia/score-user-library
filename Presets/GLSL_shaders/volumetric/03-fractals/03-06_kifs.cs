@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "FRACTAL"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "offset",
       "TYPE": "point3d",
@@ -51,9 +51,7 @@
       "MIN": 0.0,
       "MAX": 2.0,
       "LABEL": "Rotate"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

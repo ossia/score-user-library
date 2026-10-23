@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "FRACTAL"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "iters",
       "TYPE": "long",
@@ -23,9 +23,7 @@
       "MIN": 0.5,
       "MAX": 4.0,
       "LABEL": "Extent (zoom out)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

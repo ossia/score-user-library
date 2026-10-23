@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SIMULATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "noiseScale",
       "TYPE": "float",
@@ -47,9 +47,7 @@
       "MIN": 0.001,
       "MAX": 0.1,
       "LABEL": "Timestep"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "state",
       "TYPE": "image",

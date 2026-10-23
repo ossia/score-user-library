@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "FRACTAL"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "cSize",
       "TYPE": "point3d",
@@ -43,9 +43,7 @@
       "MIN": 0.3,
       "MAX": 4.0,
       "LABEL": "Extent (zoom out)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

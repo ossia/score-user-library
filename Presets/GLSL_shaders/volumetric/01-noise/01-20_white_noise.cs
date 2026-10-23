@@ -7,15 +7,13 @@
     "3D-GENERATOR",
     "NOISE"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "animate",
       "TYPE": "bool",
       "DEFAULT": true,
       "LABEL": "Animate"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

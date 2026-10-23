@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SIMULATION"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "branching",
       "TYPE": "float",
@@ -28,9 +28,7 @@
       "NAME": "seed",
       "TYPE": "event",
       "LABEL": "Re-seed"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "state",
       "TYPE": "image",

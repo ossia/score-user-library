@@ -7,15 +7,13 @@
     "3D-FILTER",
     "BLUR"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
       "DIMENSIONS": 3,
       "LABEL": "Input volume"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

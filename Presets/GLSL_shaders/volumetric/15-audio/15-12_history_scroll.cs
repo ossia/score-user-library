@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "AUDIO"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "history",
       "TYPE": "audioHistogram",
@@ -29,9 +29,7 @@
       "MIN": 0.2,
       "MAX": 2.0,
       "LABEL": "Radial spread"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",

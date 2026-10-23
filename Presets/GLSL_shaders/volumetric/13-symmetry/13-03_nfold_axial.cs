@@ -7,7 +7,7 @@
     "3D-FILTER",
     "SYMMETRY"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "volIn",
       "TYPE": "texture",
@@ -43,9 +43,7 @@
       "TYPE": "bool",
       "DEFAULT": false,
       "LABEL": "Mirror halves along the axis"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volOut",
       "TYPE": "image",

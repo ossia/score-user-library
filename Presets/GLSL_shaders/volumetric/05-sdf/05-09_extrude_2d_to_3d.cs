@@ -7,7 +7,7 @@
     "3D-GENERATOR",
     "SDF"
   ],
-  "INPUTS": [
+  "RESOURCES": [
     {
       "NAME": "inputImage",
       "TYPE": "texture",
@@ -28,9 +28,7 @@
       "MIN": -1.0,
       "MAX": 1.0,
       "LABEL": "Taper (\u00b11)"
-    }
-  ],
-  "RESOURCES": [
+    },
     {
       "NAME": "volume",
       "TYPE": "image",
