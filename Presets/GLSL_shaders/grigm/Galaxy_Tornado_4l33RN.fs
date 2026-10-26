@@ -138,7 +138,12 @@ float simplex3d(vec3 p) {
 
 //-----------------BASE IMAGE--------------------------
 
-#define R(r)  fract( 4e4 * sin(2e3 * r) )  // random uniform [0,1[
+// Sin-free hash: fract(4e4 * sin(2e3 * r)) took sin() of arguments up to 6e4,
+// whose precision GLSL and MSL leave to the implementation, so the stars landed
+// elsewhere on Metal than on Vulkan / OpenGL.
+float hash11(float p) { p = fract(p * 0.1031); p *= p + 33.33; p *= p + p; return fract(p); }
+vec2 hash11(vec2 p) { return vec2(hash11(p.x), hash11(p.y)); }
+#define R(r)  hash11(r)  // random uniform [0,1[
 vec4 stars(vec2 uv)
 {
     vec4 stars = vec4(0.0);
