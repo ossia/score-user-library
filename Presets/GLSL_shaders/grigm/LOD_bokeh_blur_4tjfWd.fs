@@ -83,7 +83,7 @@ vec3 Bokeh(sampler2D tex, vec2 uv, float radius, sampler2D noise, vec2 noiseCoor
     {
         r += 1. / r;
 	    vangle = rot * vangle;
-        vec3 col = textureLod(tex, uv + (r-1.) * vangle, 0.0).xyz;//(radius / 1.5) * sqrt(128.0 / float(iters)) ).xyz * 1.0;
+        vec3 col = IMG_NORM_PIXEL_LOD(tex, uv + (r-1.) * vangle, 0.0).xyz;//(radius / 1.5) * sqrt(128.0 / float(iters)) ).xyz * 1.0;
         acc += col;
 	}
     

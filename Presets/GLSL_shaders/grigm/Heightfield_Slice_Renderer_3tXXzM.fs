@@ -85,7 +85,7 @@ void main() {
 	        uv = uv*vec2(RENDERSIZE.y/RENDERSIZE.x,1)+.5;
 	
 			#if WRAP
-	        	vec4 tap = textureGrad(BufferA,fract(uv),dFdx(uv),dFdy(uv)); // tile with corrected filtering
+	        	vec4 tap = IMG_NORM_PIXEL_LOD(BufferA,fract(uv),0.0); // tile with corrected filtering
 	        #else
 	        	vec4 tap = IMG_NORM_PIXEL(BufferA,mod(uv,1.0));
 	        	if ( min(uv.x,uv.y) < 0. || max(uv.x,uv.y) > 1. ) tap.w = -1.;
@@ -105,10 +105,10 @@ void main() {
 	            vec2 positionZ = position.xz + sampleOffset.xy;
 	            vec2 uvX = positionX;
 	            uvX = uvX*vec2(RENDERSIZE.y/RENDERSIZE.x,1)+.5;  // todo: put this in a function
-	            float heightX = textureGrad(BufferA,fract(uvX),dFdx(uv),dFdy(uv)).w;
+	            float heightX = IMG_NORM_PIXEL_LOD(BufferA,fract(uvX),0.0).w;
 	            vec2 uvZ = positionZ;
 	            uvZ = uvZ*vec2(RENDERSIZE.y/RENDERSIZE.x,1)+.5;
-	            float heightZ = textureGrad(BufferA,fract(uvZ),dFdx(uv),dFdy(uv)).w;
+	            float heightZ = IMG_NORM_PIXEL_LOD(BufferA,fract(uvZ),0.0).w;
 	            
 	            float height = tap.w * heightScale;
 	            heightX *= heightScale;

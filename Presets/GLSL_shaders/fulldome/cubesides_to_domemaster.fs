@@ -94,31 +94,31 @@ void main() {
         if (local_ray_dir.x > 0.0) { // Positive X
             sc_tc = vec2(-local_ray_dir.z, -local_ray_dir.y) / v_abs.x;
             final_uv = CALC_FINAL_UV(sc_tc);
-            sampled_color = texture(facePosX, final_uv);
+            sampled_color = IMG_NORM_PIXEL(facePosX, final_uv);
         } else { // Negative X
             sc_tc = vec2(local_ray_dir.z, -local_ray_dir.y) / v_abs.x;
             final_uv = CALC_FINAL_UV(sc_tc);
-            sampled_color = texture(faceNegX, final_uv);
+            sampled_color = IMG_NORM_PIXEL(faceNegX, final_uv);
         }
     } else if (v_abs.y >= v_abs.z) { // Major axis: Y
         if (local_ray_dir.y > 0.0) { // Positive Y
             sc_tc = vec2(local_ray_dir.x, local_ray_dir.z) / v_abs.y;
             final_uv = CALC_FINAL_UV(sc_tc);
-            sampled_color = texture(facePosY, final_uv);
+            sampled_color = IMG_NORM_PIXEL(facePosY, final_uv);
         } else { // Negative Y
             sc_tc = vec2(local_ray_dir.x, -local_ray_dir.z) / v_abs.y;
             final_uv = CALC_FINAL_UV(sc_tc);
-            sampled_color = texture(faceNegY, final_uv);
+            sampled_color = IMG_NORM_PIXEL(faceNegY, final_uv);
         }
     } else { // Major axis: Z
         if (local_ray_dir.z > 0.0) { // Positive Z
             sc_tc = vec2(local_ray_dir.x, -local_ray_dir.y) / v_abs.z;
             final_uv = CALC_FINAL_UV(sc_tc);
-            sampled_color = texture(facePosZ, final_uv);
+            sampled_color = IMG_NORM_PIXEL(facePosZ, final_uv);
         } else { // Negative Z
             sc_tc = vec2(-local_ray_dir.x, -local_ray_dir.y) / v_abs.z;
             final_uv = CALC_FINAL_UV(sc_tc);
-            sampled_color = texture(faceNegZ, final_uv);
+            sampled_color = IMG_NORM_PIXEL(faceNegZ, final_uv);
         }
     }
     gl_FragColor = sampled_color;
