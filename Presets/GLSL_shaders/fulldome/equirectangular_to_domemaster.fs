@@ -103,6 +103,6 @@ void main()
     float v = 0.5 - latitude / M_PI;
 
     vec2 equirect_uv = vec2(u, v);
-    vec4 sampled_color = texture(equirectangularImage, equirect_uv);
+    vec4 sampled_color = IMG_NORM_PIXEL(equirectangularImage, equirect_uv);
     gl_FragColor = sampled_color;
 }

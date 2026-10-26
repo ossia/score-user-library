@@ -82,7 +82,7 @@ void main() {
     //IMG_NORM_PIXEL(inputImage,mod(uv - dr,1.0))
     
     
-    c = texture(inputImage,uv).rgb;
+    c = IMG_NORM_PIXEL(inputImage,uv).rgb;
     
     c.r = pow(abs(c.r),gamma);
     c.g = pow(abs(c.g),gamma);

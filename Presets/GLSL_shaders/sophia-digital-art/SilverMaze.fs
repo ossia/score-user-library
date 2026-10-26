@@ -69,16 +69,16 @@ float tri01(float x)
 vec4 getRand(vec2 p)
 {
     vec2 texc=(floor(p)+.5)/RENDERSIZE.xy;
-    return texture(iChannel0,texc);
+    return IMG_NORM_PIXEL(iChannel0,texc);
 }
 
 // get some 3d rand values by multiplying 2d rand in xy, yz, zx plane
 vec4 getRand(vec3 pos)
 {
     vec4 r = vec4(1.0);
-    r*=texture(iChannel0,pos.xy)*2.-1.;
-    r*=texture(iChannel0,pos.xz)*2.-1.;
-    r*=texture(iChannel0,pos.zy)*2.-1.;
+    r*=IMG_NORM_PIXEL(iChannel0,pos.xy)*2.-1.;
+    r*=IMG_NORM_PIXEL(iChannel0,pos.xz)*2.-1.;
+    r*=IMG_NORM_PIXEL(iChannel0,pos.zy)*2.-1.;
     return r;
 }
 

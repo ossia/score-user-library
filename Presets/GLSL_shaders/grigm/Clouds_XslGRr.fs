@@ -49,10 +49,10 @@ float noise( in vec3 x )
     ivec3 q = ivec3(p);
 	ivec2 uv = q.xy + ivec2(37,17)*q.z;
 
-	vec2 rg = mix( mix( texelFetch( iChannel0, (uv           )&255, 0 ),
-				        texelFetch( iChannel0, (uv+ivec2(1,0))&255, 0 ), f.x ),
-				   mix( texelFetch( iChannel0, (uv+ivec2(0,1))&255, 0 ),
-				        texelFetch( iChannel0, (uv+ivec2(1,1))&255, 0 ), f.x ), f.y ).yx;
+	vec2 rg = mix( mix( IMG_TEXEL( iChannel0, (uv           )&255 ),
+				        IMG_TEXEL( iChannel0, (uv+ivec2(1,0))&255 ), f.x ),
+				   mix( IMG_TEXEL( iChannel0, (uv+ivec2(0,1))&255 ),
+				        IMG_TEXEL( iChannel0, (uv+ivec2(1,1))&255 ), f.x ), f.y ).yx;
 #endif    
     
 	return -1.0+2.0*mix( rg.x, rg.y, f.z );

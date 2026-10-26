@@ -68,7 +68,7 @@ vec3 tex3D( sampler2D tex, in vec3 p, in vec3 n ){
     n = max((abs(n) - .2), .001);
     n /= (n.x + n.y + n.z ); // Roughly normalized.
     
-	p = (texture(tex, p.yz)*n.x + texture(tex, p.zx)*n.y + texture(tex, p.xy)*n.z).xyz;
+	p = (IMG_NORM_PIXEL(tex, p.yz)*n.x + IMG_NORM_PIXEL(tex, p.zx)*n.y + IMG_NORM_PIXEL(tex, p.xy)*n.z).xyz;
     
     // Loose sRGB to RGB conversion to counter final value gamma correction...
     // in case you're wondering.

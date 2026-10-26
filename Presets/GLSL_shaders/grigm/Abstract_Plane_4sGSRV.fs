@@ -235,7 +235,7 @@ vec3 tex3D( sampler2D tex, in vec3 p, in vec3 n ){
   
     n = max((abs(n) - 0.2)*7., 0.001); // n = max(abs(n), 0.001), etc.
     n /= (n.x + n.y + n.z ); 
-	return (texture(tex, p.yz)*n.x + texture(tex, p.zx)*n.y + texture(tex, p.xy)*n.z).xyz;
+	return (IMG_NORM_PIXEL(tex, p.yz)*n.x + IMG_NORM_PIXEL(tex, p.zx)*n.y + IMG_NORM_PIXEL(tex, p.xy)*n.z).xyz;
 }
 
 // Texture bump mapping. Four tri-planar lookups, or 12 texture lookups in total. I tried to 
