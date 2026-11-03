@@ -41,7 +41,7 @@ void main() {
         }
     } else {
         // Default behavior (maps texture to full window bounds)
-        source_color = IMG_THIS_PIXEL(inputImage);
+        source_color = IMG_THIS_NORM_PIXEL(inputImage);
     }
 
     // 4. Calculate the distance from the center (normalized radius)

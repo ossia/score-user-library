@@ -81,20 +81,20 @@ vec3 false_color(float L) {
 }
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
     vec3 lumaCoeff = (luma_standard == 0) ? luma_709 : luma_2020;
     float L = dot(lumaCoeff, c);
 
     if (mode == 0) {
         // Passthrough
-        gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+        gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
         return;
     }
 
     if (mode == 1) {
         // False color exposure map
         vec3 fc = false_color(L);
-        gl_FragColor = vec4(mix(c, fc, blend), IMG_THIS_PIXEL(inputImage).a);
+        gl_FragColor = vec4(mix(c, fc, blend), IMG_THIS_NORM_PIXEL(inputImage).a);
         return;
     }
 
@@ -117,13 +117,13 @@ void main() {
             result = mix(result, vec3(0.0, 0.0, 1.0), stripe * blend);
         }
 
-        gl_FragColor = vec4(result, IMG_THIS_PIXEL(inputImage).a);
+        gl_FragColor = vec4(result, IMG_THIS_NORM_PIXEL(inputImage).a);
         return;
     }
 
     if (mode == 3) {
         // Luminance only (grayscale)
-        gl_FragColor = vec4(vec3(L), IMG_THIS_PIXEL(inputImage).a);
+        gl_FragColor = vec4(vec3(L), IMG_THIS_NORM_PIXEL(inputImage).a);
         return;
     }
 
@@ -147,7 +147,7 @@ void main() {
             }
         }
 
-        gl_FragColor = vec4(clamp(result, 0.0, 1.0), IMG_THIS_PIXEL(inputImage).a);
+        gl_FragColor = vec4(clamp(result, 0.0, 1.0), IMG_THIS_NORM_PIXEL(inputImage).a);
         return;
     }
 }

@@ -14,5 +14,5 @@
 }*/
 
 void main() {
-	gl_FragColor = IMG_THIS_PIXEL(inputImage);
+	gl_FragColor = IMG_THIS_NORM_PIXEL(inputImage);
 }

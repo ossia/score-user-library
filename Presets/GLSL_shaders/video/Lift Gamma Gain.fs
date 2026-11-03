@@ -75,7 +75,7 @@
 const vec3 luma = vec3(0.2126, 0.7152, 0.0722);
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     // ── Lift / Gamma / Gain ──
     // Formula: output = gain * (input + lift * (1 - input)) ^ (1/gamma)
@@ -116,5 +116,5 @@ void main() {
         c = mix(vec3(L_val), c, saturation);
     }
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }

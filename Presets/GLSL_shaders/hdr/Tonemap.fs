@@ -214,7 +214,7 @@ vec3 tm_bt2390(vec3 color, float peakRatio) {
 }
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     // Pre-exposure
     c *= pow(2.0, exposure_ev);
@@ -236,5 +236,5 @@ void main() {
         c = mix(vec3(lum), c, saturation);
     }
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }

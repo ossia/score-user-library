@@ -87,7 +87,7 @@ vec3 hlg_oetf(vec3 v) {
 }
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     if (direction == 0) {
         // EOTF: decode to linear
@@ -107,5 +107,5 @@ void main() {
         // transfer == 5: linear, no-op
     }
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }
