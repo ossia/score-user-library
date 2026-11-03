@@ -71,7 +71,7 @@ const mat3 mat_bt709_to_p3 = mat3(
 );
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     if (conversion == 0)      c = mat_bt2020_to_bt709 * c;
     else if (conversion == 1) c = mat_bt709_to_bt2020 * c;
@@ -82,5 +82,5 @@ void main() {
 
     if (gamut_clip) c = clamp(c, 0.0, 1.0);
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }

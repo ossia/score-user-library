@@ -252,14 +252,14 @@ void main() {
   // Base Layer (t1)
   vec4 s1 = vec4(0.0);
   if (alpha1 > 0.0) {
-      s1 = IMG_THIS_PIXEL(t1);
+      s1 = IMG_THIS_NORM_PIXEL(t1);
   }
   float a = s1.a * alpha1;
   vec3 rgb = s1.rgb * a;
   
   // Layer 2
   if (alpha2 > 0.0) {
-      vec4 s2 = IMG_THIS_PIXEL(t2);
+      vec4 s2 = IMG_THIS_NORM_PIXEL(t2);
       float ea = s2.a * alpha2;
       if (ea > 0.0) {
           rgb = blendMode(mode1, rgb, s2.rgb, ea);
@@ -269,7 +269,7 @@ void main() {
 
   // Layer 3
   if (alpha3 > 0.0) {
-      vec4 s3 = IMG_THIS_PIXEL(t3);
+      vec4 s3 = IMG_THIS_NORM_PIXEL(t3);
       float ea = s3.a * alpha3;
       if (ea > 0.0) {
           rgb = blendMode(mode2, rgb, s3.rgb, ea);
@@ -279,7 +279,7 @@ void main() {
 
   // Layer 4
   if (alpha4 > 0.0) {
-      vec4 s4 = IMG_THIS_PIXEL(t4);
+      vec4 s4 = IMG_THIS_NORM_PIXEL(t4);
       float ea = s4.a * alpha4;
       if (ea > 0.0) {
           rgb = blendMode(mode3, rgb, s4.rgb, ea);
@@ -289,7 +289,7 @@ void main() {
 
   // Layer 5
   if (alpha5 > 0.0) {
-      vec4 s5 = IMG_THIS_PIXEL(t5);
+      vec4 s5 = IMG_THIS_NORM_PIXEL(t5);
       float ea = s5.a * alpha5;
       if (ea > 0.0) {
           rgb = blendMode(mode4, rgb, s5.rgb, ea);
@@ -299,7 +299,7 @@ void main() {
 
   // Layer 6
   if (alpha6 > 0.0) {
-      vec4 s6 = IMG_THIS_PIXEL(t6);
+      vec4 s6 = IMG_THIS_NORM_PIXEL(t6);
       float ea = s6.a * alpha6;
       if (ea > 0.0) {
           rgb = blendMode(mode5, rgb, s6.rgb, ea);
@@ -309,7 +309,7 @@ void main() {
 
   // Layer 7
   if (alpha7 > 0.0) {
-      vec4 s7 = IMG_THIS_PIXEL(t7);
+      vec4 s7 = IMG_THIS_NORM_PIXEL(t7);
       float ea = s7.a * alpha7;
       if (ea > 0.0) {
           rgb = blendMode(mode6, rgb, s7.rgb, ea);
@@ -319,7 +319,7 @@ void main() {
 
   // Layer 8
   if (alpha8 > 0.0) {
-      vec4 s8 = IMG_THIS_PIXEL(t8);
+      vec4 s8 = IMG_THIS_NORM_PIXEL(t8);
       float ea = s8.a * alpha8;
       if (ea > 0.0) {
           rgb = blendMode(mode7, rgb, s8.rgb, ea);

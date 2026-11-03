@@ -474,7 +474,7 @@ vec3 tonemap_bt2390(vec3 color, float srcPeak, float dstPeak) {
 // ============================================================
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     // ── Stage 1: Input EOTF (signal to linear light) ──
     if (input_eotf == 1)      c = srgb_eotf(c);
@@ -557,5 +557,5 @@ void main() {
     // ── Stage 9: Clamp ──
     if (output_clamp) c = clamp(c, 0.0, 1.0);
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }

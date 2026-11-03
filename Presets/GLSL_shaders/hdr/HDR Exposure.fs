@@ -42,7 +42,7 @@
 }*/
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     if (mode == 0) {
         // Nits to normalized: 203 nits becomes 1.0
@@ -55,5 +55,5 @@ void main() {
     // Exposure always applies
     c *= pow(2.0, exposure_ev);
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }

@@ -162,7 +162,7 @@ void main() {
     else if (pattern == 3) patternColor = hdr_steps(uv);
     else                    patternColor = vec3(mix(gradient_min, gradient_max, uv.x));
 
-    vec3 input_col = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 input_col = IMG_THIS_NORM_PIXEL(inputImage).rgb;
     vec3 result = mix(patternColor, input_col, mix_input);
 
     gl_FragColor = vec4(result, 1.0);

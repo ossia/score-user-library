@@ -37,7 +37,7 @@
 // 10-bit limited range: [64,940] maps to [0,1023]
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     if (conversion == 0) {
         // 8-bit limited to full: (v - 16/255) * 255/219
@@ -60,5 +60,5 @@ void main() {
         c = clamp(c, 0.0, 1.0);
     }
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }

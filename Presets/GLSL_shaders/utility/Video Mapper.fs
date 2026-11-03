@@ -71,6 +71,6 @@
 
 void main()
 {
-	vec4		test = IMG_THIS_PIXEL(inputImage);
+	vec4		test = IMG_THIS_NORM_PIXEL(inputImage);
 	gl_FragColor = test;
 }

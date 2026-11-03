@@ -408,7 +408,7 @@ void main()	{
 	// Every 4 lines are encoded in one uint; with 
 	// 4 uints encoding the full character. 
 	
-	vec4	out_color = IMG_THIS_PIXEL(inputImage);
+	vec4	out_color = IMG_THIS_NORM_PIXEL(inputImage);
 	vec2	inTexCoord = gl_FragCoord.xy;
 	
 	//	figure out which cell we are in, starting from the top left corner

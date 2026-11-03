@@ -88,7 +88,7 @@ const mat3 mat_2020_to_601 = mat3(
 );
 
 void main() {
-    vec3 c = IMG_THIS_PIXEL(inputImage).rgb;
+    vec3 c = IMG_THIS_NORM_PIXEL(inputImage).rgb;
 
     // Linearize if needed (matrix multiply must happen in linear light)
     if (input_is_gamma) {
@@ -108,5 +108,5 @@ void main() {
         c = pow(max(c, 0.0), vec3(1.0 / gamma_value));
     }
 
-    gl_FragColor = vec4(c, IMG_THIS_PIXEL(inputImage).a);
+    gl_FragColor = vec4(c, IMG_THIS_NORM_PIXEL(inputImage).a);
 }
