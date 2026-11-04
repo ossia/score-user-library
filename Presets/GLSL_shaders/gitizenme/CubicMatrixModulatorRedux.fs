@@ -117,7 +117,9 @@ float dist_field(vec3 p) {
     float yd = max(p.x-pow(stretchy,-stretchz),p.z);
     float zd = mix(p.x,p.y,stretchz);
     float beams = min(zd*cubesize, max(xd, yd)/mix(stretchz,stretchx,stretchy)) - cos(cubesize);
-    	  beams *= min(zd/sin(cubesize), max(xd, yd)/mod(stretchx,-stretchy)+log2(cubesize));
+    	  // log2 has no value for a negative size: that term drops out of the min.
+    	  float bz = zd/sin(cubesize);
+    	  beams *= cubesize > 0.0 ? min(bz, max(xd, yd)/mod(stretchx,-stretchy)+log2(cubesize)) : bz;
     	  beams += min(zd, min(xd, yd)) /-rate;
     return min(beams, cube);
 }

@@ -234,6 +234,10 @@ float sum(in float probability[SYMBOLS])
 
 void count(inout float series[ELEMENTS], out float probability[SYMBOLS])
 {
+	for(int j = 0; j < SYMBOLS; j++)
+	{
+		probability[j] = 0.;
+	}
 	
 	for(int i = 0; i < ELEMENTS; i++)
 	{

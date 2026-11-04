@@ -67,7 +67,7 @@ void main()
  float angle0 = indexQuad * astep + angleOffset;
  float angle1 = (indexQuad + 1.) * astep + angleOffset;
 
- float ringCircle = floor(sqrt((4. * indexCircle - 1.) / 12.0) - 0.5) + 1.0;;
+ float ringCircle = floor(sqrt(max((4. * indexCircle - 1.) / 12.0, 0.)) - 0.5) + 1.0;;
 
     float snd = texture(sound, vec2(0.1, ringCircle * 0.1)*.1).r * 3.;
    float snd2 = texture(sound, vec2(1.0, ringCircle * 0.1)*.1).r * 3.;

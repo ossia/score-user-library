@@ -241,7 +241,7 @@ void main() {
 	    float b = ta * sin(sc) + tb * cos(sc);
 	    
 	    // initialize with noise
-	    if(FRAMEINDEX<10 || reset) {
+	    if(FRAMEINDEX<10 || reset || IMG_NORM_PIXEL(BufferA,mod(vUv,1.0)).a == 0.0) {
 	        gl_FragColor = -0.5 + IMG_NORM_PIXEL(iChannel1,mod(isf_FragNormCoord,1.0));
 	    } else {
 	        gl_FragColor = clamp(vec4(a,b,div,1), -1., 1.);

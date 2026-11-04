@@ -163,7 +163,7 @@ void main() {
 		    if(!bInvert){
     			gl_FragColor = col;
     		} else {
-			 	gl_FragColor = 1.0-col; //Insane feedback! 
+			 	gl_FragColor = vec4(1.0-col.rgb, 1.0); //Insane feedback! 
     		}
 		 } 
   	 	 else if (PASSINDEX==2) {

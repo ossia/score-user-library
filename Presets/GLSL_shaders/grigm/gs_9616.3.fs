@@ -32,6 +32,8 @@ void main( void ) {
 	vec2 z = vec2(0.7, -0.7);
 	float d = 99.0;
 	for (int i = 0; i < 10; i++) {
+		// past this z overflows within two steps, and nothing it adds comes near d
+		if (length(z) > 1e6) break;
 		z =  z.yx * vec2(1.0, -1.0) + 1.0;
 		p += z*z;
 		z = cmul(z, p);

@@ -205,7 +205,9 @@ void GetCubeVertex( const float vertexIndex, const mat4 mat, out vec3 vWorldPos,
     vWorldPos = v3;
     }
 
-   vWorldNormal = normalize( cross( v1 - v0, v2 + v1 ) );
+   // a cube scaled to nothing has no face normal
+   vec3 vCross = cross( v1 - v0, v2 + v1 );
+   vWorldNormal = dot( vCross, vCross ) > 0.0 ? normalize( vCross ) : vec3( 0.0 );
 }
 
 vec3 GetSunLighting( const vec3 vNormal )
@@ -254,7 +256,7 @@ void GenerateCubeVertex( const float vertexIndex, const mat4 mat, const vec3 vCu
 
   float h = outSceneVertex.vWorldPos.y - gFloorHeight;
   outSceneVertex.vColor += GetSkyLighting( vNormal );
-  outSceneVertex.vColor *= mix( 1.0, fAOAmount, clamp( h, 0.6, 0.5 ) );
+  outSceneVertex.vColor *= mix( 1.0, fAOAmount, 0.5 );
 
   outSceneVertex.vColor += GetSunLighting( vNormal );
 

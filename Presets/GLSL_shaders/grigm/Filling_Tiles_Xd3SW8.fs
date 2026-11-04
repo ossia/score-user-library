@@ -124,7 +124,7 @@ void main() {
     float targetAngle = map(borderProgress, 0., 1., 0., PI)+PI*.251;
     float adiff = minAngularDifference(sta, targetAngle);
     float arange = map(borderProgress, 0., 1., 0., PI);
-    float amask = 1. - smoothstep(arange, arange, adiff);
+    float amask = 1. - step(arange, adiff);
     shape *= amask;
     // color
     // color = vec3(shape) * vec3(0.8, 0.6, 0.8)*2.;

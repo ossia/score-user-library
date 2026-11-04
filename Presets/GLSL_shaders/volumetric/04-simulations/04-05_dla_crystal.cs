@@ -85,7 +85,9 @@ void main()
 
     // Seed on the first dispatch. score currently starts FRAMEINDEX at 1, not
     // at 0 as the ISF spec says (see showcase/volume/_engine); <= 1 works either way.
-    if(FRAMEINDEX <= 1 || seed){
+    // Also when the volume is still empty (every pass writes alpha 1): it is
+    // recreated empty mid-timeline while FRAMEINDEX keeps counting.
+    if(FRAMEINDEX <= 1 || seed || prev.a == 0.0){
         // Single seed at centre
         float s = (dot(pc, pc) < 0.005) ? 1.0 : 0.0;
         imageStore(state, pos, vec4(s, 0.0, 0.0, 1.0));

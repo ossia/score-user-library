@@ -205,7 +205,7 @@ void main() {
   float sp = pow(snd, 5.0);
 
   mat *= rotZ(snd * 3.);
-  mat *= uniformScale(0.1 * pow(snd, 0.));// + -sin((time + 0.5) * 6.) * 0.01);
+  mat *= uniformScale(0.1);// + -sin((time + 0.5) * 6.) * 0.01);
   //mat *= uniformScale(mix(sp, 1. - sp, cgId) * 0.1 + sliceId * 0.0);
   gl_Position = vec4((mat * vec4(pos, 1)).xyz, 1);
   gl_PointSize = 4.;

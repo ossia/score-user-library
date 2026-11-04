@@ -28,6 +28,9 @@
             "TYPE": "float"
         },
         {
+            "DEFAULT": 0.1,
+            "MAX": 1,
+            "MIN": 0.01,
             "NAME": "smoothness",
             "TYPE": "float"
         },

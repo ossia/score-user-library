@@ -31,7 +31,8 @@ float r = 0.0;
 for(float i=0.; i<=100.; i++)
 	{
 	addv = rmat * addv;
-	r = max(r, smoothstep(size, size+blur, dot(p - pos, normalize(addv))));
+	float e = dot(p - pos, normalize(addv));
+	r = max(r, blur > 0. ? smoothstep(size, size+blur, e) : step(size, e));
     if(i>parts) break; //and how differently?    
 	}
 return 1. - r;

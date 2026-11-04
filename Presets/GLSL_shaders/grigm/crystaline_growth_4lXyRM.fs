@@ -112,7 +112,7 @@ void main() {
 	    tex += (n + e + s + w);
 	    tex += (ne + nw + se + sw);
 	
-	    if(FRAMEINDEX < 1 || FRAMEINDEX % 1500 == 0){
+	    if(FRAMEINDEX < 1 || FRAMEINDEX % 1500 == 0 || IMG_NORM_PIXEL(BufferC,mod(tc,1.0)).a == 0.0){
 	        if(tc.x >0.49 && tc.x < 0.5 && tc.y > 0.49 && tc.y <0.5){
 	            tex = vec4(1.0);
 	        } else {
@@ -132,7 +132,7 @@ void main() {
 	    vec4 tex = IMG_NORM_PIXEL(BufferA,mod(tc,1.0));
 	    vec4 past = IMG_NORM_PIXEL(BufferB,mod(tc,1.0));
 	    
-	    if(FRAMEINDEX < 1 || FRAMEINDEX % 1500 == 0){
+	    if(FRAMEINDEX < 1 || FRAMEINDEX % 1500 == 0 || IMG_NORM_PIXEL(BufferC,mod(tc,1.0)).a == 0.0){
 	         if(tc.x >0.49 && tc.x < 0.5 && tc.y > 0.49 && tc.y <0.5){
 	            gl_FragColor = vec4(1.0);
 	        } else {
@@ -174,7 +174,7 @@ void main() {
 	    }
 	    
 	    //float mask = smoothstep(0.15,0.151,dot(draw.rgb, vec3(0.3333)));//, 1.0);//vec4(smoothstep(vec2(0.1),vec2(0.9),draw.rg), 0.5, 1.0) ;//*0.1;//vec4(abs(angle), 0.0, 1.0);
-	    if(FRAMEINDEX < 1 || FRAMEINDEX % 1500 == 0){
+	    if(FRAMEINDEX < 1 || FRAMEINDEX % 1500 == 0 || IMG_NORM_PIXEL(BufferC,mod(tc,1.0)).a == 0.0){
 	             if(tc.x >0.49 && tc.x < 0.5 && tc.y > 0.49 && tc.y <0.5){
 	                gl_FragColor = vec4(1.0);
 	            } else {

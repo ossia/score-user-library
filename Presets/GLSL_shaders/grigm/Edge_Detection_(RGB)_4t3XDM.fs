@@ -49,4 +49,5 @@ void main()
     gl_FragColor.r = length(vec2(GradX.r, GradY.r));
     gl_FragColor.g = length(vec2(GradX.g, GradY.g));
     gl_FragColor.b = length(vec2(GradX.b, GradY.b));
+    gl_FragColor.a = 1.0;
 }

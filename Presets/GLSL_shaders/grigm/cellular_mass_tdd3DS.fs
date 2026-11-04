@@ -52,12 +52,12 @@ const int p[S*S] = int[S*S](
 );
 
 int[D] sums(in vec2 fragCoord) {
-    int s[D];
+    int s[D] = int[D](0, 0, 0, 0, 0, 0, 0, 0);
     int ij = 0;
     for(int i = -O; i <= O; i++) {
         for(int j = -O; j <= O; j++) {
             float tex = IMG_NORM_PIXEL(BufferA,mod((fragCoord + vec2(i, j)) / RENDERSIZE.xy,1.0)).w;
-            s[p[ij++]] += int(ceil(tex));
+            s[p[ij++]] += int(tex > 0.75);
         }
     }
     return s;
@@ -80,16 +80,16 @@ vec4 solu(in vec2 fragCoord, in vec2 uv) {
     
     vec3 prev = IMG_NORM_PIXEL(BufferA,mod(uv,1.0)).xyz;
     float avg = (4. * float(s[1]) + 2. * float(s[2]) + 10. * float(s[3])) / 32.;
-    return vec4(vec3(avg) * .1 + prev.x * .9, float(alive));
+    return vec4(vec3(avg) * .1 + prev.x * .9, alive ? 1. : .5);
 }
 
 // <--- Click to refresh
 void main() {
 	if (PASSINDEX == 0)	{
 	    vec2 uv = isf_FragNormCoord;
-	    if(FRAMEINDEX <= 1 || reset) {
+	    if(FRAMEINDEX <= 1 || reset || IMG_THIS_PIXEL(BufferA).a == 0.0) {
 	        bool alive = fract(sin(gl_FragCoord.x) * cos(gl_FragCoord.y) * 43758.5453123) < .22;
-	        gl_FragColor = vec4(0., 0., 0., float(alive));
+	        gl_FragColor = vec4(0., 0., 0., alive ? 1. : .5);
 	    } else {
 	        gl_FragColor = solu(gl_FragCoord.xy, uv);
 	    }

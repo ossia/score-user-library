@@ -81,7 +81,7 @@ float distanceEstimator(vec3 pos) { // Distance estimator for Menger Sponge
 
 float trace(vec3 from, vec3 direction) { //
  float totalDistance = 0.0;
- int steps;
+ int steps = 0;
  for (int i=0; i < MAX_RAY_STEPS; i++) {
         steps++;
   vec3 p = from + totalDistance * direction;

@@ -43,8 +43,8 @@ void main() {
     float offset = 0.01;
     float freq = 3.0;    
    	
-    float maskx = 2.0*smoothstep(0.0,0.0,sin(freq*2.0*3.1419*uv.y))-1.0; 
-    float masky = 2.0*smoothstep(0.0,0.0,sin(freq*2.0*3.1419*uv.x))-1.0; 
+    float maskx = 2.0*step(0.0,sin(freq*2.0*3.1419*uv.y))-1.0; 
+    float masky = 2.0*step(0.0,sin(freq*2.0*3.1419*uv.x))-1.0; 
     float t = mod(TIME,4.0);
     
     if(t<1.0){

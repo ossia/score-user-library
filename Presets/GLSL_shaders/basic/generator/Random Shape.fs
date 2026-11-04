@@ -192,7 +192,7 @@ bool PointInTriangle(vec2 pt, vec2 v1, vec2 v2, vec2 v3)	{
 
 void main() {
 	vec4		result = vec4(0.0);
-	vec2		thisPoint = isf_FragNormCoord;
+	vec2		thisPoint = isf_FragNormCoord * RENDERSIZE;
 	vec3		colorHSL;
 	vec2		pt1, pt2, pt3;
 	vec2		offsetIncrement = (4.0 * (offsetEnd - vec2(0.5)) / (pointCount - 2.0));
