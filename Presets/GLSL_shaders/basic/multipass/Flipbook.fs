@@ -95,7 +95,7 @@ void main()	{
 	else if (PASSINDEX == 1)	{
 		vec4	tmpColor = (FRAMEINDEX <= 1) ? vec4(0.0) : IMG_PIXEL(writePos, vec2(0.0));
 		//	update the image buffer
-		if (tmpColor.b == 0.0)	{
+		if ((tmpColor.b == 0.0)||(IMG_THIS_PIXEL(frameGrab).a == 0.0))	{
 			inputPixelColor = IMG_THIS_PIXEL(inputImage);
 		}
 		//

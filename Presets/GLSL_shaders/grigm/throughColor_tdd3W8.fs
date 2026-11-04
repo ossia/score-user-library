@@ -127,5 +127,5 @@ void main() {
   vec4 out_color=vec4(1.);
   out_color = vec4(norm, 0.) * li;
   out_color *= (1. - st) * (5. );
-  gl_FragColor=vec4(out_color);
+  gl_FragColor=vec4(out_color.rgb, 1.0);
 }

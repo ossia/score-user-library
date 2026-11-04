@@ -35,7 +35,7 @@ void main() {
 
     vec2 R = RENDERSIZE.xy;
     vec2 uv =  (gl_FragCoord.xy+gl_FragCoord.xy - R) / R.y;
-	gl_FragColor -= gl_FragColor+.3;
+	gl_FragColor = vec4(-.3);
     for (float i=0.; i<99.; i++)
         gl_FragColor += flare (uv.xy - sr2(i)*R/R.y )           // rotating flare at random location
               * r(i+.2)                          // random scale

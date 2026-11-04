@@ -126,5 +126,5 @@ void main() {
 	v*=.025;
 	float col=min(1.,.05+v+s*l);
 	col=sqrt(col)*2.05-.5;
-	gl_FragColor = vec4(col*min(1.,TIME*.2));
+	gl_FragColor = vec4(vec3(col*min(1.,TIME*.2)), 1.0);
 }

@@ -87,6 +87,7 @@ void main() {
 	    vec4 flow2  = IMG_NORM_PIXEL(BufferB,mod(flow0.xy*0.1+uv,1.0));
 	    
 	    //if ( fract(TIME*0.2)>0.5 ) {gl_FragColor = mix(flow0,flow2,0.1*flow0.b) ;}
+	    gl_FragColor = vec4(0.0);
 	    gl_FragColor *= IMG_NORM_PIXEL(BufferA,mod(uv,1.0)) * IMG_NORM_PIXEL(iChannel1,mod(uv,1.0));
 	    if ( FRAMEINDEX < startFrame ) {gl_FragColor = IMG_NORM_PIXEL(iChannel1,mod(uv,1.0));} 
 	    
@@ -125,6 +126,7 @@ void main() {
 	    vec2 uv = isf_FragNormCoord;
 	    vec4 flow0 = IMG_NORM_PIXEL(iChannel2,mod(uv,1.0));
 	    
+	    gl_FragColor = vec4(0.0);
 	    if ( fract(TIME*0.2)>0.5 ) {gl_FragColor /= flow0 ;}
 	    
 	    if ( FRAMEINDEX < startFrame_B ) {gl_FragColor = IMG_NORM_PIXEL(iChannel1_2,mod(uv,1.0));} 

@@ -212,5 +212,5 @@ void main()
     
     fog = 1.0 / (1.0 + t * t * 0.1);
     
-	gl_FragColor = vec4(final*fog,0.0);
+	gl_FragColor = vec4(final*fog,1.0);
 }

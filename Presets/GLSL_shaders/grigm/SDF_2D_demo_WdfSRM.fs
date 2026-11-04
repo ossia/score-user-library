@@ -50,4 +50,5 @@ void main() {
     
     gl_FragColor.rgb = mix(vec3(a),vec3(.34), smoothstep(3./R.y,0.,t));
     gl_FragColor.rgb = mix(vec3(gl_FragColor), .5 + .5*sin( 4.*TIME + vec3(0,1./2.,1)*PI ), smoothstep(3./R.y,0.,abs(t)-.005));
+    gl_FragColor.a = 1.0;
 }

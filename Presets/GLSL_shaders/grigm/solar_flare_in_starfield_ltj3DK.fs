@@ -74,4 +74,5 @@ void main(){
 
 	//gl_FragColor.rgb = mix( vec3( stars( p, 5., .25 ) ), col, a );
     gl_FragColor.rgb = mix( vec3( clamp( pow( 1.3 * stars( p, 5., .25 ), 3. ), 0., 1. ) ), col, a );
+    gl_FragColor.a = 1.0;
 }

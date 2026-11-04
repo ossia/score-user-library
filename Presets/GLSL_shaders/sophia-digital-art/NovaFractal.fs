@@ -49,5 +49,5 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     		iter++;
 		}
 	}
-	gl_FragColor = vec4(color / 40.0 + max(0.75 - iter / 40.0, 0.0));
+	fragColor = vec4(color / 40.0 + max(0.75 - iter / 40.0, 0.0));
 }void main(void) { mainImage(gl_FragColor, gl_FragCoord.xy); }

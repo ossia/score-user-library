@@ -52,7 +52,7 @@ void main() {
     R(rd.yz, 0.1 * TIME);
     R(ro.yz, 0.1 * TIME);
     float t = 0.0;
-    gl_FragColor.rgb = vec3(0.0);
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     float scale = mix(3.5, 9.0, Sin01(0.068 * TIME));
     for (int i = 0; i < 64; i++) {
         vec3 p = ro + t * rd;
