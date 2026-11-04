@@ -450,7 +450,9 @@ function paintText(ctx, obj, x, y, w, h, s) {
     if (obj.fontStyle === "italic") fontParts.push("italic");
     if (obj.fontWeight === "bold") fontParts.push("bold");
     fontParts.push(fontSize + "px");
-    fontParts.push('"' + (obj.fontFamily || "IBM Plex Sans") + '"');
+    // Qt's Canvas rejects the whole font string, size included, when it names
+    // a family it does not know; the generic fallback keeps the string valid.
+    fontParts.push('"' + (obj.fontFamily || "IBM Plex Sans") + '", sans-serif');
     ctx.font = fontParts.join(" ");
     ctx.fillStyle = obj.textColor || "#ffffff";
 
