@@ -105,7 +105,7 @@ Raindrop GenerateRaindrop(RainParams params, float time, float seed)
 }
 
 #define TRIANGLES_PER_DROP 2.0
-void RenderRaindrop(Raindrop drop, RainParams params, float triangle, float triVert, out float4 outPos, out float4 outColor)
+void RenderRaindrop(Raindrop drop, RainParams params, float triangle, float triVert, inout float4 outPos, out float4 outColor)
 {
   // Super brute-force. Lets do something nicer later.
   outPos.yz = float2(0.0, 0.0);

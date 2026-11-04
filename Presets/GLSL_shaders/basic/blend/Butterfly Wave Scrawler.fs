@@ -66,7 +66,8 @@ vec2 o = p*sin(progress * amplitude)-center;
 vec2 h = vec2(1., 0.);
 // butterfly polar function (don't ask me why this one :))
 float theta = acos(dot(o, h)) * waves;
-return (exp(cos(theta)) - 2.*cos(4.*theta) + pow(sin((2.*theta - PI) / 24.), 5.)) / 10.;
+float s = sin((2.*theta - PI) / 24.);
+return (exp(cos(theta)) - 2.*cos(4.*theta) + s*s*s*s*s) / 10.;
 }
 vec4 transition(vec2 uv) {
   vec2 p = uv.xy / vec2(1.0).xy;

@@ -21,14 +21,14 @@ precision mediump float;
 
 float square (vec2 position, float x, float y, float z, float q) {
 
-	float sq  = smoothstep ( 0.0, 0.0, position.x - x);
-	      sq *= smoothstep ( 0.0, 0.0, position.x - x);
-	      sq *= smoothstep ( 0.0, 0.0, -position.y + y);
-	      sq *= smoothstep ( 0.0, 0.0, -position.y + y);
-	      sq *= smoothstep ( 0.0, 0.0, -position.x + z);
-	      sq *= smoothstep ( 0.0, 0.0, -position.x + z);
-	      sq *= smoothstep ( 0.0, 0.0, position.y - q);
-	      sq *= smoothstep ( 0.0, 0.0, position.y - q);
+	float sq  = step ( 0.0, position.x - x);
+	      sq *= step ( 0.0, position.x - x);
+	      sq *= step ( 0.0, -position.y + y);
+	      sq *= step ( 0.0, -position.y + y);
+	      sq *= step ( 0.0, -position.x + z);
+	      sq *= step ( 0.0, -position.x + z);
+	      sq *= step ( 0.0, position.y - q);
+	      sq *= step ( 0.0, position.y - q);
 return sq;
 }
 

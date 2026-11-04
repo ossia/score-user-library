@@ -160,7 +160,9 @@ void main()
 
     // Seed on the first dispatch. score currently starts FRAMEINDEX at 1, not
     // at 0 as the ISF spec says (see showcase/volume/_engine); <= 1 works either way.
-    if(FRAMEINDEX <= 1 || seed){
+    // Also when the volume is still empty (every pass writes alpha 1): it is
+    // recreated empty mid-timeline while FRAMEINDEX keeps counting.
+    if(FRAMEINDEX <= 1 || seed || prev.a == 0.0){
         float h = hash13(vec3(pos) + vec3(TIME*3.0));
         float alive = step(1.0 - seedDensity, h);
         if(seedShape == 1){
