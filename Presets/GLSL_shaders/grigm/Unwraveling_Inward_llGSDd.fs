@@ -47,5 +47,5 @@ void main() {
     uv.x = 2.0 * r * cos(t) * (1.0 - cos(t));
     uv.y = 2.0 * r * sin(t) * (1.0 - cos(t)) * 10.0;
     
-    gl_FragColor = vec4(IMG_NORM_PIXEL(iChannel0,mod(uv,1.0)) * vec4(1.0, 0.0, 0.0, 1.0) * (1.0 - vec4(uv, 1.0, 1.0)));
+    gl_FragColor = vec4((IMG_NORM_PIXEL(iChannel0,mod(uv,1.0)) * vec4(1.0, 0.0, 0.0, 1.0) * (1.0 - vec4(uv, 1.0, 1.0))).rgb, 1.0);
 }

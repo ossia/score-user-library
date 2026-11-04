@@ -27,7 +27,7 @@ vec2 texel_size = vec2(6.0,6.0);
 void main()
 {    
 	vec2 uv = floor(gl_FragCoord.xy/texel_size);	// Pixelify
-    uv.xy = RENDERSIZE.xy / texel_size;	// Correct scale
+    uv.xy /= RENDERSIZE.xy / texel_size;	// Correct scale
 
     float reaction_coordinate = IMG_NORM_PIXEL(inputImage,mod(uv.xy,1.0)).r;	// Use red channel
     

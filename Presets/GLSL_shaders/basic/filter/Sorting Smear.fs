@@ -83,7 +83,7 @@ void main()
 	//float localAdaptRate = 1.0 - pow(adaptLevel,2.0);
 	float localAdaptRate = adaptLevel;
 	//	if the frame index is 0, or the reset event was triggered, use the original color
-	if ((FRAMEINDEX <= 1)||(resetInput))	{
+	if ((FRAMEINDEX <= 1)||(resetInput)||(IMG_THIS_NORM_PIXEL(lastRender).a == 0.0))	{
 		result = color;
 	}
 	else	{

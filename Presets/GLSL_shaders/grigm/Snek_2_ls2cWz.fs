@@ -80,6 +80,7 @@ void main() {
     pixelShape = pow(pixelShape, 0.1);    
     
     gl_FragColor *= pixelShape;
+    gl_FragColor.a = 1.0;
     
     //gl_FragColor = vec4(aatop(uv.x, 0.2, 0.5));
 }

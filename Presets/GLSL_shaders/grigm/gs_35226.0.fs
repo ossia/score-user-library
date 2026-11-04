@@ -60,5 +60,5 @@ void main( void ) {
 		
 		me = me * 0.05 + source * 0.95;
 	}
-	gl_FragColor = me;
+	gl_FragColor = vec4(me.rgb, 1.0);
 }

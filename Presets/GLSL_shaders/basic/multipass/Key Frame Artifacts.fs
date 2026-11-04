@@ -78,7 +78,7 @@ void main()
 	
 	if (PASSINDEX==0)	{
 		
-		bool		doUpdateKeyFrame = ((updateKeyFrame)||(FRAMEINDEX<5)) ? true : false;
+		bool		doUpdateKeyFrame = ((updateKeyFrame)||(FRAMEINDEX<5)||(IMG_THIS_NORM_PIXEL(lastFrame).a == 0.0)) ? true : false;
 		vec4		result = (doUpdateKeyFrame) ? IMG_THIS_NORM_PIXEL(inputImage) : IMG_THIS_NORM_PIXEL(keyFrame);
 		if ((doUpdateKeyFrame)&&(numColors < 1.0))	{
 			float		scaledColors = floor(pow(2.0,numColors * 8.0));
@@ -92,7 +92,7 @@ void main()
 	}
 	//	on the second pass, compare lastFrame to inputImage and add that amount to diffFrame
 	else if (PASSINDEX==1)	{
-		bool		doUpdateKeyFrame = ((updateKeyFrame)||(FRAMEINDEX<5)) ? true : false;
+		bool		doUpdateKeyFrame = ((updateKeyFrame)||(FRAMEINDEX<5)||(IMG_THIS_NORM_PIXEL(lastFrame).a == 0.0)) ? true : false;
 		vec4		freshPixel = IMG_THIS_NORM_PIXEL(inputImage);
 		vec4		stalePixel = (doUpdateKeyFrame) ? IMG_THIS_NORM_PIXEL(keyFrame) : IMG_THIS_NORM_PIXEL(lastFrame);
 		vec4		diffPixel = (doUpdateKeyFrame) ? vec4(0.5) : IMG_THIS_NORM_PIXEL(diffFrame);

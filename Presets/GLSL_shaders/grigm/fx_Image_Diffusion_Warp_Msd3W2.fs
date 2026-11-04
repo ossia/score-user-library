@@ -260,7 +260,7 @@ void main() {
 	    float b = ta * sin(sc) + tb * cos(sc);
 	    
 	    // initialize with noise
-	    if(FRAMEINDEX<5 || reset==true) {
+	    if(FRAMEINDEX<5 || reset==true || IMG_NORM_PIXEL(BufferB,mod(vUv,1.0)).a == 0.0) {
 	        gl_FragColor = -0.5 + IMG_NORM_PIXEL(inputImage,mod(isf_FragNormCoord,1.0));
 	    } else {
 	        gl_FragColor = clamp(vec4(a,b,div,1), -1., 2.);
@@ -321,10 +321,10 @@ void main() {
 	
 	    // initialize with image
 	    //if(FRAMEINDEX<10 || reset==true) {
-	    if(FRAMEINDEX<5 || reset==true) {
+	    if(FRAMEINDEX<5 || reset==true || IMG_NORM_PIXEL(BufferB,mod(vUv,1.0)).a == 0.0) {
 	        gl_FragColor = IMG_NORM_PIXEL(inputImage,mod(vUv,1.0));
 	    } else {
-	        gl_FragColor = vec4(clamp(im + ds * diffusion_im, 0.0, 1.0), 0.0);
+	        gl_FragColor = vec4(clamp(im + ds * diffusion_im, 0.0, 1.0), 1.0);
 	    }
 	}
 	else if (PASSINDEX == 2)	{

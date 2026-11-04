@@ -99,7 +99,7 @@ void main()	{
 		}
 	}
 	else	{
-		vec4	color = IMG_PIXEL(lastData, loc);
+		vec4	color = IMG_THIS_PIXEL(lastData);
 		vec4	colorL = IMG_PIXEL(lastData, left_coord);
 		vec4	colorR = IMG_PIXEL(lastData, right_coord);
 		vec4	colorA = IMG_PIXEL(lastData, above_coord);
