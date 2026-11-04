@@ -45,6 +45,11 @@ float y3 = 0.0;
 //3 -> 6*(N-1) = 6x2 =12
 //4 -> 6*3= 18
 
+// a segment of zero length has no direction
+vec2 safeNormalize(vec2 v) {
+  return dot(v, v) > 0. ? normalize(v) : vec2(0.);
+}
+
 void main() {
 
   // test 1 ：4 vertices, starts from offset:0
@@ -66,15 +71,15 @@ void main() {
 
   vec2 v_line = normalize(va[2].xy-va[1].xy);
   vec2 nv_line = vec2(-v_line.y, v_line.x);
-  vec2 v_pred = normalize(va[1].xy - va[0].xy);
-  vec2 v_succ = normalize(va[3].xy - va[2].xy);
+  vec2 v_pred = safeNormalize(va[1].xy - va[0].xy);
+  vec2 v_succ = safeNormalize(va[3].xy - va[2].xy);
   vec2 v_miter1 = normalize(nv_line + vec2(-v_pred.y, v_pred.x));
   vec2 v_miter2 = normalize(nv_line + vec2(-v_succ.y, v_succ.x));
 
   vec4 pos;
  if (tri_i == 0. || tri_i == 1. || tri_i == 3.)
 {
-    vec2 v_pred = normalize(va[1].xy - va[0].xy);
+    vec2 v_pred = safeNormalize(va[1].xy - va[0].xy);
     vec2 v_miter = normalize(nv_line + vec2(-v_pred.y, v_pred.x));
 
     pos = va[1];
@@ -82,7 +87,7 @@ void main() {
 }
 else
 {
-    vec2 v_succ = normalize(va[3].xy - va[2].xy);
+    vec2 v_succ = safeNormalize(va[3].xy - va[2].xy);
     vec2 v_miter = normalize(nv_line + vec2(-v_succ.y, v_succ.x));
 
     pos = va[2];

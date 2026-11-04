@@ -25,6 +25,7 @@ void main() {
 	
     fragCoordPos.xy /= RENDERSIZE.xy; 
     float x,c;
+    gl_FragColor = vec4(0.0);
     for (float i = 1.; i < 20.; i++)   
 		gl_FragColor = fragCoordPos.y+.04*i < sin(c=floor(x= 2e2*fragCoordPos.x/i + 9.*i + DATE.w)) ? 
                              gl_FragColor + min(15.*((x-=c)-x*x),1.) *(i/20.-gl_FragColor)  : gl_FragColor; 

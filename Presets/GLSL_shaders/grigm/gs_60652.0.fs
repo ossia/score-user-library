@@ -8,6 +8,10 @@
     {
       "NAME" : "mouse",
       "TYPE" : "point2D",
+      "DEFAULT" : [
+        0.5,
+        0.5
+      ],
       "MAX" : [
         1,
         1
@@ -49,7 +53,7 @@ precision mediump float;
 
 vec3 getSphereNormal(vec2 pos) {
 	// gotta find the z such that pos.x^2 + pos.y^2 + z^2 = 1
-	return normalize(vec3(pos, sqrt(sub_size-pos.x*pos.x - pos.y * pos.y)));
+	return normalize(vec3(pos, sqrt(max(sub_size-pos.x*pos.x - pos.y * pos.y, 0.0))));
 }
 
 vec4 normalColor(vec3 normal) {
@@ -60,7 +64,8 @@ vec3 spec(vec3 L, vec3 N, vec3 V, float E) {
 	vec3 T = vec3(1.0, 1.0, 0.0);
 	T = normalize(T - dot(N, T) * N);
 	//return T;
-	return vec3(pow(clamp(dot(N, normalize(L + V)), 0.0, 1.0), E*pow(dot(T, L), 2.0)));
+	float TL = dot(T, L);
+	return vec3(pow(clamp(dot(N, normalize(L + V)), 0.0, 1.0), E*TL*TL));
 }
 
 vec3 diff(vec3 L, vec3 N) {
@@ -74,17 +79,21 @@ void main( void ) {
 	vec3 light = getSphereNormal((mouse.xy - vec2(0.5)) * 2.0);
 	vec3 view = vec3(0.0, 0.0, 1.0);
 	
-	vec3 color;
+	vec3 color = vec3(0.0);
 
 	// ambient
 	color += vec3(0.01, 0.01, 0.01);
 	
+	// the sphere is lit, the background only gets the ambient term
+	if(dot(position, position) < sub_size) {
 	// diffuse
 	color += vec3(0.4, 0.8, 0.9) * diff(light, normal) / 2.0;
 	
 	// specular
 	color += 1.0 * spec(light, normal, view, 10.0) / 2.0;
 	
+	}
+
 	//mask
 	color *= smoothstep(1.0, 0.95, dot(position, position));
 

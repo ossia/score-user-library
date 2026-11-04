@@ -57,7 +57,7 @@ vec2 distanceEstimator(vec3 p) {
 
 vec3 trace(vec3 from, vec3 direction) {
  float totalDistance = 0.0;
- int steps;
+ int steps = 0;
     vec2 result;
  for (int i=0; i < MAX_RAY_STEPS; i++) {
         steps++;

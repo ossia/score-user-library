@@ -44,7 +44,7 @@ void mainImage(out vec4 o, vec2 U)
 {   vec2 v,m, I=vec2(1,-1), a,b,c=iResolution.xy, 
         u = (U+U-c)/c.y,
         r = log(iTime+.8*I); r += I*r.yx;
-    P  o-=o;       // just to initialize a
+    P  o=vec4(0); // just to initialize a
 	P P P P        // 4*3 segments
 
 }
@@ -81,7 +81,8 @@ void mainImage(out vec4 o, in vec2 u)
 
 void main(void)
 {
-  iTime = TIME;
+  // log(iTime - .8) has no value before 0.8 s
+  iTime = TIME + 1.0;
   iResolution = vec3(RENDERSIZE, 0.0);
 
   mainImage(gl_FragColor, gl_FragCoord.xy);

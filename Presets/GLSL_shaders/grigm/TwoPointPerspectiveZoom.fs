@@ -53,6 +53,7 @@ void main() {
     vec2 S = vec2(dot(R,I));
     float b = abs(S=(I+I-R)/-R.x).x*offset.x;
 	R = sin(6.0*vec2(I.x/a,2.0/a+(rate*TIME))*(3.25-size));
-	gl_FragColor -= -sign((R.x*R.y) - pow(R.x*S.y,mix(a*a,b*b,mixer))*b)*a;
+	gl_FragColor = vec4(0.0);
+	gl_FragColor -= -sign((R.x*R.y) - pow(abs(R.x*S.y),mix(a*a,b*b,mixer))*b)*a;
 //	gl_FragColor -= exp(R.x*S.y)*a*b;
 }

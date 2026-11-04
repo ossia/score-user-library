@@ -54,7 +54,7 @@ vec2 getHexPos(float vVertexId, float vPolySize, float vHexSpace)
 
  if (indexCircle == 0.) return vec2(0);
 
- float ringCircle = floor(sqrt((4. * indexCircle - 1.) / 12.0) - 0.5) + 1.0;;
+ float ringCircle = floor(sqrt(max((4. * indexCircle - 1.) / 12.0, 0.)) - 0.5) + 1.0;;
 
  float circleOffset = (3. * pow(ringCircle,2.) + 3. * ringCircle + 1.) - indexCircle;
 

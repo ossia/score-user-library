@@ -226,8 +226,8 @@ vec3 getQPoint(const float id) {
 void GenFlower(float offsetX, float offsetX2 ,
         float offsetY,
         inout float In_vertexIndex ,
-        out vec3 Pos ,
-        out mat4 model)
+        inout vec3 Pos ,
+        inout mat4 model)
 {
   /*Time&Music Setting*/
     float ux = mod(In_vertexIndex, 1.) ;

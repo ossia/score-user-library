@@ -44,7 +44,7 @@ void main() {
   float snd = texture(sound, vec2(fract(count / 128.0), fract(count / 20000.0))).r;
   float offset = count * 0.02;
   float angle = point * PI * 2.0 / NUM_SEGMENTS + offset;
-  float radius = 0.2 * pow(snd, .0);
+  float radius = 0.2;
   float c = cos(angle + time) * radius;
   float s = sin(angle + time) * radius;
   float orbitAngle = count * 0.0;

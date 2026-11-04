@@ -166,7 +166,7 @@ void fresnel(vec3 ro, vec3 rd, inout float refl, inout float refr){
 }
 
 vec3 render(vec2 uv){
-    vec3 col;
+    vec3 col = vec3(0.);
     
     //Camera
     float ScreenSize = 4.;
@@ -186,13 +186,13 @@ vec3 render(vec2 uv){
   	vec3 scrP = scrC + (uv.x*r + uv.y*up) * ScreenSize;
   	vec3 rd = normalize(scrP - ro);
     
-    float Dglass, min_l = END;
+    float Dglass = 0., min_l = END;
     float d = depth(ro, rd, 1., min_l);
     ro += d*rd;
     
     vec3 ro_, rd_;
     float refl, refr;
-    int Nmax = 15, count;
+    int Nmax = 15, count = 0;
     while (count < Nmax){
         //hits background
         if (d > END - ep){
@@ -235,7 +235,7 @@ void main() {
 
 
     
-    float degree = .35*pow(0.538502*(sin(3.*TIME) + sin(TIME * 1.8)),8.) + .1;
+    float degree = .35*pow(abs(0.538502*(sin(3.*TIME) + sin(TIME * 1.8))),8.) + .1;
     
     //Shader setup
     vec2 R = RENDERSIZE.xy;

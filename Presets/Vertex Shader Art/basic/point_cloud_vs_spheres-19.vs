@@ -56,7 +56,7 @@ vec3 incr(float _t, float _i, vec3 _add, float _l)
   vec3 posf = fract(pos+.5)-.5;
 
   float l = length(posf)*2.;
-  return (- posf + posf/l)*(1.-smoothstep(_l,1.,l));
+  return (- posf + posf/l)*(1.-(_l < 1. ? smoothstep(_l,1.,l) : step(1.,l)));
 }
 
 void main() {

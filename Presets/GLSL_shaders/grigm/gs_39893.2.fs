@@ -82,7 +82,8 @@ void main(){
     vec2 fpos = fract(st*rows);
     
     vec3 pct = vec3(1.0);
-    vec2 chr = mod(ipos + vel,vec2(mouse.y));
+    // mod by a zero mouse.y has no value: the characters do not wrap then
+    vec2 chr = mouse.y > 0. ? mod(ipos + vel,vec2(mouse.y)) : ipos + vel;
     pct *= vec3( randomChar( chr + mouse.x*0.1,fpos), randomChar( chr * 3.0,fpos), randomChar( chr * 333.0,fpos) );
 	
     pct *= randomChar( chr + 33.0,fpos);

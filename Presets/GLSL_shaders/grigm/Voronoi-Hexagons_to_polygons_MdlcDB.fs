@@ -61,7 +61,7 @@ void main() {
     // colorize
     vec3 col = 0.5 + 0.5 * cos(c.y * 3.0 + vec3(0.0,1.0,2.0) );	
     col *= clamp(1.0 - 0.5 * c.x * c.x, 0.0, 1.0);
-    col -= (1.0-smoothstep( 0.05, 0.05, c.x));
+    col -= (1.0-step( 0.05, c.x));
 	
     gl_FragColor = vec4( col, 1.0 );
 }

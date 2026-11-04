@@ -21,6 +21,7 @@ precision mediump float;
 
     void main( void ) {
         vec2 center_xy = (gl_FragCoord.xy * 2.0 - RENDERSIZE.xy) / min(RENDERSIZE.x, RENDERSIZE.y);
+        gl_FragColor = vec4(0.0);
         for(float i = 0.0; i < 5.0 ; i++)
         {
 		float v = i * 5.0;

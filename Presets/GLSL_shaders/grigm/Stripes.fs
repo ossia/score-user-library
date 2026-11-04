@@ -50,8 +50,7 @@
 
 float bump(float w, float center, float x)
 {
-	float f = 1.0;
-	return smoothstep( (center-w)/f , (center-w)*f , x)*smoothstep( (center+w)/f , (center+w)*f , x);
+	return step(center-w, x)*step(center+w, x);
 	
 }
 
@@ -85,7 +84,7 @@ void main() {
 	
 	float shape = sin(dot(pos,M))*ssca+off;
 	
-	float mask = smoothstep(0.3,0.3,pos.y)*smoothstep(0.3,0.3,1.0-pos.y);
+	float mask = step(0.3,pos.y)*step(0.3,1.0-pos.y);
 	
 	gl_FragColor = vec4(shape*color*mask,1.0);
 	
