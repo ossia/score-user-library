@@ -171,7 +171,9 @@ function buildFontString(s) {
     if (s.fontStyle === "italic") parts.push("italic");
     if (s.fontWeight === "bold") parts.push("bold");
     parts.push(Math.max(1, s.fontSize || 72) + "px");
-    parts.push('"' + (s.fontFamily || "Arial") + '"');
+    // Qt's Canvas rejects the whole font string, size included, when it names
+    // a family it does not know; the generic fallback keeps the string valid.
+    parts.push('"' + (s.fontFamily || "Arial") + '", sans-serif');
     return parts.join(" ");
 }
 
